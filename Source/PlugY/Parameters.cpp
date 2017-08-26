@@ -12,7 +12,6 @@
 #include <string.h>
 #include <time.h>
 
-
 #define PARAMETERS_FILENAME "PlugY.ini"
 #define PARAM_FIXED_FILENAME "PlugY\\PlugYFixed.ini"
 #define PARAM_DEFAULT_FILENAME "PlugY\\PlugYDefault.ini"
@@ -29,13 +28,12 @@
 #include "infinityStash.h"
 #include "othersFeatures.h"
 #include "newInterfaces.h"
-#include "worldEvent.h"
-#include "uberQuest.h"
 #include "extraOptions.h"
 #include "commands.h"
 #include "language.h"
 #include "windowed.h"
 
+using Versions = VersionUtility::Versions;
 
 char* modDataDirectory = "PlugY";
 bool active_plugin = true;
@@ -45,7 +43,6 @@ bool active_D2Mod = false;
 char* dllFilenames;
 
 TargetMod selectModParam = MOD_NO;
-
 
 const char* S_GENERAL = "GENERAL";
 const char* S_dllFilenames = "DllToLoad";
@@ -101,7 +98,6 @@ const char* S_separateHardSoftStash = "SeparateHardcoreStash";
 const char* S_active_bigStash = "ActiveBigStash";
 const char* S_displaySharedSetItemNameInGreen = "DisplaySharedSetItemNameInGreen";
 const char* S_active_sharedGold = "ActiveSharedGold";
-
 
 const char* S_posXPreviousBtn = "PosXPreviousBtn";
 const char* S_posYPreviousBtn = "PosYPreviousBtn";
@@ -176,10 +172,8 @@ const char* S_DEFAULT = "DEFAULT:";
 const char* S_USER = "USER:\t";
 const char* S_FIXED = "FIXED:\t";
 
-
 // Convert 4 char code in a DWORD code
 #define BIN(A,B,C,D) ((DWORD)A) + (((DWORD)B) << 8) + (((DWORD)C) << 16) + (((DWORD)D) << 24)
-
 
 #define GET_PRIVATE_PROFILE_STRING(S,F,D)\
 if (!iniFixedFile->GetPrivateProfileString(S, F, NULL, buffer, maxSize)) \
@@ -205,7 +199,6 @@ if (!iniDefaultFile->GetPrivateProfileString(S, F, D, buffer, maxSize)) \
 else log_msg(S_DEFAULT); \
 else log_msg(S_FIXED); \
 else log_msg(S_USER)
-
 
 void init_ActivePlugin(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefaultFile, char* buffer, DWORD maxSize)
 {
@@ -453,20 +446,20 @@ void init_VersionText(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefau
 			//case V107: //"v 1.07"
 			//case V108: //"v 1.08"
 			//case V109: //"v 1.09"
-			case V109b: //"v 1.09"
-			case V109d: //"v 1.09"
+			case Versions::V109b: //"v 1.09"
+			case Versions::V109d: //"v 1.09"
 			//case V110: //"v 1.10"
 			//case V111: //"v 1.11"
-			case V111b: //"v 1.11"
+			case Versions::V111b: //"v 1.11"
 			//case V112: //"v 1.12"
-			case V113c: //"v 1.13"
-			case V113d: //"v 1.13"
-			case V114a: //"v 1.14"
+			case Versions::V113c: //"v 1.13"
+			case Versions::V113d: //"v 1.13"
+			case Versions::V114a: //"v 1.14"
 			//case V114b: //"v 1.14b"
 			//case V114c: //"v 1.14c"
 			//case V114d: //"v 1.14d"
 				strcpy(buffer, "v ");
-				strcat(buffer, GetVersionString(version_D2Game));
+				strcat(buffer, VersionUtility::GetVersionAsString(version_D2Game));
 				break;
 			default:
 				active_VersionTextChange=0;
@@ -676,85 +669,6 @@ void init_SkillPerLevelUp(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniD
 	log_msg("\n");
 }
 
-
-void init_WorldEvent(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefaultFile, char* buffer, DWORD maxSize)
-{
-	GET_PRIVATE_PROFILE_STRING(S_WORLD_EVENT, S_active_WorldEvent, "0");
-	active_WorldEvent = atoi(buffer) != 0;
-	if (active_WorldEvent && ((version_D2Game == V109b) || (version_D2Game == V109d)) ) {
-		active_WorldEvent = 0;
-		log_msg("active_WorldEvent\t\t\t= %d (Warning : this feature is only for LoD version 1.10 or higher, so it's automatically disabled)\n", active_WorldEvent);
-	} else
-		log_msg("active_WorldEvent\t\t\t= %d\n", active_WorldEvent);
-
-	if (active_WorldEvent)
-	{
-		GET_PRIVATE_PROFILE_STRING(S_WORLD_EVENT, S_showSOJSoldCounterInAllDiff, "0");
-		showSOJSoldCounterInAllDiff = atoi(buffer);
-		log_msg("showSOJSoldCounterInAllDiff\t= %d\n", showSOJSoldCounterInAllDiff);
-
-		GET_PRIVATE_PROFILE_STRING(S_WORLD_EVENT, S_itemsToSell, itemsToSell);
-		if (strlen(buffer)>50) buffer[50]='\0';
-		itemsToSell = (char*)D2FogMemAlloc(strlen(buffer)+1,__FILE__,__LINE__,0);
-		strcpy(itemsToSell,buffer);
-		log_msg("itemsToSell\t\t\t\t\t= %s\n", itemsToSell);
-
-		GET_PRIVATE_PROFILE_STRING(S_WORLD_EVENT, S_worldEventmonsterID, "333");
-		worldEventmonsterID = atoi(buffer);
-		log_msg("worldEventmonsterID\t\t\t= %d\n", worldEventmonsterID);
-
-		GET_PRIVATE_PROFILE_STRING(S_WORLD_EVENT, S_valueOfOwnSOJSold, "100");
-		valueOfOwnSOJSold = atoi(buffer);
-		log_msg("valueOfOwnSOJSold\t\t\t= %d\n", valueOfOwnSOJSold);
-
-		GET_PRIVATE_PROFILE_STRING(S_WORLD_EVENT, S_valueInitSOJSoldMin, "200");
-		valueInitSOJSoldMin = atoi(buffer);
-		log_msg("valueInitSOJSoldMin\t\t\t= %d\n", valueInitSOJSoldMin);
-
-		GET_PRIVATE_PROFILE_STRING(S_WORLD_EVENT, S_valueInitSOJSoldDelta, "3000");
-		valueInitSOJSoldDelta = atoi(buffer)-valueInitSOJSoldMin+1;
-		log_msg("valueInitSOJSoldDelta\t\t= %d\n", valueInitSOJSoldDelta);
-
-		GET_PRIVATE_PROFILE_STRING(S_WORLD_EVENT, S_triggerAtSolJSoldMin, "75");
-		triggerAtSolJSoldMin = atoi(buffer);
-		log_msg("triggerAtSolJSoldMin\t\t= %d\n", triggerAtSolJSoldMin);
-
-		GET_PRIVATE_PROFILE_STRING(S_WORLD_EVENT, S_triggerAtSolJSoldDelta, "125");
-		triggerAtSolJSoldDelta = atoi(buffer)-triggerAtSolJSoldMin+1;
-		log_msg("triggerAtSolJSoldDelta\t\t= %d\n", triggerAtSolJSoldDelta);
-
-
-		GET_PRIVATE_PROFILE_STRING(S_WORLD_EVENT, S_active_AutomaticSell, "1");
-		active_AutomaticSell = atoi(buffer) != 0;
-		log_msg("active_AutomaticSell\t\t= %d\n", active_AutomaticSell);
-
-		if (active_AutomaticSell)
-		{
-			GET_PRIVATE_PROFILE_STRING(S_WORLD_EVENT, S_timeBeforeAutoSellMin, "0");
-			timeBeforeAutoSellMin = atoi(buffer)*1000;
-			log_msg("timeBeforeAutoSellMin\t\t= %d\n", timeBeforeAutoSellMin);
-
-			GET_PRIVATE_PROFILE_STRING(S_WORLD_EVENT, S_timeBeforeAutoSellDelta, "1200");
-			timeBeforeAutoSellDelta = atoi(buffer)*1000-timeBeforeAutoSellMin+1;
-			log_msg("timeBeforeAutoSellDelta\t\t= %d\n", timeBeforeAutoSellDelta);
-		}
-	}
-	log_msg("\n");
-}
-
-void init_UberQuest(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefaultFile, char* buffer, DWORD maxSize)
-{
-	GET_PRIVATE_PROFILE_STRING(S_UBER_QUEST, S_active_UberQuest, "0");
-	active_UberQuest = atoi(buffer) != 0;
-	if (active_UberQuest && ((version_D2Game == V109b) || (version_D2Game == V109d) || (version_D2Game == V110)) ) {
-		active_UberQuest = 0;
-		log_msg("active_UberQuest\t\t= %d (Warning : this feature is only for LoD version 1.11 or higher, so it's automatically disabled)\n", active_UberQuest);
-	} else
-		log_msg("active_UberQuest\t\t\t= %d\n", active_UberQuest);
-	log_msg("\n");
-}
-
-
 void init_NewInterfaces(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefaultFile, char* buffer, DWORD maxSize)
 {
 	GET_PRIVATE_PROFILE_STRING(S_INTERFACE, S_active_newInterfaces, "0");
@@ -774,7 +688,6 @@ void init_NewInterfaces(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDef
 	log_msg("\n");
 }
 
-
 void init_ExtraOptions(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefaultFile, char* buffer, DWORD maxSize)
 {
 	GET_PRIVATE_PROFILE_STRING(S_EXTRA, S_active_alwaysRegenMapInSP, "0");
@@ -783,7 +696,7 @@ void init_ExtraOptions(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefa
 
 	GET_PRIVATE_PROFILE_STRING(S_EXTRA, S_nbPlayersCommandByDefault, "0");
 	nbPlayersCommandByDefault = atoi(buffer);
-	if (version_D2Common == V109 || version_D2Common == V109b)
+	if (version_D2Common == Versions::V109 || version_D2Common == Versions::V109b)
 		{if (nbPlayersCommandByDefault > 64) nbPlayersCommandByDefault=64;}
 	else if (nbPlayersCommandByDefault > 8) nbPlayersCommandByDefault=8;
 	log_msg("nbPlayersCommandByDefault\t= %d\n", nbPlayersCommandByDefault);
@@ -810,9 +723,9 @@ void init_ExtraOptions(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefa
 
 	GET_PRIVATE_PROFILE_STRING(S_EXTRA, S_active_LadderRunewords, "0");
 	active_LadderRunewords = atoi(buffer);
-	if (active_LadderRunewords && (version_D2Common == V109b || version_D2Common == V109d) ) {
+	if (active_LadderRunewords && (version_D2Common == Versions::V109b || version_D2Common == Versions::V109d) ) {
 		active_LadderRunewords = 0;
-		log_msg("active_LadderRunewords\t= %d (Warning : Warning : this feature is only for LoD version 1.10 or higher, so it's automatically disabled)\n", active_WorldEvent);
+		log_msg("active_LadderRunewords\t= %d (Warning : Warning : this feature is only for LoD version 1.10 or higher, so it's automatically disabled)\n", active_LadderRunewords);
 	} else
 		log_msg("active_LadderRunewords\t= %u\n\n", active_LadderRunewords);
 
@@ -866,8 +779,6 @@ void loadParameters()
 			init_StatPerLevelUp(iniFile, iniFixedFile, iniDefaultFile, buffer, BUFSIZE);
 			init_SkillsPoints(iniFile, iniFixedFile, iniDefaultFile, buffer, BUFSIZE);
 			init_SkillPerLevelUp(iniFile, iniFixedFile, iniDefaultFile, buffer, BUFSIZE);
-			init_WorldEvent(iniFile, iniFixedFile, iniDefaultFile, buffer, BUFSIZE);
-			init_UberQuest(iniFile, iniFixedFile, iniDefaultFile, buffer, BUFSIZE);
 			init_NewInterfaces(iniFile, iniFixedFile, iniDefaultFile, buffer, BUFSIZE);
 			init_ExtraOptions(iniFile, iniFixedFile, iniDefaultFile, buffer, BUFSIZE);
 		}

@@ -43,7 +43,7 @@ void log_initfile()
 			"\n"
 			"\n"
 			"<---------- Starting Diablo II Plugin ---------->\n\n\n"
-			,PLUGY_VERSION);
+			,GARDENIA_VERSION);
 }
 
 void log_box( const char* pFormat, ... )

@@ -13,6 +13,8 @@
 #include "commands.h"
 #include "common.h"
 
+using Versions = VersionUtility::Versions;
+
 int renameIndex = 0;
 char renameString[16];
 DWORD PageSwap;
@@ -140,7 +142,7 @@ void Install_UpdateServer()
 
 	// manage button click message from Client.
 	mem_seek R7(D2Game, 4A702, 4AAC2, 56EA2, 54AE3, 2C773, 975C3, CC983, 676C3);
-	if (version_D2Game >= V111) {
+	if (version_D2Game >= Versions::V111) {
 		memt_byte( 0xC1, 0x57 );	// PUSH EDI
 		memt_byte( 0xEE, 0xE8 );	// CALL caller_handleServerUpdate
 		MEMT_REF4( 0xF88B5708, caller_handleServerUpdate);
@@ -159,7 +161,7 @@ void Install_UpdateServer()
 		//066A76C3  |.  C1EE 08       SHR ESI,8
 		//066A76C6  |.  57            PUSH EDI
 		//066A76C7  |.  8BF8          MOV EDI,EAX
-	} else if (version_D2Game == V110) {
+	} else if (version_D2Game == Versions::V110) {
 		memt_byte( 0xC1, 0xE8 );	// CALL caller_handleServerUpdate
 		MEMT_REF4( 0xF88B08EE, caller_handleServerUpdate);
 		//6FC86EA2   . C1EE 08        SHR ESI,8

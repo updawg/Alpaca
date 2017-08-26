@@ -11,6 +11,8 @@
 #include "common.h"
 #include <stdio.h>
 
+using Versions = VersionUtility::Versions;
+
 char* versionText = "";
 bool active_VersionTextChange = 0;
 BYTE modVersionColor = 0;
@@ -25,11 +27,11 @@ void STDCALL printPlugYVersion(void** childrens, DWORD* sgnNumChildren)
 		SetWindowedOptions();
 	if (active_PrintPlugYVersion)
 	{
-		char buf[20];
+		char buf[30];
 		void* textbox = D2CreateTextBox(newTextBoxData);
 		childrens[*sgnNumChildren] = textbox;
 		d2_assert((*sgnNumChildren)++ >= 40, "sgnNumChildren < MAX_CHILDREN", __FILE__, __LINE__);
-		sprintf(buf, "PlugY %s", PLUGY_VERSION);
+		sprintf(buf, "%s %s", GARDENIA_NAME, GARDENIA_VERSION);
 		D2PrintLineOnTextBox(textbox, buf, colorOfPlugYVersion);
 	}
 }
@@ -96,7 +98,7 @@ void Install_VersionChange()// BUG WITH 2MOD if D2Mod started before PlugY ????
 
 
 	// Print LoD/Mod version.
-	if (version_D2Launch >= V110)
+	if (version_D2Launch >= Versions::V110)
 	{
 		mem_seek R7(D2Launch, 00000, 00000, 9723, 1189B, 1797B, 16BCB, 18134, 10AE4);//6FA19721-6FA10000
 		memt_byte( 0x8D, 0xE8 );	// CALL

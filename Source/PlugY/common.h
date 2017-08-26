@@ -17,7 +17,9 @@
 #include "../Commons/d2StringTblStruct.h"
 #include "../Commons/D2UnitStruct.h"
 #include "../Commons/updatingConst.h"
-#include "../Commons/VersionInfo.h"
+
+// New version stuff
+#include "Utilities/VersionUtility.h"
 
 #include "error.h"
 #include "modifMemory.h"

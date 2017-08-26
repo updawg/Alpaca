@@ -9,9 +9,10 @@
 #include "savePath.h"
 #include "common.h"
 
+using Versions = VersionUtility::Versions;
+
 char* savePath = NULL;
 bool active_changingSavePath = false;
-
 
 FCT_ASM( changeSavePath )
 	PUSH EDI
@@ -119,7 +120,7 @@ void Install_ChangingSavePath()
 
 	log_msg("Patch Fog for change the save path. (changingSavePath)\n");
 
-	if (version_Fog >= V111)
+	if (version_Fog >= Versions::V111)
 	{
 		// Appel de notre fct d'ajout d'un sous-répertoire
 		mem_seek R7(Fog, 000, 000, 000, 185F6, 1C106, 1F086, 17F86, 1E146);

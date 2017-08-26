@@ -12,6 +12,8 @@
 #include "common.h"
 #include <stdio.h>
 
+using Versions = VersionUtility::Versions;
+
 static struct
 {
 	union{
@@ -34,8 +36,6 @@ static struct
 #define	getYNextPageBtn()		RY(D2GetResolution()?0x40:0x70)
 #define	getHNextPageBtn()		32
 #define isOnNextPageBtn(x,y)	isOnRect(x, y, getXNextPageBtn(), getYNextPageBtn(), getLNextPageBtn(), getHNextPageBtn())
-
-
 
 void STDCALL printStatsPageBtns()
 {
@@ -246,7 +246,7 @@ void Install_InterfaceStats()
 	// Print new buttons images
 	mem_seek R7(D2Client, 2A7BE, 2A7AE, 30F86, 83636, 8A0B6, 6C016, BDC16, C03B6);
 	memt_byte( 0x5F, 0xE9 );	// JMP
-	MEMT_REF4( 0x815B5D5E, version_D2Client >= V111 ? caller_printStatsPageBtns_111: version_D2Client == V110 ? caller_printStatsPageBtns : caller_printStatsPageBtns_9);
+	MEMT_REF4( 0x815B5D5E, version_D2Client >= Versions::V111 ? caller_printStatsPageBtns_111: version_D2Client == Versions::V110 ? caller_printStatsPageBtns : caller_printStatsPageBtns_9);
 	//6FAD0F86   . 5F                   POP EDI
 	//6FAD0F87   . 5E                   POP ESI
 	//6FAD0F88   . 5D                   POP EBP
@@ -284,7 +284,7 @@ void Install_InterfaceStats()
 	//6FB703BA  |. 81C4 70030000  ADD ESP,370
 	//6FB703Ñ0  \. C3             RETN
 
-	if ( version_D2Client >= V111 )
+	if ( version_D2Client >= Versions::V111 )
 	{
 		// Manage mouse down (Play sound)
 		mem_seek R7(D2Client, 2AA6D, 2AA5D, 3133D, 827C8, 89248, 6B1A8, BCDC8, BF568);
@@ -313,7 +313,7 @@ void Install_InterfaceStats()
 
 		// Manage mouse up
 		mem_seek R7(D2Client, 2AC43, 2AC33, 3151A, 83853, 8A2D3, 6C233, 0000, 0000);
-		MEMC_REF4( D2GetClientPlayer, version_D2Client == V110 ? caller_statsPageMouseUp : caller_statsPageMouseUp_9);//0x00056EB2
+		MEMC_REF4( D2GetClientPlayer, version_D2Client == Versions::V110 ? caller_statsPageMouseUp : caller_statsPageMouseUp_9);//0x00056EB2
 		//6FAD1519   . E8 B26E0500    CALL D2Client.6FB283D0
 	}
 

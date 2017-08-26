@@ -12,6 +12,8 @@
 #include "common.h"
 #include <stdio.h>
 
+using Versions = VersionUtility::Versions;
+
 bool active_StatsPoints=0;
 DWORD keyUsedForUnassignStatPoint=VK_CONTROL;
 bool active_StatsShiftClickLimit=1;
@@ -323,7 +325,6 @@ void Install_StatsPoints()
 	if (isInstalled) return;
 
 	Install_PlugYImagesFiles();
-//	Install_InterfaceStats();
 	Install_UpdateServer();
 
 	log_msg("Patch D2Client for unassign stat points when specified key is press. (StatsPoints)\n");
@@ -361,7 +362,7 @@ void Install_StatsPoints()
 	//6FB6CDD9   . 74 4E          JE SHORT D2Client.6FB6CE29
 	//6FB6F579   . 74 4E          JE SHORT D2Client.6FB6F5C9
 
-	if ( version_D2Client >= V111 )
+	if ( version_D2Client >= Versions::V111 )
 	{
 		// On Push down.
 		mem_seek R7(D2Client, 2AAE6, 2AAD6, 313B8, 82844, 892C4, 6B224, BCE44, BF5E4);
@@ -392,12 +393,12 @@ void Install_StatsPoints()
 	}
 
 
-	if ( version_D2Client >= V110 )
+	if ( version_D2Client >= Versions::V110 )
 	{
 		// Always manage push up.
 		mem_seek R7(D2Client, 0000, 0000, 3152E, 83869, 8A2E9, 6C249, BDE49, C05E9);
 		memt_byte( 0x74, 0x90 );	// NOP
-		memt_byte( version_D2Client >= V111 ? 0x65 : 0x68, 0x90 );	// NOP
+		memt_byte( version_D2Client >= Versions::V111 ? 0x65 : 0x68, 0x90 );	// NOP
 		//6FAD152E     74 68          JE SHORT D2Client.6FAD1598
 		//6FB33869   . 74 65          JE SHORT D2Client.6FB338D0
 		//6FB3A2E9   . 74 65          JE SHORT D2Client.6FB3A350
@@ -438,7 +439,7 @@ void Install_StatsPoints()
 
 	// Set the id for the calling function.
 	mem_seek R7(D2Client, 2AD02, 2ACF2, 31611, 8395E, 8A3DE, 6C33E, BDF3E, C06DE);
-	if ( version_D2Client >= V111 ) {
+	if ( version_D2Client >= Versions::V111 ) {
 		memt_byte( 0x66, 0xE8 );	// CALL
 		MEMT_REF4( 0x15244C89, caller_setValue_111);
 		//6FB3395E   . 66:894C24 15   MOV WORD PTR SS:[ESP+15],CX
@@ -485,7 +486,7 @@ void Install_StatsLimitShiftClick()
 	mem_seek R7(D2Client, 2ACD0, 2ACC0, 315CD, 83915, 8A395, 6C2F5, BDEF5, C0695);
 	memt_byte( 0xFF, 0x90 );	// NOP
 	memt_byte( 0x15, 0xE8 );	// CALL
-	MEMD_REF4( GetKeyState, version_D2Client >= V111 ? caller_LimitShift_111 : caller_LimitShift);
+	MEMD_REF4( GetKeyState, version_D2Client >= Versions::V111 ? caller_LimitShift_111 : caller_LimitShift);
 	//6FAD15CD   . FF15 68E0B66F  CALL DWORD PTR DS:[<&USER32.GetKeyState>]
 	//6FB33915   . FF15 CCF0B76F  CALL DWORD PTR DS:[<&USER32.GetKeyState>]
 	//6FB3A395   . FF15 08F1B76F  CALL DWORD PTR DS:[<&USER32.GetKeyState>]

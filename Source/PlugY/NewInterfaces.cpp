@@ -17,6 +17,8 @@
 #include "common.h"
 #include <stdio.h>
 
+using Versions = VersionUtility::Versions;
+
 bool active_newInterfaces=false;
 bool selectMainPageOnOpenning=true;
 bool printBackgroundOnMainPage=true;
@@ -301,12 +303,12 @@ void Install_NewInterfaces()
 	Install_InterfaceStats();
 
 	log_msg("Patch D2Client for new custom page interface. (NewInterfaces)\n");
-	if ( version_D2Client >= V110 )
+	if ( version_D2Client >= Versions::V110 )
 		extraHiddenPage=1;
 
 	if (selectMainPageOnOpenning)
 	{
-		if ( version_D2Client >= V111 )
+		if ( version_D2Client >= Versions::V111 )
 		{
 			//Reset selectedPage variable on opening stats page
 			mem_seek R7(D2Client, 0000, 0000, 0000, 4B79E, 8F73E, 55E0E, 65F5E, C41FE);
@@ -380,7 +382,7 @@ void Install_NewInterfaces()
 	// Don't print Border
 	mem_seek R7(D2Client, 58EF6, 58EF6, 5F4C6, 2D366, B5A46, 82166, 271C6, 6D2B6);
 	memt_byte( 0xB9, 0xE8 );	// CALL caller_DontPrintBorder
-	MEMT_REF4( 0x00000012, version_D2Client >= V111 ? caller_DontPrintBorder_111 : caller_DontPrintBorder);
+	MEMT_REF4( 0x00000012, version_D2Client >= Versions::V111 ? caller_DontPrintBorder_111 : caller_DontPrintBorder);
 	//6FAFF4C6   > B9 12000000    MOV ECX,12
 	//6FADD366  |. B9 12000000    MOV ECX,12
 	//6FB65A46  |. B9 12000000    MOV ECX,12
@@ -391,7 +393,7 @@ void Install_NewInterfaces()
 	// Manage mouse down (Play sound)
 	mem_seek R7(D2Client, 2A9DC, 2A9CC, 312A5, 82736, 891B6, 6B116, BCD36, BF4D6);
 	memt_byte( 0x8D, 0xE8 );	// CALL
-	MEMT_REF4( 0x00008088, version_D2Client >= V111 ? caller_mouseCustomPageLeftDown_111 : version_D2Client == V110 ? caller_mouseCustomPageLeftDown : caller_mouseCustomPageLeftDown_9);
+	MEMT_REF4( 0x00008088, version_D2Client >= Versions::V111 ? caller_mouseCustomPageLeftDown_111 : version_D2Client == Versions::V110 ? caller_mouseCustomPageLeftDown : caller_mouseCustomPageLeftDown_9);
 	memt_byte( 0x00, 0x90 );	// NOP
 	//6FAD12A5   . 8D88 80000000     LEA ECX,DWORD PTR DS:[EAX+80]
 	//6FB32736   . 8D88 80000000     LEA ECX,DWORD PTR DS:[EAX+80]
@@ -403,7 +405,7 @@ void Install_NewInterfaces()
 	// Manage mouse up
 	mem_seek R7(D2Client, 2ABBB, 2ABAB, 3148D, 836D9, 8A159, 6C0B9, BDCB9, C0459);
 	memt_byte( 0xA1, 0xE8 );	// CALL caller_mouseCustomPageLeftUp
-	MEMT_REF4( ptWindowStartX, version_D2Client >= V111 ? caller_mouseCustomPageLeftUp_111 : version_D2Client == V110 ? caller_mouseCustomPageLeftUp : caller_mouseCustomPageLeftUp_9);
+	MEMT_REF4( ptWindowStartX, version_D2Client >= Versions::V111 ? caller_mouseCustomPageLeftUp_111 : version_D2Client == Versions::V110 ? caller_mouseCustomPageLeftUp : caller_mouseCustomPageLeftUp_9);
 	//6FAD148D   . A1 48A7BB6F       MOV EAX,DWORD PTR DS:[6FBBA748]
 	//6FB336D9   . A1 24BDBC6F       MOV EAX,DWORD PTR DS:[6FBCBD24]
 	//6FB3A159   . A1 F8BEBC6F       MOV EAX,DWORD PTR DS:[6FBCBEF8]

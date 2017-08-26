@@ -13,10 +13,10 @@
 #include "loadPlayerData.h" //Install_LoadPlayerData()
 #include "common.h"
 
+using Versions = VersionUtility::Versions;
+
 bool active_PlayerCustomData = true;
 bool openSharedStashOnLoading = false;
-
-
 
 /*********************************** UPDATING ***********************************/
 
@@ -273,7 +273,7 @@ void Install_PlayerCustomData()
 	log_msg("Patch D2Game & D2Client & D2Common for Player's custom data. (PlayerCustomData)\n");
 
 	// Initialize custom data.
-	mem_seek(version_D2Client == V113d ? offset_D2Common + 0x170DE : version_D2Client == V113c ?  offset_D2Common + 0x309BE : version_D2Client == V112 ? offset_D2Common + 0x585EE : version_D2Client == V111b ? offset_D2Common + 0x5BFCE : version_D2Common == V111 ? offset_D2Common + 0x4ED5E :(DWORD)D2InitPlayerData + 0x62 );
+	mem_seek(version_D2Client == Versions::V113d ? offset_D2Common + 0x170DE : version_D2Client == Versions::V113c ?  offset_D2Common + 0x309BE : version_D2Client == Versions::V112 ? offset_D2Common + 0x585EE : version_D2Client == Versions::V111b ? offset_D2Common + 0x5BFCE : version_D2Common == Versions::V111 ? offset_D2Common + 0x4ED5E :(DWORD)D2InitPlayerData + 0x62 );
 	MEMJ_REF4( D2AllocMem, init_PlayerCustomData);
 	//01BD0381  |. E8 C03F0000    CALL <JMP.&Fog.#10045>
 	//6FD9ED5D  |. E8 94A4FBFF    CALL <JMP.&Fog.#10045>
@@ -282,7 +282,7 @@ void Install_PlayerCustomData()
 	//6FD809BD  |. E8 6088FDFF    CALL <JMP.&Fog.#10045>
 	//6FD670DD  |. E8 0C3EFFFF    CALL <JMP.&Fog.#10045>
 
-	if ( version_D2Game >= V111 )
+	if ( version_D2Game >= Versions::V111 )
 	{
 		// update item
 		mem_seek R7(D2Game, 10933, 10C03, 1100D, 8BC71, C3C51, 5F2A1, 9BB91, 75C81);
@@ -316,10 +316,10 @@ void Install_PlayerCustomData()
 	} else {
 		// update item
 		mem_seek R7(D2Game, 10933, 10C03, 1100D, 8BC71, C3C51, 5F2A1, 0000, 0000);
-		MEMC_REF4( D2GameGetObject, version_D2Game == V110?caller_updateItem: caller_updateItem_9);
+		MEMC_REF4( D2GameGetObject, version_D2Game == Versions::V110?caller_updateItem: caller_updateItem_9);
 		//6FC4100C  |. E8 EFAA0700    |CALL D2Game.6FCBBB00
 		mem_seek R7(D2Game, 1097B, 10C4B, 11058, 8BCD1, C3CB1, 5F301, 0000, 0000);
-		MEMC_REF4( D2GameGetObject, version_D2Game == V110?caller_updateItem: caller_updateItem_9);
+		MEMC_REF4( D2GameGetObject, version_D2Game == Versions::V110?caller_updateItem: caller_updateItem_9);
 		//6FC41057  |. E8 A4AA0700    ||CALL D2Game.6FCBBB00
 	}
 
@@ -364,7 +364,7 @@ void Install_PlayerCustomData()
 
 	// Free item in Stash (Server-side)
 	mem_seek R7(D2Game, 7D12B, 7D62B, 8D5A4, 99112, BFDB2, 94242, E1162, 6F7C2);
-	MEMJ_REF4( D2UnitGetNextItem, version_D2Game >= V111 ? callerServer_getNextItemToFree_111 : version_D2Game == V110 ? callerServer_getNextItemToFree : callerServer_getNextItemToFree_9);//0x0005E204
+	MEMJ_REF4( D2UnitGetNextItem, version_D2Game >= Versions::V111 ? callerServer_getNextItemToFree_111 : version_D2Game == Versions::V110 ? callerServer_getNextItemToFree : callerServer_getNextItemToFree_9);//0x0005E204
 	//6FCBD5A3   . E8 04E20500    CALL <JMP.&D2Common.#10304>
 	//02019111  |. E8 5016F7FF    |CALL <JMP.&D2Common.#10934>
 	//0202FDB1  |. E8 30AAF4FF    |CALL <JMP.&D2Common.#11140>
@@ -374,7 +374,7 @@ void Install_PlayerCustomData()
 
 	// Free item in Stash (Client-side)
 	mem_seek R7(D2Client, 8EF8F, 8E30F, 89B32, 26404, 4C264, 1F2D4, A5C94, 621E4);//6FB29B31-6FAA0000
-	MEMJ_REF4( D2UnitGetNextItem, version_D2Game >= V111 ? callerClient_getNextItemToFree_111 : version_D2Game == V110 ? callerClient_getNextItemToFree : callerClient_getNextItemToFree_9);//0x00040F34
+	MEMJ_REF4( D2UnitGetNextItem, version_D2Game >= Versions::V111 ? callerClient_getNextItemToFree_111 : version_D2Game == Versions::V110 ? callerClient_getNextItemToFree : callerClient_getNextItemToFree_9);//0x00040F34
 	//6FB29B31   E8 340F0400      CALL <JMP.&D2Common.#10304>
 	//6FAD6403  |. E8 925DFEFF    |CALL <JMP.&D2Common.#10934>
 	//6FAFC263  |. E8 38FFFBFF    |CALL <JMP.&D2Common.#11140>
@@ -382,7 +382,7 @@ void Install_PlayerCustomData()
 	//6FB55C93  |. E8 D068F6FF    |CALL <JMP.&D2Common.#10464>
 	//6FB121E3  |. E8 7AA1FAFF    |CALL <JMP.&D2Common.#10879>
 
-	if ( version_D2Common >= V110 )
+	if ( version_D2Common >= Versions::V110 )
 	{
 		// Test if it's already removed from inventory
 		mem_seek R7(D2Common, 0000, 0000, 4E689, 26E33, 42133, 6AE93, 21B23, 3B393);

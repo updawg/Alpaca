@@ -16,8 +16,11 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Source Files\Commons">
-      <UniqueIdentifier>{0258f16a-51b9-4bde-b4f8-ffeb14e1da66}</UniqueIdentifier>
+    <Filter Include="Header Files\Utilities">
+      <UniqueIdentifier>{88b719e0-a74a-4627-a395-3a5211eabf3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utilities">
+      <UniqueIdentifier>{bb85077f-dbb1-40ea-8607-13a919ad020f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -135,9 +138,6 @@
     <ClCompile Include="StatsPoints.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UberQuest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="UpdateClient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -147,11 +147,11 @@
     <ClCompile Include="Windowed.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WorldEvent.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Utilities\VersionUtility.cpp">
+      <Filter>Source Files\Utilities</Filter>
     </ClCompile>
-    <ClCompile Include="..\Commons\VersionInfo.cpp">
-      <Filter>Source Files\Commons</Filter>
+    <ClCompile Include="Utilities\OffsetUtility.cpp">
+      <Filter>Source Files\Utilities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -275,9 +275,6 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="uberQuest.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="updateClient.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -285,9 +282,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="windowed.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="worldEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Commons\d2BinFile.h">
@@ -311,8 +305,11 @@
     <ClInclude Include="..\Commons\updatingConst.h">
       <Filter>Header Files\Commons</Filter>
     </ClInclude>
-    <ClInclude Include="..\Commons\VersionInfo.h">
-      <Filter>Header Files\Commons</Filter>
+    <ClInclude Include="Utilities\OffsetUtility.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\VersionUtility.h">
+      <Filter>Header Files\Utilities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

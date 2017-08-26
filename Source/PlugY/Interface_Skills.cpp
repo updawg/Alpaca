@@ -12,6 +12,8 @@
 #include "common.h"
 #include <stdio.h>
 
+using Versions = VersionUtility::Versions;
+
 int posXUnassignSkillBtn=-1;
 int posYUnassignSkillBtn=-1;
 
@@ -141,7 +143,7 @@ void Install_InterfaceSkills()
 	// Print new buttons images
 	mem_seek R7(D2Client, 7AC20, 7AC20, 77073, 16190, 8A9C0, 7F320, 77F20, 2F380);
 	memt_byte( 0x5F, 0xE9 );	// JMP caller_printBtns
-	if ( version_D2Client >= V111 ) {
+	if ( version_D2Client >= Versions::V111 ) {
 		MEMT_REF4( 0xCCC35B5E, caller_printSkillsPageBtns_111);
 		//6FAC6190   5F               POP EDI
 		//6FAC6191   5E               POP ESI
@@ -186,7 +188,7 @@ void Install_InterfaceSkills()
 		// Don't print "Skill Points Remaining"
 		mem_seek R7(D2Client, 7AC30, 7AC30, 77080, 16294, 8AC74, 7ECF4, 78334, 2F7E4);
 		memt_byte( 0xB9, 0xE8 );
-		MEMT_REF4( 0x00001083, version_D2Client >= V111 ? caller_DontPrintSkillPointsRemaining_111 : caller_DontPrintSkillPointsRemaining);
+		MEMT_REF4( 0x00001083, version_D2Client >= Versions::V111 ? caller_DontPrintSkillPointsRemaining_111 : caller_DontPrintSkillPointsRemaining);
 		//6FB17080  /$ B9 83100000    MOV ECX,1083
 		//6FAC6294  |. B9 83100000    MOV ECX,1083
 		//6FB3AC74  |. B9 83100000    MOV ECX,1083
@@ -198,7 +200,7 @@ void Install_InterfaceSkills()
 	// Manage mouse down (Play sound)
 	mem_seek R7(D2Client, 7BBD1, 7BBD1, 780E4, 17BC2, 8C6E2, 808B2, 79C62, 31112);
 	memt_byte( 0xC7, 0xE8 );	// CALL caller_skillsPageMouseDown
-	MEMT_REF4( version_D2Client >= V111 ? 0x00001845 : 0x00001843, version_D2Client >= V111 ? caller_skillsPageMouseDown_111 : caller_skillsPageMouseDown);
+	MEMT_REF4( version_D2Client >= Versions::V111 ? 0x00001845 : 0x00001843, version_D2Client >= Versions::V111 ? caller_skillsPageMouseDown_111 : caller_skillsPageMouseDown);
 	memt_byte( 0x00, 0x90 );	// NOP
 	memt_byte( 0x00, 0x90 );	// NOP
 	//6FB180E4   > C743 18 00000000     MOV DWORD PTR DS:[EBX+18],0

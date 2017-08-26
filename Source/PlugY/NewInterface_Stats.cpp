@@ -12,6 +12,7 @@
 #include "common.h"
 #include <stdio.h>
 
+using Versions = VersionUtility::Versions;
 
 #define	getXCloseBtn()			360
 #define	getLCloseBtn()			32
@@ -241,7 +242,7 @@ void STDCALL printNewStatsPage()
 	nbPixel = D2GetPixelLen(text);
 	D2PrintString(text, MILIEU(0xD,0x29,nbPixel), 0x3B, color, 0);//ESI,EBX,EDI
 
-if (version_D2Client <= V110)
+if (version_D2Client <= Versions::V110)
 {
 	//print Experience
 	curValue = D2GetPlayerStat(ptChar, STATS_EXPERIENCE, 0);
@@ -581,7 +582,7 @@ if (version_D2Client <= V110)
 	}
 	else if (isOnRect(x, y, 0xAD, 0x137, 0x15, 0x13))
 	{
-if ( version_D2Client <= V110 )
+if ( version_D2Client <= Versions::V110 )
 {
 		DWORD avgChanceMonsterWillHitYou=53;//TODO
 		if (avgChanceMonsterWillHitYou<5) 		avgChanceMonsterWillHitYou = 5;

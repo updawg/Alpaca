@@ -11,7 +11,8 @@
 #include "common.h"
 #include <stdio.h>
 
-//#include "newInterfaces.h"
+using Versions = VersionUtility::Versions;
+
 extern bool active_SkillsPoints, active_StatsPoints, active_newInterfaces, active_multiPageStash, active_sharedGold;
 
 void* unassignSkillsBtnImages = NULL;
@@ -20,10 +21,6 @@ void* stashBtnsImages = NULL;
 void* newStatsInterfaceImages = NULL;
 void* statsBackgroundImages = NULL;
 void* sharedGoldBtnsImages = NULL;
-
-
-//void* lookupItemStatCost = NULL;
-
 
 DWORD STDCALL isModFile (char* filename)
 {
@@ -90,14 +87,13 @@ void Install_PlugYFiles()
 	mem_seek R7(Storm,	192C6, 19296, 18677, 2CC69, 14259, 121E9, 28D89, 2DA79);//( (DWORD)D2Storm268 + V7(Storm, 01A8, 01A8, 01AB, 0429, 0429, 0429, 0000) );
 	memt_byte( 0xFF ,0x90); // NOP
 	memt_byte( 0x15 ,0xE8); // CALL
-	MEMD_REF4( LeaveCriticalSection, version_Storm >= V111 ? caller_isModFile_111 : caller_isModFile);
+	MEMD_REF4( LeaveCriticalSection, version_Storm >= Versions::V111 ? caller_isModFile_111 : caller_isModFile);
 	//6FFC8677  |. FF15 F411FE6F  CALL DWORD PTR DS:[<&KERNEL32.LeaveCriti>; \LeaveCriticalSection
 	//6FC1CC69  |. FF15 3832C36F  CALL DWORD PTR DS:[<&KERNEL32.LeaveCriti>; \LeaveCriticalSection
 	//6FC04259  |. FF15 3832C36F  CALL DWORD PTR DS:[<&KERNEL32.LeaveCriti>; \LeaveCriticalSection
 	//6FC021E9  |. FF15 4432C36F  CALL DWORD PTR DS:[<&KERNEL32.LeaveCriti>; \LeaveCriticalSection
 	//6FC18D89  |. FF15 5832C36F  CALL DWORD PTR DS:[<&KERNEL32.LeaveCriti>; \LeaveCriticalSection
 	//6FC1DA79  |. FF15 3C32C36F  CALL DWORD PTR DS:[<&KERNEL32.LeaveCriti>; \LeaveCriticalSection
-
 
 	log_msg("\n" );
 
@@ -246,7 +242,7 @@ void Install_PlugYTxtFiles()
 
 	// Load custom txt files
 	mem_seek R7(D2Common, 7F4B, 7F4B, 2F7D7, 76854, 37444, 81C44, 5D6E4, 855E4);
-	MEMC_REF4( D2LoadSuperuniques, version_D2Common >= V111 ? caller_loadTxtFiles_111 : caller_loadTxtFiles );
+	MEMC_REF4( D2LoadSuperuniques, version_D2Common >= Versions::V111 ? caller_loadTxtFiles_111 : caller_loadTxtFiles );
 	//6FD47F4A  |. E8 B1750100    CALL D2Common.6FD5F500
 	//6FD47F4A  |. E8 C1750100    CALL D2Common.6FD5F510
 	//01B6F7D6  |. E8 C5A7FFFF    CALL D2Common.01B69FA0

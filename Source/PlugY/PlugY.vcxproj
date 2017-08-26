@@ -91,7 +91,6 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Commons\VersionInfo.cpp" />
     <ClCompile Include="BigStash.cpp" />
     <ClCompile Include="ClientSaveFile.cpp" />
     <ClCompile Include="Commands.cpp" />
@@ -130,11 +129,11 @@
     <ClCompile Include="SkillsPoints.cpp" />
     <ClCompile Include="StatPerLevelUp.cpp" />
     <ClCompile Include="StatsPoints.cpp" />
-    <ClCompile Include="UberQuest.cpp" />
     <ClCompile Include="UpdateClient.cpp" />
     <ClCompile Include="UpdateServer.cpp" />
+    <ClCompile Include="Utilities\OffsetUtility.cpp" />
+    <ClCompile Include="Utilities\VersionUtility.cpp" />
     <ClCompile Include="Windowed.cpp" />
-    <ClCompile Include="WorldEvent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Commons\d2BinFile.h" />
@@ -144,7 +143,6 @@
     <ClInclude Include="..\Commons\d2Struct.h" />
     <ClInclude Include="..\Commons\D2UnitStruct.h" />
     <ClInclude Include="..\Commons\updatingConst.h" />
-    <ClInclude Include="..\Commons\VersionInfo.h" />
     <ClInclude Include="bigStash.h" />
     <ClInclude Include="clientSaveFile.h" />
     <ClInclude Include="commands.h" />
@@ -185,11 +183,11 @@
     <ClInclude Include="statPerLevelUp.h" />
     <ClInclude Include="statsPoints.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="uberQuest.h" />
     <ClInclude Include="updateClient.h" />
     <ClInclude Include="updateServer.h" />
+    <ClInclude Include="Utilities\OffsetUtility.h" />
+    <ClInclude Include="Utilities\VersionUtility.h" />
     <ClInclude Include="windowed.h" />
-    <ClInclude Include="worldEvent.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="PlugY.rc" />

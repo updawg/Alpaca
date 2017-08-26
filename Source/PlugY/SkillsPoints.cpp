@@ -9,6 +9,8 @@
 #include "interface_Skills.h"	// Install_InterfaceSkills()
 #include "common.h"
 
+using Versions = VersionUtility::Versions;
+
 bool active_SkillsPoints=0;
 bool unassignSkillsPointsOneByOne=0;
 
@@ -78,7 +80,7 @@ void Install_SkillsPoints()
 	Install_InterfaceSkills();
 	Install_UpdateServer();
 
-	if ( version_D2Common >= V110 )
+	if ( version_D2Common >= Versions::V110 )
 	{
 		getskPoint = getskPoint_11X;
 		getCharClass = getCharClass_11X;

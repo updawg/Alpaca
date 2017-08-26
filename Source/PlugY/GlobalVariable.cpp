@@ -7,9 +7,10 @@
 =================================================================*/
 
 #include "bigStash.h" // active_bigStash_tested
-#include "uberQuest.h" //active_UberQuest + resetQuestState()
 #include "common.h"
 #include <stdio.h>
+
+using Versions = VersionUtility::Versions;
 
 bool onRealm=false;
 bool needToInit=false;
@@ -18,10 +19,6 @@ int previouslyOnRealm = -1;
 void STDCALL BtnPress()
 {
 	needToInit = 1;
-//	if (active_WorldEvent)
-//		initWorldEventVariables();
-	if (active_UberQuest)
-		resetQuestState();
 	d2_assert(active_bigStash_tested && onRealm && (previouslyOnRealm==0), "Need to restart after play an open game with the Big Stash",__FILE__,__LINE__);
 	d2_assert(active_bigStash_tested && !onRealm && (previouslyOnRealm>0), "Need to restart after play an closed game with the Big Stash",__FILE__,__LINE__);
 	previouslyOnRealm = onRealm;
@@ -34,20 +31,12 @@ FCT_ASM ( caller_BnetBtnPress )
 	PUSH EAX
 	CALL BtnPress
 	POP EAX
-	SUB ESP,0x3FC//400
+	SUB ESP,0x3FC //400
 	JMP DWORD PTR SS:[ESP+0x3FC]
 disableBattleNet:
 	POP EAX
 	RETN
 }}
-
-/*
-FCT_ASM ( caller_MultiPlayerBtnPress )
-	CALL BtnPress
-	MOV	EAX,1
-	RETN
-}}
-*/
 
 FCT_ASM ( caller_TCPIPBtnPress111 )
 	MOV onRealm,0
@@ -113,7 +102,7 @@ void Install_VariableOnRealm()
 
 	// click on TCP/IP button
 	mem_seek R7(D2Launch, 87B9, 87C9, 9F99, 11329, 17409, 16659, 17B8E, 1053E);
-	if (version_D2Launch == V109b || version_D2Launch == V109d || version_D2Launch == V110)
+	if (version_D2Launch == Versions::V109b || version_D2Launch == Versions::V109d || version_D2Launch == Versions::V110)
 	{
 		memt_byte( 0xBD, 0xE8 );	// CALL
 		MEMT_REF4( 0x00000001, caller_TCPIPBtnPress);
@@ -129,7 +118,7 @@ void Install_VariableOnRealm()
 	MEMT_REF4( 0x00000400, caller_SinglePlayerBtnPress);
 	//6FA4B726   . BA 00040000    MOV EDX,400
 
-	if (version_D2Game == V110)
+	if (version_D2Game == Versions::V110)
 	{
 		log_msg("\nPatch D2Game for fixing ptClient removing bug. (VariableonRealm)\n");
 		//Bug crash ptClient search fix (for Megalixir Mod).
@@ -146,5 +135,3 @@ void Install_VariableOnRealm()
 
 	isInstalled = true;
 }
-
-/*================================= END OF FILE =================================*/

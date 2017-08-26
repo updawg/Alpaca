@@ -14,8 +14,8 @@ const char* VersionStrings[16] = { "1.00","1.07","1.08","1.09","1.09b","1.09d","
 
 const char* GetVersionString(int version)
 {
-	if (version < 0 || version >= sizeof(VersionStrings))
-		return "UNKNOW";
+	if (version < Versions::V100 || version >= sizeof(VersionStrings))
+		return "UNKNOWN";
 	return VersionStrings[version];
 }
 

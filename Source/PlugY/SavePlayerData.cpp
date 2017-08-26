@@ -11,6 +11,7 @@
 #include "sharedSaveFile.h"
 #include "common.h"
 
+using Versions = VersionUtility::Versions;
 
 void STDCALL SaveSPPlayerCustomData(Unit* ptChar)
 {
@@ -521,7 +522,7 @@ void Install_SavePlayerData()
 
 	//Save single player custom data.
 	mem_seek R7(D2Game, 4DF04, 4E304, 5A624, B9365, 25475, 44165, 53F35, 39835);
-	MEMJ_REF4( D2FogGetSavePath, version_D2Game >= V111 ? caller_SaveSPPlayerCustomData_111 : version_D2Game != V109b ? caller_SaveSPPlayerCustomData : caller_SaveSPPlayerCustomData_9);
+	MEMJ_REF4( D2FogGetSavePath, version_D2Game >= Versions::V111 ? caller_SaveSPPlayerCustomData_111 : version_D2Game != Versions::V109b ? caller_SaveSPPlayerCustomData : caller_SaveSPPlayerCustomData_9);
 	//6FC8A623   E8 3E210900      CALL <JMP.&Fog.#10115>
 	//02039364  |. E8 3B0FF5FF    CALL <JMP.&Fog.#10115>
 	//01F95474  |. E8 C34EFEFF    CALL <JMP.&Fog.#10115>
@@ -532,8 +533,8 @@ void Install_SavePlayerData()
 	//Send SaveFiles
 	mem_seek R7(D2Game, 4DFFA, 4E3FA, 5A720, B92DB, 253EB, 440DB, 53EAB, 397AB);
 	memt_byte( 0x8B ,0x90); // NOP
-	memt_byte( version_D2Game >= V111 ? 0x44 : version_D2Game != V109b ? 0x7C : 0x74 ,0xE8); // CALL
-	MEMT_REF4( version_D2Game >= V111 ? 0xC0850424 : version_D2Game != V109b ? 0xFF851024 : 0xF6851024, version_D2Game >= V111 ? caller_SendSaveFilesToSave_111 : version_D2Game != V109b ? caller_SendSaveFilesToSave : caller_SendSaveFilesToSave_9);
+	memt_byte( version_D2Game >= Versions::V111 ? 0x44 : version_D2Game != Versions::V109b ? 0x7C : 0x74 ,0xE8); // CALL
+	MEMT_REF4( version_D2Game >= Versions::V111 ? 0xC0850424 : version_D2Game != Versions::V109b ? 0xFF851024 : 0xF6851024, version_D2Game >= Versions::V111 ? caller_SendSaveFilesToSave_111 : version_D2Game != Versions::V109b ? caller_SendSaveFilesToSave : caller_SendSaveFilesToSave_9);
 	//6FC8A720  |. 8B7C24 10      MOV EDI,DWORD PTR SS:[ESP+10]
 	//6FC8A724  |. 85FF           TEST EDI,EDI
 	//020392DB  |. 8B4424 04      MOV EAX,DWORD PTR SS:[ESP+4]
@@ -549,8 +550,8 @@ void Install_SavePlayerData()
 
 	mem_seek R7(D2Game, 7993, 7A13, 7BBB, E2943, E6D83, A89D3, 2D173, BEDD3);
 	memt_byte( 0x8B ,0x90); // NOP
-	memt_byte( version_D2Game >= V110 ? 0x8E : 0x86 ,0xE8); // CALL
-	MEMT_REF4( version_D2Game >= V110 ? 0x0000017C : version_D2Game == V109d ? 0x0000174 : 0x00000150, version_D2Game >= V110 ? caller_ManageNextPacketToSend : version_D2Game == V109d ? caller_ManageNextPacketToSend_9d : caller_ManageNextPacketToSend_9);
+	memt_byte( version_D2Game >= Versions::V110 ? 0x8E : 0x86 ,0xE8); // CALL
+	MEMT_REF4( version_D2Game >= Versions::V110 ? 0x0000017C : version_D2Game == Versions::V109d ? 0x0000174 : 0x00000150, version_D2Game >= Versions::V110 ? caller_ManageNextPacketToSend : version_D2Game == Versions::V109d ? caller_ManageNextPacketToSend_9d : caller_ManageNextPacketToSend_9);
 	//6FC37BBB  |> 8B8E 7C010000  MOV ECX,DWORD PTR DS:[ESI+17C]
 	//02062943  |. 8B8E 7C010000  MOV ECX,DWORD PTR DS:[ESI+17C]
 	//02056D83  |. 8B8E 7C010000  MOV ECX,DWORD PTR DS:[ESI+17C]
@@ -565,7 +566,7 @@ void Install_SavePlayerData()
 	//6FC37DD1  |. 8BCD           |MOV ECX,EBP
 	//6FC37DD3  |. 50             |PUSH EAX
 
-	if ( version_D2Game >= V111 )
+	if ( version_D2Game >= Versions::V111 )
 	{
 		//Received SaveFiles
 		mem_seek R7(D2Client, 116F0, 116E0, 11CB0, 89246, 32076, 7BCD6, 43946, 448E6);
@@ -603,9 +604,9 @@ void Install_SavePlayerData()
 		//6FAB1DBE  |. 8B51 04        MOV EDX,DWORD PTR DS:[ECX+4]
 	}
 
-	if ( version_D2Game == V109b || version_D2Game == V109d )
+	if ( version_D2Game == Versions::V109b || version_D2Game == Versions::V109d )
 		customPackID = 0xAB;
-	else if ( version_D2Game >= V111 )
+	else if ( version_D2Game >= Versions::V111 )
 		customPackID++;
 
 	log_msg("\n");

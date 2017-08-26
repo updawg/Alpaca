@@ -6,7 +6,8 @@
 =================================================================*/
 #pragma once
 
-#define PLUGY_VERSION "11.02"
+#define GARDENIA_NAME "Gardenia"
+#define GARDENIA_VERSION "0.01"
 
 enum TargetMod
 {
@@ -23,5 +24,3 @@ extern bool active_D2Mod;
 extern TargetMod selectModParam;
 
 void loadParameters();
-
-/*================================= END OF FILE =================================*/

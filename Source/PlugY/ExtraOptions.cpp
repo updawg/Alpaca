@@ -9,6 +9,8 @@
 #include "common.h"
 #include <stdio.h>
 
+using Versions = VersionUtility::Versions;
+
 int active_DisplayItemLevel = false;
 DWORD nbPlayersCommandByDefault = 0;
 DWORD nbPlayersCommand = 0;
@@ -141,7 +143,7 @@ void Install_DisplayItemLevel()
 	// print the text in the final buffer
 	mem_seek R7(D2Client,	3D47C,	3D47C,	438A1, ADD0A, 789DA, AE0AA, 941C0, 98590);
 	memt_byte( 0x68 , 0xE8);
-	MEMT_REF4( 0x100, version_D2Client >= V113c ? caller_displayItemlevel_113 : version_D2Client >= V111 ? caller_displayItemlevel_111 : version_D2Client == V110 ? caller_displayItemlevel : caller_displayItemlevel_9);
+	MEMT_REF4( 0x100, version_D2Client >= Versions::V113c ? caller_displayItemlevel_113 : version_D2Client >= Versions::V111 ? caller_displayItemlevel_111 : version_D2Client == Versions::V110 ? caller_displayItemlevel : caller_displayItemlevel_9);
 	//6FAE38A1   . 68 00010000        PUSH 100
 	//6FB5DD0A  |. 68 00010000        PUSH 100
 	//6FB289DA  |. 68 00010000	      PUSH 100
@@ -152,7 +154,7 @@ void Install_DisplayItemLevel()
 	// print the text in the final buffer (for set items)
 	mem_seek R7(D2Client,	3C452,	3C452,	427BE, AC773, 77773, ACEB3, 92FE3, 973B3);
 	memt_byte( 0x68 , 0xE8);
-	MEMT_REF4( 0x100, version_D2Client >= V111  ? caller_displayItemlevelSet_111 : version_D2Client == V110 ? caller_displayItemlevelSet : caller_displayItemlevelSet_9);
+	MEMT_REF4( 0x100, version_D2Client >= Versions::V111  ? caller_displayItemlevelSet_111 : version_D2Client == Versions::V110 ? caller_displayItemlevelSet : caller_displayItemlevelSet_9);
 	//6FAE27BE   . 68 00010000        PUSH 100
 	//6FB5C773  |. 68 00010000        PUSH 100
 	//6FB27773  |. 68 00010000        PUSH 100
@@ -212,7 +214,7 @@ void Install_SendPlayersCommand()
 	log_msg("Patch D2Client for init default nb /players. (SendPlayersCommand)\n");
 
 	infoEnabledSendPlayersCommand = (DWORD*)R7(D2Client, 111D60, 110BC0, 107960, 11BFBC, 11C2AC, 11BFF8, 11C394, 11D1DC);
-	if ( version_D2Client >= V110 )
+	if ( version_D2Client >= Versions::V110 )
 		msgNBPlayersString = (char*)R7(D2Client, 0000, 0000, D8448, D06A8, D4748, D4680, D4E00, D470C);
 
 	// Set nb Player to default
@@ -387,7 +389,7 @@ void Install_AlwaysDisplayLifeMana()
 
 	log_msg("Patch D2Client for always display life and mana. (ALwaysPrintLifeMana)\n");
 
-	if ( version_D2Client >= V113c )
+	if ( version_D2Client >= Versions::V113c )
 	{
 		mem_seek R7(D2Client, 0000, 0000, 0000, 0000, 0000, 0000, 2764A, 6D6FA);
 		memt_byte( 0x0F , 0x90);
@@ -404,7 +406,7 @@ void Install_AlwaysDisplayLifeMana()
 		// Always display life.
 		mem_seek R7(D2Client, 58B32, 58B32, 5F102, 2D713, B5DF3, 81733, 0000, 0000);
 		memt_byte( 0xA1 , 0xE8);
-		MEMT_REF4( ptResolutionY , version_D2Client >= V111 ? caller_AlwaysDisplayLife_111 : caller_AlwaysDisplayLife);
+		MEMT_REF4( ptResolutionY , version_D2Client >= Versions::V111 ? caller_AlwaysDisplayLife_111 : caller_AlwaysDisplayLife);
 		//6FADD713  |. A1 605CBA6F    MOV EAX,DWORD PTR DS:[6FBA5C60]
 		//6FB65DF3  |. A1 C84FBA6F    MOV EAX,DWORD PTR DS:[6FBA4FC8]
 		//6FB31733  |. A1 E4C6B86F    MOV EAX,DWORD PTR DS:[6FB8C6E4]
@@ -412,7 +414,7 @@ void Install_AlwaysDisplayLifeMana()
 
 
 	// Always display mana.
-	if ( version_D2Client >= V113c )
+	if ( version_D2Client >= Versions::V113c )
 	{
 		//mem_seek R7(D2Client, 0000, 0000, 0000, 0000, 0000, 0000, 27711);
 		//memt_byte( 0x8B , 0x90);
@@ -434,7 +436,7 @@ void Install_AlwaysDisplayLifeMana()
 		//6FAD77D1  \. C3             RETN
 		//6FB1D7BC  |> A1 3870BA6F    MOV EAX,DWORD PTR DS:[6FB8BC4C]
 	}
-	else if ( version_D2Client >= V110 )
+	else if ( version_D2Client >= Versions::V110 )
 	{
 		mem_seek R7(D2Client, 0000, 0000, 5F1E6, 2D7FB, B5EDB, 8181B, 0000, 0000);
 		memt_byte( 0x5F , 0xE8);
@@ -484,7 +486,7 @@ void Install_EnabledTXTFilesWithMSExcel()
 
 	log_msg("Patch D2Client for enabled the opening of files already opened by MS Excel. (EnabledTXTFilesWithMSExcel)\n");
 
-	mem_seek( (DWORD)D2StormMPQOpenFile + (version_Storm >= V111 ? 0x12A : 0xFF) );
+	mem_seek( (DWORD)D2StormMPQOpenFile + (version_Storm >= Versions::V111 ? 0x12A : 0xFF) );
 	memt_byte( 0x01 , 0x03);	//; |ShareMode = FILE_SHARE_READ|FILE_SHARE_WRITE									
 	//6FC1C969  |. 6A 01          PUSH 1        ; |ShareMode = FILE_SHARE_READ
 
@@ -587,7 +589,7 @@ void Install_LadderRunewords()
 	static int isInstalled = false;
 	if (isInstalled) return;
 
-	if ( version_D2Common < V110 )
+	if ( version_D2Common < Versions::V110 )
 		return;
 
 	log_msg("Patch D2Common for enabled the ladder only runewords. (LadderRunewords)\n");

@@ -9,6 +9,8 @@
 #include "plugYFiles.h"		// Install_PlugYFiles()
 #include "common.h"
 
+using Versions = VersionUtility::Versions;
+
 bool active_bigStash = false;
 bool active_bigStash_tested = false;
 

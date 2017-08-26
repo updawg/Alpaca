@@ -11,6 +11,7 @@
 #include "sharedSaveFile.h"
 #include "common.h"
 
+using Versions = VersionUtility::Versions;
 
 /************************************ LOADING ***********************************/
 
@@ -501,7 +502,7 @@ void Install_LoadPlayerData()
 	// Load MP player custom data.
 	mem_seek R7(D2Game, 50790, 50B90, 5CC66, BB777, 27757, 46447, 56217, 3BB57);
 	memt_byte( 0x83, 0xE8);
-	MEMT_REF4( version_D2Game >= V111 ? 0x2174003B : version_D2Game == V110 ? 0x4674003F : 0x1D74003F, version_D2Game >= V111 ? caller_LoadMPPlayerCustomData_111 : version_D2Game == V110 ? caller_LoadMPPlayerCustomData: caller_LoadMPPlayerCustomData_9);
+	MEMT_REF4( version_D2Game >= Versions::V111 ? 0x2174003B : version_D2Game == Versions::V110 ? 0x4674003F : 0x1D74003F, version_D2Game >= Versions::V111 ? caller_LoadMPPlayerCustomData_111 : version_D2Game == Versions::V110 ? caller_LoadMPPlayerCustomData: caller_LoadMPPlayerCustomData_9);
 	//6FC8CC66  . 833F 00         CMP DWORD PTR DS:[EDI],0
 	//6FC8CC69  . 74 46           JE SHORT D2Game.6FC8CCB1
 	//0203B777  |> 833B 00        CMP DWORD PTR DS:[EBX],0
@@ -517,7 +518,7 @@ void Install_LoadPlayerData()
 
 	// Send save files to Server.
 	mem_seek R7(D2Client, CF42, CF32, D5A2, 733FC, 5DFDC, 7933C, 1457C, B638C);
-	MEMJ_REF4( D2FogGetSavePath, version_D2Game >= V111 ? caller_SendSaveFiles_111 : caller_SendSaveFiles);
+	MEMJ_REF4( D2FogGetSavePath, version_D2Game >= Versions::V111 ? caller_SendSaveFiles_111 : caller_SendSaveFiles);
 	//6FAAD5A1  |. E8 88D10B00    CALL <JMP.&Fog.#10115>
 	//6FB233FB  |. E8 CA8AF9FF    CALL <JMP.&Fog.#10115>
 	//6FB0DFDB  |. E8 C6DEFAFF    CALL <JMP.&Fog.#10115>
@@ -528,7 +529,7 @@ void Install_LoadPlayerData()
 	// Receive save files from client.
 	mem_seek R7(D2Game, 183A, 183A, 191A, 376E9, 703D9, 624D9, CAF39, D53E9);
 	memt_byte( 0x8B ,0xE8);
-	if ( version_D2Game >= V111 ) {
+	if ( version_D2Game >= Versions::V111 ) {
 		MEMT_REF4( 0xB60F005D, caller_ReceiveSaveFiles_111);
 		memt_byte( 0x45 ,0x90);
 		memt_byte( 0x04 ,0x90);
@@ -548,11 +549,11 @@ void Install_LoadPlayerData()
 		//6FC3191C  |. 8A46 04        MOV AL,BYTE PTR DS:[ESI+4]
 	}
 
-	if ( version_Fog <= V109d )
+	if ( version_Fog <= Versions::V109d )
 	{
 		mem_seek R7(Fog, 47DE, 45AE, 0000, 0000, 0000, 0000, 0000, 0000);
 		memt_byte( 0x8B ,0xE8);
-		MEMT_REF4( 0x891C2444, version_Fog == V109b? caller_BugFix109b : caller_BugFix109d);
+		MEMT_REF4( 0x891C2444, version_Fog == Versions::V109b? caller_BugFix109b : caller_BugFix109d);
 		memt_byte( 0x44 ,0x90);
 		memt_byte( 0x24 ,0x90);
 		memt_byte( 0x20 ,0x90);
@@ -560,9 +561,9 @@ void Install_LoadPlayerData()
 		//6FF545B2  |. 894424 20      |MOV DWORD PTR SS:[ESP+20],EAX
 	}
 
-	if ( version_D2Game == V109b || version_D2Game == V109d )
+	if ( version_D2Game == Versions::V109b || version_D2Game == Versions::V109d )
 		customPackID -= 3;
-	else if ( version_D2Game == V110 )
+	else if ( version_D2Game == Versions::V110 )
 		customPackID --;
 
 	log_msg("\n");

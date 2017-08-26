@@ -49,6 +49,8 @@ D2S(D2Common,10598,	ItemStatCostBIN*,	D2Common10598, (DWORD itemStatCostID));//O
 D2S(D2Common,10673,	ItemTypesBIN*,		D2Common10673, (DWORD itemTypesID));//ONLY in 1.09
 #undef D2S
 
+using Versions = VersionUtility::Versions;
+
 //TD2SetPlayerStat			 V2SetPlayerStat;
 TD2AddPlayerStat			 V2AddPlayerStat;
 TD2GetPlayerStat			 V2GetPlayerStat;
@@ -616,13 +618,13 @@ void initD2functions()
 	#define E2S(F, A, R, N, P)	N = (T##N)(offset_##F + 0x##A);
 	#define E2F(F, A, R, N, P)	N = (T##N)(offset_##F + 0x##A);
 	#define E2C(F, A, T, N)		pt##N = (T*)(offset_##F + 0x##A);
-	#define F7(X, Z, A,B,C,D,E,F,G,H, R, N, P) setFctAddr((DWORD*)&N, (HMODULE)offset_##Z, (LPCSTR)(version_##Z == V113d? H : (version_##Z == V113c? G : (version_##Z == V112? F : (version_##Z == V111b? E : (version_##Z == V111? D : (version_##Z == V110? C : (version_##Z == V109d? B : A))))))));
+	#define F7(X, Z, A,B,C,D,E,F,G,H, R, N, P) setFctAddr((DWORD*)&N, (HMODULE)offset_##Z, (LPCSTR)(version_##Z == VersionUtility::Versions::V113d? H : (version_##Z == VersionUtility::Versions::V113c? G : (version_##Z == VersionUtility::Versions::V112? F : (version_##Z == VersionUtility::Versions::V111b? E : (version_##Z == VersionUtility::Versions::V111? D : (version_##Z == VersionUtility::Versions::V110? C : (version_##Z == VersionUtility::Versions::V109d? B : A))))))));
 	#define A7(X, Z, A,B,C,D,E,F,G,H, R, N, P) N = (T##N)R7(Z,A,B,C,D,E,F,G,H);
 	#define C7(Z, A,B,C,D,E,F,G,H, T, N)       pt##N = (T*)R7(Z,A,B,C,D,E,F,G,H);
 
 	#include "../Commons/D2Funcs.h"
 	SgptDataTables = *(DataTables**) R7(D2Common, 0000, 0000, 96A20, 9B74C, 9EE8C, 9B500, 99E1C, A33F0);
-	if (version_D2Common < V110)
+	if (version_D2Common < Versions::V110)
 	{
 		D2S(D2Common,10581,	CharStatsBIN*,		D2Common10581, (DWORD charID));//ONLY in 1.09
 		D2S(D2Common,10598,	ItemStatCostBIN*,	D2Common10598, (DWORD itemStatCostID));//ONLY in 1.09
@@ -641,8 +643,8 @@ void initD2functions()
 	//////////////// MISC FCT ////////////////
 	//setImage = version_D2Common >= V111 ? setImage_111 : setImage_1XX;
 	//setFrame = version_D2Common >= V111 ? setFrame_111 : setFrame_1XX;
-	getDescStrPos = version_D2Common >= V110  ? getDescStrPos_10 : getDescStrPos_9;
-	compileTxtFile = version_D2Common >= V111 ? compileTxtFile_111 : version_D2Common == V110 ? compileTxtFile_10 : compileTxtFile_9;
+	getDescStrPos = version_D2Common >= Versions::V110  ? getDescStrPos_10 : getDescStrPos_9;
+	compileTxtFile = version_D2Common >= Versions::V111 ? compileTxtFile_111 : version_D2Common == Versions::V110 ? compileTxtFile_10 : compileTxtFile_9;
 
 
 	//////////////// SELECT RIGHT ADDR FUNCTION ////////////////
@@ -884,7 +886,7 @@ void initD2functions()
 	//V2OpenNPCMenu = D2OpenNPCMenu;
 	//////////////// REDIRECT ON CUSTOM FUNCTIONS ////////////////
 
-	if ( version_D2Client >= V111 )
+	if ( version_D2Client >= Versions::V111 )
 	{
 		D2SendMsgToAll = (TD2SendMsgToAll) D2SendMsgToAll_111;
 		D2SetColorPopup = (TD2SetColorPopup) D2SetColorPopup_111;
@@ -902,7 +904,7 @@ void initD2functions()
 		D2CompileCubeInput = (TD2CompileCubeInput) D2CompileCubeInput_111;
 		D2CompileCubeOutput = (TD2CompileCubeOutput) D2CompileCubeOutput_111;
 		D2BroadcastFunction = (TD2BroadcastFunction) D2BroadcastFunction_111;
-		D2SpawnMonster = version_D2Game >= V111b ? (TD2SpawnMonster)D2SpawnMonster_111b : (TD2SpawnMonster)D2SpawnMonster_111;
+		D2SpawnMonster = version_D2Game >= Versions::V111b ? (TD2SpawnMonster)D2SpawnMonster_111b : (TD2SpawnMonster)D2SpawnMonster_111;
 		D2VerifIfNotCarry1 = (TD2VerifIfNotCarry1) D2VerifIfNotCarry1_111;
 		D2GameGetObject = (TD2GameGetObject) D2GameGetObject_111;
 		D2GetItemTypesBIN = (TD2GetItemTypesBIN) D2GetItemTypesBIN_111;
@@ -925,7 +927,7 @@ void initD2functions()
 		D2SaveGame = (TD2SaveGame) D2SaveGame_1XX;
 	}
 
-	if ( version_D2Common <= V109d )
+	if ( version_D2Common <= Versions::V109d )
 	{
 		//D2SetPlayerStat =				(TD2SetPlayerStat) D2SetPlayerStat_9;
 		D2AddPlayerStat =				(TD2AddPlayerStat) D2AddPlayerStat_9;
@@ -938,10 +940,10 @@ void initD2functions()
 		D2GetItemTypesBIN =				(TD2GetItemTypesBIN) D2GetItemTypesBIN_9;
 	}
 
-	if ( version_D2Client <= V109d )
+	if ( version_D2Client <= Versions::V109d )
 		D2PrintStat =					(TD2PrintStat) D2PrintStat_9;
 
-	if ( version_D2Game <= V109d )
+	if ( version_D2Game <= Versions::V109d )
 		D2SetSkillBaseLevelOnClient =	(TD2SetSkillBaseLevelOnClient) D2SetSkillBaseLevelOnClient_9;
 
 

@@ -9,6 +9,8 @@
 #include "statPerLevelUp.h"
 #include "common.h"
 
+using Versions = VersionUtility::Versions;
+
 bool active_StatPerLevelUpChange=0;
 DWORD statPerLevelUp=5;
 
@@ -34,7 +36,7 @@ void Install_StatPerLevelUp()
 	log_msg("Patch D2Game for change Stat points win per level up. (StatPerLevelUp)\n");
 
 	mem_seek R7(D2Game,	42258,	42648,	4ED55, D7ADA, 7968A, AA44A, EB1DA, EDC9A);
-	MEMJ_REF4( V2AddPlayerStat, version_D2Game >= V111 ? caller_changeStatPerLevelUp_111 : caller_changeStatPerLevelUp);
+	MEMJ_REF4( V2AddPlayerStat, version_D2Game >= Versions::V111 ? caller_changeStatPerLevelUp_111 : caller_changeStatPerLevelUp);
 	//6FC7ED54  |. E8 61CB0900    CALL <JMP.&D2Common.#10518>
 	//02057AD9  |. E8 AA28F3FF    CALL <JMP.&D2Common.#10109>
 	//01FE9689  |. E8 260DF9FF    CALL <JMP.&D2Common.#10627>

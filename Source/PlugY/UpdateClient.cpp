@@ -11,6 +11,8 @@
 #include "commands.h"
 #include "common.h"
 
+using Versions = VersionUtility::Versions;
+
 void updateClient(Unit* ptChar, DWORD mFunc, DWORD p1, DWORD p2, DWORD p3)
 {
 	void* ptNetClient;
@@ -94,7 +96,7 @@ void Install_UpdateClient()
 
 	// execute if it's our packet else continue
 	mem_seek R7(D2Client, 14236, 14226, 145B6, 9C6B6, BFE86, 66E06, AE896, 84D96);
-	MEMT_REF4( version_D2Client >= V111  ? 0x000000CF : 0x000000D6, version_D2Client >= V111 ? caller_handleClientUpdate_111 : caller_handleClientUpdate);
+	MEMT_REF4( version_D2Client >= Versions::V111  ? 0x000000CF : 0x000000D6, version_D2Client >= Versions::V111 ? caller_handleClientUpdate_111 : caller_handleClientUpdate);
 	//6FAB45B4  |. 0F87 D6000000  JA D2Client.6FAB4690
 	//6FB4C6B4  |. 0F87 CF000000  JA D2Client.6FB4C789
 	//6FB6FE84  |. 0F87 CF000000  JA D2Client.6FB6FF59
