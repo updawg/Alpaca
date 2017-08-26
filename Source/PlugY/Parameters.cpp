@@ -24,7 +24,6 @@
 #include "statPerLevelUp.h"
 #include "savePath.h"
 #include "bigStash.h"
-#include "skillsPoints.h"
 #include "infinityStash.h"
 #include "othersFeatures.h"
 #include "newInterfaces.h"
@@ -115,41 +114,8 @@ const char* S_posXTakeGoldBtn = "PosXTakeGoldBtn";
 const char* S_posYTakeGoldBtn = "PosYTakeGoldBtn";
 
 const char* S_STATS_POINTS = "STATS POINTS";
-const char* S_active_StatsPoints = "ActiveStatsUnassignment";
-const char* S_keyUsedForUnassignStatPoint = "KeyUsed";
 const char* S_active_StatsShiftClickLimit = "ActiveShiftClickLimit";
 const char* S_limitValueToShiftClick = "LimitValueToShiftClick";
-
-const char* S_SKILL_ON_LEVEL_UP = "SKILL ON LEVEL UP";
-const char* S_active_SkillPerLevelUpChange = "ActiveSkillPerLevelUp";
-const char* S_skillPerLevelUp = "SkillPerLevelUp";
-
-const char* S_STAT_ON_LEVEL_UP = "STAT ON LEVEL UP";
-const char* S_active_StatPerLevelUpChange = "ActiveStatPerLevelUp";
-const char* S_statPerLevelUp = "StatPerLevelUp";
-
-const char* S_WORLD_EVENT = "WORLD EVENT";
-const char* S_active_WorldEvent = "ActiveWorldEvent";
-const char* S_showSOJSoldCounterInAllDiff = "ShowCounterInAllDifficulty";
-const char* S_itemsToSell = "ItemsToSell";
-const char* S_worldEventmonsterID = "MonsterID";
-const char* S_valueOfOwnSOJSold = "OwnSOJSoldChargeFor";
-const char* S_valueInitSOJSoldMin = "InititalSOJSoldMin";
-const char* S_valueInitSOJSoldDelta = "InititalSOJSoldMax";
-const char* S_triggerAtSolJSoldMin = "TriggerAtEachSOJSoldMin";
-const char* S_triggerAtSolJSoldDelta = "TriggerAtEachSOJSoldMax";
-const char* S_active_AutomaticSell = "ActiveAutoSell";
-const char* S_timeBeforeAutoSellMin = "TimeBeforeAutoSellMin";
-const char* S_timeBeforeAutoSellDelta = "TimeBeforeAutoSellMax";
-
-const char* S_UBER_QUEST = "UBER QUEST";
-const char* S_active_UberQuest = "ActiveUberQuest";
-
-const char* S_SKILLS_POINTS = "SKILLS POINTS";
-const char* S_active_SkillsPoints = "ActiveSkillsUnassignment";
-const char* S_unassignSkillsPointsOneByOne = "ActiveSkillsUnassignmentOneByOne";
-const char* S_posXUnassignSkillBtn = "PosXUnassignSkillBtn";
-const char* S_posYUnassignSkillBtn = "PosYUnassignSkillBtn";
 
 const char* S_INTERFACE = "INTERFACE";
 const char* S_active_newInterfaces = "ActiveNewStatsInterface";
@@ -157,7 +123,6 @@ const char* S_selectMainPageOnOpenning = "SelectMainPageOnOpenning";
 const char* S_printBackgroundOnMainPage = "PrintButtonsBackgroundOnMainStatsPage";
 
 const char* S_EXTRA = "EXTRA";
-const char* S_active_alwaysRegenMapInSP = "AlwaysRegenMapInSP";
 const char* S_nbPlayersCommandByDefault = "NBPlayersByDefault";
 const char* S_active_DisplayItemLevel = "ActiveDisplayItemLevel";
 const char* S_active_RunLODs = "ActiveLaunchAnyNumberOfLOD";
@@ -165,7 +130,6 @@ const char* S_active_AlwaysDisplayLifeMana = "AlwaysDisplayLifeAndManaValues";
 const char* S_active_EnabledTXTFilesWithMSExcel= "EnabledTXTFilesWhenMSExcelOpenIt";
 const char* S_active_DisplayBaseStatsValue = "ActiveDisplayBaseStatsValue";
 const char* S_active_LadderRunewords = "ActiveLadderRunewords";
-const char* S_active_EnabledCowPortalWhenCowKingWasKill = "ActiveCowPortalWhenCowKingWasKilled";
 
 const char* S_DLL = "DLL:\t";
 const char* S_DEFAULT = "DEFAULT:";
@@ -588,17 +552,6 @@ void init_Stash(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefaultFile
 
 void init_StatsPoints(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefaultFile, char* buffer, DWORD maxSize)
 {
-	GET_PRIVATE_PROFILE_STRING(S_STATS_POINTS, S_active_StatsPoints, "0");
-	active_StatsPoints = atoi(buffer) != 0;
-	log_msg("active_StatsPoints\t\t\t= %u\n", active_StatsPoints);
-
-	if (active_StatsPoints)
-	{
-		GET_PRIVATE_PROFILE_STRING(S_STATS_POINTS, S_keyUsedForUnassignStatPoint, "18");
-		keyUsedForUnassignStatPoint = atoi(buffer);
-		log_msg("keyUsedForUnassignStatPoint\t= %u (0x%x)\n", keyUsedForUnassignStatPoint);
-	}
-
 	GET_PRIVATE_PROFILE_STRING(S_STATS_POINTS, S_active_StatsShiftClickLimit, "0");
 	active_StatsShiftClickLimit = atoi(buffer) != 0;
 	log_msg("active_StatsShiftClickLimit\t= %u\n", active_StatsShiftClickLimit);
@@ -608,63 +561,6 @@ void init_StatsPoints(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefau
 		GET_PRIVATE_PROFILE_STRING(S_STATS_POINTS, S_limitValueToShiftClick, "5");
 		limitValueToShiftClick = atoi(buffer);
 		log_msg("limitValueToShiftClick\t\t= %u\n", limitValueToShiftClick);
-	}
-	log_msg("\n");
-}
-
-
-void init_StatPerLevelUp(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefaultFile, char* buffer, DWORD maxSize)
-{
-	GET_PRIVATE_PROFILE_STRING(S_STAT_ON_LEVEL_UP, S_active_StatPerLevelUpChange, "0");
-	active_StatPerLevelUpChange = atoi(buffer) != 0;
-	log_msg("active_StatPerLevelUpChange\t= %u\n", active_StatPerLevelUpChange);
-
-	if (active_StatPerLevelUpChange)
-	{
-		GET_PRIVATE_PROFILE_STRING(S_STAT_ON_LEVEL_UP, S_statPerLevelUp, "5");
-		statPerLevelUp = atoi(buffer);
-		log_msg("statPerLevelUp\t\t\t\t= %u\n", statPerLevelUp);
-	}
-	log_msg("\n");
-}
-
-void init_SkillsPoints(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefaultFile, char* buffer, DWORD maxSize)
-{
-	GET_PRIVATE_PROFILE_STRING(S_SKILLS_POINTS, S_active_SkillsPoints, "0");
-	active_SkillsPoints = atoi(buffer) != 0;
-	log_msg("active_SkillsPoints\t\t\t= %d\n", active_SkillsPoints);
-
-	GET_PRIVATE_PROFILE_STRING(S_SKILLS_POINTS, S_unassignSkillsPointsOneByOne, "0");
-	unassignSkillsPointsOneByOne = atoi(buffer) != 0;
-	log_msg("unassignSkillsPointsOneByOne\t\t\t= %d\n", unassignSkillsPointsOneByOne);
-	if (unassignSkillsPointsOneByOne)
-	{
-		active_SkillsPoints = true;
-		log_msg("active_SkillsPoints\t\t\t= %d\n", active_SkillsPoints);
-	}
-
-	GET_PRIVATE_PROFILE_STRING(S_SKILLS_POINTS, S_posXUnassignSkillBtn,"-1");
-	posXUnassignSkillBtn = atoi(buffer);
-	log_msg("posXUnassignSkillBtn\t\t\t= %d\n", posXUnassignSkillBtn);
-
-	GET_PRIVATE_PROFILE_STRING(S_SKILLS_POINTS, S_posYUnassignSkillBtn,"-1");
-	posYUnassignSkillBtn = atoi(buffer);
-	log_msg("posXUnassignSkillBtn\t\t\t= %d\n", posYUnassignSkillBtn);
-
-	log_msg("\n");
-}
-
-void init_SkillPerLevelUp(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefaultFile, char* buffer, DWORD maxSize)
-{
-	GET_PRIVATE_PROFILE_STRING(S_SKILL_ON_LEVEL_UP, S_active_SkillPerLevelUpChange, "0");
-	active_SkillPerLevelUpChange = atoi(buffer) != 0;
-	log_msg("active_SkillPerLevelUpChange= %u\n", active_SkillPerLevelUpChange);
-
-	if (active_SkillPerLevelUpChange)
-	{
-		GET_PRIVATE_PROFILE_STRING(S_SKILL_ON_LEVEL_UP, S_skillPerLevelUp, "1");
-		skillPerLevelUp = atoi(buffer);
-		log_msg("skillPerLevelUp\t\t\t\t= %u\n", skillPerLevelUp);
 	}
 	log_msg("\n");
 }
@@ -690,10 +586,6 @@ void init_NewInterfaces(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDef
 
 void init_ExtraOptions(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefaultFile, char* buffer, DWORD maxSize)
 {
-	GET_PRIVATE_PROFILE_STRING(S_EXTRA, S_active_alwaysRegenMapInSP, "0");
-	active_alwaysRegenMapInSP = atoi(buffer);
-	log_msg("active_alwaysRegenMapInSP\t= %d\n", active_alwaysRegenMapInSP);
-
 	GET_PRIVATE_PROFILE_STRING(S_EXTRA, S_nbPlayersCommandByDefault, "0");
 	nbPlayersCommandByDefault = atoi(buffer);
 	if (version_D2Common == Versions::V109 || version_D2Common == Versions::V109b)
@@ -728,10 +620,6 @@ void init_ExtraOptions(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefa
 		log_msg("active_LadderRunewords\t= %d (Warning : Warning : this feature is only for LoD version 1.10 or higher, so it's automatically disabled)\n", active_LadderRunewords);
 	} else
 		log_msg("active_LadderRunewords\t= %u\n\n", active_LadderRunewords);
-
-	GET_PRIVATE_PROFILE_STRING(S_EXTRA, S_active_EnabledCowPortalWhenCowKingWasKill, "0");
-	active_EnabledCowPortalWhenCowKingWasKill = atoi(buffer);
-	log_msg("active_EnabledCowPortalWhenCowKingWasKill= %u\n\n", active_EnabledCowPortalWhenCowKingWasKill);
 }
 
 
@@ -776,9 +664,6 @@ void loadParameters()
 			init_VersionText(iniFile, iniFixedFile, iniDefaultFile, buffer, BUFSIZE);
 			init_Stash(iniFile, iniFixedFile, iniDefaultFile, buffer, BUFSIZE);
 			init_StatsPoints(iniFile, iniFixedFile, iniDefaultFile, buffer, BUFSIZE);
-			init_StatPerLevelUp(iniFile, iniFixedFile, iniDefaultFile, buffer, BUFSIZE);
-			init_SkillsPoints(iniFile, iniFixedFile, iniDefaultFile, buffer, BUFSIZE);
-			init_SkillPerLevelUp(iniFile, iniFixedFile, iniDefaultFile, buffer, BUFSIZE);
 			init_NewInterfaces(iniFile, iniFixedFile, iniDefaultFile, buffer, BUFSIZE);
 			init_ExtraOptions(iniFile, iniFixedFile, iniDefaultFile, buffer, BUFSIZE);
 		}

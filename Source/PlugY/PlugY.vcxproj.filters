@@ -63,9 +63,6 @@
     <ClCompile Include="INIfile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Interface_Skills.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Interface_Stash.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -127,9 +124,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SkillPerLevelUp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SkillsPoints.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="StatPerLevelUp.cpp">
@@ -197,9 +191,6 @@
     <ClInclude Include="INIfile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="interface_Skills.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="interface_Stash.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -261,9 +252,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="skillPerLevelUp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="skillsPoints.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="statPerLevelUp.h">

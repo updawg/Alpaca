@@ -13,7 +13,7 @@
 
 using Versions = VersionUtility::Versions;
 
-extern bool active_SkillsPoints, active_StatsPoints, active_newInterfaces, active_multiPageStash, active_sharedGold;
+extern bool active_newInterfaces, active_multiPageStash, active_sharedGold;
 
 void* unassignSkillsBtnImages = NULL;
 void* unassignStatsBtnImages = NULL;
@@ -124,8 +124,6 @@ void loadImagesFile(void** images, const char* name)
 
 void STDCALL loadCustomImages()
 {
-	if ( active_SkillsPoints )	 loadImagesFile(&unassignSkillsBtnImages, "UnassignSkillsBtns");
-	if ( active_StatsPoints )	 loadImagesFile(&unassignStatsBtnImages, "UnassignStatsBtns");
 	if ( active_multiPageStash || active_newInterfaces) loadImagesFile(&stashBtnsImages, "StashBtns");
 	if ( active_sharedGold)		 loadImagesFile(&sharedGoldBtnsImages, "SharedGoldBtns");
 	if ( active_newInterfaces )	 loadImagesFile(&newStatsInterfaceImages, "EmptyPage");	

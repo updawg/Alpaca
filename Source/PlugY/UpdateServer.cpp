@@ -8,7 +8,6 @@
 
 #include "updateServer.h"
 #include "statsPoints.h"
-#include "skillsPoints.h"
 #include "infinityStash.h"
 #include "commands.h"
 #include "common.h"
@@ -34,7 +33,6 @@ int STDCALL handleServerUpdate(Unit* ptChar, WORD param)
 		case US_UNASSIGN_ENE_POINTS :	UnassignEnePoints( ptChar ); return 1;
 		case US_UNASSIGN_DEX_POINTS :	UnassignDexPoints( ptChar ); return 1;
 		case US_UNASSIGN_VIT_POINTS :	UnassignVitPoints( ptChar ); return 1;
-		case US_UNASSIGN_SKILLS :		UnassignAllSkillsPoints( ptChar ); return 1;
 
 		case US_SET_INDEX:				setCurrentStashIndex(ptChar, 1); return 1;
 		case US_SET_MAIN_INDEX:			setCurrentStashIndex(ptChar, 2); return 1;

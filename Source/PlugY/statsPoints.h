@@ -8,8 +8,6 @@
 
 #include "common.h"
 
-extern bool active_StatsPoints;
-extern DWORD keyUsedForUnassignStatPoint;
 extern bool active_StatsShiftClickLimit;
 extern DWORD limitValueToShiftClick;
 
@@ -23,6 +21,3 @@ void UnassignEnePoint(Unit* ptChar);
 void UnassignEnePoints(Unit* ptChar);
 
 void Install_StatsLimitShiftClick();
-void Install_StatsPoints();
-
-/*================================= END OF FILE =================================*/

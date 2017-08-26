@@ -18,7 +18,6 @@
 #include "skillPerLevelUp.h"	// Install_SkillPerLevelUp()
 #include "statPerLevelUp.h"		// Install_StatPerLevelUp()
 #include "statsPoints.h"		// Install_StatsPoints() Install_StatsLimitShiftClick()
-#include "skillsPoints.h"		// Install_SkillsPoints()
 #include "infinityStash.h"		// Install_MultiPageStash()
 #include "newInterfaces.h"		// Install_NewInterfaces()
 #include "extraOptions.h"		// Install_AlwaysRegenMapInSP()
@@ -359,13 +358,8 @@ extern "C" __declspec(dllexport) void* __stdcall Init(LPSTR IniName)
 	if (active_PrintPlugYVersion || active_Windowed)
 		Install_PrintPlugYVersion();
 
-	if (active_StatsPoints)
-		Install_StatsPoints();
-	else if (active_DisplayBaseStatsValue)
+	if (active_DisplayBaseStatsValue)
 		Install_DisplayBaseStatsValue();
-
-	if (active_SkillsPoints)
-		Install_SkillsPoints();
 
 	if (active_changingSavePath)
 		Install_ChangingSavePath();
@@ -394,9 +388,6 @@ extern "C" __declspec(dllexport) void* __stdcall Init(LPSTR IniName)
 	if (active_newInterfaces)
 		Install_NewInterfaces();
 
-	if (active_alwaysRegenMapInSP)
-		Install_AlwaysRegenMapInSP();
-
 	if (nbPlayersCommandByDefault)
 		Install_SendPlayersCommand();
 
@@ -411,9 +402,6 @@ extern "C" __declspec(dllexport) void* __stdcall Init(LPSTR IniName)
 
 	if (active_LadderRunewords)
 		Install_LadderRunewords();
-
-	if (active_EnabledCowPortalWhenCowKingWasKill)
-		Install_EnabledCowPortalWhenCowKingWasKill();
 
 	log_msg("\nDLL patched sucessfully.\n\n\n");
 

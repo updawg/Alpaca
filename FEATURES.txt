@@ -4,18 +4,17 @@ Each features can be turn on/off via PlugY.ini (see "COMMENTS ON THE CONFIGURATI
 - Infinite storage space in the stash.
 - Shared storage space in the stash.
 - Automatically execute /players X when you launch a new game.
-
-
-- Enabled the ladder only runewords out of realms.
 - Launch any number of Diablo II games on the same computer.
 - Added some pages for display more characters stats like %MF.
+- Enabled the ladder only runewords out of realms.
 - Display item level in its popup.
 - Increase the stash to 10x10 squares.
 - Change the save path directory.
 - Always display Mana and Life values above the globes.
 - Display the stats current value (without magical bonus) like Magic/gold find or maximum resistances.
 - Can launch game in windowed mode with some options (lock mouse/resize/on top/noborder).
-
+- Change the selected language.
+- D2 can load all files, even those opened with Microsoft Excel (disabled by default).
 
 - Add following commands (see "COMMENTS ON THE CONFIGURATION FILE") :
 	/save : Save game without exit.
@@ -42,12 +41,9 @@ Each features can be turn on/off via PlugY.ini (see "COMMENTS ON THE CONFIGURATI
 	/dm : Toggle always display mana mode.
 	/listcube : (beta) Create a "cube.txt" file in save directory containing all cube's receipts.
 
-Maybe:
-- Change the selected language.
-- D2 can load all files, even those opened with Microsoft Excel (disabled by default).
-
 Removed:
 - Unassign assigned skills and stats points.
 - Local World Event and Uber Quest for singleplayer and multiplayer off-realm !
 - Can open Cow Level Portal even when player have kill the Cow King in that difficulty.
 - Always regenerate maps in SinglePlayer like in MultiPlayer.
+- Removed ability to change how much stat/skill points one receives per level

@@ -51,128 +51,6 @@ const char * CMD_DISPLAY_LIFE = "/dl";
 const char * CMD_DISPLAY_MANA = "/dm";
 
 const char * CMD_LISTCUBEFORMULA="/listcube";
-//const char * CMD_RELOAD="/reload";
-//const char * CMD_MAXGOLD="/maxgold";
-
-
-/*
-$+21C8   02020648   |. 6A 01          PUSH 1
-$+21CA   0202064A   |. 52             PUSH EDX
-$+21CB   0202064B   |. 57             PUSH EDI
-$+21CC   0202064C   |. 55             PUSH EBP
-$+21CD   0202064D   |. 8BC3           MOV EAX,EBX
-$+21CF   0202064F   |. E8 2CDEFFFF    CALL D2Game.0201E480
-*/
-
-/*
-struct D2NPCRecordStrc
-{
-	DWORD	value;
-};
-struct D2NPCDataStrc
-{
-	DWORD	value;
-};
-D2NPCRecordStrc* __fastcall STORES_GetRecord(Game* pGame, int nNPC, int* pIndex)
-{
-	if (pGame == NULL)
-		return NULL;
-
-	if (pIndex != NULL)
-		*pIndex = 0;
-
-	D2NPCDataStrc* pControl = pGame->pVendorControl;
-	if (pControl == NULL)
-		return NULL;
-
-	D2NPCRecordStrc* pList = pControl->pVendors;
-	if (pList == NULL)
-		return NULL;
-
-	const int nCount = INLINE_GetCustomTXT()->nNPCCount;
-	for (int i = 0; i < nCount; i++)
-	{
-		if (pList->nNPC == nNPC)
-		{
-			if (pIndex != NULL)
-				*pIndex = i;
-
-			return pList;
-		}
-
-		pList++;
-	}
-
-	return NULL;
-}
-
-Inventory* __fastcall STORES_GetGambleInventory(Game* pGame, Unit* pPlayer, Unit* pNPC)
-{
-	if (pGame == NULL || pPlayer == NULL || pNPC == NULL)
-		return NULL;
-
-	D2NPCRecordStrc* pRecord = STORES_GetRecord(pGame, pNPC->nUnitIndex, NULL);
-	if (pRecord == NULL || !pRecord->bGambleInit)
-		return NULL;
-
-	D2NPCGambleStrc* pGamble = pRecord->pGamble;
-	int nGUID = pPlayer->dwGUID;
-	while (pGamble != NULL)
-	{
-		if (pGamble->dwGUID == nGUID)
-			return pGamble->pInventory;
-
-		pGamble = pGamble->pNext;
-	}
-
-	return NULL;
-}
-
-void __fastcall STORES_UpdateInventoryItems(D2UnitStrc* pNPC, D2InventoryStrc* pInventory, BOOL bPlayDropSounds = FALSE)
-{
-
-	D2UnitStrc* pItem = pInventory->pFirstItem;
-	while (pItem != NULL)
-	{
-		if (pItem->nUnitType == UNIT_ITEM)
-		{
-			pItem->fUnitFlagsEx |= UNITFLAG_SHOPITEM;
-			if (ITEMS_CheckSocketable(pItem))
-				ITEMS_SetFlag(pItem, ITEMFLAG_NEWITEM, TRUE);
-
-			ITEMS_UpdateTrade(pNPC->pInventory, pItem); //D2Common.#10283
-			if (bPlayDropSounds)
-			{
-				FileItemTable* pRecord = INLINE_GetItemRecord(pItem->nUnitIndex);
-				if (pRecord != NULL)
-					D2PlaySound(pRecord->nDropSound, pInventory->pOwner, 0, 0, 0);
-			}
-		}
-
-		pItem = pItem->pItemData->pNext;
-	}
-}
-
-void gambleReload(Unit* ptChar)
-{
-	D2UnitStrc* pNPC = UNITS_GetServer(pGame, UNIT_MONSTER, pPacket->dwInteractGUID);
-	if (pNPC != NULL)
-	{
-		if (pNPC->dwGUID == pPlayer->dwInteractGUID)
-		{
-			D2NPCRecord* pNPCRecord = NPC_GetRecord(pGame, pNPC->nUnitIndex);
-			if (pNPCRecord->bGambleInit)
-			{
-				D2FillTradeOrGamble(pGame, pNPC, pPlayer, TRUE); //D2Game.0x6FCCAE20
-				D2InventoryStrc* pInv = STORES_GetGambleInventory(pGame, pPlayer, pNPC);
-				STORES_UpdateInventoryItems(pNPC, pInv, TRUE);
-				D2RefreshUnitInventory(pNPC, TRUE); //D2Common.#10357
-			}
-		}
-	}
-}
-*/
-
 
 void gambleReload(Unit* ptChar)
 {
@@ -192,7 +70,6 @@ void gambleReload(Unit* ptChar)
 			NOP
 			NOP
 		}
-//		D2OpenNPCMenu(ptNPC);
 		D2ReloadGambleScreen();
 	}
 }
@@ -503,20 +380,6 @@ int STDCALL commands (char* ptText)
 		listAllCubeFormula();
 		return 0;
 	}
-
-	//if (!strcmp(command,CMD_RELOAD))
-	//{
-	//	if (onRealm) return 1;
-	//	gambleReload(ptChar);
-	//	return 0;
-	//}
-
-	//if (!strcmp(command,CMD_MAXGOLD))
-	//{
-	//	if (onRealm) return 1;
-	//	updateServer(US_MAXGOLD);
-	//	return 0;
-	//}
 
 	return 1;
 }

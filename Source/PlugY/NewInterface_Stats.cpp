@@ -524,37 +524,6 @@ if (version_D2Client <= Versions::V110)
 		D2PrintImage(&data, getXAssVITBtn(), getYAssVITBtn(), -1, 5, 0);
 		D2PrintImage(&data, getXAssENEBtn(), getYAssENEBtn(), -1, 5, 0);
 	}
-	
-	if (active_StatsPoints && !onRealm)
-	{
-		setImage(&data, D2AssignStatsPointsBoxImages);
-		setFrame(&data, 0);
-		D2PrintImage(&data, getXUnaSTRBtn()-3, getYUnaSTRBtn()+4, -1, 5, 0);
-		D2PrintImage(&data, getXUnaDEXBtn()-3, getYUnaDEXBtn()+4, -1, 5, 0);
-		D2PrintImage(&data, getXUnaENEBtn()-3, getYUnaENEBtn()+4, -1, 5, 0);
-		D2PrintImage(&data, getXUnaVITBtn()-3, getYUnaVITBtn()+4, -1, 5, 0);
-
-		setImage(&data, unassignStatsBtnImages);
-		if ((int)charStats->baseSTR < D2GetPlayerBaseStat(ptChar, STATS_STRENGTH, 0))
-			setFrame(&data, isDownBtn.UnaSTR);
-		else data.frame = 2;
-		D2PrintImage(&data, getXUnaSTRBtn(), getYUnaSTRBtn(), -1, 5, 0);
-
-		if ((int)charStats->baseDEX < D2GetPlayerBaseStat(ptChar, STATS_DEXTERITY, 0))
-			setFrame(&data, isDownBtn.UnaDEX);
-		else setFrame(&data, 2);
-		D2PrintImage(&data, getXUnaDEXBtn(), getYUnaDEXBtn(), -1, 5, 0);
-
-		if ((int)charStats->baseVIT < D2GetPlayerBaseStat(ptChar, STATS_VITALITY, 0))
-			setFrame(&data, isDownBtn.UnaVIT);
-		else setFrame(&data, 2);
-		D2PrintImage(&data, getXUnaVITBtn(), getYUnaVITBtn(), -1, 5, 0);
-
-		if ((int)charStats->baseENE < D2GetPlayerBaseStat(ptChar, STATS_ENERGY, 0))
-			setFrame(&data, isDownBtn.UnaENE);
-		else setFrame(&data, 2);
-		D2PrintImage(&data, getXUnaENEBtn(), getYUnaENEBtn(), -1, 5, 0);
-	}
 }
 
 //////////////////// POPUP PRINTING ////////////////////
@@ -664,34 +633,6 @@ DWORD STDCALL mouseNewStatsPageLeftDown(sWinMessage* msg)
 			D2PlaySound(5,0,0,0,0);
 		}
 	}
-	if (active_StatsPoints && !onRealm)
-	{
-		CharStatsBIN* charStats = D2GetCharStatsBIN(ptChar->nPlayerClass);
-		if (isOnUnaSTRBtn(msg->x,msg->y) && ((int)charStats->baseSTR < D2GetPlayerBaseStat(ptChar, STATS_STRENGTH, 0)))
-		{
-			log_msg("push down left button unassign strengh\n");
-			isDownBtn.UnaSTR = 1;
-			D2PlaySound(5,0,0,0,0);
-		}
-		else if (isOnUnaDEXBtn(msg->x,msg->y) && ((int)charStats->baseDEX < D2GetPlayerBaseStat(ptChar, STATS_DEXTERITY, 0)))
-		{
-			log_msg("push down left button unassign dexterity\n");
-			isDownBtn.UnaDEX = 1;
-			D2PlaySound(5,0,0,0,0);
-		}
-		else if (isOnUnaVITBtn(msg->x,msg->y) && ((int)charStats->baseVIT < D2GetPlayerBaseStat(ptChar, STATS_VITALITY, 0)))
-		{
-			log_msg("push down left button unassign vitality\n");
-			isDownBtn.UnaVIT = 1;
-			D2PlaySound(5,0,0,0,0);
-		}
-		else if (isOnUnaENEBtn(msg->x,msg->y) && ((int)charStats->baseENE < D2GetPlayerBaseStat(ptChar, STATS_ENERGY, 0)))
-		{
-			log_msg("push down left button unassign energy\n");
-			isDownBtn.UnaENE = 1;
-			D2PlaySound(5,0,0,0,0);
-		}
-	}
 
 	freeMessage(msg);
 	return 0;
@@ -771,52 +712,9 @@ DWORD STDCALL mouseNewStatsPageLeftUp(sWinMessage* msg)
 				sendAssignStats(1,nbStatPointsRemaining);
 		}
 	}
-	if (active_StatsPoints && !onRealm)
-	{
-		CharStatsBIN* charStats = D2GetCharStatsBIN(ptChar->nPlayerClass);
-		if (isOnUnaSTRBtn(msg->x,msg->y) && ((int)charStats->baseSTR < D2GetPlayerBaseStat(ptChar, STATS_STRENGTH, 0)))
-		{
-			log_msg("push up left button unassign strengh\n");
-			if (isDownBtn.UnaSTR)
-				if (GetKeyState(VK_SHIFT)<0)
-					updateServer(US_UNASSIGN_STR_POINTS);
-				else
-					updateServer(US_UNASSIGN_STR_POINT);
-		}
-		else if (isOnUnaDEXBtn(msg->x,msg->y) && ((int)charStats->baseDEX < D2GetPlayerBaseStat(ptChar, STATS_DEXTERITY, 0)))
-		{
-			log_msg("push up left button unassign dexterity\n");
-			if (isDownBtn.UnaDEX)
-				if (GetKeyState(VK_SHIFT)<0)
-					updateServer(US_UNASSIGN_DEX_POINTS);
-				else
-					updateServer(US_UNASSIGN_DEX_POINT);
-		}
-		else if (isOnUnaVITBtn(msg->x,msg->y) && ((int)charStats->baseVIT < D2GetPlayerBaseStat(ptChar, STATS_VITALITY, 0)))
-		{
-			log_msg("push up left button unassign vitality\n");
-			if (isDownBtn.UnaVIT)
-				if (GetKeyState(VK_SHIFT)<0)
-					updateServer(US_UNASSIGN_VIT_POINTS);
-				else
-					updateServer(US_UNASSIGN_VIT_POINT);
-		}
-		else if (isOnUnaENEBtn(msg->x,msg->y) && ((int)charStats->baseENE < D2GetPlayerBaseStat(ptChar, STATS_ENERGY, 0)))
-		{
-			log_msg("push up left button unassign energy\n");
-			if (isDownBtn.UnaENE)
-				if (GetKeyState(VK_SHIFT)<0)
-					updateServer(US_UNASSIGN_ENE_POINTS);
-				else
-					updateServer(US_UNASSIGN_ENE_POINT);
-		}
-	}
 
 	D2CleanStatMouseUp();
 	freeMessage(msg);
 	isDownBtn.all=0;
 	return 0;
 }
-
-
-/*================================= END OF FILE =================================*/

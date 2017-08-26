@@ -14,13 +14,11 @@ using Versions = VersionUtility::Versions;
 int active_DisplayItemLevel = false;
 DWORD nbPlayersCommandByDefault = 0;
 DWORD nbPlayersCommand = 0;
-int active_alwaysRegenMapInSP = false;
 int active_RunLODs = false;
 int active_AlwaysDisplayLifeMana = false;
 int active_EnabledTXTFilesWithMSExcel = false;
 int active_DisplayBaseStatsValue = false;
 int active_LadderRunewords = false;
-int active_EnabledCowPortalWhenCowKingWasKill = false;
 
 /****************************************************************************************************/
 
@@ -607,32 +605,3 @@ void Install_LadderRunewords()
 
 	isInstalled = true;
 }
-
-
-
-/****************************************************************************************************/
-
-void Install_EnabledCowPortalWhenCowKingWasKill()
-{
-	static int isInstalled = false;
-	if (isInstalled) return;
-
-	log_msg("Patch D2Game for enabled the opening of Cow Portal when player have already kill the cow king in that difficulty. (EnabledCowPortalWhenCowKingWasKill)\n");
-
-	mem_seek R7(D2Game, 5DFF7, 5E457, 6C5E7 , B1278, 5DB68, 75C68, 67508, EBE8);
-	memt_byte( 0x85 , 0x33); // XOR EAX,EAX
-	//6FC8DFF7   . 85C0           TEST EAX,EAX
-	//6FC8E457   . 85C0           TEST EAX,EAX
-	//6FC9C5E7   . 85C0           TEST EAX,EAX
-	//02061278  |. 85C0           TEST EAX,EAX
-	//01FEDB68  |. 85C0           TEST EAX,EAX
-	//6FC95C68  |. 85C0           TEST EAX,EAX
-	//6FC87508  |. 85C0           TEST EAX,EAX
-	//6FC2EBE8  |. 85C0           TEST EAX,EAX
-
-	log_msg("\n");
-
-	isInstalled = true;
-}
-
-/*================================= END OF FILE =================================*/

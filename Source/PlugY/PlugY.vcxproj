@@ -105,7 +105,6 @@
     <ClCompile Include="GlobalVariable.cpp" />
     <ClCompile Include="InfinityStash.cpp" />
     <ClCompile Include="INIfile.cpp" />
-    <ClCompile Include="Interface_Skills.cpp" />
     <ClCompile Include="Interface_Stash.cpp" />
     <ClCompile Include="Interface_Stats.cpp" />
     <ClCompile Include="Language.cpp" />
@@ -127,7 +126,6 @@
     <ClCompile Include="SavePlayerData.cpp" />
     <ClCompile Include="SharedSaveFile.cpp" />
     <ClCompile Include="SkillPerLevelUp.cpp" />
-    <ClCompile Include="SkillsPoints.cpp" />
     <ClCompile Include="StatPerLevelUp.cpp" />
     <ClCompile Include="StatsPoints.cpp" />
     <ClCompile Include="UpdateClient.cpp" />
@@ -158,7 +156,6 @@
     <ClInclude Include="globalVariable.h" />
     <ClInclude Include="infinityStash.h" />
     <ClInclude Include="INIfile.h" />
-    <ClInclude Include="interface_Skills.h" />
     <ClInclude Include="interface_Stash.h" />
     <ClInclude Include="interface_Stats.h" />
     <ClInclude Include="language.h" />
@@ -180,7 +177,6 @@
     <ClInclude Include="savePlayerData.h" />
     <ClInclude Include="sharedSaveFile.h" />
     <ClInclude Include="skillPerLevelUp.h" />
-    <ClInclude Include="skillsPoints.h" />
     <ClInclude Include="statPerLevelUp.h" />
     <ClInclude Include="statsPoints.h" />
     <ClInclude Include="targetver.h" />
