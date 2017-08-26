@@ -30,21 +30,21 @@ VersionUtility::Versions VersionUtility::GetVersion(LPCVOID pVersionResource)
 
 	if (major != 1)
 		return Versions::UNKNOWN;
-	if (minor == 0 && revision == 7 && subrevision == 0) return V107;
-	if (minor == 0 && revision == 8 && subrevision == 28) return V108;
-	if (minor == 0 && revision == 9 && subrevision == 19) return V109;
-	if (minor == 0 && revision == 9 && subrevision == 20) return V109b;
-	if (minor == 0 && revision == 9 && subrevision == 22) return V109d;
-	if (minor == 0 && revision == 10 && subrevision == 39) return V110;
-	if (minor == 0 && revision == 11 && subrevision == 45) return V111;
-	if (minor == 0 && revision == 11 && subrevision == 46) return V111b;
-	if (minor == 0 && revision == 12 && subrevision == 49) return V112;
-	if (minor == 0 && revision == 13 && subrevision == 60) return V113c;
-	if (minor == 0 && revision == 13 && subrevision == 64) return V113d;
-	if (minor == 14 && revision == 0 && subrevision == 64) return V114a;
-	if (minor == 14 && revision == 1 && subrevision == 68) return V114b;
-	if (minor == 14 && revision == 2 && subrevision == 70) return V114c;
-	if (minor == 14 && revision == 3 && subrevision == 71) return V114d;
+	if (minor == 0 && revision == 7 && subrevision == 0) return Versions::V107;
+	if (minor == 0 && revision == 8 && subrevision == 28) return Versions::V108;
+	if (minor == 0 && revision == 9 && subrevision == 19) return Versions::V109;
+	if (minor == 0 && revision == 9 && subrevision == 20) return Versions::V109b;
+	if (minor == 0 && revision == 9 && subrevision == 22) return Versions::V109d;
+	if (minor == 0 && revision == 10 && subrevision == 39) return Versions::V110;
+	if (minor == 0 && revision == 11 && subrevision == 45) return Versions::V111;
+	if (minor == 0 && revision == 11 && subrevision == 46) return Versions::V111b;
+	if (minor == 0 && revision == 12 && subrevision == 49) return Versions::V112;
+	if (minor == 0 && revision == 13 && subrevision == 60) return Versions::V113c;
+	if (minor == 0 && revision == 13 && subrevision == 64) return Versions::V113d;
+	if (minor == 14 && revision == 0 && subrevision == 64) return Versions::V114a;
+	if (minor == 14 && revision == 1 && subrevision == 68) return Versions::V114b;
+	if (minor == 14 && revision == 2 && subrevision == 70) return Versions::V114c;
+	if (minor == 14 && revision == 3 && subrevision == 71) return Versions::V114d;
 	return Versions::UNKNOWN;
 }
 
