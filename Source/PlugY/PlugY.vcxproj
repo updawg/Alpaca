@@ -125,8 +125,6 @@
     <ClCompile Include="SavePath.cpp" />
     <ClCompile Include="SavePlayerData.cpp" />
     <ClCompile Include="SharedSaveFile.cpp" />
-    <ClCompile Include="SkillPerLevelUp.cpp" />
-    <ClCompile Include="StatPerLevelUp.cpp" />
     <ClCompile Include="StatsPoints.cpp" />
     <ClCompile Include="UpdateClient.cpp" />
     <ClCompile Include="UpdateServer.cpp" />
@@ -176,8 +174,6 @@
     <ClInclude Include="savePath.h" />
     <ClInclude Include="savePlayerData.h" />
     <ClInclude Include="sharedSaveFile.h" />
-    <ClInclude Include="skillPerLevelUp.h" />
-    <ClInclude Include="statPerLevelUp.h" />
     <ClInclude Include="statsPoints.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="updateClient.h" />

@@ -20,8 +20,6 @@
 
 #include "statsPoints.h"
 #include "mainScreen.h"
-#include "skillPerLevelUp.h"
-#include "statPerLevelUp.h"
 #include "savePath.h"
 #include "bigStash.h"
 #include "infinityStash.h"

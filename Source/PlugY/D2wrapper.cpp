@@ -15,8 +15,6 @@
 #include "mainScreen.h"			// Install_PrintPlugYVersion() Install_VersionChange()
 #include "savePath.h"			// Install_ChangingSavePath()
 #include "bigStash.h"			// Install_BigStash()
-#include "skillPerLevelUp.h"	// Install_SkillPerLevelUp()
-#include "statPerLevelUp.h"		// Install_StatPerLevelUp()
 #include "statsPoints.h"		// Install_StatsPoints() Install_StatsLimitShiftClick()
 #include "infinityStash.h"		// Install_MultiPageStash()
 #include "newInterfaces.h"		// Install_NewInterfaces()
@@ -372,12 +370,6 @@ extern "C" __declspec(dllexport) void* __stdcall Init(LPSTR IniName)
 
 	if (active_bigStash)
 		Install_BigStash();
-
-	if (active_SkillPerLevelUpChange)
-		Install_SkillPerLevelUp();
-
-	if (active_StatPerLevelUpChange)
-		Install_StatPerLevelUp();
 
 	if (active_multiPageStash)
 		Install_MultiPageStash();
