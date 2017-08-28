@@ -144,6 +144,9 @@
     <ClCompile Include="Utilities\LibraryUtility.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
+    <ClCompile Include="Library.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bigStash.h">
@@ -292,6 +295,9 @@
     </ClInclude>
     <ClInclude Include="Utilities\LibraryUtility.h">
       <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Library.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

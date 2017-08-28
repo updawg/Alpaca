@@ -109,6 +109,7 @@
     <ClCompile Include="Interface_Stash.cpp" />
     <ClCompile Include="Interface_Stats.cpp" />
     <ClCompile Include="Language.cpp" />
+    <ClCompile Include="Library.cpp" />
     <ClCompile Include="LoadPlayerData.cpp" />
     <ClCompile Include="LocalizedStrings.cpp" />
     <ClCompile Include="MainScreen.cpp" />
@@ -159,6 +160,7 @@
     <ClInclude Include="interface_Stash.h" />
     <ClInclude Include="interface_Stats.h" />
     <ClInclude Include="language.h" />
+    <ClInclude Include="Library.h" />
     <ClInclude Include="loadPlayerData.h" />
     <ClInclude Include="LocalizedStrings.h" />
     <ClInclude Include="mainScreen.h" />

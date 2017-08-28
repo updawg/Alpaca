@@ -1,11 +1,13 @@
 #pragma once
 
 #include "../common.h"
+#include "../Library.h"
 
 // Used to load the libraries
 class LibraryUtility
 {
 public:
+	LibraryUtility();
 
 	void LoadGame();
 	void LoadDlls();
@@ -16,10 +18,9 @@ public:
 	// we will make the following private some other time
 	//int version_Game;
 	int Game_Version;
-	int version_D2Client;
-	int version_D2CMP;
-	int version_D2Common;
-	int version_D2Game;
+	int D2Client_Version;
+	int D2CMP_Version;
+	int D2Game_Version;
 	int version_D2gfx;
 	int version_D2Lang;
 	int version_D2Launch;
@@ -74,4 +75,5 @@ public:
 
 private:
 	void LoadD2Common();
+	Library D2Common;
 };

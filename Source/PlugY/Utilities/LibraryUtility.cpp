@@ -7,6 +7,11 @@ using Versions = VersionUtility::Versions;
 // libOffset = base address where library loaded in OS
 // Shift = ?
 
+LibraryUtility::LibraryUtility()
+{
+	//D2Common = new Library();
+}
+
 void LibraryUtility::LoadDlls()
 {
 	LoadD2Common();
