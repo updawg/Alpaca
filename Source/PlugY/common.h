@@ -25,10 +25,9 @@
 #include "error.h"
 #include "modifMemory.h"
 #include "parameters.h"
-#include "d2wrapper.h"
 #include "playerCustomData.h" // include common.h
 #include "globalVariable.h" // include common.h
-
+#include "d2wrapper.h"
 #include "d2functions.h"
 #include "LocalizedStrings.h"
 

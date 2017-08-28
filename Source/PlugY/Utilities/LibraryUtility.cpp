@@ -49,14 +49,21 @@ void LibraryUtility::HookLibraries()
 {
 	log_msg("***** Unprotect Libraries *****\n");
 
-	D2Client->HookLibrary();
-	D2Common->HookLibrary();
-	D2Game->HookLibrary();
-	D2gfx->HookLibrary();
-	D2Lang->HookLibrary();
-	D2Launch->HookLibrary();
-	Fog->HookLibrary();
-	Storm->HookLibrary();
+	if (VersionUtility::IsEqualOrGreaterThan114(Game_Version))
+	{
+		log_msg("Hooking 1.14 libraries");
+	}
+	else
+	{
+		D2Client->HookLibrary();
+		D2Common->HookLibrary();
+		D2Game->HookLibrary();
+		D2gfx->HookLibrary();
+		D2Lang->HookLibrary();
+		D2Launch->HookLibrary();
+		Fog->HookLibrary();
+		Storm->HookLibrary();
+	}
 
 	log_msg("\n\n");
 }
@@ -65,14 +72,21 @@ void LibraryUtility::UnhookLibraries()
 {
 	log_msg("***** Reprotect Libraries *****\n");
 
-	D2Client->UnhookLibrary();
-	D2Common->UnhookLibrary();
-	D2Game->UnhookLibrary();
-	D2gfx->UnhookLibrary();
-	D2Lang->UnhookLibrary();
-	D2Launch->UnhookLibrary();
-	Fog->UnhookLibrary();
-	Storm->UnhookLibrary();
+	if (VersionUtility::IsEqualOrGreaterThan114(Game_Version))
+	{
+		log_msg("Unhooking 1.14 libraries");
+	}
+	else
+	{
+		D2Client->UnhookLibrary();
+		D2Common->UnhookLibrary();
+		D2Game->UnhookLibrary();
+		D2gfx->UnhookLibrary();
+		D2Lang->UnhookLibrary();
+		D2Launch->UnhookLibrary();
+		Fog->UnhookLibrary();
+		Storm->UnhookLibrary();
+	}
 
 	log_msg("\n\n");
 }

@@ -1,4 +1,6 @@
 #include "Library.h"
+#include "error.h"
+#include "Utilities/VersionUtility.h"
 
 Library::Library(DWORD gameOffset, int gameVersion)
 {

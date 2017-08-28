@@ -9,7 +9,7 @@
 #include "extraOptions.h"
 #include "windowed.h"
 #include "common.h"
-#include <stdio.h>
+#include "Utilities/LibraryUtility.h"
 
 using Versions = VersionUtility::Versions;
 
@@ -97,8 +97,12 @@ void Install_VersionChange()// BUG WITH 2MOD if D2Mod started before PlugY ????
 //6FA18018  |. 6A 00          PUSH 0
 
 
+	if (lu->Game_Version == VersionUtility::Versions::V114d)
+	{
+		log_msg("Patch here");
+	}
 	// Print LoD/Mod version.
-	if (version_D2Launch >= Versions::V110)
+	else if (version_D2Launch >= Versions::V110)
 	{
 		mem_seek R7(D2Launch, 00000, 00000, 9723, 1189B, 1797B, 16BCB, 18134, 10AE4);//6FA19721-6FA10000
 		memt_byte( 0x8D, 0xE8 );	// CALL

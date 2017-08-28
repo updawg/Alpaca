@@ -23,6 +23,8 @@
 #include "windowed.h"			// installed with Install_PrintPlugYVersion()
 #include "customLibraries.h"
 #include "common.h"
+
+// New library loading stuff
 #include "Utilities/LibraryUtility.h"
 
 using Versions = VersionUtility::Versions;
@@ -175,7 +177,6 @@ void initD2modules()
 	
 	offset_Game = lu->Game_Offset;
 	version_Game = lu->Game_Version;
-	log_msg("Game.exe loaded at:\t%08X (%s)\n", offset_Game, VersionUtility::GetVersionAsString(version_Game));
 
 	if (VersionUtility::IsEqualOrGreaterThan114(lu->Game_Version))
 	{
@@ -194,7 +195,7 @@ void initD2modules()
 		offset_Fog = lu->Game_Offset;
 		offset_Storm = lu->Game_Offset;
 
-		exit(-1);
+		//exit(-1);
 	}
 	else
 	{
@@ -224,7 +225,6 @@ void initD2modules()
 	version_Fog = lu->Game_Version;
 	version_Storm = lu->Game_Version;
 
-
 	log_msg("\n\n");
 }
 //////////////////////////////////// EXPORTS FUNCTIONS ////////////////////////////////////
@@ -242,7 +242,7 @@ extern "C" __declspec(dllexport) bool __stdcall Release()
 
 extern "C" __declspec(dllexport) void* __stdcall Init(LPSTR IniName)
 {
-	if (IniName) log_msg("* PlugY is called from D2mod.dll\n\n");
+	if (IniName) log_msg("* Gardenia is called from D2mod.dll\n\n");
 
 	static int isInstalled = false;
 	if (isInstalled) return NULL;
@@ -252,15 +252,14 @@ extern "C" __declspec(dllexport) void* __stdcall Init(LPSTR IniName)
 	lu = new LibraryUtility();
 	initD2modules();
 
-	if (version_Game < VersionUtility::Versions::V109 || version_Game > VersionUtility::Versions::V113d)
+	if (!VersionUtility::IsSupported(lu->Game_Version))
 	{
-		log_box("PlugY isn't compatible with this version : %s", VersionUtility::GetVersionAsString(version_Game));
+		log_box("Gardenia isn't compatible with this version : %s", VersionUtility::GetVersionAsString(version_Game));
 		Release();
 		exit(0);
 	}
 
 	initD2functions();
-
 	loadParameters();
 
 	if (!active_plugin)	return NULL;
@@ -291,21 +290,21 @@ void Install_Functions()
 {
 	log_msg("***** INSTALL FUNCTIONS *****\n");
 
-	Install_VariableOnRealm();
+	//Install_VariableOnRealm();
 
-	if (active_Commands)
-		Install_Commands();
+	//if (active_Commands)
+	//	Install_Commands();
 
-	if (active_ChangeLanguage || active_LanguageManagement)
-		Install_LanguageManagement();
+//	if (active_ChangeLanguage || active_LanguageManagement)
+	//	Install_LanguageManagement();
 
-	if (active_VersionTextChange)
-		Install_VersionChange();
+	//if (active_VersionTextChange)
+		//Install_VersionChange();
 
-	if (active_PrintPlugYVersion || active_Windowed)
-		Install_PrintPlugYVersion();
+	//if (active_PrintPlugYVersion || active_Windowed)
+	//	Install_PrintPlugYVersion();
 
-	if (active_DisplayBaseStatsValue)
+	/*if (active_DisplayBaseStatsValue)
 		Install_DisplayBaseStatsValue();
 
 	if (active_changingSavePath)
@@ -333,16 +332,16 @@ void Install_Functions()
 		Install_SendPlayersCommand();
 
 	if (active_DisplayItemLevel)
-		Install_DisplayItemLevel();
+		Install_DisplayItemLevel();*/
 
-	if (active_AlwaysDisplayLifeMana)
-		Install_AlwaysDisplayLifeMana();
+	//if (active_AlwaysDisplayLifeMana)
+	//	Install_AlwaysDisplayLifeMana();
 
-	if (active_EnabledTXTFilesWithMSExcel)
-		Install_EnabledTXTFilesWithMSExcel();
+	//if (active_EnabledTXTFilesWithMSExcel)
+	//	Install_EnabledTXTFilesWithMSExcel();
 
-	if (active_LadderRunewords)
-		Install_LadderRunewords();
+	//if (active_LadderRunewords)
+	//	Install_LadderRunewords();
 
 	log_msg("\nDLL patched sucessfully.\n\n\n");
 }

@@ -38,7 +38,7 @@ void log_initfile()
 	
 	log_msg("<----------------------------------------------->\n"
 			"\n"
-			"\t\tA Plugin by Yohann\n"
+			"\t\tA Plugin by Jonathan Vasquez\n"
 			"\t\tversion %s\n"
 			"\n"
 			"\n"

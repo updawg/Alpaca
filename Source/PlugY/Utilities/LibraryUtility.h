@@ -31,7 +31,6 @@ public:
 	// This is kinda redundant, the Libraries for each Dll also has this info.
 	int Game_Version;
 	DWORD Game_Offset;
-	std::string Game_File_Version;
 
 	// Libraries
 	D2ClientLibrary* D2Client;

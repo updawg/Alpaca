@@ -6,7 +6,7 @@ using Versions = VersionUtility::Versions;
 
 // Should be in the header.
 
-const char* SupportedVersions[12] = { "1.00","1.07","1.08","1.09","1.09b","1.09d","1.10","1.11","1.11b","1.12","1.13c","1.13d"};
+const char* SupportedVersions[12] = { "1.09","1.09b","1.09d","1.10","1.11","1.11b","1.12","1.13c","1.13d" };
 const char* VersionStrings[16] = { "1.00","1.07","1.08","1.09","1.09b","1.09d","1.10","1.11","1.11b","1.12","1.13c","1.13d", "1.14a", "1.14b", "1.14c", "1.14d" };
 const char* UnknownVersion = "UNKNOWN";
 

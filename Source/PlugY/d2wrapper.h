@@ -14,6 +14,11 @@ COPYRIGHT
 #pragma once
 
 #include <windows.h>
+// New library loading stuff
+//#include "Utilities/LibraryUtility.h"
+
+// Forward declare so we can make our 'lu' an extern.
+class LibraryUtility;
 
 extern int version_Game;
 extern int version_D2Client;
@@ -41,3 +46,5 @@ extern DWORD offset_D2Net;
 extern DWORD offset_D2Win;
 extern DWORD offset_Fog;
 extern DWORD offset_Storm;
+
+extern LibraryUtility* lu;
