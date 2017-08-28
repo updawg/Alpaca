@@ -1,7 +1,19 @@
 #pragma once
 
 #include "../common.h"
+
 #include "../Library.h"
+#include "../D2ClientLibrary.h"
+#include "../D2CMPLibrary.h"
+#include "../D2CommonLibrary.h"
+#include "../D2GameLibrary.h"
+#include "../D2GfxLibrary.h"
+#include "../D2LangLibrary.h"
+#include "../D2LaunchLibrary.h"
+#include "../D2NetLibrary.h"
+#include "../D2WinLibrary.h"
+#include "../FogLibrary.h"
+#include "../StormLibrary.h"
 
 // Used to load the libraries
 class LibraryUtility
@@ -10,78 +22,21 @@ public:
 	LibraryUtility();
 
 	void LoadGame();
-	//void LoadDlls();
-	
-	
 
-
-	// we will make the following private some other time
-	//int version_Game;
+	// This is kinda redundant, the Libraries for each Dll also has this info.
 	int Game_Version;
 	DWORD Game_Offset;
 
-
-
-	int D2Client_Version;
-	int D2CMP_Version;
-	int D2Game_Version;
-	int version_D2gfx;
-	int version_D2Lang;
-	int version_D2Launch;
-	int version_D2Net;
-	int version_D2Win;
-	int version_Fog;
-	int version_Storm;
-
-	// Address in memory of external DLL
-	//DWORD offset_Game;
-	
-	DWORD offset_D2Client;
-	DWORD offset_D2CMP;
-	DWORD D2Common_Offset;
-	DWORD offset_D2Game;
-	DWORD offset_D2gfx;
-	DWORD offset_D2Lang;
-	DWORD offset_D2Launch;
-	DWORD offset_D2Net;
-	DWORD offset_D2Win;
-	DWORD offset_Fog;
-	DWORD offset_Storm;
-
-	// Game
-
-	// D2Common
-	const int D2Common_Shift = 0x10CA;
-	int D2Common_Version;
-
-	const DWORD D2Common_109B = 0x6FD410CA;
-	const DWORD D2Common_109D = 0xB1E86FDC;
-	const DWORD D2Common_110 = 0x72D03B42;
-	const DWORD D2Common_111 = 0xF883057E;
-	const DWORD D2Common_111B = 0x16746AC6;
-	const DWORD D2Common_112 = 0x00FE81C3;
-	const DWORD D2Common_113C = 0x74FE85DB;
-
-	// D2Client
-
-	const char* Game_Library_Name = "Game.exe";
-	const char* S_D2Client = "D2Client.dll";
-	const char* S_D2CMP = "D2CMP.dll";
-	const char* D2Common_Library_Name = "D2Common.dll";
-	const char* S_D2Game = "D2Game.dll";
-	const char* S_D2gfx = "D2gfx.dll";
-	const char* S_D2Lang = "D2Lang.dll";
-	const char* S_D2Launch = "D2Launch.dll";
-	const char* S_D2Net = "D2Net.dll";
-	const char* S_D2Win = "D2Win.dll";
-	const char* S_Fog = "Fog.dll";
-	const char* S_Storm = "Storm.dll";
-
-	Library* D2Common;
-
-private:
-	//void LoadD2Common();
-
-	//Library* Game;
-	
+	// Libraries
+	D2ClientLibrary* D2Client;
+	D2CMPLibrary* D2CMP;
+	D2CommonLibrary* D2Common;
+	D2GameLibrary* D2Game;
+	D2gfxLibrary* D2gfx;
+	D2LangLibrary* D2Lang;
+	D2LaunchLibrary* D2Launch;
+	D2NetLibrary* D2Net;
+	D2WinLibrary* D2Win;
+	FogLibrary* Fog;
+	StormLibrary* Storm;
 };

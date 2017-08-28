@@ -240,9 +240,11 @@ void loadLibrary(LPCSTR libName, int* libVersion, DWORD* libOffset, int shift, D
 
 	DWORD addr = *(DWORD*)(*libOffset + shift);
 
-	//log_msg("(old) offset common: %d, shift: %d, addr: %d\n, compared to: %d, game version: %d", &libOffset, shift, addr, v109b, version_Game);
+	//log_msg("(old) offset common: %d, shift: %d, addr: %d\n, compared to: %d, game version: %d", *libOffset, shift, addr, v109b, version_Game);
 	if (version_Game != Versions::UNKNOWN && (version_Game <= Versions::V108 || version_Game >= Versions::V113d))
+	{
 		*libVersion = version_Game;
+	}
 	else if (addr==v109b)
 		*libVersion = Versions::V109b;
 	else if (addr==v109d)
@@ -272,7 +274,7 @@ void initD2modules()
 	log_msg("(old) ***** Get D2 Modules address and version *****\n");
 	offset_Game = (DWORD)GetModuleHandle(NULL);
 	version_Game = VersionUtility::GetVersion((HMODULE)offset_Game);
-	log_msg("(old) Game.exe loaded at:\t%08X (%s)\n", offset_Game, VersionUtility::GetVersionAsString(version_Game));
+	log_msg("Game.exe loaded at:\t%08X (%s)\n", offset_Game, VersionUtility::GetVersionAsString(version_Game));
 
 	//lu->LoadGame();
 

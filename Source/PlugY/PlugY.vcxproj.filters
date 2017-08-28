@@ -22,6 +22,9 @@
     <Filter Include="Source Files\Utilities">
       <UniqueIdentifier>{bb85077f-dbb1-40ea-8607-13a919ad020f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Libraries">
+      <UniqueIdentifier>{86c27b30-5ce7-4a76-ab3e-bfb9b3a04c16}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BigStash.cpp">
@@ -298,6 +301,39 @@
     </ClInclude>
     <ClInclude Include="Library.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D2ClientLibrary.h">
+      <Filter>Header Files\Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="D2CommonLibrary.h">
+      <Filter>Header Files\Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="D2CMPLibrary.h">
+      <Filter>Header Files\Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="D2GameLibrary.h">
+      <Filter>Header Files\Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="D2gfxLibrary.h">
+      <Filter>Header Files\Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="D2LangLibrary.h">
+      <Filter>Header Files\Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="D2LaunchLibrary.h">
+      <Filter>Header Files\Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="D2NetLibrary.h">
+      <Filter>Header Files\Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="D2WinLibrary.h">
+      <Filter>Header Files\Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="FogLibrary.h">
+      <Filter>Header Files\Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="StormLibrary.h">
+      <Filter>Header Files\Libraries</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
