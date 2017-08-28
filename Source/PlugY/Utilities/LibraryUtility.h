@@ -10,14 +10,18 @@ public:
 	LibraryUtility();
 
 	void LoadGame();
-	void LoadDlls();
+	//void LoadDlls();
 	
-	DWORD LoadGameLibrary(LPCSTR libName);
-	int GetDLLVersion(int shift, DWORD v109b, DWORD v109d, DWORD v110, DWORD v111, DWORD v111b, DWORD v112, DWORD v113c);
+	
+
 
 	// we will make the following private some other time
 	//int version_Game;
 	int Game_Version;
+	DWORD Game_Offset;
+
+
+
 	int D2Client_Version;
 	int D2CMP_Version;
 	int D2Game_Version;
@@ -31,7 +35,7 @@ public:
 
 	// Address in memory of external DLL
 	//DWORD offset_Game;
-	DWORD Game_Offset;
+	
 	DWORD offset_D2Client;
 	DWORD offset_D2CMP;
 	DWORD D2Common_Offset;
@@ -73,7 +77,11 @@ public:
 	const char* S_Fog = "Fog.dll";
 	const char* S_Storm = "Storm.dll";
 
+	Library* D2Common;
+
 private:
-	void LoadD2Common();
-	Library D2Common;
+	//void LoadD2Common();
+
+	//Library* Game;
+	
 };

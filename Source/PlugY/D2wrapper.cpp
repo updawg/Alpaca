@@ -267,14 +267,15 @@ void loadLibrary(LPCSTR libName, int* libVersion, DWORD* libOffset, int shift, D
 #define GET_VERSION(F,S,A,B,C,D,E,G,H) loadLibrary(S_##F, &version_##F, &offset_##F, 0x##S, 0x##A, 0x##B, 0x##C, 0x##D, 0x##E, 0x##G, 0x##H)
 void initD2modules()
 {
-	log_msg("Current lu address for common: %s\n", lu->D2Common_Offset);
+	//log_msg("Current lu address for common: %s\n", lu->D2Common->DllOffset);
 
-	log_msg("***** Get D2 Modules address and version *****\n");
+	log_msg("(old) ***** Get D2 Modules address and version *****\n");
 	offset_Game = (DWORD)GetModuleHandle(NULL);
 	version_Game = VersionUtility::GetVersion((HMODULE)offset_Game);
-	log_msg("Game.exe loaded at:\t%08X (%s)\n", offset_Game, VersionUtility::GetVersionAsString(version_Game));
+	log_msg("(old) Game.exe loaded at:\t%08X (%s)\n", offset_Game, VersionUtility::GetVersionAsString(version_Game));
 
-	lu->LoadGame();
+	//lu->LoadGame();
+
 	// This basically means that for 1.14, the dll is the same (All was merged into Game.exe)
 	if (version_Game >= Versions::V114a)
 	{ 
@@ -292,7 +293,7 @@ void initD2modules()
 	}
 	else
 	{
-		lu->LoadDlls();
+		//lu->LoadDlls();
 		GET_VERSION(D2Client,	17F,	00000000, 14500000, 12500000, 0D814800, 0D812800, 0DA01000, 0DA03000);	//0xCC000	0x6FAA0000					0xCA000
 		GET_VERSION(D2CMP,		1359,	3C686FE0, 38686FE0, 8BF78B56, 4C880424, 07C71824, CCCCCCCC, C7000005);	//0x18000	0x6FDF0000 Already Loaded	0x19000
 		GET_VERSION(D2Common,	10CA,	A1E86FDC, B1E86FDC, 72D03B42, F883057E, 16746AC6, 00FE81C3, 74FE85DB);	//0x8D000	0x037A0000					0x7C000	
@@ -304,7 +305,7 @@ void initD2modules()
 		GET_VERSION(D2Win,		1699,	88686F8C, 84686F8C, D094686F, F0030000, 001435E8, 8B088F44, 0013F5E8);	//0x19000	0x6F8A0000 Already Loaded	0x1C000
 		GET_VERSION(Fog,		102,	D0000006, 10000001, 00000006, 000042E6, 00004302, 0000483C, 00004B95);	//0x20000	0x6FF50000 Already Loaded	0x1F000
 		GET_VERSION(Storm,		1190,	19E85082, 59E85082, 13C103F6, 0474F685, 8B000321, 3B1074C9, 0D896404);	//0x30000	0x6FFB0000 Already Loaded	-
-		log_msg("Current lu address for common: %s\n", lu->D2Common_Offset);
+		//log_msg("Current lu address for common: %s\n", lu->D2Common->DllOffset);
 		if (version_Game == Versions::UNKNOWN)
 			 version_Game = version_D2gfx;
 	}
@@ -312,7 +313,6 @@ void initD2modules()
 	log_msg("\n\n");
 }
 //////////////////////////////////// EXPORTS FUNCTIONS ////////////////////////////////////
-
 
 extern "C" __declspec(dllexport) bool __stdcall Release()
 {
