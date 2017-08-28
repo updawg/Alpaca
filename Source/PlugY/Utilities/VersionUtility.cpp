@@ -1,14 +1,44 @@
 #include "VersionUtility.h"
+//#include <map>
+//#include <string>
 
 using Versions = VersionUtility::Versions;
 
+// Should be in the header.
+
+const char* SupportedVersions[12] = { "1.00","1.07","1.08","1.09","1.09b","1.09d","1.10","1.11","1.11b","1.12","1.13c","1.13d"};
+const char* VersionStrings[16] = { "1.00","1.07","1.08","1.09","1.09b","1.09d","1.10","1.11","1.11b","1.12","1.13c","1.13d", "1.14a", "1.14b", "1.14c", "1.14d" };
+const char* UnknownVersion = "UNKNOWN";
+
+// New version array based on file version
+//std::map<std::string, std::string> SupportedVersionsModern{
+//	"1.14.3.71", "1.14d"
+//};
+
+const char* ModernSupported[1] = { "1.14.3.71" };
+
 const char* VersionUtility::GetVersionAsString(int version)
 {
-	const char* VersionStrings[16] = { "1.00","1.07","1.08","1.09","1.09b","1.09d","1.10","1.11","1.11b","1.12","1.13c","1.13d","1.14a","1.14b","1.14c","1.14d" };
-
-	if (version < Versions::V100 || version >= sizeof(VersionStrings))
-		return "UNKNOWN";
+	if (version < VersionUtility::Versions::V100 || version >= sizeof(VersionStrings))
+	{
+		return UnknownVersion;
+	}
 	return VersionStrings[version];
+}
+
+const bool VersionUtility::IsSupported(int version)
+{
+	if (version < VersionUtility::Versions::V100 || version > sizeof(SupportedVersions))
+	{
+		return false;
+	}
+
+	return true;
+}
+
+const bool VersionUtility::IsEqualOrGreaterThan114(int version)
+{
+	return version >= VersionUtility::Versions::V114a;
 }
 
 VersionUtility::Versions VersionUtility::GetVersion(LPCVOID pVersionResource)

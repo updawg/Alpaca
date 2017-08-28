@@ -1,14 +1,37 @@
 #include "Library.h"
 
-//Library::Library(LPCTSTR libraryName, DWORD gameOffset, int gameVersion)
-
-	//DWORD V109B, DWORD V109D, DWORD V110, DWORD V111, DWORD V111B, DWORD V112, DWORD V113C, DWORD V113D)
 Library::Library(DWORD gameOffset, int gameVersion)
 {
 	// If we can refactor the LoadGame function so that we can safely retrieve it's values, then we don't need
 	// to pass them in as a parameter. I'm trying to avoid using global variables.
 	GameOffset = gameOffset;
 	GameVersion = gameVersion;
+}
+
+void Library::HookLibrary()
+{
+	DWORD dw = 0;
+	BYTE* offsetPESignature = DllOffset + *(BYTE**)((BYTE*) DllOffset + 0x3C);
+	DWORD sizeOfCode = *(DWORD*)(offsetPESignature + 0x1C);
+	BYTE* baseOfCode = DllOffset + *(BYTE**)(offsetPESignature + 0x2C);
+	if (!VirtualProtect(baseOfCode, sizeOfCode, PAGE_EXECUTE_READWRITE, &dw))
+	{
+		log_msg("Failed to hook library : %s. (%08X,%08X)\n", DllName, baseOfCode, sizeOfCode);
+		exit(-1);
+	}
+	log_msg("%s successfully hooked. (%08X,%08X)\n", DllName, baseOfCode, sizeOfCode);
+}
+
+void Library::UnhookLibrary()
+{
+	DWORD dw = 0;
+	BYTE* offsetPESignature = DllOffset + *(BYTE**)((BYTE*) DllOffset + 0x3C);
+	DWORD sizeOfCode = *(DWORD*)(offsetPESignature + 0x1C);
+	BYTE* baseOfCode = DllOffset + *(BYTE**)(offsetPESignature + 0x2C);
+	if (!VirtualProtect(baseOfCode, sizeOfCode, PAGE_EXECUTE_READ, &dw))
+		log_msg("Failed to unhook library : %s. (%08X,%08X)\n", DllName, baseOfCode, sizeOfCode);
+	else
+		log_msg("%s successfully unhooked. (%08X,%08X)\n", DllName, baseOfCode, sizeOfCode);
 }
 
 DWORD Library::LoadDiabloLibrary()

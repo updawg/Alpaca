@@ -23,9 +23,15 @@ public:
 
 	void LoadGame();
 
+	// Change the protection scheme of a loaded
+	// DLL called libraryName in memory space at address addr+size to allow us to customize it.
+	void HookLibraries();
+	void UnhookLibraries();
+
 	// This is kinda redundant, the Libraries for each Dll also has this info.
 	int Game_Version;
 	DWORD Game_Offset;
+	std::string Game_File_Version;
 
 	// Libraries
 	D2ClientLibrary* D2Client;

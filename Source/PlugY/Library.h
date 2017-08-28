@@ -13,6 +13,9 @@ public:
 	// Set dll version (should be same as Game)
 	int GetDllVersion();
 	
+	void HookLibrary();
+	void UnhookLibrary();
+
 	int DllVersion;
 	DWORD DllOffset;
 	LPCTSTR DllName;

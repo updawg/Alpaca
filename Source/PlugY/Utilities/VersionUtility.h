@@ -25,7 +25,11 @@ public:
 		V114d
 	};
 
+	// , "1.14a", "1.14b", "1.14c", "1.14d"
+
+	static const bool VersionUtility::IsSupported(int version);
 	static const char* GetVersionAsString(int version);
+	static const bool VersionUtility::IsEqualOrGreaterThan114(int version);
 
 	static Versions GetVersion(LPCVOID pVersionResource);
 	static Versions GetVersion(char* gamePath);
