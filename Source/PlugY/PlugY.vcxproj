@@ -77,6 +77,7 @@
       <PrecompiledHeader />
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <PreprocessToFile>false</PreprocessToFile>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -128,6 +129,7 @@
     <ClCompile Include="StatsPoints.cpp" />
     <ClCompile Include="UpdateClient.cpp" />
     <ClCompile Include="UpdateServer.cpp" />
+    <ClCompile Include="Utilities\LibraryUtility.cpp" />
     <ClCompile Include="Utilities\OffsetUtility.cpp" />
     <ClCompile Include="Utilities\VersionUtility.cpp" />
     <ClCompile Include="Windowed.cpp" />
@@ -178,6 +180,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="updateClient.h" />
     <ClInclude Include="updateServer.h" />
+    <ClInclude Include="Utilities\LibraryUtility.h" />
     <ClInclude Include="Utilities\OffsetUtility.h" />
     <ClInclude Include="Utilities\VersionUtility.h" />
     <ClInclude Include="windowed.h" />
