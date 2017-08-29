@@ -1,39 +1,66 @@
 #include "VersionUtility.h"
-//#include <map>
-//#include <string>
+#include <map>
+#include "../error.h"
 
 using Versions = VersionUtility::Versions;
 
-// Should be in the header.
-
-const char* SupportedVersions[12] = { "1.09","1.09b","1.09d","1.10","1.11","1.11b","1.12","1.13c","1.13d" };
-const char* VersionStrings[16] = { "1.00","1.07","1.08","1.09","1.09b","1.09d","1.10","1.11","1.11b","1.12","1.13c","1.13d", "1.14a", "1.14b", "1.14c", "1.14d" };
 const char* UnknownVersion = "UNKNOWN";
-
-// New version array based on file version
-//std::map<std::string, std::string> SupportedVersionsModern{
-//	"1.14.3.71", "1.14d"
-//};
-
-const char* ModernSupported[1] = { "1.14.3.71" };
 
 const char* VersionUtility::GetVersionAsString(int version)
 {
-	if (version < VersionUtility::Versions::V100 || version >= sizeof(VersionStrings))
-	{
-		return UnknownVersion;
-	}
-	return VersionStrings[version];
+	 static std::map<int, const char*> versions = 
+	 {
+		 {15, "1.14d"},
+		 {14, "1.14c"},
+		 {13, "1.14b"},
+		 {12, "1.14a"},
+		 {11, "1.13d"},
+		 {10, "1.13c"},
+		 {9, "1.12"},
+		 {8, "1.11b"},
+		 {7, "1.11"},
+		 {6, "1.10"},
+		 {5, "1.09d"},
+		 {4, "1.09b"},
+		 {3, "1.09"},
+		 {2, "1.08"},
+		 {1, "1.07"},
+		 {0, "1.00"}
+	 };
+
+	 std::map<int, const char*>::iterator iter = versions.find(version);
+
+	 if (iter != versions.end())
+	 {
+		 return iter->second;
+	 }
+
+	 return UnknownVersion;
 }
 
 const bool VersionUtility::IsSupported(int version)
 {
-	if (version < VersionUtility::Versions::V100 || version > sizeof(SupportedVersions))
+	static std::map<int, std::string> supportedVersions =
 	{
-		return false;
+		{ 11, "1.13d" },
+		{ 10, "1.13c" },
+		{ 9, "1.12" },
+		{ 8, "1.11b" },
+		{ 7, "1.11" },
+		{ 6, "1.10" },
+		{ 5, "1.09d" },
+		{ 4, "1.09b" },
+		{ 3, "1.09" }
+	};
+
+	std::map<int, std::string>::iterator iter = supportedVersions.find(version);
+
+	if (iter != supportedVersions.end())
+	{
+		return true;
 	}
 
-	return true;
+	return false;
 }
 
 const bool VersionUtility::IsEqualOrGreaterThan114(int version)

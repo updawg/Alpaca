@@ -7,18 +7,14 @@
 
 LibraryUtility::LibraryUtility()
 {
+	log_msg("***** Get D2 Modules address and version *****\n");
+
 	// We need to load the game now so that we have the version base offsets for the rest of the Dlls.
 	LoadGame();
 
-	if (!VersionUtility::IsSupported(Game_Version))
-	{
-		log_msg("Unsupported version: %s. Exiting.\n", VersionUtility::GetVersionAsString(version_Game));
-		exit(-1);
-	}
-
 	if (VersionUtility::IsEqualOrGreaterThan114(Game_Version))
 	{
-		log_msg("1.14d support is still being implemented!");
+		log_msg("1.14d support is not implemented.\n");
 		//exit(-1);
 	}
 	else

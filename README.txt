@@ -1,4 +1,24 @@
-******** FEATURES ********
+Gardenia is a fork of PlugY 11.02 by Yohann Nicolas that removes all
+of the components that are not allowed in the Diablo II IncGamers SPF
+forum and leaves the basics, primarily unlimited stash. This is compatible
+between 1.09b to 1.13d.
+
+Internally, I'm slowly trying to improve the design of the application by
+using OOP best practices and removing the massive usage of the preprocessor.
+The application was originally designed as a C application saved in a .cpp
+file (and using the C++ compiler).
+
+All code is published as GPL 3+ since that was the license that Yohann released it under.
+
+This is not a stable version, so use at your own risk.
+
+Install instructions:
+====
+Copy the PlugY folder and the PlugY.dll and PlugY.exe files into the root of your Diablo II
+folder, run Plugy.exe. If you want to change any settings, check the PlugY.ini file.
+
+Features
+====
 Each features can be turn on/off via PlugY.ini (see "COMMENTS ON THE CONFIGURATION FILE")
 - Disable access to Battle.net.
 - Infinite storage space in the stash.
@@ -41,7 +61,8 @@ Each features can be turn on/off via PlugY.ini (see "COMMENTS ON THE CONFIGURATI
 	/dm : Toggle always display mana mode.
 	/listcube : (beta) Create a "cube.txt" file in save directory containing all cube's receipts.
 
-Removed:
+Removed
+====
 - Unassign assigned skills and stats points.
 - Local World Event and Uber Quest for singleplayer and multiplayer off-realm !
 - Can open Cow Level Portal even when player have kill the Cow King in that difficulty.

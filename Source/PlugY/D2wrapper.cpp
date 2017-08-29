@@ -173,15 +173,14 @@ void loadCustomLibraries()
 
 void initD2modules()
 {
-	log_msg("***** Get D2 Modules address and version *****\n");
-	
+	// I'm just leaving this values because I don't want to spend time at the moment repointing and
+	// testing all of the existing code that re-uses these externs. So for now, just give them the data
+	// that they want but use the LibraryUtility as the backend database.
 	offset_Game = lu->Game_Offset;
 	version_Game = lu->Game_Version;
 
 	if (VersionUtility::IsEqualOrGreaterThan114(lu->Game_Version))
 	{
-		log_msg("1.14+ lets do it");
-
 		// It's all in Game.exe so the offset is the same.
 		offset_D2Client = lu->Game_Offset;
 		offset_D2CMP = lu->Game_Offset;
@@ -194,8 +193,6 @@ void initD2modules()
 		offset_D2Win = lu->Game_Offset;
 		offset_Fog = lu->Game_Offset;
 		offset_Storm = lu->Game_Offset;
-
-		//exit(-1);
 	}
 	else
 	{
@@ -250,21 +247,23 @@ extern "C" __declspec(dllexport) void* __stdcall Init(LPSTR IniName)
 
 	// Initialize/Load Libraries
 	lu = new LibraryUtility();
-	initD2modules();
 
 	if (!VersionUtility::IsSupported(lu->Game_Version))
 	{
-		log_box("Gardenia isn't compatible with this version : %s", VersionUtility::GetVersionAsString(version_Game));
+		log_box("Gardenia isn't compatible with this version : %s", VersionUtility::GetVersionAsString(lu->Game_Version));
 		Release();
 		exit(0);
 	}
 
+	initD2modules();
+
 	initD2functions();
+
 	loadParameters();
 
 	if (!active_plugin)	return NULL;
 
-	//loadCustomLibraries();
+	loadCustomLibraries();
 
 	// Hook DLLs
 	lu->HookLibraries();
@@ -275,9 +274,9 @@ extern "C" __declspec(dllexport) void* __stdcall Init(LPSTR IniName)
 	// Unhook DLLs
 	lu->UnhookLibraries();
 
-	//initCustomLibraries();
+	initCustomLibraries();
 
-	//loadLocalizedStrings(D2GetLang());
+	loadLocalizedStrings(D2GetLang());
 
 	log_msg("***** ENTERING DIABLO II *****\n\n" );
 
@@ -290,21 +289,21 @@ void Install_Functions()
 {
 	log_msg("***** INSTALL FUNCTIONS *****\n");
 
-	//Install_VariableOnRealm();
+	Install_VariableOnRealm();
 
-	//if (active_Commands)
-	//	Install_Commands();
+	if (active_Commands)
+		Install_Commands();
 
-//	if (active_ChangeLanguage || active_LanguageManagement)
-	//	Install_LanguageManagement();
+	if (active_ChangeLanguage || active_LanguageManagement)
+		Install_LanguageManagement();
 
-	//if (active_VersionTextChange)
-		//Install_VersionChange();
+	if (active_VersionTextChange)
+		Install_VersionChange();
 
-	//if (active_PrintPlugYVersion || active_Windowed)
-	//	Install_PrintPlugYVersion();
+	if (active_PrintPlugYVersion || active_Windowed)
+		Install_PrintPlugYVersion();
 
-	/*if (active_DisplayBaseStatsValue)
+	if (active_DisplayBaseStatsValue)
 		Install_DisplayBaseStatsValue();
 
 	if (active_changingSavePath)
@@ -332,17 +331,16 @@ void Install_Functions()
 		Install_SendPlayersCommand();
 
 	if (active_DisplayItemLevel)
-		Install_DisplayItemLevel();*/
+		Install_DisplayItemLevel();
 
-	//if (active_AlwaysDisplayLifeMana)
-	//	Install_AlwaysDisplayLifeMana();
+	if (active_AlwaysDisplayLifeMana)
+		Install_AlwaysDisplayLifeMana();
 
-	//if (active_EnabledTXTFilesWithMSExcel)
-	//	Install_EnabledTXTFilesWithMSExcel();
+	if (active_EnabledTXTFilesWithMSExcel)
+		Install_EnabledTXTFilesWithMSExcel();
 
-	//if (active_LadderRunewords)
-	//	Install_LadderRunewords();
+	if (active_LadderRunewords)
+		Install_LadderRunewords();
 
 	log_msg("\nDLL patched sucessfully.\n\n\n");
 }
-/*================================= END OF FILE =================================*/

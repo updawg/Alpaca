@@ -4,7 +4,7 @@
 
 Library::Library(DWORD gameOffset, int gameVersion)
 {
-	// If we can refactor the LoadGame function so that we can safely retrieve it's values, then we don't need
+	// If we can refactor the LoadGame function so that we can safely retrieve its values, then we don't need
 	// to pass them in as a parameter. I'm trying to avoid using global variables.
 	GameOffset = gameOffset;
 	GameVersion = gameVersion;
@@ -42,10 +42,10 @@ DWORD Library::LoadDiabloLibrary()
 
 	if (proposedOffset == NULL)
 	{
-		log_msg("[New] Failed to load library : %s\n", DllName);
+		log_msg("Failed to load library : %s\n", DllName);
 		exit(-1);
 	}
-	log_msg("[New] %s loaded at:\t%08X (%s)\n", DllName, proposedOffset, VersionUtility::GetVersionAsString(GameVersion));
+	log_msg("%s loaded at:\t%08X (%s)\n", DllName, proposedOffset, VersionUtility::GetVersionAsString(GameVersion));
 	return proposedOffset;
 }
 
@@ -80,7 +80,7 @@ int Library::GetDllVersion()
 	// Using the math directly will lead to identical values between different D2 versions.
 	DWORD shiftedOffset = *(DWORD*)(DllOffset + ShiftValue);
 
-	log_msg("[New] Base Offset: %08X, Shift: %08X, Address: %08X, Version: %s\n", DllOffset, ShiftValue, shiftedOffset, VersionUtility::GetVersionAsString(GameVersion));
+	//log_msg("[New] Base Offset: %08X, Shift: %08X, Address: %08X, Version: %s\n", DllOffset, ShiftValue, shiftedOffset, VersionUtility::GetVersionAsString(GameVersion));
 
 	if (GameVersion != VersionUtility::Versions::UNKNOWN && (GameVersion <= VersionUtility::Versions::V108 || GameVersion >= VersionUtility::Versions::V114a))
 	{

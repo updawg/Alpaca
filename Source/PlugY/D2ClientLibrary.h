@@ -8,7 +8,7 @@ public:
 	D2ClientLibrary(DWORD gameOffset, int gameVersion) : Library(gameOffset, gameVersion)
 	{
 		DllName = "D2Client.dll";
-		ShiftValue = 0x17F;
+	/*	ShiftValue = 0x17F;
 
 		Expected_Shifted_Offset_109B = 0x00000000;
 		Expected_Shifted_Offset_109D = 0x14500000;
@@ -17,7 +17,7 @@ public:
 		Expected_Shifted_Offset_111B = 0x0D812800;
 		Expected_Shifted_Offset_112 = 0x0DA01000;
 		Expected_Shifted_Offset_113C = 0x0DA03000;
-		Expected_Shifted_Offset_113D = 0x5EC0335F;
+		Expected_Shifted_Offset_113D = 0x5EC0335F;*/
 
 		DllOffset = LoadDiabloLibrary();
 		//DllVersion = GetDllVersion();
