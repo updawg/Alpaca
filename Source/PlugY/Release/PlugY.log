@@ -1,1 +1,50 @@
-﻿
+﻿  BigStash.cpp
+  ClientSaveFile.cpp
+  Commands.cpp
+  Common.cpp
+  CustomLibraries.cpp
+  D2functions.cpp
+  D2wrapper.cpp
+  Error.cpp
+  ExtendedSaveFile.cpp
+  ExtraOptions.cpp
+  GlobalVariable.cpp
+  InfinityStash.cpp
+  INIfile.cpp
+  Interface_Stash.cpp
+  Interface_Stats.cpp
+  Language.cpp
+  Library.cpp
+  LoadPlayerData.cpp
+  LocalizedStrings.cpp
+  MainScreen.cpp
+  Compiling...
+  ModifMemory.cpp
+  NewInterfaces.cpp
+  NewInterface_CubeListing.cpp
+  NewInterface_Runewords.cpp
+  NewInterface_Stats.cpp
+  NewInterface_StatsPageTwo.cpp
+  OthersFeatures.cpp
+  Parameters.cpp
+  PlayerCustomData.cpp
+  PlugY.cpp
+  PlugYFiles.cpp
+  SavePath.cpp
+  SavePlayerData.cpp
+  SharedSaveFile.cpp
+  StatsPoints.cpp
+  UpdateClient.cpp
+  UpdateServer.cpp
+  LibraryUtility.cpp
+  OffsetUtility.cpp
+  VersionUtility.cpp
+  Compiling...
+  Windowed.cpp
+     Creating library Z:\Repository\D2 Modding\Gardenia\Source\PlugY\Release\PlugY.lib and object Z:\Repository\D2 Modding\Gardenia\Source\PlugY\Release\PlugY.exp
+  Generating code
+  All 743 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  PlugY.vcxproj -> Z:\Repository\D2 Modding\Gardenia\Source\PlugY\Release\PlugY.dll
+  PlugY.vcxproj -> Z:\Repository\D2 Modding\Gardenia\Source\PlugY\Release\PlugY.pdb (Full PDB)
+          1 file(s) copied.
