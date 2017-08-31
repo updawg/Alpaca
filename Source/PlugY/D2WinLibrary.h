@@ -10,5 +10,9 @@ public:
 		DllName = "D2Win.dll";
 		DllOffset = LoadDiabloLibrary();
 		DllVersion = GameVersion;
+		SetFunctions();
 	};
+
+private:
+	void SetFunctions();
 };

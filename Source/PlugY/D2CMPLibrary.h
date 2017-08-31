@@ -10,5 +10,9 @@ public:
 		DllName = "D2CMP.dll";
 		DllOffset = LoadDiabloLibrary();
 		DllVersion = GameVersion;
+		SetFunctions();
 	};
+
+private:
+	void SetFunctions();
 };

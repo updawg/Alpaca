@@ -23,4 +23,7 @@ public:
 		//DllVersion = GetDllVersion();
 		DllVersion = GameVersion;
 	};
+
+private:
+	void SetFunctions();
 };

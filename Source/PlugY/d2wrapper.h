@@ -14,8 +14,6 @@ COPYRIGHT
 #pragma once
 
 #include <windows.h>
-// New library loading stuff
-//#include "Utilities/LibraryUtility.h"
 
 // Forward declare so we can make our 'lu' an extern.
 class LibraryUtility;

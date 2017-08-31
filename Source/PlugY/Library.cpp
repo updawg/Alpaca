@@ -50,12 +50,12 @@ DWORD Library::LoadDiabloLibrary()
 }
 
 // Return the offset for this specific version of Diablo II.
-DWORD Library::GetIndexForVersion(const VersionIndexes& indexes)
+DWORD Library::GetOffsetForVersion(const VersionOffsets& offsets)
 {
 	// properly convert the version to an enum in the future.
-	VersionIndexes::const_iterator it = indexes.find((VersionUtility::Versions)GameVersion);
+	VersionOffsets::const_iterator it = offsets.find((VersionUtility::Versions)GameVersion);
 	
-	if (it != indexes.end())
+	if (it != offsets.end())
 	{
 		//log_msg("Found it: %i", it->second);
 		return it->second;
@@ -67,9 +67,9 @@ DWORD Library::GetIndexForVersion(const VersionIndexes& indexes)
 	}
 }
 
-VersionIndexes Library::CreateIndexesUpTo113D(DWORD V109, DWORD V109D, DWORD V110, DWORD V111, DWORD V111B, DWORD V112, DWORD V113C, DWORD V113D)
+VersionOffsets Library::CreateOffsetsUpTo113D(DWORD V109, DWORD V109D, DWORD V110, DWORD V111, DWORD V111B, DWORD V112, DWORD V113C, DWORD V113D)
 {
-	VersionIndexes indexes =
+	VersionOffsets indexes =
 	{
 		{ VersionUtility::Versions::V113d, V113D },
 		{ VersionUtility::Versions::V113c, V113C },
@@ -84,19 +84,28 @@ VersionIndexes Library::CreateIndexesUpTo113D(DWORD V109, DWORD V109D, DWORD V11
 	return indexes;
 }
 
-void Library::GetFunctionAddress(DWORD* addr, HMODULE module, LPCSTR index)
+DWORD Library::RetrieveAddress(const char* functionName, const char* moduleName, const DWORD moduleBaseAddress, const DWORD moduleOffset)
 {
-	log_msg("Modern SetFctAddr\n");
+	return GetFunctionAddress(functionName, moduleName, (HMODULE)moduleBaseAddress, (LPCSTR)moduleOffset);
+}
 
-	if (index)
+DWORD Library::GetFunctionAddress(const char* functionName, const char* moduleName, HMODULE module, LPCSTR offset)
+{
+	log_msg("Searching for %s (%08X) function [%s] at %08X (%i) ... ", moduleName, module, functionName, offset, offset);
+
+	DWORD locatedAddress;
+
+	if (offset)
 	{
-		*addr = (DWORD)GetProcAddress(module, index);
-		if (!*addr)
+		locatedAddress = (DWORD) GetProcAddress(module, offset);
+		if (!locatedAddress)
 		{
-			log_msg("Bad index fct %d for %08X\n", index, module);
+			log_msg("FAILED.\n");
+			// Don't exit here cause apparently the plugin still works even if some functions aren't found.
 		}
-		//log_msg("Properly set index %d for module %08X\n", index, module);
+		log_msg("SUCCESS. Located at %08X.\n", locatedAddress);
+		return locatedAddress;
 	}
-	else
-		*addr = NULL;
+	
+	return NULL;
 }

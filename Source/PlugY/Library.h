@@ -2,9 +2,10 @@
 
 #include <windows.h>
 #include <map>
+#include "Error.h"
 #include "Utilities/VersionUtility.h"
 
-using VersionIndexes = std::map<VersionUtility::Versions, DWORD>;
+using VersionOffsets = std::map<VersionUtility::Versions, DWORD>;
 
 class Library
 {
@@ -27,13 +28,14 @@ public:
 	DWORD GameOffset;
 	int GameVersion;
 
-	void GetFunctionAddress(DWORD* addr, HMODULE module, LPCSTR index);
+	DWORD RetrieveAddress(const char* functionName, const char* moduleName, const DWORD moduleBaseAddress, const DWORD moduleOffset);
+	DWORD GetFunctionAddress(const char* functionName, const char* moduleName, HMODULE module, LPCSTR index);
 
 	// Offsets for functions in these specific versions. When updating to a new diablo version, you will want to add an entry to each of the function sets
 	// In each library that require an update.
-	DWORD GetIndexForVersion(const VersionIndexes& indexes);	
+	DWORD GetOffsetForVersion(const VersionOffsets& offsets);	
 
-	VersionIndexes CreateIndexesUpTo113D(DWORD V109, DWORD V109D, DWORD V110, DWORD V111, DWORD V111B, DWORD V112, DWORD V113C, DWORD V113D);
+	VersionOffsets CreateOffsetsUpTo113D(DWORD V109, DWORD V109D, DWORD V110, DWORD V111, DWORD V111B, DWORD V112, DWORD V113C, DWORD V113D);
 
 	// On a new version we can do something like this:
 	//VersionIndexes CreateIndexesUpTo114D(DWORD V109, DWORD V109D, DWORD V110, DWORD V111, DWORD V111B, DWORD V112, DWORD V113C, DWORD V113D, DWORD V114D);
@@ -41,9 +43,13 @@ public:
 	// version to it. This allows us not to have to change the function signature for every single call simply because we added a new version. Also the logic for
 	// the code to retrieve the offsets uses the maps key property which is to access elements by key rather than by index, so if the key isn't found, the code will
 	// still do what it is suppose to.
-
 protected:
-	// Prevent this class from being instantiated.
-	//Library(LPCSTR libraryName, DWORD gameOffset, int gameVersion, DWORD V109B, DWORD V109D, DWORD V110, DWORD V111, DWORD V111B, DWORD V112, DWORD V113C, DWORD V113D);
+	// Each subclass will locate the functions that we need.
+	virtual void SetFunctions() = 0
+	{
+		log_msg("\nFinding and setting all %s functions ...\n", DllName);
+	}
+
+	// Prevent this class from being instantiated. (pure virtual classes can't be instantiated anyways
 	Library(DWORD gameOffset, int gameVersion);
 };

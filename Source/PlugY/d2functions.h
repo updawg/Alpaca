@@ -54,7 +54,7 @@ extern s_shifting shifting;
 #include "../Commons/D2Funcs.h"
 
 // Provide the function pointer types and say that they are going to be found externally.
-//typedef DWORD(STDCALL *TD2Common11084) (Room* ptRoom, DWORD zero); extern TD2Common11084 D2Common11084;
+typedef DWORD(STDCALL *TD2Common11084) (Room* ptRoom, DWORD zero); extern TD2Common11084 D2Common11084;
 
 extern DataTables* SgptDataTables;
 

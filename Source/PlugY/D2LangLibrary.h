@@ -11,4 +11,7 @@ public:
 		DllOffset = LoadDiabloLibrary();
 		DllVersion = GameVersion;
 	};
+
+private:
+	void SetFunctions();
 };

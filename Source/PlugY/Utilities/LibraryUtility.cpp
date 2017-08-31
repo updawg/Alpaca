@@ -31,8 +31,11 @@ LibraryUtility::LibraryUtility()
 		Fog = new FogLibrary(Game_Offset, Game_Version);
 		Storm = new StormLibrary(Game_Offset, Game_Version);
 
-		D2Common->GetD2Common11084();
-		D2Common->SetD2Common11084Addr();
+		//D2Common->GetD2Common11084();
+		//D2Common->SetD2Common11084Addr();
+		//DWORD off= D2Common->GetD2Common11084_FunctionAddress();
+		//D2Common->D2Common11084 = (TD2Common11084)off;
+		//log_msg("Function address located at: %08X :: %08X", D2Common->GetD2Common11084_FunctionAddress(), D2Common->D2Common11084);
 	}
 }
 
