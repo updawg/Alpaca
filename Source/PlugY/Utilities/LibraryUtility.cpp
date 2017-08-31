@@ -32,6 +32,7 @@ LibraryUtility::LibraryUtility()
 		Storm = new StormLibrary(Game_Offset, Game_Version);
 
 		D2Common->GetD2Common11084();
+		D2Common->SetD2Common11084Addr();
 	}
 }
 

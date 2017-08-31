@@ -25,7 +25,7 @@ s_shifting shifting;
 
 #include "../Commons/D2Funcs.h"
 
-TD2Common11084 D2Common11084;
+//TD2Common11084 D2Common11084;
 
 DataTables* SgptDataTables;
 //E2F(D2Client,0,	DWORD,		D2isLODGame, ());//6FAAC080
@@ -611,7 +611,7 @@ void setFctAddr(DWORD* addr, HMODULE module, LPCSTR index)
 		{
 			log_msg("Bad index fct %d for %08X\n",index,module);
 		}
-		//log_msg("Properly set index %d for module %08X\n", index, module);
+		log_msg("Properly set index %d for module %08X. Located at %08X\n", index, module, *addr);
 	} else
 		*addr = NULL;
 }

@@ -62,7 +62,7 @@ DWORD Library::GetIndexForVersion(const VersionIndexes& indexes)
 	}
 	else
 	{
-		log_msg("error finding it!");
+		log_msg("error finding the address for module %s", DllName);
 		return 0;
 	}
 }
@@ -82,4 +82,21 @@ VersionIndexes Library::CreateIndexesUpTo113D(DWORD V109, DWORD V109D, DWORD V11
 	};
 
 	return indexes;
+}
+
+void Library::GetFunctionAddress(DWORD* addr, HMODULE module, LPCSTR index)
+{
+	log_msg("Modern SetFctAddr\n");
+
+	if (index)
+	{
+		*addr = (DWORD)GetProcAddress(module, index);
+		if (!*addr)
+		{
+			log_msg("Bad index fct %d for %08X\n", index, module);
+		}
+		//log_msg("Properly set index %d for module %08X\n", index, module);
+	}
+	else
+		*addr = NULL;
 }

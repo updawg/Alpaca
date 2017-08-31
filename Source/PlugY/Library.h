@@ -27,6 +27,8 @@ public:
 	DWORD GameOffset;
 	int GameVersion;
 
+	void GetFunctionAddress(DWORD* addr, HMODULE module, LPCSTR index);
+
 	// Offsets for functions in these specific versions. When updating to a new diablo version, you will want to add an entry to each of the function sets
 	// In each library that require an update.
 	DWORD GetIndexForVersion(const VersionIndexes& indexes);	
