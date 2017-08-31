@@ -30,6 +30,8 @@ LibraryUtility::LibraryUtility()
 		D2Win = new D2WinLibrary(Game_Offset, Game_Version);
 		Fog = new FogLibrary(Game_Offset, Game_Version);
 		Storm = new StormLibrary(Game_Offset, Game_Version);
+
+		D2Common->GetD2Common11084();
 	}
 }
 

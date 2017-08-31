@@ -5,7 +5,7 @@
 
 =================================================================*/
 
-#include "error.h"
+#include "Error.h"
 #include "INIfile.h"
 #include "parameters.h"		// loadParameters()
 #include <stdio.h>

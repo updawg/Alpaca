@@ -8,7 +8,6 @@
 ================================================*/
 
 #include "common.h"
-
 s_shifting shifting;
 
 #define D2S(F, I, R, N, P)	T##N N;
@@ -20,7 +19,14 @@ s_shifting shifting;
 #define A7(X, Z, A,B,C,D,E,F,G,H, R, N, P) T##N N;
 #define C7(Z, A,B,C,D,E,F,G,H, T, N)       T* pt##N;
 
+
+
+
+
 #include "../Commons/D2Funcs.h"
+
+TD2Common11084 D2Common11084;
+
 DataTables* SgptDataTables;
 //E2F(D2Client,0,	DWORD,		D2isLODGame, ());//6FAAC080
 //E2F(D2Client,0,	BYTE,		D2GetDifficultyLevel, ());//6FAAC090
@@ -605,14 +611,31 @@ void setFctAddr(DWORD* addr, HMODULE module, LPCSTR index)
 		{
 			log_msg("Bad index fct %d for %08X\n",index,module);
 		}
+		//log_msg("Properly set index %d for module %08X\n", index, module);
 	} else
 		*addr = NULL;
 }
 
+void SetFcrAddrVersion(DWORD* moduleOffset, const int* versionOffset)
+{
+	// offset_D2Common
+	// version_D2Common
+	// set depending on version
+//#define F7(X, Z, A,B,C,D,E,F,G,H, R, N, P) setFctAddr((DWORD*)&N, (HMODULE)offset_##Z, (LPCSTR)(version_##Z == VersionUtility::Versions::V113d? H : (version_##Z == VersionUtility::Versions::V113c? G : (version_##Z == VersionUtility::Versions::V112? F : (version_##Z == VersionUtility::Versions::V111b? E : (version_##Z == VersionUtility::Versions::V111? D : (version_##Z == VersionUtility::Versions::V110? C : (version_##Z == VersionUtility::Versions::V109d? B : A))))))));
+//	setFctAddr((DWORD*)&D2Common11084, (HMODULE)offset_D2Common, (LPCSTR)(version_D2Common == VersionUtility::Versions::V113d ? 10907 : (version_D2Common == VersionUtility::Versions::V113c ? 10346 : (version_D2Common == VersionUtility::Versions::V112 ? 11109 : (version_D2Common == VersionUtility::Versions::V111b ? 11084 : (version_D2Common == VersionUtility::Versions::V111 ? 10188 : (version_D2Common == VersionUtility::Versions::V110 ? 00000 : (version_D2Common == VersionUtility::Versions::V109d ? 00000 : 00000))))))));;
+
+	DWORD offsetForThisVersion = 0;
+	/*if (&versionOffset == VersionUtility::Versions::V113d)
+	{
+	}*/
+
+	// DWORD* addr, HMODULE module, LPCSTR index
+	//setFcrAddr();
+
+
+}
 void initD2functions()
 {
-//	#define D2S(F, I, R, N, P)	N = (F##I)GetProcAddress((HMODULE)offset_##F, (LPCSTR)I);
-//	#define D2F(F, I, R, N, P)	N = (F##I)GetProcAddress((HMODULE)offset_##F, (LPCSTR)I);
 	#define D2S(F, I, R, N, P)	SETFCTADDR(F, I, N);
 	#define D2F(F, I, R, N, P)	SETFCTADDR(F, I, N);
 	#define E2S(F, A, R, N, P)	N = (T##N)(offset_##F + 0x##A);

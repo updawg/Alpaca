@@ -30,7 +30,6 @@
 using Versions = VersionUtility::Versions;
 
 // Required Files
-int version_Game = Versions::UNKNOWN;
 int version_D2Client = Versions::UNKNOWN;
 int version_D2CMP = Versions::UNKNOWN;
 int version_D2Common = Versions::UNKNOWN;
@@ -56,19 +55,6 @@ DWORD offset_D2Win = NULL;
 DWORD offset_Fog = NULL;
 DWORD offset_Storm = NULL;
 
-const char* S_Game = "Game.exe";
-const char* S_D2Client = "D2Client.dll";
-const char* S_D2CMP = "D2CMP.dll";
-const char* S_D2Common = "D2Common.dll";
-const char* S_D2Game = "D2Game.dll";
-const char* S_D2gfx = "D2gfx.dll";
-const char* S_D2Lang = "D2Lang.dll";
-const char* S_D2Launch = "D2Launch.dll";
-const char* S_D2Net = "D2Net.dll";
-const char* S_D2Win = "D2Win.dll";
-const char* S_Fog = "Fog.dll";
-const char* S_Storm = "Storm.dll";
-
 // Make this global so people can use it.
 LibraryUtility* lu;
 
@@ -80,7 +66,7 @@ void freeLibrary( DWORD library )
 
 void freeD2Libraries()
 {
-	if (version_Game >= Versions::V114a)
+	if (lu->Game_Version >= Versions::V114a)
 		return;
 
 	log_msg("***** Free Libraries *****\n");
@@ -177,7 +163,6 @@ void initD2modules()
 	// testing all of the existing code that re-uses these externs. So for now, just give them the data
 	// that they want but use the LibraryUtility as the backend database.
 	offset_Game = lu->Game_Offset;
-	version_Game = lu->Game_Version;
 
 	if (VersionUtility::IsEqualOrGreaterThan114(lu->Game_Version))
 	{

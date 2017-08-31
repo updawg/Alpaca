@@ -22,7 +22,7 @@
 // New version stuff
 #include "Utilities/VersionUtility.h"
 
-#include "error.h"
+#include "Error.h"
 #include "modifMemory.h"
 #include "parameters.h"
 #include "playerCustomData.h" // include common.h

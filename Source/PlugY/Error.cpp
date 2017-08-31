@@ -6,7 +6,7 @@
 =================================================================*/
 
 #include "parameters.h"
-#include "error.h"
+#include "Error.h"
 #include <windows.h>
 #include <stdio.h>			// fopen() fclose() fprintf() vfprintf()
 #include <stdarg.h>			// ...

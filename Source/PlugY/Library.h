@@ -1,6 +1,10 @@
 #pragma once
 
 #include <windows.h>
+#include <map>
+#include "Utilities/VersionUtility.h"
+
+using VersionIndexes = std::map<VersionUtility::Versions, DWORD>;
 
 class Library
 {
@@ -11,7 +15,7 @@ public:
 	DWORD LoadDiabloLibrary();
 
 	// Set dll version (should be same as Game)
-	int GetDllVersion();
+	//int GetDllVersion();
 	
 	void HookLibrary();
 	void UnhookLibrary();
@@ -23,19 +27,18 @@ public:
 	DWORD GameOffset;
 	int GameVersion;
 
-	// A value that we are using to determine what version the DLLs are.
-	// We need this since simply loading the DLL for most versions gives us the same Base Offset.
-	int ShiftValue;
+	// Offsets for functions in these specific versions. When updating to a new diablo version, you will want to add an entry to each of the function sets
+	// In each library that require an update.
+	DWORD GetIndexForVersion(const VersionIndexes& indexes);	
 
-	// Offsets for Versions (these are constants for that version)
-	DWORD Expected_Shifted_Offset_109B;
-	DWORD Expected_Shifted_Offset_109D;
-	DWORD Expected_Shifted_Offset_110;
-	DWORD Expected_Shifted_Offset_111;
-	DWORD Expected_Shifted_Offset_111B;
-	DWORD Expected_Shifted_Offset_112;
-	DWORD Expected_Shifted_Offset_113C;
-	DWORD Expected_Shifted_Offset_113D;
+	VersionIndexes CreateIndexesUpTo113D(DWORD V109, DWORD V109D, DWORD V110, DWORD V111, DWORD V111B, DWORD V112, DWORD V113C, DWORD V113D);
+
+	// On a new version we can do something like this:
+	//VersionIndexes CreateIndexesUpTo114D(DWORD V109, DWORD V109D, DWORD V110, DWORD V111, DWORD V111B, DWORD V112, DWORD V113C, DWORD V113D, DWORD V114D);
+	// and then in the function implementation for that function we can re-use our existing "UpTo113D" version to create the most of the map, and we can add the new
+	// version to it. This allows us not to have to change the function signature for every single call simply because we added a new version. Also the logic for
+	// the code to retrieve the offsets uses the maps key property which is to access elements by key rather than by index, so if the key isn't found, the code will
+	// still do what it is suppose to.
 
 protected:
 	// Prevent this class from being instantiated.

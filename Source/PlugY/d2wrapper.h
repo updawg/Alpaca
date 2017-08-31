@@ -20,7 +20,7 @@ COPYRIGHT
 // Forward declare so we can make our 'lu' an extern.
 class LibraryUtility;
 
-extern int version_Game;
+//extern int version_Game;
 extern int version_D2Client;
 extern int version_D2CMP;
 extern int version_D2Common;

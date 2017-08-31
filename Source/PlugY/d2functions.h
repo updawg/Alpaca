@@ -33,6 +33,9 @@ extern s_shifting shifting;
 #define PCPY ((PYPlayerData*)((DWORD)PCPlayerData+shifting.ptPYPlayerData)) //->ptPYPlayerData
 #define PCSkills (*(Skills**)((DWORD)(ptChar)+shifting.ptSkills)) //->ptSkills
 
+
+
+
 #define R7(Z,A,B,C,D,E,F,G,H) (offset_##Z + (version_##Z == VersionUtility::Versions::V113d? 0x##H : (version_##Z == VersionUtility::Versions::V113c? 0x##G : (version_##Z == VersionUtility::Versions::V112? 0x##F : (version_##Z == VersionUtility::Versions::V111b? 0x##E : (version_##Z == VersionUtility::Versions::V111? 0x##D : (version_##Z == VersionUtility::Versions::V110? 0x##C : (version_##Z == VersionUtility::Versions::V109d? 0x##B : 0x##A))))))))
 #define V7(Z,A,B,C,D,E,F,G,H) (version_##Z == VersionUtility::Versions::V113d? 0x##H : (version_##Z == VersionUtility::Versions::V113c? 0x##G : (version_##Z == VersionUtility::Versions::V112? 0x##F : (version_##Z == VersionUtility::Versions::V111b? 0x##E : (version_##Z == VersionUtility::Versions::V111? 0x##D : (version_##Z == VersionUtility::Versions::V110? 0x##C : (version_##Z == VersionUtility::Versions::V109d? 0x##B : 0x##A)))))))
 
@@ -49,6 +52,10 @@ extern s_shifting shifting;
 #define C7(Z, A,B,C,D,E,F,G,H, T, N)       extern T* pt##N;
 
 #include "../Commons/D2Funcs.h"
+
+// Provide the function pointer types and say that they are going to be found externally.
+typedef DWORD(STDCALL *TD2Common11084) (Room* ptRoom, DWORD zero); extern TD2Common11084 D2Common11084;
+
 extern DataTables* SgptDataTables;
 
 #undef F7

@@ -5,7 +5,7 @@
 
 =================================================================*/
 
-#include "error.h"
+#include "Error.h"
 #include "parameters.h"
 #include "modifMemory.h"
 

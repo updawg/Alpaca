@@ -61,6 +61,7 @@
       <PrecompiledHeader />
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <PreprocessToFile>false</PreprocessToFile>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -69,6 +70,9 @@
       <AdditionalDependencies>version.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "$(TargetPath)" "..\..\PlugYInstaller\PlugY.dll</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -140,7 +144,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Commons\d2BinFile.h" />
-    <ClInclude Include="..\Commons\d2constants.h" />
+    <ClInclude Include="..\Commons\D2Constants.h" />
     <ClInclude Include="..\Commons\D2Funcs.h" />
     <ClInclude Include="..\Commons\d2StringTblStruct.h" />
     <ClInclude Include="..\Commons\d2Struct.h" />
@@ -163,7 +167,7 @@
     <ClInclude Include="D2NetLibrary.h" />
     <ClInclude Include="D2WinLibrary.h" />
     <ClInclude Include="d2wrapper.h" />
-    <ClInclude Include="error.h" />
+    <ClInclude Include="Error.h" />
     <ClInclude Include="extendedSaveFile.h" />
     <ClInclude Include="extraOptions.h" />
     <ClInclude Include="FogLibrary.h" />

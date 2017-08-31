@@ -1,10 +1,10 @@
 /*==============================================
 	File created by Yohann NICOLAS.
 
-    @file error.hpp
+    @file Error.h
     @brief Error logger definition.
 
-    This file defiens various functions related to 
+    This file definess various functions related to 
     error handling in D2External functions.
 
 ==============================================*/

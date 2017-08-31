@@ -7,7 +7,7 @@
 #pragma once
 
 #define GARDENIA_NAME "Gardenia"
-#define GARDENIA_VERSION "0.02"
+#define GARDENIA_VERSION "0.03"
 
 enum TargetMod
 {
