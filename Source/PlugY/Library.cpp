@@ -67,7 +67,7 @@ DWORD Library::GetOffsetForVersion(const VersionOffsets& offsets)
 	}
 }
 
-VersionOffsets Library::CreateOffsetsUpTo113D(DWORD V109, DWORD V109D, DWORD V110, DWORD V111, DWORD V111B, DWORD V112, DWORD V113C, DWORD V113D)
+VersionOffsets Library::CreateOffsets(DWORD V109, DWORD V109D, DWORD V110, DWORD V111, DWORD V111B, DWORD V112, DWORD V113C, DWORD V113D)
 {
 	VersionOffsets indexes =
 	{
@@ -84,14 +84,14 @@ VersionOffsets Library::CreateOffsetsUpTo113D(DWORD V109, DWORD V109D, DWORD V11
 	return indexes;
 }
 
-DWORD Library::RetrieveAddress(const char* functionName, const char* moduleName, const DWORD moduleBaseAddress, const DWORD moduleOffset)
+DWORD Library::RetrieveAddress(const char* moduleName, const DWORD moduleBaseAddress, const VersionOffsets moduleOffsets)
 {
-	return GetFunctionAddress(functionName, moduleName, (HMODULE)moduleBaseAddress, (LPCSTR)moduleOffset);
+	return GetFunctionAddress(moduleName, (HMODULE) moduleBaseAddress, (LPCSTR) GetOffsetForVersion(moduleOffsets));
 }
 
-DWORD Library::GetFunctionAddress(const char* functionName, const char* moduleName, HMODULE module, LPCSTR offset)
+DWORD Library::GetFunctionAddress(const char* moduleName, HMODULE module, LPCSTR offset)
 {
-	log_msg("Searching for %s (%08X) function [%s] at %08X (%i) ... ", moduleName, module, functionName, offset, offset);
+	log_msg("Searching for %s (%08X) function at %08X (%i) ... ", moduleName, module, offset, offset);
 
 	DWORD locatedAddress;
 

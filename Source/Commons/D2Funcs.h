@@ -71,6 +71,7 @@ F7(STD,  D2Common,10881,10881,10881,10956,11156,10218,10987,10665,	DWORD,		D2Sav
 F7(STD,  D2Common,10953,10953,10953,10099,10255,10210,10302,10335,	void,		D2SetSkillBaseLevel,(Unit* ptChar, DWORD skillID, DWORD slvl, DWORD bRemove, char*, DWORD));
 F7(STD,  D2Common,10968,10968,10968,10700,10109,10904,10306,10007,	DWORD,		D2GetSkillLevel, (Unit* ptChar, SkillData* ptSkill, DWORD includingBonus));
 F7(STD,  D2Common,11276,11276,11276,10254,10074,10111,10435,11081,	DWORD,		D2GetSkillCost, (Unit* ptChar, int skpoints, DWORD skillID, DWORD curSkillLevel)); //not 10447
+
 A7(FAST, D2Common,00000,00000,82C80, 15D0, 1800, 1220, 12D0, 17B0,	CharStatsBIN*,	D2GetCharStatsBIN, (DWORD charID));
 A7(FAST, D2Common,00000,00000,12410,5D7D0,1A100,116C0,1C020,5B0E0,	DWORD,			D2CompileCubeInput, (CubeInput* cubeinput, char* s, DWORD p1, DWORD p2));
 A7(FAST, D2Common,00000,00000,12910,5D210,19B40,11100,1BA60,5AB20,	DWORD,			D2CompileCubeOutput, (CubeOutput* cubeoutput, char* s, DWORD p1, DWORD p2));

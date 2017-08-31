@@ -12,6 +12,11 @@ public:
 		DllVersion = GameVersion;
 	};
 
+	typedef DWORD(__stdcall *TD2SendToServer) (DWORD size, DWORD one, void* data);
+	typedef DWORD(__stdcall *TD2SendToClient) (DWORD zero, DWORD clientID, void* data, DWORD size);
+
+	TD2SendToServer D2SendToServer;
+	TD2SendToClient D2SendToClient;
 private:
 	void SetFunctions();
 };

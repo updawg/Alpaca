@@ -47,12 +47,13 @@ extern s_shifting shifting;
 #define E2S(F, A, R, N, P)	typedef R (STDCALL  *T##N) P; extern T##N N;
 #define E2F(F, A, R, N, P)	typedef R (FASTCALL *T##N) P; extern T##N N;
 #define E2C(F, A, T, N)		extern T* pt##N;
-#define F7(X, Z, A,B,C,D,E,F,G,H, R, N, P) typedef R (X##CALL  *T##N) P; extern T##N N;
+#define F7(X, Z, A,B,C,D,E,F,G,H, R, N, P) typedef R (X##CALL  *T##N) P;extern T##N N;
 #define A7(X, Z, A,B,C,D,E,F,G,H, R, N, P) typedef R (X##CALL  *T##N) P; extern T##N N;
 #define C7(Z, A,B,C,D,E,F,G,H, T, N)       extern T* pt##N;
 
 #include "../Commons/D2Funcs.h"
-
+//#undef F7
+//#define F7(X, Z, A,B,C,D,E,F,G,H, R, N, P) 
 // Provide the function pointer types and say that they are going to be found externally.
 typedef DWORD(STDCALL *TD2Common11084) (Room* ptRoom, DWORD zero); extern TD2Common11084 D2Common11084;
 

@@ -10,9 +10,12 @@ public:
 		DllName = "D2CMP.dll";
 		DllOffset = LoadDiabloLibrary();
 		DllVersion = GameVersion;
-		SetFunctions();
+		//SetFunctions();
 	};
 
+	typedef DWORD(__stdcall *TD2CMP10014) (void* image);
+
+	TD2CMP10014 D2CMP10014;
 private:
 	void SetFunctions();
 };

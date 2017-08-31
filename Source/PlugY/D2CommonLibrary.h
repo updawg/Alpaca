@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Library.h"
-#include "../Commons/D2UnitStruct.h"
 
 class D2CommonLibrary : public Library
 {
@@ -11,37 +10,153 @@ public:
 		DllName = "D2Common.dll";
 		DllOffset = LoadDiabloLibrary();
 		DllVersion = GameVersion;
-
-		// Function Pointers
-		//#define F7(X, Z, A,B,C,D,E,F,G,H, R, N, P) setFctAddr((DWORD*)&N, (HMODULE)offset_##Z, (LPCSTR)(version_##Z == VersionUtility::Versions::V113d? H : (version_##Z == VersionUtility::Versions::V113c? G : (version_##Z == VersionUtility::Versions::V112? F : (version_##Z == VersionUtility::Versions::V111b? E : (version_##Z == VersionUtility::Versions::V111? D : (version_##Z == VersionUtility::Versions::V110? C : (version_##Z == VersionUtility::Versions::V109d? B : A))))))));
-		//F7(STD,  D2Common,00000,00000,00000,10188,11084,11109,10346,10907,	DWORD,		D2Common11084, (Room* ptRoom, DWORD zero));
 		SetFunctions();
 	};
 
-	// Function Offsets
-	/*DWORD GetD2Common11084()
-	{
-
-		VersionIndexes indexes = CreateIndexesUpTo113D(0x00000, 0x00000, 0x00000, 0x10188, 0x11084, 0x11109, 0x10346, 0x10907);
-		int offset = GetIndexForVersion(indexes);
-		log_msg("\nV2: For %s at version %s the offset is %08X\n", DllName, VersionUtility::GetVersionAsString(GameVersion), offset);
-		return offset;
-	}*/
-
-
-	// Function Pointer Types
 	typedef DWORD(__stdcall *TD2Common11084) (Room* ptRoom, DWORD zero);
+	typedef DWORD(__stdcall *TD2GetLevelID) (Room* ptRoom);
+	typedef Room* (__stdcall *TD2GetDropRoom) (Room* ptRoom, Position*, Position*, DWORD, DWORD, DWORD, DWORD);
+	typedef Unit* (__stdcall *TD2Common10242) (Inventory* ptInventory, Unit* ptItem, DWORD bIsClient);
+	typedef Unit* (__stdcall *TD2CanPutItemInInv) (Inventory* ptInventory, Unit* ptItem, DWORD p3, DWORD zero, Unit* ptUnit, const char* file, DWORD line);
+	typedef Unit* (__stdcall *TD2InvRemoveItem) (Inventory* ptInventory, Unit* ptItem);
+	typedef DWORD(__stdcall *TD2InvAddItem) (Inventory* ptInventory, Unit* ptItem, DWORD posX, DWORD posY, DWORD vValueC, DWORD bIsClient, BYTE page);
+	typedef DWORD(__stdcall *TD2Common10250) (const char* file, DWORD line, Inventory* ptInventory, DWORD posX, DWORD posY, DWORD vValueC, DWORD bIsClient, BYTE page);
+	typedef DWORD(__stdcall *TD2Common10273) (Inventory* ptInventory, void* unknow);
+	typedef Unit* (__stdcall *TD2InventoryGetFirstItem) (Inventory* ptInventory);
+	typedef Unit* (__stdcall *TD2UnitGetNextItem) (Unit* ptItem);
+	typedef Unit* (__stdcall *TD2GetRealItem) (Unit* ptUnit);
+	typedef DWORD(__stdcall *TD2GetPosX) (Unit* ptUnit);
+	typedef DWORD(__stdcall *TD2GetPosY) (Unit* ptUnit);
+	typedef void(__stdcall *TD2GetPosition) (Unit* ptUnit, Position* pos);
+	typedef DWORD(__stdcall *TD2GetMaxGoldBank) (Unit* ptUnit);
+	typedef Room* (__stdcall *TD2GetRoom) (Unit* ptUnit);
+	typedef PlayerData* (__stdcall *TD2InitPlayerData) (Unit* ptChar);
+	typedef PlayerData* (__stdcall *TD2GetPlayerData) (Unit* ptChar);
+	typedef DWORD(__stdcall *TD2GetDefence) (Unit* ptChar);
+	typedef DWORD(__stdcall *TD2GetChanceToBlock) (Unit* ptChar, DWORD isLODGame);
+	typedef DWORD(__stdcall *TD2GetMaxGold) (Unit* ptUnit);
+	typedef DWORD(__stdcall *TD2Common10572) (Unit* ptObject, DWORD value);
+	typedef BYTE(__stdcall *TD2GetObjectFlags) (Unit* ptObject);
+	typedef void(__stdcall *TD2SetObjectFlags) (Unit* ptObject, BYTE flags);
+	typedef DWORD(__stdcall *TD2isInState) (Unit* ptChar, DWORD isLODGame);
+	typedef void(__stdcall *TD2AddPlayerStat) (Unit* ptChar, DWORD statID, int amount, DWORD index);
+	typedef int(__stdcall *TD2GetPlayerStat) (Unit* ptChar, DWORD statID, DWORD index);
+	typedef int(__stdcall *TD2GetPlayerBaseStat) (Unit* ptChar, DWORD statID, DWORD index);
+	typedef DWORD(__stdcall *TD2haveDefenceBonus) (Unit* ptChar);
+	typedef DWORD(__stdcall *TD2haveFireResBonus) (Unit* ptChar);
+	typedef DWORD(__stdcall *TD2haveColdResBonus) (Unit* ptChar);
+	typedef DWORD(__stdcall *TD2haveLightResBonus) (Unit* ptChar);
+	typedef DWORD(__stdcall *TD2havePoisonResBonus) (Unit* ptChar);
+	typedef DWORD(__stdcall *TD2haveDefenceMalus) (Unit* ptChar);
+	typedef DWORD(__stdcall *TD2haveFireResMalus) (Unit* ptChar);
+	typedef DWORD(__stdcall *TD2haveColdResMalus) (Unit* ptChar);
+	typedef DWORD(__stdcall *TD2haveLightResMalus) (Unit* ptChar);
+	typedef DWORD(__stdcall *TD2havePoisonResMalus) (Unit* ptChar);
+	typedef void* (__stdcall *TD2CompileTxtFile) (DWORD unused, const char* filename, BINField* ptFields, DWORD* ptRecordCount, DWORD recordLength);
+	typedef ItemsBIN* (__stdcall *TD2GetItemsBIN) (DWORD itemID);
+	typedef GemsBIN* (__stdcall *TD2GetGemsBIN) (DWORD gemID);
+	typedef CubeMainBIN* (__stdcall *TD2GetCubeMainBIN) (DWORD cubemainID);
+	typedef int(__stdcall *TD2GetNbCubeMainBIN) ();
+	typedef DWORD(__stdcall *TD2GetNextLevelXP) (DWORD classID, DWORD level);
+	typedef DWORD(__stdcall *TD2GetMaxLevel) (DWORD classID);
+	typedef DifficultyLevelsBIN* (__stdcall *TD2GetDifficultyLevelsBIN) (DWORD difficultyLevel);
+	typedef DWORD(__stdcall *TD2GetItemQuality) (Unit* ptItem);
+	typedef DWORD(__stdcall *TD2TestFlags) (Unit* ptUnit, DWORD flags, DWORD line, const char* file);
+	typedef DWORD(__stdcall *TD2GetItemLevel) (Unit* ptItem);
+	typedef BYTE(__stdcall *TD2ItemGetPage) (Unit* ptUnit);
+	typedef void(__stdcall *TD2ItemSetPage) (Unit* ptItem, BYTE page);
+	typedef DWORD(__stdcall *TD2CheckItemType) (Unit* ptItem, DWORD itype);
+	typedef int(__stdcall *TD2GetUniqueID) (Unit* ptItem);
+	typedef void(__stdcall *TD2SetAnim) (Unit* ptUnit, int anim);
+	typedef int* (__stdcall *TD2GetNbRunesBIN) ();
+	typedef RunesBIN* (__stdcall *TD2GetRunesBIN) (int runesID);
+	typedef DWORD(__stdcall *TD2isEtheral) (Unit* ptItem);
+	typedef DWORD(__stdcall *TD2SaveItem) (Unit* ptItem, saveBitField* data, DWORD startSize, DWORD p4, DWORD p5, DWORD p6);
+	typedef void(__stdcall *TD2SetSkillBaseLevel) (Unit* ptChar, DWORD skillID, DWORD slvl, DWORD bRemove, char*, DWORD);
+	typedef DWORD(__stdcall *TD2GetSkillLevel) (Unit* ptChar, SkillData* ptSkill, DWORD includingBonus);
+	typedef DWORD(__stdcall *TD2GetSkillCost) (Unit* ptChar, int skpoints, DWORD skillID, DWORD curSkillLevel);
+	typedef CharStatsBIN* (__fastcall *TD2GetCharStatsBIN) (DWORD charID);
+	typedef DWORD(__fastcall *TD2CompileCubeInput) (CubeInput* cubeinput, char* s, DWORD p1, DWORD p2);
+	typedef DWORD(__fastcall *TD2CompileCubeOutput) (CubeOutput* cubeoutput, char* s, DWORD p1, DWORD p2);
+	typedef ItemTypesBIN* (__fastcall *TD2GetItemTypesBIN) (DWORD itemTypesId);
+	typedef ItemStatCostBIN* (__fastcall *TD2GetItemStatCostBIN) (DWORD id);
+	typedef void* (__fastcall *TD2ReadFile) (DWORD unused, char* filename, DWORD* size, const char*, DWORD);
+	typedef void(__stdcall *TD2LoadSuperuniques) (DWORD mempool);
 
-	// Function Pointers and methods that retrieve the locations for these functions.
 	TD2Common11084 D2Common11084;
-
-	
-	
-	
-
+	TD2GetLevelID D2GetLevelID;
+	TD2GetDropRoom D2GetDropRoom;
+	TD2Common10242 D2Common10242;
+	TD2CanPutItemInInv D2CanPutItemInInv;
+	TD2InvRemoveItem D2InvRemoveItem;
+	TD2InvAddItem D2InvAddItem;
+	TD2Common10250 D2Common10250;
+	TD2Common10273 D2Common10273;
+	TD2InventoryGetFirstItem D2InventoryGetFirstItem;
+	TD2UnitGetNextItem D2UnitGetNextItem;
+	TD2GetRealItem D2GetRealItem;
+	TD2GetPosX D2GetPosX;
+	TD2GetPosY D2GetPosY;
+	TD2GetPosition D2GetPosition;
+	TD2GetMaxGoldBank D2GetMaxGoldBank;
+	TD2GetRoom D2GetRoom;
+	TD2InitPlayerData D2InitPlayerData;
+	TD2GetPlayerData D2GetPlayerData;
+	TD2GetDefence D2GetDefence;
+	TD2GetChanceToBlock D2GetChanceToBlock;
+	TD2GetMaxGold D2GetMaxGold;
+	TD2Common10572 D2Common10572;
+	TD2GetObjectFlags D2GetObjectFlags;
+	TD2SetObjectFlags D2SetObjectFlags;
+	TD2isInState D2isInState;
+	TD2AddPlayerStat D2AddPlayerStat;
+	TD2GetPlayerStat D2GetPlayerStat;
+	TD2GetPlayerBaseStat D2GetPlayerBaseStat;
+	TD2haveDefenceBonus D2haveDefenceBonus;
+	TD2haveFireResBonus D2haveFireResBonus;
+	TD2haveColdResBonus D2haveColdResBonus;
+	TD2haveLightResBonus D2haveLightResBonus;
+	TD2havePoisonResBonus D2havePoisonResBonus;
+	TD2haveDefenceMalus D2haveDefenceMalus;
+	TD2haveFireResMalus D2haveFireResMalus;
+	TD2haveColdResMalus D2haveColdResMalus;
+	TD2haveLightResMalus D2haveLightResMalus;
+	TD2havePoisonResMalus D2havePoisonResMalus;
+	TD2CompileTxtFile D2CompileTxtFile;
+	TD2GetItemsBIN D2GetItemsBIN;
+	TD2GetGemsBIN D2GetGemsBIN;
+	TD2GetCubeMainBIN D2GetCubeMainBIN;
+	TD2GetNbCubeMainBIN D2GetNbCubeMainBIN;
+	TD2GetNextLevelXP D2GetNextLevelXP;
+	TD2GetMaxLevel D2GetMaxLevel;
+	TD2GetDifficultyLevelsBIN D2GetDifficultyLevelsBIN;
+	TD2GetItemQuality D2GetItemQuality;
+	TD2TestFlags D2TestFlags;
+	TD2GetItemLevel D2GetItemLevel;
+	TD2ItemGetPage D2ItemGetPage;
+	TD2ItemSetPage D2ItemSetPage;
+	TD2CheckItemType D2CheckItemType;
+	TD2GetUniqueID D2GetUniqueID;
+	TD2SetAnim D2SetAnim;
+	TD2GetNbRunesBIN D2GetNbRunesBIN;
+	TD2GetRunesBIN D2GetRunesBIN;
+	TD2isEtheral D2isEtheral;
+	TD2SaveItem D2SaveItem;
+	TD2SetSkillBaseLevel D2SetSkillBaseLevel;
+	TD2GetSkillLevel D2GetSkillLevel;
+	TD2GetSkillCost D2GetSkillCost;
+	TD2GetCharStatsBIN D2GetCharStatsBIN;
+	TD2CompileCubeInput D2CompileCubeInput;
+	TD2CompileCubeOutput D2CompileCubeOutput;
+	TD2GetItemTypesBIN D2GetItemTypesBIN;
+	TD2GetItemStatCostBIN D2GetItemStatCostBIN;
+	TD2ReadFile D2ReadFile;
+	TD2LoadSuperuniques D2LoadSuperuniques;
 private:
 	void SetFunctions();
 
-	// Function Pointers
 	TD2Common11084 GetD2Common11084();
+	TD2GetLevelID GetD2GetLevelID();
+	TD2GetDropRoom GetD2GetDropRoom();
+	TD2Common10242 GetD2Common10242();
 };
