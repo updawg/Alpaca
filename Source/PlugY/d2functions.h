@@ -9,6 +9,7 @@
 #pragma once
 
 #include "D2CommonLibrary.h"
+#include "D2ClientLibrary.h"
 #include "D2gfxLibrary.h"
 
 // Conversion to 1.09
@@ -127,6 +128,22 @@ extern D2CommonLibrary::TD2GetItemTypesBIN D2GetItemTypesBIN;
 extern D2CommonLibrary::TD2GetItemStatCostBIN D2GetItemStatCostBIN;
 extern D2CommonLibrary::TD2ReadFile D2ReadFile;
 extern D2CommonLibrary::TD2LoadSuperuniques D2LoadSuperuniques;
+
+// D2Client
+extern D2ClientLibrary::TD2LoadImage D2LoadImage;
+extern D2ClientLibrary::TD2FreeImage D2FreeImage;
+extern D2ClientLibrary::TD2SendMsgToAll D2SendMsgToAll;
+extern D2ClientLibrary::TD2GetLastMonsterIDFight D2GetLastMonsterIDFight;
+extern D2ClientLibrary::TD2PrintStatsPage D2PrintStatsPage;
+extern D2ClientLibrary::TD2PrintStat D2PrintStat;
+extern D2ClientLibrary::TD2SetColorPopup D2SetColorPopup;
+extern D2ClientLibrary::TD2PlaySound D2PlaySound;
+extern D2ClientLibrary::TD2GetCurrentNPC D2GetCurrentNPC;
+extern D2ClientLibrary::TD2SendToServerXX D2SendToServerXX;
+extern D2ClientLibrary::TD2TogglePage D2TogglePage;
+extern D2ClientLibrary::TD2ClickOnStashButton D2ClickOnStashButton;
+extern D2ClientLibrary::TD2LoadBuySelBtn D2LoadBuySelBtn;
+extern D2ClientLibrary::TD2ReloadGambleScreen D2ReloadGambleScreen;
 
 // D2gfx
 extern D2gfxLibrary::TD2GetResolution D2GetResolution;

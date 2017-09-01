@@ -92,6 +92,22 @@ D2CommonLibrary::TD2GetItemStatCostBIN D2GetItemStatCostBIN;
 D2CommonLibrary::TD2ReadFile D2ReadFile;
 D2CommonLibrary::TD2LoadSuperuniques D2LoadSuperuniques;
 
+// D2Client
+D2ClientLibrary::TD2LoadImage D2LoadImage;
+D2ClientLibrary::TD2FreeImage D2FreeImage;
+D2ClientLibrary::TD2SendMsgToAll D2SendMsgToAll;
+D2ClientLibrary::TD2GetLastMonsterIDFight D2GetLastMonsterIDFight;
+D2ClientLibrary::TD2PrintStatsPage D2PrintStatsPage;
+D2ClientLibrary::TD2PrintStat D2PrintStat;
+D2ClientLibrary::TD2SetColorPopup D2SetColorPopup;
+D2ClientLibrary::TD2PlaySound D2PlaySound;
+D2ClientLibrary::TD2GetCurrentNPC D2GetCurrentNPC;
+D2ClientLibrary::TD2SendToServerXX D2SendToServerXX;
+D2ClientLibrary::TD2TogglePage D2TogglePage;
+D2ClientLibrary::TD2ClickOnStashButton D2ClickOnStashButton;
+D2ClientLibrary::TD2LoadBuySelBtn D2LoadBuySelBtn;
+D2ClientLibrary::TD2ReloadGambleScreen D2ReloadGambleScreen;
+
 // D2gfx
 D2gfxLibrary::TD2GetResolution D2GetResolution;
 D2gfxLibrary::TD2FillArea D2FillArea;
@@ -122,6 +138,7 @@ D2S(D2Common,10673,	ItemTypesBIN*,		D2Common10673, (DWORD itemTypesID));//ONLY i
 
 using Versions = VersionUtility::Versions;
 
+// D2Common
 D2CommonLibrary::TD2AddPlayerStat			 V2AddPlayerStat;
 D2CommonLibrary::TD2GetPlayerStat			 V2GetPlayerStat;
 D2CommonLibrary::TD2GetPlayerBaseStat		 V2GetPlayerBaseStat;
@@ -133,8 +150,14 @@ D2CommonLibrary::TD2CompileTxtFile			 compileTxtFile;
 D2CommonLibrary::TD2GetCharStatsBIN			 V2GetCharStatsBIN;
 D2CommonLibrary::TD2GetItemStatCostBIN		 V2GetItemStatCostBIN;
 
+// D2Client
+D2ClientLibrary::TD2PrintStat				 V2PrintStat;
+D2ClientLibrary::TD2SendMsgToAll		     V2SendMsgToAll;
+D2ClientLibrary::TD2SetColorPopup			 V2SetColorPopup;
+D2ClientLibrary::TD2LoadImage				 V2LoadImage;
+D2ClientLibrary::TD2PlaySound				 V2PlaySound;
+
 TD2SetSkillBaseLevelOnClient V2SetSkillBaseLevelOnClient;
-TD2PrintStat				 V2PrintStat;
 TD2BroadcastFunction		 V2BroadcastFunction;
 TD2GetGameByClientID		 V2GetGameByClientID;
 TD2SpawnMonster				 V2SpawnMonster;
@@ -142,10 +165,6 @@ TD2VerifIfNotCarry1			 V2VerifIfNotCarry1;
 TD2GameGetObject			 V2GameGetObject;
 TD2TestPositionInRoom		 V2TestPositionInRoom;
 WORD (*getDescStrPos) (DWORD statID);
-TD2SendMsgToAll				 V2SendMsgToAll;
-TD2SetColorPopup			 V2SetColorPopup;
-TD2LoadImage				 V2LoadImage;
-TD2PlaySound				 V2PlaySound;
 TD2SendToServer				 V2SendToServer;
 TD2SendPacket				 V2SendPacket;
 TD2LoadInventory			 V2LoadInventory;
@@ -718,6 +737,22 @@ void initD2functions()
 	D2ReadFile = lu->D2Common->D2ReadFile;
 	D2LoadSuperuniques = lu->D2Common->D2LoadSuperuniques;
 
+	// D2Client
+	D2LoadImage = lu->D2Client->D2LoadImage;
+	D2FreeImage = lu->D2Client->D2FreeImage;
+	D2SendMsgToAll = lu->D2Client->D2SendMsgToAll;
+	D2GetLastMonsterIDFight = lu->D2Client->D2GetLastMonsterIDFight;
+	D2PrintStatsPage = lu->D2Client->D2PrintStatsPage;
+	D2PrintStat = lu->D2Client->D2PrintStat;
+	D2SetColorPopup = lu->D2Client->D2SetColorPopup;
+	D2PlaySound = lu->D2Client->D2PlaySound;
+	D2GetCurrentNPC = lu->D2Client->D2GetCurrentNPC;
+	D2SendToServerXX = lu->D2Client->D2SendToServerXX;
+	D2TogglePage = lu->D2Client->D2TogglePage;
+	D2ClickOnStashButton = lu->D2Client->D2ClickOnStashButton;
+	D2LoadBuySelBtn = lu->D2Client->D2LoadBuySelBtn;
+	D2ReloadGambleScreen = lu->D2Client->D2ReloadGambleScreen;
+
 	// D2gfx
 	D2GetResolution = lu->D2gfx->D2GetResolution;
 	D2FillArea = lu->D2gfx->D2FillArea;
@@ -777,17 +812,17 @@ void initD2functions()
 
 	if ( version_D2Client >= Versions::V111 )
 	{
-		D2SendMsgToAll = (TD2SendMsgToAll) D2SendMsgToAll_111;
-		D2SetColorPopup = (TD2SetColorPopup) D2SetColorPopup_111;
-		D2LoadImage = (TD2LoadImage) D2LoadImage_111;
-		D2FreeImage = (TD2FreeImage) D2FreeImage_111;
-		D2PlaySound = (TD2PlaySound) D2PlaySound_111;
+		D2SendMsgToAll = (D2ClientLibrary::TD2SendMsgToAll) D2SendMsgToAll_111;
+		D2SetColorPopup = (D2ClientLibrary::TD2SetColorPopup) D2SetColorPopup_111;
+		D2LoadImage = (D2ClientLibrary::TD2LoadImage) D2LoadImage_111;
+		D2FreeImage = (D2ClientLibrary::TD2FreeImage) D2FreeImage_111;
+		D2PlaySound = (D2ClientLibrary::TD2PlaySound) D2PlaySound_111;
 		D2GetClient = (TD2GetClient) D2GetClient_111;
 		D2SendToServer3 = (TD2SendToServer3) D2SendToServer3_111;
 		D2SetSkillBaseLevelOnClient = (TD2SetSkillBaseLevelOnClient) D2SetSkillBaseLevelOnClient_111;
 		D2GetCharStatsBIN = (D2CommonLibrary::TD2GetCharStatsBIN) D2GetCharStatsBIN_111;
 		D2GetItemStatCostBIN = (D2CommonLibrary::TD2GetItemStatCostBIN) D2GetItemStatCostBIN_111;
-		D2PrintStat = (TD2PrintStat) D2PrintStat_111;
+		D2PrintStat = (D2ClientLibrary::TD2PrintStat) D2PrintStat_111;
 		D2SendPacket = (TD2SendPacket) D2SendPacket_111;
 		D2LoadInventory = (TD2LoadInventory) D2LoadInventory_111;
 		D2CompileCubeInput = (D2CommonLibrary::TD2CompileCubeInput) D2CompileCubeInput_111;
@@ -830,7 +865,7 @@ void initD2functions()
 
 	if (version_D2Client <= Versions::V109d)
 	{
-		D2PrintStat = (TD2PrintStat)D2PrintStat_9;
+		D2PrintStat = (D2ClientLibrary::TD2PrintStat)D2PrintStat_9;
 	}
 
 	if (version_D2Game <= Versions::V109d)
