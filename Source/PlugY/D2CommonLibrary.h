@@ -85,6 +85,11 @@ public:
 	typedef void* (__fastcall *TD2ReadFile) (DWORD unused, char* filename, DWORD* size, const char*, DWORD);
 	typedef void(__stdcall *TD2LoadSuperuniques) (DWORD mempool);
 
+	// Only 1.09
+	typedef CharStatsBIN* (__stdcall *TD2Common10581) (DWORD charID);
+	typedef ItemStatCostBIN* (__stdcall *TD2Common10598) (DWORD itemStatCostID);
+	typedef ItemTypesBIN* (__stdcall *TD2Common10673) (DWORD itemTypesID);
+
 	TD2Common11084 D2Common11084;
 	TD2GetLevelID D2GetLevelID;
 	TD2GetDropRoom D2GetDropRoom;
@@ -154,6 +159,11 @@ public:
 	TD2GetItemStatCostBIN D2GetItemStatCostBIN;
 	TD2ReadFile D2ReadFile;
 	TD2LoadSuperuniques D2LoadSuperuniques;
+
+	// Only 1.09
+	TD2Common10581 D2Common10581;
+	TD2Common10598 D2Common10598;
+	TD2Common10673 D2Common10673;
 private:
 	void SetFunctions();
 
@@ -226,4 +236,9 @@ private:
 	TD2GetItemStatCostBIN GetD2GetItemStatCostBIN();
 	TD2ReadFile GetD2ReadFile();
 	TD2LoadSuperuniques GetD2LoadSuperuniques();
+
+	// Only 1.09
+	TD2Common10581 GetD2Common10581();
+	TD2Common10598 GetD2Common10598();
+	TD2Common10673 GetD2Common10673();
 };

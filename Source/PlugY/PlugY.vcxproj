@@ -155,7 +155,6 @@
   <ItemGroup>
     <ClInclude Include="..\Commons\d2BinFile.h" />
     <ClInclude Include="..\Commons\D2Constants.h" />
-    <ClInclude Include="..\Commons\D2Funcs.h" />
     <ClInclude Include="..\Commons\d2StringTblStruct.h" />
     <ClInclude Include="..\Commons\d2Struct.h" />
     <ClInclude Include="..\Commons\D2UnitStruct.h" />

@@ -103,7 +103,7 @@ DWORD Library::RetrieveAddressByAddition(const VersionOffsets moduleOffsets)
 DWORD Library::GetFunctionAddress(LPCSTR offset)
 {
 	HMODULE module = (HMODULE)DllOffset;
-	//log_msg("Retrieving %s function for offset %08X (%i) by Proc ...", DllName, offset, offset);
+	log_msg("Retrieving %s function for offset %08X (%i) by Proc ...", DllName, offset, offset);
 
 	DWORD locatedAddress;
 
@@ -113,12 +113,12 @@ DWORD Library::GetFunctionAddress(LPCSTR offset)
 		if (!locatedAddress)
 		{
 			// Don't exit here cause apparently the plugin still works even if some functions aren't found.
-			//log_msg("FAILED.\n");
-			log_msg("Failed to retrieve %s function for offset %08X (%i) by Proc ...\n", DllName, offset, offset);
+			log_msg("FAILED.\n");
+			//log_msg("Failed to retrieve %s function for offset %08X (%i) by Proc ...\n", DllName, offset, offset);
 		}
 		else
 		{
-			//log_msg("SUCCESS. Located at %08X.\n", locatedAddress);
+			log_msg("SUCCESS. Located at %08X.\n", locatedAddress);
 		}
 		return locatedAddress;
 	}

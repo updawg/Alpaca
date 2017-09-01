@@ -10,7 +10,6 @@
 #include "common.h"
 s_shifting shifting;
 
-#define D2S(F, I, R, N, P)	T##N N;
 #define D2F(F, I, R, N, P)	T##N N;
 #define E2S(F, A, R, N, P)	T##N N;
 #define E2F(F, A, R, N, P)	T##N N;
@@ -91,6 +90,11 @@ D2CommonLibrary::TD2GetItemTypesBIN D2GetItemTypesBIN;
 D2CommonLibrary::TD2GetItemStatCostBIN D2GetItemStatCostBIN;
 D2CommonLibrary::TD2ReadFile D2ReadFile;
 D2CommonLibrary::TD2LoadSuperuniques D2LoadSuperuniques;
+
+// D2Common: Only 1.09
+D2CommonLibrary::TD2Common10581 D2Common10581;
+D2CommonLibrary::TD2Common10598 D2Common10598;
+D2CommonLibrary::TD2Common10673 D2Common10673;
 
 // D2Client
 D2ClientLibrary::TD2LoadImage D2LoadImage;
@@ -210,24 +214,15 @@ D2WinLibrary::TD2CreateTextBox D2CreateTextBox;
 // D2CMP
 D2CMPLibrary::TD2CMP10014 D2CMP10014;
 
-#include "../Commons/D2Funcs.h"
-
 DataTables* SgptDataTables;
 
 #undef F7
 #undef A7
 #undef C7
-#undef D2S
 #undef D2F
 #undef E2S
 #undef E2F
 #undef E2C
-
-#define D2S(F, I, R, N, P)	typedef R (STDCALL  *T##N) P; T##N N;
-D2S(D2Common,10581,	CharStatsBIN*,		D2Common10581, (DWORD charID));//ONLY in 1.09
-D2S(D2Common,10598,	ItemStatCostBIN*,	D2Common10598, (DWORD itemStatCostID));//ONLY in 1.09
-D2S(D2Common,10673,	ItemTypesBIN*,		D2Common10673, (DWORD itemTypesID));//ONLY in 1.09
-#undef D2S
 
 using Versions = VersionUtility::Versions;
 
@@ -747,12 +742,10 @@ extern LibraryUtility* lu;
 
 void initD2functions()
 {
-	#define D2S(F, I, R, N, P)	SETFCTADDR(F, I, N);
 	#define D2F(F, I, R, N, P)	SETFCTADDR(F, I, N);
 	#define E2S(F, A, R, N, P)	N = (T##N)(offset_##F + 0x##A);
 	#define E2F(F, A, R, N, P)	N = (T##N)(offset_##F + 0x##A);
 	#define E2C(F, A, T, N)		pt##N = (T*)(offset_##F + 0x##A);
-	#define F7(X, Z, A,B,C,D,E,F,G,H, R, N, P) setFctAddr((DWORD*)&N, (HMODULE)offset_##Z, (LPCSTR)(version_##Z == VersionUtility::Versions::V113d? H : (version_##Z == VersionUtility::Versions::V113c? G : (version_##Z == VersionUtility::Versions::V112? F : (version_##Z == VersionUtility::Versions::V111b? E : (version_##Z == VersionUtility::Versions::V111? D : (version_##Z == VersionUtility::Versions::V110? C : (version_##Z == VersionUtility::Versions::V109d? B : A))))))));
 	#define A7(X, Z, A,B,C,D,E,F,G,H, R, N, P) N = (T##N)R7(Z,A,B,C,D,E,F,G,H);
 	#define C7(Z, A,B,C,D,E,F,G,H, T, N)       pt##N = (T*)R7(Z,A,B,C,D,E,F,G,H);
 
@@ -945,23 +938,20 @@ void initD2functions()
 	// D2CMP
 	D2CMP10014 = lu->D2CMP->D2CMP10014;
 
-	#include "../Commons/D2Funcs.h"
 	SgptDataTables = *(DataTables**) R7(D2Common, 0000, 0000, 96A20, 9B74C, 9EE8C, 9B500, 99E1C, A33F0);
 	if (version_D2Common < Versions::V110)
 	{
-		D2S(D2Common,10581,	CharStatsBIN*,		D2Common10581, (DWORD charID));//ONLY in 1.09
-		D2S(D2Common,10598,	ItemStatCostBIN*,	D2Common10598, (DWORD itemStatCostID));//ONLY in 1.09
-		D2S(D2Common,10673,	ItemTypesBIN*,		D2Common10673, (DWORD itemTypesID));//ONLY in 1.09
+		D2Common10581 = lu->D2Common->D2Common10581;
+		D2Common10598 = lu->D2Common->D2Common10598;
+		D2Common10673 = lu->D2Common->D2Common10673;
 	}
 	#undef F7
 	#undef A7
 	#undef C7
-	#undef D2S
 	#undef D2F
 	#undef E2S
 	#undef E2F
 	#undef E2C
-
 
 	//////////////// MISC FCT ////////////////
 	getDescStrPos = version_D2Common >= Versions::V110  ? getDescStrPos_10 : getDescStrPos_9;

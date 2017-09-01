@@ -53,7 +53,6 @@ extern s_shifting shifting;
 #define RX(v) (WindowStartX+(v))
 #define RY(v) (ResolutionY+NegWindowStartY-(v))
 
-#define D2S(F, I, R, N, P)	typedef R (STDCALL  *T##N) P; extern T##N N; //static D N = (D)(A);
 #define D2F(F, I, R, N, P)	typedef R (FASTCALL *T##N) P; extern T##N N; //static D N = (D)(A);
 #define E2S(F, A, R, N, P)	typedef R (STDCALL  *T##N) P; extern T##N N;
 #define E2F(F, A, R, N, P)	typedef R (FASTCALL *T##N) P; extern T##N N;
@@ -63,7 +62,6 @@ extern s_shifting shifting;
 #define C7(Z, A,B,C,D,E,F,G,H, T, N)       extern T* pt##N;
 
 // At this point only typedef and externs are implemented
-#include "../Commons/D2Funcs.h"
 
 // D2Common
 extern D2CommonLibrary::TD2Common11084 D2Common11084;
@@ -135,6 +133,11 @@ extern D2CommonLibrary::TD2GetItemTypesBIN D2GetItemTypesBIN;
 extern D2CommonLibrary::TD2GetItemStatCostBIN D2GetItemStatCostBIN;
 extern D2CommonLibrary::TD2ReadFile D2ReadFile;
 extern D2CommonLibrary::TD2LoadSuperuniques D2LoadSuperuniques;
+
+// D2Common: Only 1.09
+extern D2CommonLibrary::TD2Common10581 D2Common10581;
+extern D2CommonLibrary::TD2Common10598 D2Common10598;
+extern D2CommonLibrary::TD2Common10673 D2Common10673;
 
 // D2Client
 extern D2ClientLibrary::TD2LoadImage D2LoadImage;
@@ -254,17 +257,11 @@ extern D2WinLibrary::TD2CreateTextBox D2CreateTextBox;
 // D2CMP
 extern D2CMPLibrary::TD2CMP10014 D2CMP10014;
 
-//#undef F7
-//#define F7(X, Z, A,B,C,D,E,F,G,H, R, N, P) 
-// Provide the function pointer types and say that they are going to be found externally.
-//typedef DWORD(STDCALL *TD2Common11084) (Room* ptRoom, DWORD zero); extern TD2Common11084 D2Common11084;
-
 extern DataTables* SgptDataTables;
 
 #undef F7
 #undef A7
 #undef C7
-#undef D2S
 #undef D2F
 #undef E2S
 #undef E2F

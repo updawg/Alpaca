@@ -71,6 +71,9 @@ void D2CommonLibrary::SetFunctions()
 	D2GetItemStatCostBIN = GetD2GetItemStatCostBIN();
 	D2ReadFile = GetD2ReadFile();
 	D2LoadSuperuniques = GetD2LoadSuperuniques();
+	D2Common10581 = GetD2Common10581();
+	D2Common10598 = GetD2Common10598();
+	D2Common10673 = GetD2Common10673();
 }
 
 DWORD D2CommonLibrary::RetrieveStashGridOffset()
@@ -80,7 +83,7 @@ DWORD D2CommonLibrary::RetrieveStashGridOffset()
 
 D2CommonLibrary::TD2Common11084 D2CommonLibrary::GetD2Common11084()
 {
-	return (TD2Common11084)RetrieveAddressByProc(CreateOffsets(00000, 00000, 00000, 10188, 11084, 11109, 10346, 10907));
+	return (TD2Common11084)RetrieveAddressByProc(CreateOffsets(0, 0, 0, 10188, 11084, 11109, 10346, 10907));
 }
 
 D2CommonLibrary::TD2GetLevelID D2CommonLibrary::GetD2GetLevelID()
@@ -95,7 +98,7 @@ D2CommonLibrary::TD2GetDropRoom D2CommonLibrary::GetD2GetDropRoom()
 
 D2CommonLibrary::TD2Common10242 D2CommonLibrary::GetD2Common10242()
 {
-	return (TD2Common10242)RetrieveAddressByProc(CreateOffsets(10242, 10242, 10242, 00000, 00000, 00000, 00000, 00000));
+	return (TD2Common10242)RetrieveAddressByProc(CreateOffsets(10242, 10242, 10242, 0, 0, 0, 0, 0));
 }
 
 D2CommonLibrary::TD2CanPutItemInInv D2CommonLibrary::GetD2CanPutItemInInv()
@@ -115,12 +118,12 @@ D2CommonLibrary::TD2InvAddItem D2CommonLibrary::GetD2InvAddItem()
 
 D2CommonLibrary::TD2Common10250 D2CommonLibrary::GetD2Common10250()
 {
-	return (TD2Common10250)RetrieveAddressByProc(CreateOffsets(10250, 10250, 10250, 00000, 00000, 00000, 00000, 00000));
+	return (TD2Common10250)RetrieveAddressByProc(CreateOffsets(10250, 10250, 10250, 0, 0, 0, 0, 0));
 }
 
 D2CommonLibrary::TD2Common10273 D2CommonLibrary::GetD2Common10273()
 {
-	return (TD2Common10273)RetrieveAddressByProc(CreateOffsets(10273, 10273, 10273, 00000, 00000, 00000, 00000, 00000));
+	return (TD2Common10273)RetrieveAddressByProc(CreateOffsets(10273, 10273, 10273, 0, 0, 0, 0, 0));
 }
 
 D2CommonLibrary::TD2InventoryGetFirstItem D2CommonLibrary::GetD2InventoryGetFirstItem()
@@ -138,16 +141,14 @@ D2CommonLibrary::TD2GetRealItem D2CommonLibrary::GetD2GetRealItem()
 	return (TD2GetRealItem)RetrieveAddressByProc(CreateOffsets(10305, 10305, 10305, 11095, 10748, 10852, 11147, 10897));
 }
 
-// Not in 1.10
 D2CommonLibrary::TD2GetPosX D2CommonLibrary::GetD2GetPosX()
 {
-	return (TD2GetPosX)RetrieveAddressByProc(CreateOffsets(10326, 10326, 00000, 00000, 00000, 00000, 00000, 00000));
+	return (TD2GetPosX)RetrieveAddressByProc(CreateOffsets(10326, 10326, 0, 0, 0, 0, 0, 0));
 }
 
-// Not in 1.10
 D2CommonLibrary::TD2GetPosY D2CommonLibrary::GetD2GetPosY()
 {
-	return (TD2GetPosY)RetrieveAddressByProc(CreateOffsets(10329, 10329, 00000, 00000, 00000, 00000, 00000, 00000));
+	return (TD2GetPosY)RetrieveAddressByProc(CreateOffsets(10329, 10329, 0, 0, 0, 0, 0, 0));
 }
 
 D2CommonLibrary::TD2GetPosition D2CommonLibrary::GetD2GetPosition()
@@ -177,12 +178,12 @@ D2CommonLibrary::TD2GetPlayerData D2CommonLibrary::GetD2GetPlayerData()
 
 D2CommonLibrary::TD2GetDefence D2CommonLibrary::GetD2GetDefence()
 {
-	return (TD2GetDefence)RetrieveAddressByProc(CreateOffsets(10431, 10431, 10431, 00000, 00000, 00000, 00000, 00000));
+	return (TD2GetDefence)RetrieveAddressByProc(CreateOffsets(10431, 10431, 10431, 0, 0, 0, 0, 0));
 }
 
 D2CommonLibrary::TD2GetChanceToBlock D2CommonLibrary::GetD2GetChanceToBlock()
 {
-	return (TD2GetChanceToBlock)RetrieveAddressByProc(CreateOffsets(10433, 10433, 10433, 00000, 00000, 00000, 00000, 00000));
+	return (TD2GetChanceToBlock)RetrieveAddressByProc(CreateOffsets(10433, 10433, 10433, 0, 0, 0, 0, 0));
 }
 
 D2CommonLibrary::TD2GetMaxGold D2CommonLibrary::GetD2GetMaxGold()
@@ -192,22 +193,22 @@ D2CommonLibrary::TD2GetMaxGold D2CommonLibrary::GetD2GetMaxGold()
 
 D2CommonLibrary::TD2Common10572 D2CommonLibrary::GetD2Common10572()
 {
-	return (TD2Common10572)RetrieveAddressByProc(CreateOffsets(00000, 00000, 00000, 10440, 10572, 10481, 11090, 10193));
+	return (TD2Common10572)RetrieveAddressByProc(CreateOffsets(0, 0, 0, 10440, 10572, 10481, 11090, 10193));
 }
 
 D2CommonLibrary::TD2GetObjectFlags D2CommonLibrary::GetD2GetObjectFlags()
 {
-	return (TD2GetObjectFlags)RetrieveAddressByProc(CreateOffsets(00000, 00000, 00000, 10471, 11160, 10866, 10258, 10040));
+	return (TD2GetObjectFlags)RetrieveAddressByProc(CreateOffsets(0, 0, 0, 10471, 11160, 10866, 10258, 10040));
 }
 
 D2CommonLibrary::TD2SetObjectFlags D2CommonLibrary::GetD2SetObjectFlags()
 {
-	return (TD2SetObjectFlags)RetrieveAddressByProc(CreateOffsets(00000, 00000, 00000, 10572, 11048, 10150, 10111, 10033));
+	return (TD2SetObjectFlags)RetrieveAddressByProc(CreateOffsets(0, 0, 0, 10572, 11048, 10150, 10111, 10033));
 }
 
 D2CommonLibrary::TD2isInState D2CommonLibrary::GetD2isInState()
 {
-	return (TD2isInState)RetrieveAddressByProc(CreateOffsets(10487, 10487, 10487, 00000, 00000, 00000, 00000, 00000));
+	return (TD2isInState)RetrieveAddressByProc(CreateOffsets(10487, 10487, 10487, 0, 0, 0, 0, 0));
 }
 
 D2CommonLibrary::TD2AddPlayerStat D2CommonLibrary::GetD2AddPlayerStat()
@@ -227,52 +228,52 @@ D2CommonLibrary::TD2GetPlayerBaseStat D2CommonLibrary::GetD2GetPlayerBaseStat()
 
 D2CommonLibrary::TD2haveDefenceBonus D2CommonLibrary::GetD2haveDefenceBonus()
 {
-	return (TD2haveDefenceBonus)RetrieveAddressByProc(CreateOffsets(10539, 10539, 10539, 00000, 00000, 00000, 00000, 00000));
+	return (TD2haveDefenceBonus)RetrieveAddressByProc(CreateOffsets(10539, 10539, 10539, 0, 0, 0, 0, 0));
 }
 
 D2CommonLibrary::TD2haveFireResBonus D2CommonLibrary::GetD2haveFireResBonus()
 {
-	return (TD2haveFireResBonus)RetrieveAddressByProc(CreateOffsets(10540, 10540, 10540, 00000, 00000, 00000, 00000, 00000));
+	return (TD2haveFireResBonus)RetrieveAddressByProc(CreateOffsets(10540, 10540, 10540, 0, 0, 0, 0, 0));
 }
 
 D2CommonLibrary::TD2haveColdResBonus D2CommonLibrary::GetD2haveColdResBonus()
 {
-	return (TD2haveColdResBonus)RetrieveAddressByProc(CreateOffsets(10541, 10541, 10541, 00000, 00000, 00000, 00000, 00000));
+	return (TD2haveColdResBonus)RetrieveAddressByProc(CreateOffsets(10541, 10541, 10541, 0, 0, 0, 0, 0));
 }
 
 D2CommonLibrary::TD2haveLightResBonus D2CommonLibrary::GetD2haveLightResBonus()
 {
-	return (TD2haveLightResBonus)RetrieveAddressByProc(CreateOffsets(10542, 10542, 10542, 00000, 00000, 00000, 00000, 00000));
+	return (TD2haveLightResBonus)RetrieveAddressByProc(CreateOffsets(10542, 10542, 10542, 0, 0, 0, 0, 0));
 }
 
 D2CommonLibrary::TD2havePoisonResBonus D2CommonLibrary::GetD2havePoisonResBonus()
 {
-	return (TD2havePoisonResBonus)RetrieveAddressByProc(CreateOffsets(10543, 10543, 10543, 00000, 00000, 00000, 00000, 00000));
+	return (TD2havePoisonResBonus)RetrieveAddressByProc(CreateOffsets(10543, 10543, 10543, 0, 0, 0, 0, 0));
 }
 
 D2CommonLibrary::TD2haveDefenceMalus D2CommonLibrary::GetD2haveDefenceMalus()
 {
-	return (TD2haveDefenceMalus)RetrieveAddressByProc(CreateOffsets(10546, 10546, 10546, 00000, 00000, 00000, 00000, 00000));
+	return (TD2haveDefenceMalus)RetrieveAddressByProc(CreateOffsets(10546, 10546, 10546, 0, 0, 0, 0, 0));
 }
 
 D2CommonLibrary::TD2haveFireResMalus D2CommonLibrary::GetD2haveFireResMalus()
 {
-	return (TD2haveFireResMalus)RetrieveAddressByProc(CreateOffsets(10547, 10547, 10547, 00000, 00000, 00000, 00000, 00000));
+	return (TD2haveFireResMalus)RetrieveAddressByProc(CreateOffsets(10547, 10547, 10547, 0, 0, 0, 0, 0));
 }
 
 D2CommonLibrary::TD2haveColdResMalus D2CommonLibrary::GetD2haveColdResMalus()
 {
-	return (TD2haveColdResMalus)RetrieveAddressByProc(CreateOffsets(10548, 10548, 10548, 00000, 00000, 00000, 00000, 00000));
+	return (TD2haveColdResMalus)RetrieveAddressByProc(CreateOffsets(10548, 10548, 10548, 0, 0, 0, 0, 0));
 }
 
 D2CommonLibrary::TD2haveLightResMalus D2CommonLibrary::GetD2haveLightResMalus()
 {
-	return (TD2haveLightResMalus)RetrieveAddressByProc(CreateOffsets(10549, 10549, 10549, 00000, 00000, 00000, 00000, 00000));
+	return (TD2haveLightResMalus)RetrieveAddressByProc(CreateOffsets(10549, 10549, 10549, 0, 0, 0, 0, 0));
 }
 
 D2CommonLibrary::TD2havePoisonResMalus D2CommonLibrary::GetD2havePoisonResMalus()
 {
-	return (TD2havePoisonResMalus)RetrieveAddressByProc(CreateOffsets(10550, 10550, 10550, 00000, 00000, 00000, 00000, 00000));
+	return (TD2havePoisonResMalus)RetrieveAddressByProc(CreateOffsets(10550, 10550, 10550, 0, 0, 0, 0, 0));
 }
 
 D2CommonLibrary::TD2CompileTxtFile D2CommonLibrary::GetD2CompileTxtFile()
@@ -302,12 +303,12 @@ D2CommonLibrary::TD2GetNbCubeMainBIN D2CommonLibrary::GetD2GetNbCubeMainBIN()
 
 D2CommonLibrary::TD2GetNextLevelXP D2CommonLibrary::GetD2GetNextLevelXP()
 {
-	return (TD2GetNextLevelXP)RetrieveAddressByProc(CreateOffsets(10628, 10628, 10628, 00000, 00000, 00000, 00000, 00000));
+	return (TD2GetNextLevelXP)RetrieveAddressByProc(CreateOffsets(10628, 10628, 10628, 0, 0, 0, 0, 0));
 }
 
 D2CommonLibrary::TD2GetMaxLevel D2CommonLibrary::GetD2GetMaxLevel()
 {
-	return (TD2GetMaxLevel)RetrieveAddressByProc(CreateOffsets(10629, 10629, 10629, 00000, 00000, 00000, 00000, 00000));
+	return (TD2GetMaxLevel)RetrieveAddressByProc(CreateOffsets(10629, 10629, 10629, 0, 0, 0, 0, 0));
 }
 
 D2CommonLibrary::TD2GetDifficultyLevelsBIN D2CommonLibrary::GetD2GetDifficultyLevelsBIN()
@@ -352,7 +353,7 @@ D2CommonLibrary::TD2GetUniqueID D2CommonLibrary::GetD2GetUniqueID()
 
 D2CommonLibrary::TD2SetAnim D2CommonLibrary::GetD2SetAnim()
 {
-	return (TD2SetAnim)RetrieveAddressByProc(CreateOffsets(10734, 10734, 10734, 00000, 00000, 00000, 00000, 00000));
+	return (TD2SetAnim)RetrieveAddressByProc(CreateOffsets(10734, 10734, 10734, 0, 0, 0, 0, 0));
 }
 
 D2CommonLibrary::TD2GetNbRunesBIN D2CommonLibrary::GetD2GetNbRunesBIN()
@@ -423,4 +424,19 @@ D2CommonLibrary::TD2ReadFile D2CommonLibrary::GetD2ReadFile()
 D2CommonLibrary::TD2LoadSuperuniques D2CommonLibrary::GetD2LoadSuperuniques()
 {
 	return (TD2LoadSuperuniques)RetrieveAddressByAddition(CreateOffsets(0x1F500, 0x1F510, 0x29FA0, 0x71EB0, 0x32AA0, 0x7D2A0, 0x59870, 0x80C40));
+}
+
+D2CommonLibrary::TD2Common10581 D2CommonLibrary::GetD2Common10581()
+{
+	return (TD2Common10581)RetrieveAddressByProc(CreateOffsets(10581, 10581, 0, 0, 0, 0, 0, 0));
+}
+
+D2CommonLibrary::TD2Common10598 D2CommonLibrary::GetD2Common10598()
+{
+	return (TD2Common10598)RetrieveAddressByProc(CreateOffsets(10598, 10598, 0, 0, 0, 0, 0, 0));
+}
+
+D2CommonLibrary::TD2Common10673 D2CommonLibrary::GetD2Common10673()
+{
+	return (TD2Common10673)RetrieveAddressByProc(CreateOffsets(10673, 10673, 0, 0, 0, 0, 0, 0));
 }

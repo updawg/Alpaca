@@ -290,9 +290,6 @@
     <ClInclude Include="..\Commons\d2BinFile.h">
       <Filter>Header Files\Commons</Filter>
     </ClInclude>
-    <ClInclude Include="..\Commons\D2Funcs.h">
-      <Filter>Header Files\Commons</Filter>
-    </ClInclude>
     <ClInclude Include="..\Commons\d2StringTblStruct.h">
       <Filter>Header Files\Commons</Filter>
     </ClInclude>
