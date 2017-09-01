@@ -108,6 +108,15 @@ D2ClientLibrary::TD2ClickOnStashButton D2ClickOnStashButton;
 D2ClientLibrary::TD2LoadBuySelBtn D2LoadBuySelBtn;
 D2ClientLibrary::TD2ReloadGambleScreen D2ReloadGambleScreen;
 
+// D2Client: Only 1.10
+D2ClientLibrary::TD2isLODGame D2isLODGame;
+D2ClientLibrary::TD2GetDifficultyLevel D2GetDifficultyLevel;
+D2ClientLibrary::TD2GetMouseX D2GetMouseX;
+D2ClientLibrary::TD2GetMouseY D2GetMouseY;
+D2ClientLibrary::TD2GetClientPlayer D2GetClientPlayer;
+D2ClientLibrary::TD2CleanStatMouseUp D2CleanStatMouseUp;
+D2ClientLibrary::TD2SendToServer3 D2SendToServer3;
+
 // D2Game
 D2GameLibrary::TD2SetNbPlayers D2SetNbPlayers;
 D2GameLibrary::TD2AddClient D2AddClient;
@@ -132,6 +141,9 @@ D2GameLibrary::TD2UberMephIA D2UberMephIA;
 D2GameLibrary::TD2UberDiabloIA D2UberDiabloIA;
 D2GameLibrary::TD2UberBaalIA D2UberBaalIA;
 D2GameLibrary::TD2SaveGame D2SaveGame;
+
+// D2Game: Only 1.10
+D2GameLibrary::TD2GetClient D2GetClient;
 
 // D2Net
 D2NetLibrary::TD2SendToServer D2SendToServer;
@@ -815,6 +827,15 @@ void initD2functions()
 	D2LoadBuySelBtn = lu->D2Client->D2LoadBuySelBtn;
 	D2ReloadGambleScreen = lu->D2Client->D2ReloadGambleScreen;
 
+	// D2Client: Only 1.10
+	D2isLODGame = lu->D2Client->D2isLODGame;
+	D2GetDifficultyLevel = lu->D2Client->D2GetDifficultyLevel;
+	D2GetMouseX = lu->D2Client->D2GetMouseX;
+	D2GetMouseY = lu->D2Client->D2GetMouseY;
+	D2GetClientPlayer = lu->D2Client->D2GetClientPlayer;
+	D2CleanStatMouseUp = lu->D2Client->D2CleanStatMouseUp;
+	D2SendToServer3 = lu->D2Client->D2SendToServer3;
+
 	// D2Game
 	D2SetNbPlayers = lu->D2Game->D2SetNbPlayers;
 	D2AddClient = lu->D2Game->D2AddClient;
@@ -839,6 +860,9 @@ void initD2functions()
 	D2UberDiabloIA = lu->D2Game->D2UberDiabloIA;
 	D2UberBaalIA = lu->D2Game->D2UberBaalIA;
 	D2SaveGame = lu->D2Game->D2SaveGame;
+
+	// D2Game: Only 1.10
+	D2GetClient = lu->D2Game->D2GetClient;
 
 	// D2Net
 	D2SendToServer = lu->D2Net->D2SendToServer;
@@ -946,8 +970,8 @@ void initD2functions()
 		D2LoadImage = (D2ClientLibrary::TD2LoadImage) D2LoadImage_111;
 		D2FreeImage = (D2ClientLibrary::TD2FreeImage) D2FreeImage_111;
 		D2PlaySound = (D2ClientLibrary::TD2PlaySound) D2PlaySound_111;
-		D2GetClient = (TD2GetClient) D2GetClient_111;
-		D2SendToServer3 = (TD2SendToServer3) D2SendToServer3_111;
+		D2GetClient = (D2GameLibrary::TD2GetClient) D2GetClient_111;
+		D2SendToServer3 = (D2ClientLibrary::TD2SendToServer3) D2SendToServer3_111;
 		D2SetSkillBaseLevelOnClient = (D2GameLibrary::TD2SetSkillBaseLevelOnClient) D2SetSkillBaseLevelOnClient_111;
 		D2GetCharStatsBIN = (D2CommonLibrary::TD2GetCharStatsBIN) D2GetCharStatsBIN_111;
 		D2GetItemStatCostBIN = (D2CommonLibrary::TD2GetItemStatCostBIN) D2GetItemStatCostBIN_111;

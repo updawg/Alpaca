@@ -152,6 +152,15 @@ extern D2ClientLibrary::TD2ClickOnStashButton D2ClickOnStashButton;
 extern D2ClientLibrary::TD2LoadBuySelBtn D2LoadBuySelBtn;
 extern D2ClientLibrary::TD2ReloadGambleScreen D2ReloadGambleScreen;
 
+// D2Client: Only 1.10
+extern D2ClientLibrary::TD2isLODGame D2isLODGame;
+extern D2ClientLibrary::TD2GetDifficultyLevel D2GetDifficultyLevel;
+extern D2ClientLibrary::TD2GetMouseX D2GetMouseX;
+extern D2ClientLibrary::TD2GetMouseY D2GetMouseY;
+extern D2ClientLibrary::TD2GetClientPlayer D2GetClientPlayer;
+extern D2ClientLibrary::TD2CleanStatMouseUp D2CleanStatMouseUp;
+extern D2ClientLibrary::TD2SendToServer3 D2SendToServer3;
+
 // D2Game
 extern D2GameLibrary::TD2SetNbPlayers D2SetNbPlayers;
 extern D2GameLibrary::TD2AddClient D2AddClient;
@@ -176,6 +185,9 @@ extern D2GameLibrary::TD2UberMephIA D2UberMephIA;
 extern D2GameLibrary::TD2UberDiabloIA D2UberDiabloIA;
 extern D2GameLibrary::TD2UberBaalIA D2UberBaalIA;
 extern D2GameLibrary::TD2SaveGame D2SaveGame;
+
+// D2Game: Only 1.10
+extern D2GameLibrary::TD2GetClient D2GetClient;
 
 // D2Net
 extern D2NetLibrary::TD2SendToServer D2SendToServer;
