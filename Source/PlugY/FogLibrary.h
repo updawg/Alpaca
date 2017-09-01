@@ -10,6 +10,7 @@ public:
 		DllName = "Fog.dll";
 		DllOffset = LoadDiabloLibrary();
 		DllVersion = GameVersion;
+		SetFunctions();
 	};
 
 	typedef void(__stdcall *TD2FogAssertOld) (const char* ptMessage, DWORD eip, DWORD line);

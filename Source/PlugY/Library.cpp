@@ -84,14 +84,28 @@ VersionOffsets Library::CreateOffsets(DWORD V109, DWORD V109D, DWORD V110, DWORD
 	return indexes;
 }
 
-DWORD Library::RetrieveAddress(const char* moduleName, const DWORD moduleBaseAddress, const VersionOffsets moduleOffsets)
+DWORD Library::RetrieveAddressByProc(const VersionOffsets moduleOffsets)
 {
-	return GetFunctionAddress(moduleName, (HMODULE) moduleBaseAddress, (LPCSTR) GetOffsetForVersion(moduleOffsets));
+	DWORD proposedOffset = GetOffsetForVersion(moduleOffsets);
+	if (proposedOffset != 0)
+	{
+		return GetFunctionAddress((LPCSTR)proposedOffset);
+	}
+	return NULL;
 }
 
-DWORD Library::GetFunctionAddress(const char* moduleName, HMODULE module, LPCSTR offset)
+DWORD Library::RetrieveAddressByAddition(const VersionOffsets moduleOffsets)
 {
-	log_msg("Searching for %s (%08X) function at %08X (%i) ... ", moduleName, module, offset, offset);
+	DWORD offset = GetOffsetForVersion(moduleOffsets);
+	DWORD proposedOffset = DllOffset + offset;
+	log_msg("Retrieving %s function for offset %08X (%i) by Addition ... SUCCESS. Located at %08X.\n", DllName, offset, offset, proposedOffset);
+	return proposedOffset;
+}
+
+DWORD Library::GetFunctionAddress(LPCSTR offset)
+{
+	HMODULE module = (HMODULE)DllOffset;
+	log_msg("Retrieving %s function for offset %08X (%i) by Proc ...", DllName, offset, offset);
 
 	DWORD locatedAddress;
 
@@ -100,12 +114,12 @@ DWORD Library::GetFunctionAddress(const char* moduleName, HMODULE module, LPCSTR
 		locatedAddress = (DWORD) GetProcAddress(module, offset);
 		if (!locatedAddress)
 		{
-			log_msg("FAILED.\n");
 			// Don't exit here cause apparently the plugin still works even if some functions aren't found.
+			log_msg("FAILED.\n");
 		}
 		log_msg("SUCCESS. Located at %08X.\n", locatedAddress);
 		return locatedAddress;
 	}
-	
+
 	return NULL;
 }

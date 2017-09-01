@@ -10,6 +10,7 @@ public:
 		DllName = "D2Lang.dll";
 		DllOffset = LoadDiabloLibrary();
 		DllVersion = GameVersion;
+		SetFunctions();
 	};
 
 	typedef LPWSTR(__fastcall *TD2GetStringFromString) (const char* ptString);

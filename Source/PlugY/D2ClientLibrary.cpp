@@ -2,5 +2,5 @@
 
 void D2ClientLibrary::SetFunctions()
 {
-	Library::SetFunctions();
+	
 }

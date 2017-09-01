@@ -2,5 +2,5 @@
 
 void D2LangLibrary::SetFunctions()
 {
-	Library::SetFunctions();
+	
 }

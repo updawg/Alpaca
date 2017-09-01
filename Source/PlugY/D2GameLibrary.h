@@ -10,6 +10,7 @@ public:
 		DllName = "D2Game.dll";
 		DllOffset = LoadDiabloLibrary();
 		DllVersion = GameVersion;
+		SetFunctions();
 	};
 
 	typedef void(__fastcall *TD2SetNbPlayers) (DWORD nbPlayers);

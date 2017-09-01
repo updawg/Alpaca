@@ -1,1 +1,22 @@
-﻿
+﻿  StormLibrary.cpp
+  Library.cpp
+  FogLibrary.cpp
+  D2gfxLibrary.cpp
+  D2WinLibrary.cpp
+  D2NetLibrary.cpp
+  D2LaunchLibrary.cpp
+  D2LangLibrary.cpp
+  D2GameLibrary.cpp
+  D2CommonLibrary.cpp
+  D2ClientLibrary.cpp
+  D2CMPLibrary.cpp
+  Generating Code...
+  Compiling...
+  LibraryUtility.cpp
+  MainScreen.cpp
+  D2wrapper.cpp
+  D2functions.cpp
+  Generating Code...
+  PlugY.vcxproj -> Z:\Repository\D2 Modding\Gardenia\Source\PlugY\Debug\PlugY.dll
+  PlugY.vcxproj -> Z:\Repository\D2 Modding\Gardenia\Source\PlugY\Debug\PlugY.pdb (Full PDB)
+          1 file(s) copied.

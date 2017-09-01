@@ -2,5 +2,5 @@
 
 void D2NetLibrary::SetFunctions()
 {
-	Library::SetFunctions();
+	
 }

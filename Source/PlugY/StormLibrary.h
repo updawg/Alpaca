@@ -10,6 +10,7 @@ public:
 		DllName = "Storm.dll";
 		DllOffset = LoadDiabloLibrary();
 		DllVersion = GameVersion;
+		SetFunctions();
 	};
 
 	typedef DWORD(__stdcall *TD2StormMPQOpenFile) (DWORD zero, LPCSTR fileName, DWORD dwSearchScope, void** buffer);

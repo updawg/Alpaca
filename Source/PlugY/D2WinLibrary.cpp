@@ -2,5 +2,5 @@
 
 void D2WinLibrary::SetFunctions()
 {
-	Library::SetFunctions();
+	
 }

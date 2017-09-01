@@ -10,6 +10,7 @@ public:
 		DllName = "D2gfx.dll";
 		DllOffset = LoadDiabloLibrary();
 		DllVersion = GameVersion;
+		SetFunctions();
 	};
 
 	typedef DWORD(__stdcall *TD2GetResolution) ();

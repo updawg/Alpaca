@@ -2,5 +2,5 @@
 
 void FogLibrary::SetFunctions()
 {
-	Library::SetFunctions();
+	
 }

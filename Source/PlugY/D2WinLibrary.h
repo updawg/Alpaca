@@ -10,7 +10,7 @@ public:
 		DllName = "D2Win.dll";
 		DllOffset = LoadDiabloLibrary();
 		DllVersion = GameVersion;
-		//SetFunctions();
+		SetFunctions();
 	};
 
 	typedef void(__fastcall *TD2PrintLineOnTextBox) (void* screen, char* s, DWORD color);

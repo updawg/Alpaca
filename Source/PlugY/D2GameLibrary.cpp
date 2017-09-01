@@ -2,5 +2,5 @@
 
 void D2GameLibrary::SetFunctions()
 {
-	Library::SetFunctions();
+	
 }

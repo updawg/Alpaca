@@ -2,5 +2,5 @@
 
 void D2gfxLibrary::SetFunctions()
 {
-	Library::SetFunctions();
+	
 }

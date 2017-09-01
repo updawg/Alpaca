@@ -2,5 +2,5 @@
 
 void D2CMPLibrary::SetFunctions()
 {
-	Library::SetFunctions();
+	
 }

@@ -10,6 +10,7 @@ public:
 		DllName = "D2Net.dll";
 		DllOffset = LoadDiabloLibrary();
 		DllVersion = GameVersion;
+		SetFunctions();
 	};
 
 	typedef DWORD(__stdcall *TD2SendToServer) (DWORD size, DWORD one, void* data);

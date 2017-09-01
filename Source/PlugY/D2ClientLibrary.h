@@ -10,6 +10,7 @@ public:
 		DllName = "D2Client.dll";
 		DllOffset = LoadDiabloLibrary();
 		DllVersion = GameVersion;
+		SetFunctions();
 	};
 
 	typedef void* (__fastcall *TD2LoadImage) (const char* filename, DWORD filetype);

@@ -10,6 +10,7 @@ public:
 		DllName = "D2Launch.dll";
 		DllOffset = LoadDiabloLibrary();
 		DllVersion = GameVersion;
+		SetFunctions();
 	};
 
 private:
