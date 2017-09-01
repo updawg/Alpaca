@@ -32,4 +32,13 @@ public:
 	TD2CreateTextBox D2CreateTextBox;
 private:
 	void SetFunctions();
+
+	TD2PrintLineOnTextBox GetD2PrintLineOnTextBox();
+	TD2PrintString GetD2PrintString();
+	TD2GetPixelLen GetD2GetPixelLen();
+	TD2SetFont GetD2SetFont();
+	TD2PrintPopup GetD2PrintPopup();
+	TD2GetPixelRect GetD2GetPixelRect();
+	TD2PrintTextPopup GetD2PrintTextPopup();
+	TD2CreateTextBox GetD2CreateTextBox();
 };

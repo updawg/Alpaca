@@ -18,4 +18,6 @@ public:
 	TD2CMP10014 D2CMP10014;
 private:
 	void SetFunctions();
+
+	TD2CMP10014 GetD2CMP10014();
 };

@@ -24,4 +24,9 @@ public:
 	TD2PrintBigNumber D2PrintBigNumber;
 private:
 	void SetFunctions();
+
+	TD2GetStringFromString GetD2GetStringFromString();
+	TD2GetStringFromIndex GetD2GetStringFromIndex();
+	TD2GetLang GetD2GetLang();
+	TD2PrintBigNumber GetD2PrintBigNumber();
 };

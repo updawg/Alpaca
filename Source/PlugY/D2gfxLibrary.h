@@ -22,4 +22,8 @@ public:
 	TD2PrintImage D2PrintImage;
 private:
 	void SetFunctions();
+
+	TD2GetResolution GetD2GetResolution();
+	TD2FillArea GetD2FillArea();
+	TD2PrintImage GetD2PrintImage();
 };
