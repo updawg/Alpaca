@@ -94,50 +94,50 @@ D2GameLibrary::TD2GameGetObject D2GameLibrary::GetD2GameGetObject()
 
 D2GameLibrary::TD2CreateUnit D2GameLibrary::GetD2CreateUnit()
 {
-	return (TD2CreateUnit)RetrieveAddressByAddition(CreateOffsets(00000, 00000, 00000, 0x99760, 0xC09E0, 0x94E70, 0xE1D90, 0x6FE10));
+	return (TD2CreateUnit)RetrieveAddressByAddition(CreateOffsets(0, 0, 0, 0x99760, 0xC09E0, 0x94E70, 0xE1D90, 0x6FE10));
 }
 
 D2GameLibrary::TD2OpenPandPortal D2GameLibrary::GetD2OpenPandPortal()
 {
-	return (TD2OpenPandPortal)RetrieveAddressByAddition(CreateOffsets(00000, 00000, 00000, 0x9B480, 0x34920, 0xD1AA0, 0x70180, 0x941E0));
+	return (TD2OpenPandPortal)RetrieveAddressByAddition(CreateOffsets(0, 0, 0, 0x9B480, 0x34920, 0xD1AA0, 0x70180, 0x941E0));
 }
 
 D2GameLibrary::TD2OpenPandFinalPortal D2GameLibrary::GetD2OpenPandFinalPortal()
 {
-	return (TD2OpenPandFinalPortal)RetrieveAddressByAddition(CreateOffsets(00000, 00000, 00000, 0x9B470, 0x34910, 0xD1A90, 0x70170, 0x941D0));
+	return (TD2OpenPandFinalPortal)RetrieveAddressByAddition(CreateOffsets(0, 0, 0, 0x9B470, 0x34910, 0xD1A90, 0x70170, 0x941D0));
 }
 
 D2GameLibrary::TD2MephIA D2GameLibrary::GetD2MephIA()
 {
-	return (TD2MephIA)RetrieveAddressByAddition(CreateOffsets(00000, 00000, 00000, 0x84730, 0x85AA0, 0xDBE90, 0xA9610, 0x31920));
+	return (TD2MephIA)RetrieveAddressByAddition(CreateOffsets(0, 0, 0, 0x84730, 0x85AA0, 0xDBE90, 0xA9610, 0x31920));
 }
 
 D2GameLibrary::TD2DiabloIA D2GameLibrary::GetD2DiabloIA()
 {
-	return (TD2DiabloIA)RetrieveAddressByAddition(CreateOffsets(00000, 00000, 00000, 0x75980, 0xD7BD0, 0xCD0F0, 0x85B60, 0x4EAD0));
+	return (TD2DiabloIA)RetrieveAddressByAddition(CreateOffsets(0, 0, 0, 0x75980, 0xD7BD0, 0xCD0F0, 0x85B60, 0x4EAD0));
 }
 
 D2GameLibrary::TD2BaalIA D2GameLibrary::GetD2BaalIA()
 {
-	return (TD2BaalIA)RetrieveAddressByAddition(CreateOffsets(00000, 00000, 00000, 0xEAB20, 0x2BC80, 0xB3B90, 0xB8610, 0xC8850));
+	return (TD2BaalIA)RetrieveAddressByAddition(CreateOffsets(0, 0, 0, 0xEAB20, 0x2BC80, 0xB3B90, 0xB8610, 0xC8850));
 }
 
 D2GameLibrary::TD2UberMephIA D2GameLibrary::GetD2UberMephIA()
 {
-	return (TD2UberMephIA)RetrieveAddressByAddition(CreateOffsets(00000, 00000, 00000, 0x70320, 0xD2D70, 0xC2A90, 0x7B4E0, 0x49480));
+	return (TD2UberMephIA)RetrieveAddressByAddition(CreateOffsets(0, 0, 0, 0x70320, 0xD2D70, 0xC2A90, 0x7B4E0, 0x49480));
 }
 
 D2GameLibrary::TD2UberDiabloIA D2GameLibrary::GetD2UberDiabloIA()
 {
-	return (TD2UberDiabloIA)RetrieveAddressByAddition(CreateOffsets(00000, 00000, 00000, 0x7F200, 0x7FE60, 0xD6250, 0xA39D0, 0x2C3F0));
+	return (TD2UberDiabloIA)RetrieveAddressByAddition(CreateOffsets(0, 0, 0, 0x7F200, 0x7FE60, 0xD6250, 0xA39D0, 0x2C3F0));
 }
 
 D2GameLibrary::TD2UberBaalIA D2GameLibrary::GetD2UberBaalIA()
 {
-	return (TD2UberBaalIA)RetrieveAddressByAddition(CreateOffsets(00000, 00000, 00000, 0xE92B0, 0x2A300, 0xB2210, 0xB6C80, 0xC6EC0));
+	return (TD2UberBaalIA)RetrieveAddressByAddition(CreateOffsets(0, 0, 0, 0xE92B0, 0x2A300, 0xB2210, 0xB6C80, 0xC6EC0));
 }
 
 D2GameLibrary::TD2SaveGame D2GameLibrary::GetD2SaveGame()
 {
-	return (TD2SaveGame)RetrieveAddressByAddition(CreateOffsets(00000, 00000, 0x89C0, 0xE2390, 0xE66D0, 0xA8090, 0x2C830, 0xBE660));
+	return (TD2SaveGame)RetrieveAddressByAddition(CreateOffsets(0, 0, 0x89C0, 0xE2390, 0xE66D0, 0xA8090, 0x2C830, 0xBE660));
 }

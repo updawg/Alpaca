@@ -44,4 +44,19 @@ public:
 	TD2GetInstructionPointer D2GetInstructionPointer;
 private:
 	void SetFunctions();
+
+	TD2FogAssertOld GetD2FogAssertOld();
+	TD2FogAssert GetD2FogAssert();
+	TD2FogMemAlloc GetD2FogMemAlloc();
+	TD2FogMemDeAlloc GetD2FogMemDeAlloc();
+	TD2AllocMem GetD2AllocMem();
+	TD2FreeMem GetD2FreeMem();
+	TD2MPQOpenFile GetD2MPQOpenFile();
+	TD2MPQCloseFile GetD2MPQCloseFile();
+	TD2MPQReadFile GetD2MPQReadFile();
+	TD2MPQGetSizeFile GetD2MPQGetSizeFile();
+	TD2FogGetSavePath GetD2FogGetSavePath();
+	TD2FogGetInstallPath GetD2FogGetInstallPath();
+	TD2Fog10212 GetD2Fog10212();
+	TD2GetInstructionPointer GetD2GetInstructionPointer();
 };

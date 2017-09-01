@@ -20,4 +20,7 @@ public:
 	TD2SendToClient D2SendToClient;
 private:
 	void SetFunctions();
+
+	TD2SendToServer GetD2SendToServer();
+	TD2SendToClient GetD2SendToClient();
 };
