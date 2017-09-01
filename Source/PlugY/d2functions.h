@@ -10,6 +10,8 @@
 
 #include "D2CommonLibrary.h"
 #include "D2ClientLibrary.h"
+#include "D2GameLibrary.h"
+
 #include "D2gfxLibrary.h"
 
 // Conversion to 1.09
@@ -145,6 +147,31 @@ extern D2ClientLibrary::TD2ClickOnStashButton D2ClickOnStashButton;
 extern D2ClientLibrary::TD2LoadBuySelBtn D2LoadBuySelBtn;
 extern D2ClientLibrary::TD2ReloadGambleScreen D2ReloadGambleScreen;
 
+// D2Game
+extern D2GameLibrary::TD2SetNbPlayers D2SetNbPlayers;
+extern D2GameLibrary::TD2AddClient D2AddClient;
+extern D2GameLibrary::TD2GetGameByClientID D2GetGameByClientID;
+extern D2GameLibrary::TD2BroadcastFunction D2BroadcastFunction;
+extern D2GameLibrary::TD2SendPacket D2SendPacket;
+extern D2GameLibrary::TD2SetSkillBaseLevelOnClient D2SetSkillBaseLevelOnClient;
+extern D2GameLibrary::TD2LinkPortal D2LinkPortal;
+extern D2GameLibrary::TD2VerifIfNotCarry1 D2VerifIfNotCarry1;
+extern D2GameLibrary::TD2TestPositionInRoom D2TestPositionInRoom;
+extern D2GameLibrary::TD2SpawnMonster D2SpawnMonster;
+extern D2GameLibrary::TD2Game235C0 D2Game235C0;
+extern D2GameLibrary::TD2LoadInventory D2LoadInventory;
+extern D2GameLibrary::TD2GameGetObject D2GameGetObject;
+extern D2GameLibrary::TD2CreateUnit D2CreateUnit;
+extern D2GameLibrary::TD2OpenPandPortal D2OpenPandPortal;
+extern D2GameLibrary::TD2OpenPandFinalPortal D2OpenPandFinalPortal;
+extern D2GameLibrary::TD2MephIA D2MephIA;
+extern D2GameLibrary::TD2DiabloIA D2DiabloIA;
+extern D2GameLibrary::TD2BaalIA D2BaalIA;
+extern D2GameLibrary::TD2UberMephIA D2UberMephIA;
+extern D2GameLibrary::TD2UberDiabloIA D2UberDiabloIA;
+extern D2GameLibrary::TD2UberBaalIA D2UberBaalIA;
+extern D2GameLibrary::TD2SaveGame D2SaveGame;
+
 // D2gfx
 extern D2gfxLibrary::TD2GetResolution D2GetResolution;
 extern D2gfxLibrary::TD2FillArea D2FillArea;
@@ -166,14 +193,10 @@ extern DataTables* SgptDataTables;
 #undef E2F
 #undef E2C
 
+extern D2CommonLibrary::TD2AddPlayerStat			V2AddPlayerStat;
+extern D2GameLibrary::TD2GetGameByClientID			V2GetGameByClientID;
+extern D2GameLibrary::TD2SpawnMonster				V2SpawnMonster;
 
-//#include "Utilities\LibraryUtility.h"
-//extern LibraryUtility* lu;
-//extern D2gfxLibrary::TD2FillArea D2FillArea;
-
-extern D2CommonLibrary::TD2AddPlayerStat				V2AddPlayerStat;
-extern TD2GetGameByClientID			V2GetGameByClientID;
-extern TD2SpawnMonster				V2SpawnMonster;
 extern WORD (*getDescStrPos)	(DWORD statID);
 extern void* (STDCALL *compileTxtFile)(DWORD unused, const char* filename, BINField* ptFields, DWORD* ptRecordCount, DWORD recordLength);
 void setImage(sDrawImageInfo* data, void* image);

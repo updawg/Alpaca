@@ -7,32 +7,6 @@
 
 ======================================================================*/
 
-// D2Game
-
-F7(FAST, D2Game,10059,10059,10059,10039,10007,10037,10049,10002,	void,		D2SetNbPlayers, (DWORD nbPlayers));
-A7(FAST, D2Game,00000,00000, 6C60,E3DA0,E8210,EB060,49930,E5070,	void,		D2AddClient, (DWORD clientID));//BY EAX
-A7(STD,  D2Game,00000,00000, 94E0,E0520,E49A0,A6360,2AAE0,BC700,	Game*,		D2GetGameByClientID, (DWORD clientID));//6FC394E0
-A7(FAST, D2Game,00000,00000, B0E0,DF250,E36D0,A5080,29820,BB510,	void,		D2BroadcastFunction, (Game* ptGame, void* fct, void* param));//00DAB0E0
-A7(FAST, D2Game, C380, C650, C710,41420,A0D50,7D220,8A3E0,DB780,	DWORD,		D2SendPacket, (void* ptNetClient, LPVOID pData, DWORD size));//EAX=ptNetClient [ESP]=pData
-A7(FAST, D2Game, D650, D920, DB50,44D00,A3F20,802E0,8D5F0,DD4F0,	void,		D2SetSkillBaseLevelOnClient, (void* ptClient, Unit* ptChar, DWORD skillID, DWORD sLvl, DWORD bRemove));//by EAX,ESI,EBX
-A7(STD,  D2Game,00000,00000,00000,27230,109F0,AE930,A22E0,15F40,	DWORD,		D2LinkPortal, (Game* ptGame, Unit* ptObject, DWORD levelEndID, DWORD levelStartID));
-A7(FAST, D2Game,00000,00000,128F0,38D90,43E60,11FF0,D2070,B2F70,	DWORD,		D2VerifIfNotCarry1, (Unit* ptItem, ItemsBIN* itemsData, Unit* ptFirstItem));// BY EBX=itemsData EAX=ptFirstItem [ESP]=ptItem
-A7(FAST, D2Game,00000,00000,22070, 1090, 1DF0, 11F0, 1280, 1340,	Room*,		D2TestPositionInRoom, (Room* ptRoom, DWORD x, DWORD y));
-A7(FAST, D2Game,00000,00000,3F220,4ABE0,EC7E0,40B90,24950,CDE20,	DWORD,		D2SpawnMonster, (Game* ptGame, Room* ptRoom, DWORD zero1, DWORD x, DWORD y, DWORD minusOne, DWORD superuniqueID, DWORD zero2));//wrong param
-A7(STD,  D2Game,00000,00000,00000,D6D10,235C0, D410,200E0,59980,	void,		D2Game235C0, (Game* ptGame, Room* ptRoom));
-A7(FAST, D2Game,4F100,4F500,5B8A0,B9D70,25D50,44950,54810,3A4C0,	DWORD,		D2LoadInventory, (Game* ptGame, Unit* pChar, saveBitField* pdata, DWORD p2, DWORD maxSize, DWORD p4, DWORD *ptNbBytesRead));//6FC8B8A0
-A7(FAST, D2Game,7BAE0,7BFD0,8BB00,97620,BEF80,93650,E03A0,6DC40,	Unit*,		D2GameGetObject, (Game* ptGame, DWORD type, DWORD itemNum));//6FCBBB00
-A7(FAST, D2Game,00000,00000,00000,99760,C09E0,94E70,E1D90,6FE10,	Unit*,		D2CreateUnit, (DWORD type, DWORD id, DWORD x, DWORD y, Game* ptGame, Room* ptRoom, DWORD uk1, DWORD uk2, DWORD uk3));
-A7(FAST, D2Game,00000,00000,00000,9B480,34920,D1AA0,70180,941E0,	void,		D2OpenPandPortal, (Game* ptGame, Unit* ptChar));
-A7(FAST, D2Game,00000,00000,00000,9B470,34910,D1A90,70170,941D0,	void,		D2OpenPandFinalPortal, (Game* ptGame, Unit* ptChar));
-A7(FAST, D2Game,00000,00000,00000,84730,85AA0,DBE90,A9610,31920,	void,		D2MephIA, (Game* ptGame, Unit* ptMonster, DWORD*));
-A7(FAST, D2Game,00000,00000,00000,75980,D7BD0,CD0F0,85B60,4EAD0,	void,		D2DiabloIA, (Game* ptGame, Unit* ptMonster, DWORD*));
-A7(FAST, D2Game,00000,00000,00000,EAB20,2BC80,B3B90,B8610,C8850,	void,		D2BaalIA, (Game* ptGame, Unit* ptMonster, DWORD*));
-A7(FAST, D2Game,00000,00000,00000,70320,D2D70,C2A90,7B4E0,49480,	void,		D2UberMephIA, (Game* ptGame, Unit* ptMonster, DWORD*));
-A7(FAST, D2Game,00000,00000,00000,7F200,7FE60,D6250,A39D0,2C3F0,	void,		D2UberDiabloIA, (Game* ptGame, Unit* ptMonster, DWORD*));
-A7(FAST, D2Game,00000,00000,00000,E92B0,2A300,B2210,B6C80,C6EC0,	void,		D2UberBaalIA, (Game* ptGame, Unit* ptMonster, DWORD*));
-A7(STD,  D2Game,00000,00000, 89C0,E2390,E66D0,A8090,2C830,BE660,	void,		D2SaveGame, (Game* ptGame) );
-
 // D2Net
 
 F7(STD,  D2Net,	10005,10005,10005,10035,10020,10036,10024,10015,	DWORD,		D2SendToServer, (DWORD size, DWORD one, void* data));//(DWORD zero, void* data, DWORD size) for 1.10 and before
