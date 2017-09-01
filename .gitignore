@@ -1,3 +1,4 @@
-Source/PlugY/Release/*
-Source/PlugY/Debug/*
-Source/PlugY/.*
+Source/Gardenia/Release/
+Source/Gardenia/Debug/
+Source/GardeniaLauncher/Release/
+Source/GardeniaLauncher/Debug/

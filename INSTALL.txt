@@ -1,0 +1,8 @@
+Copy the following files and folders to the root of your Diablo II directory:
+
+Gardenia/
+Gardenia.exe
+Gardenia.dll
+Gardenia.ini
+
+Double click Gardenia.exe and Enjoy!
