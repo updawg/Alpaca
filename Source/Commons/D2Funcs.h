@@ -7,40 +7,6 @@
 
 ======================================================================*/
 
-// D2Net
-
-F7(STD,  D2Net,	10005,10005,10005,10035,10020,10036,10024,10015,	DWORD,		D2SendToServer, (DWORD size, DWORD one, void* data));//(DWORD zero, void* data, DWORD size) for 1.10 and before
-F7(STD,  D2Net,	10006,10006,10006,10018,10018,10015,10002,10012,	DWORD,		D2SendToClient, (DWORD zero, DWORD clientID, void* data, DWORD size));
-
-// D2Lang
-
-F7(FAST, D2Lang,	10003,10003,10003,10002,10004,10010,10011,10011,	LPWSTR,		D2GetStringFromString, (const char* ptString));//6FC13BC0 LAutour
-F7(FAST, D2Lang,	10004,10004,10004,10005,10000,10005,10003,10004,	LPWSTR,		D2GetStringFromIndex, (WORD dwIndexNum));
-F7(STD,  D2Lang,	10007,10007,10007,10009,10013,10002,10009,10001,	DWORD,		D2GetLang, ());//14b  00522A20
-F7(STD,  D2Lang,	10010,10010,10010,00000,00000,00000,00000,00000,	DWORD,		D2PrintBigNumber, (LPWSTR ptBuf , DWORD number, DWORD size));//6FC14210
-
-// Storm
-
-F7(STD,  Storm,	  268,  268,  268,  268,  268,  268,  268,  268,	DWORD,		D2StormMPQOpenFile, (DWORD zero, LPCSTR fileName, DWORD dwSearchScope, void** buffer))
-F7(STD,  Storm,	  503,  503,  503,  503,  503,  503,  503,  503,	void,		D2Storm503, (DWORD, DWORD, DWORD));
-F7(STD,  Storm,	  511,  511,  511,  511,  511,  511,  511,  511,	void,		D2FreeWinMessage, (sWinMessage* msg));
-
-// D2Win
-
-F7(FAST, D2Win, 10046,10046,10046,10061,10075,10015,10022,10051,	void,		D2PrintLineOnTextBox,(void* screen, char* s, DWORD color) );
-F7(FAST, D2Win, 10117,10117,10117,10020,10064,10001,10150,10076,	void,		D2PrintString,(LPWSTR s, DWORD x, DWORD y, DWORD color, DWORD bfalse) );
-F7(FAST, D2Win, 10121,10121,10121,10034,10128,10132,10028,10150,	DWORD,		D2GetPixelLen,(LPWSTR s) );
-F7(FAST, D2Win, 10127,10127,10127,10141,10170,10010,10184,10047,	DWORD,		D2SetFont,(DWORD fontID) );
-F7(FAST, D2Win, 10129,10129,10129,10118,10039,10031,10085,10137,	void,		D2PrintPopup,(LPWSTR s, DWORD x, DWORD y, DWORD color, DWORD center) );
-F7(FAST, D2Win, 10131,10131,10131,00000,00000,00000,00000,00000,	void,		D2GetPixelRect,(LPWSTR s, DWORD* x, DWORD* y) );//6F8AB260
-F7(FAST, D2Win, 10132,10132,10132,00000,00000,00000,00000,00000,	DWORD,		D2PrintTextPopup,(LPWSTR s, DWORD x, DWORD y, DWORD uk, DWORD type, DWORD color) );//6F8AB080
-F7(STD,  D2Win, 10017,10017,10017,10147,10113,10098,10098,10164,	void*,		D2CreateTextBox,(DWORD* data) );
-
-
-// D2CMP
-
-F7(STD,  D2CMP,	10032,10032,10032,10021,10014,10106,10065,10020,	DWORD,		D2CMP10014, (void* image) );
-
 // Other
 
 //ONLY UNTIL 1.10 :

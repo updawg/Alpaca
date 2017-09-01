@@ -13,8 +13,11 @@
 #include "D2GameLibrary.h"
 #include "D2NetLibrary.h"
 #include "FogLibrary.h"
-
+#include "D2LangLibrary.h"
+#include "StormLibrary.h"
 #include "D2gfxLibrary.h"
+#include "D2WinLibrary.h"
+#include "D2CMPLibrary.h"
 
 // Conversion to 1.09
 struct s_shifting {
@@ -175,6 +178,8 @@ extern D2GameLibrary::TD2UberBaalIA D2UberBaalIA;
 extern D2GameLibrary::TD2SaveGame D2SaveGame;
 
 // D2Net
+extern D2NetLibrary::TD2SendToServer D2SendToServer;
+extern D2NetLibrary::TD2SendToClient D2SendToClient;
 
 // Fog
 extern FogLibrary::TD2FogAssertOld D2FogAssertOld;
@@ -192,10 +197,34 @@ extern FogLibrary::TD2FogGetInstallPath D2FogGetInstallPath;
 extern FogLibrary::TD2Fog10212 D2Fog10212;
 extern FogLibrary::TD2GetInstructionPointer D2GetInstructionPointer;
 
+// D2Lang
+extern D2LangLibrary::TD2GetStringFromString D2GetStringFromString;
+extern D2LangLibrary::TD2GetStringFromIndex D2GetStringFromIndex;
+extern D2LangLibrary::TD2GetLang D2GetLang;
+extern D2LangLibrary::TD2PrintBigNumber D2PrintBigNumber;
+
+// Storm
+extern StormLibrary::TD2StormMPQOpenFile D2StormMPQOpenFile;
+extern StormLibrary::TD2Storm503 D2Storm503;
+extern StormLibrary::TD2FreeWinMessage D2FreeWinMessage;
+
 // D2gfx
 extern D2gfxLibrary::TD2GetResolution D2GetResolution;
 extern D2gfxLibrary::TD2FillArea D2FillArea;
 extern D2gfxLibrary::TD2PrintImage D2PrintImage;
+
+// D2Win
+extern D2WinLibrary::TD2PrintLineOnTextBox D2PrintLineOnTextBox;
+extern D2WinLibrary::TD2PrintString D2PrintString;
+extern D2WinLibrary::TD2GetPixelLen D2GetPixelLen;
+extern D2WinLibrary::TD2SetFont D2SetFont;
+extern D2WinLibrary::TD2PrintPopup D2PrintPopup;
+extern D2WinLibrary::TD2GetPixelRect D2GetPixelRect;
+extern D2WinLibrary::TD2PrintTextPopup D2PrintTextPopup;
+extern D2WinLibrary::TD2CreateTextBox D2CreateTextBox;
+
+// D2CMP
+extern D2CMPLibrary::TD2CMP10014 D2CMP10014;
 
 //#undef F7
 //#define F7(X, Z, A,B,C,D,E,F,G,H, R, N, P) 

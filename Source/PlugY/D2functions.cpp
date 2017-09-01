@@ -134,6 +134,8 @@ D2GameLibrary::TD2UberBaalIA D2UberBaalIA;
 D2GameLibrary::TD2SaveGame D2SaveGame;
 
 // D2Net
+D2NetLibrary::TD2SendToServer D2SendToServer;
+D2NetLibrary::TD2SendToClient D2SendToClient;
 
 // Fog
 FogLibrary::TD2FogAssertOld D2FogAssertOld;
@@ -151,10 +153,34 @@ FogLibrary::TD2FogGetInstallPath D2FogGetInstallPath;
 FogLibrary::TD2Fog10212 D2Fog10212;
 FogLibrary::TD2GetInstructionPointer D2GetInstructionPointer;
 
+// D2Lang
+D2LangLibrary::TD2GetStringFromString D2GetStringFromString;
+D2LangLibrary::TD2GetStringFromIndex D2GetStringFromIndex;
+D2LangLibrary::TD2GetLang D2GetLang;
+D2LangLibrary::TD2PrintBigNumber D2PrintBigNumber;
+
+// Storm
+StormLibrary::TD2StormMPQOpenFile D2StormMPQOpenFile;
+StormLibrary::TD2Storm503 D2Storm503;
+StormLibrary::TD2FreeWinMessage D2FreeWinMessage;
+
 // D2gfx
 D2gfxLibrary::TD2GetResolution D2GetResolution;
 D2gfxLibrary::TD2FillArea D2FillArea;
 D2gfxLibrary::TD2PrintImage D2PrintImage;
+
+// D2Win
+D2WinLibrary::TD2PrintLineOnTextBox D2PrintLineOnTextBox;
+D2WinLibrary::TD2PrintString D2PrintString;
+D2WinLibrary::TD2GetPixelLen D2GetPixelLen;
+D2WinLibrary::TD2SetFont D2SetFont;
+D2WinLibrary::TD2PrintPopup D2PrintPopup;
+D2WinLibrary::TD2GetPixelRect D2GetPixelRect;
+D2WinLibrary::TD2PrintTextPopup D2PrintTextPopup;
+D2WinLibrary::TD2CreateTextBox D2CreateTextBox;
+
+// D2CMP
+D2CMPLibrary::TD2CMP10014 D2CMP10014;
 
 #include "../Commons/D2Funcs.h"
 
@@ -209,7 +235,9 @@ D2GameLibrary::TD2LoadInventory				 V2LoadInventory;
 D2GameLibrary::TD2SaveGame					 V2SaveGame;
 
 WORD (*getDescStrPos) (DWORD statID);
-TD2SendToServer				 V2SendToServer;
+
+// D2Net
+D2NetLibrary::TD2SendToServer				 V2SendToServer;
 
 DWORD getStatDescIDFrom (DWORD statID)//FOR 1.09
 {
@@ -813,6 +841,8 @@ void initD2functions()
 	D2SaveGame = lu->D2Game->D2SaveGame;
 
 	// D2Net
+	D2SendToServer = lu->D2Net->D2SendToServer;
+	D2SendToClient = lu->D2Net->D2SendToClient;
 
 	// Fog
 	D2FogAssertOld = lu->Fog->D2FogAssertOld;
@@ -830,12 +860,34 @@ void initD2functions()
 	D2Fog10212 = lu->Fog->D2Fog10212;
 	D2GetInstructionPointer = lu->Fog->D2GetInstructionPointer;
 
+	// D2Lang
+	D2GetStringFromString = lu->D2Lang->D2GetStringFromString;
+	D2GetStringFromIndex = lu->D2Lang->D2GetStringFromIndex;
+	D2GetLang = lu->D2Lang->D2GetLang;
+	D2PrintBigNumber = lu->D2Lang->D2PrintBigNumber;
+
+	// Storm
+	D2StormMPQOpenFile = lu->Storm->D2StormMPQOpenFile;
+	D2Storm503 = lu->Storm->D2Storm503;
+	D2FreeWinMessage = lu->Storm->D2FreeWinMessage;
+
 	// D2gfx
 	D2GetResolution = lu->D2gfx->D2GetResolution;
 	D2FillArea = lu->D2gfx->D2FillArea;
 	D2PrintImage = lu->D2gfx->D2PrintImage;
 
-	//log_msg("D2FillARea now: %08X and the one in class %08X\n", lu->D2gfx->D2FillArea, lu->D2gfx->D2FillArea);
+	// D2Win
+	D2PrintLineOnTextBox = lu->D2Win->D2PrintLineOnTextBox;
+	D2PrintString = lu->D2Win->D2PrintString;
+	D2GetPixelLen = lu->D2Win->D2GetPixelLen;
+	D2SetFont = lu->D2Win->D2SetFont;
+	D2PrintPopup = lu->D2Win->D2PrintPopup;
+	D2GetPixelRect = lu->D2Win->D2GetPixelRect;
+	D2PrintTextPopup = lu->D2Win->D2PrintTextPopup;
+	D2CreateTextBox = lu->D2Win->D2CreateTextBox;
+
+	// D2CMP
+	D2CMP10014 = lu->D2CMP->D2CMP10014;
 
 	#include "../Commons/D2Funcs.h"
 	SgptDataTables = *(DataTables**) R7(D2Common, 0000, 0000, 96A20, 9B74C, 9EE8C, 9B500, 99E1C, A33F0);
@@ -924,7 +976,7 @@ void initD2functions()
 	} 
 	else
 	{
-		D2SendToServer = (TD2SendToServer) D2SendToServer_1XX;
+		D2SendToServer = (D2NetLibrary::TD2SendToServer) D2SendToServer_1XX;
 		D2GetGameByClientID = (D2GameLibrary::TD2GetGameByClientID) D2GetGameByClientID_1XX;
 		D2SaveGame = (D2GameLibrary::TD2SaveGame) D2SaveGame_1XX;
 	}
