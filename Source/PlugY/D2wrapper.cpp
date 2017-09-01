@@ -249,13 +249,8 @@ extern "C" __declspec(dllexport) void* __stdcall Init(LPSTR IniName)
 
 	loadCustomLibraries();
 
-	// Hook DLLs
 	lu->HookLibraries();
-
-	// Install Functions (All the offsets in here need to be regathered on a new D2 version)
 	Install_Functions();
-
-	// Unhook DLLs
 	lu->UnhookLibraries();
 
 	initCustomLibraries();

@@ -76,4 +76,19 @@ public:
 	DWORD* ptStatDescTable;
 private:
 	void SetFunctions();
+
+	TD2LoadImage GetD2LoadImage();
+	TD2FreeImage GetD2FreeImage();
+	TD2SendMsgToAll GetD2SendMsgToAll();
+	TD2GetLastMonsterIDFight GetD2GetLastMonsterIDFight();
+	TD2PrintStatsPage GetD2PrintStatsPage();
+	TD2PrintStat GetD2PrintStat();
+	TD2SetColorPopup GetD2SetColorPopup();
+	TD2PlaySound GetD2PlaySound();
+	TD2GetCurrentNPC GetD2GetCurrentNPC();
+	TD2SendToServerXX GetD2SendToServerXX();
+	TD2TogglePage GetD2TogglePage();
+	TD2ClickOnStashButton GetD2ClickOnStashButton();
+	TD2LoadBuySelBtn GetD2LoadBuySelBtn();
+	TD2ReloadGambleScreen GetD2ReloadGambleScreen();
 };

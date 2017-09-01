@@ -115,7 +115,10 @@ DWORD Library::GetFunctionAddress(LPCSTR offset)
 			// Don't exit here cause apparently the plugin still works even if some functions aren't found.
 			log_msg("FAILED.\n");
 		}
-		log_msg("SUCCESS. Located at %08X.\n", locatedAddress);
+		else
+		{
+			log_msg("SUCCESS. Located at %08X.\n", locatedAddress);
+		}
 		return locatedAddress;
 	}
 
