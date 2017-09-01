@@ -11,6 +11,8 @@
 #include "D2CommonLibrary.h"
 #include "D2ClientLibrary.h"
 #include "D2GameLibrary.h"
+#include "D2NetLibrary.h"
+#include "FogLibrary.h"
 
 #include "D2gfxLibrary.h"
 
@@ -171,6 +173,24 @@ extern D2GameLibrary::TD2UberMephIA D2UberMephIA;
 extern D2GameLibrary::TD2UberDiabloIA D2UberDiabloIA;
 extern D2GameLibrary::TD2UberBaalIA D2UberBaalIA;
 extern D2GameLibrary::TD2SaveGame D2SaveGame;
+
+// D2Net
+
+// Fog
+extern FogLibrary::TD2FogAssertOld D2FogAssertOld;
+extern FogLibrary::TD2FogAssert D2FogAssert;
+extern FogLibrary::TD2FogMemAlloc D2FogMemAlloc;
+extern FogLibrary::TD2FogMemDeAlloc D2FogMemDeAlloc;
+extern FogLibrary::TD2AllocMem D2AllocMem;
+extern FogLibrary::TD2FreeMem D2FreeMem;
+extern FogLibrary::TD2MPQOpenFile D2MPQOpenFile;
+extern FogLibrary::TD2MPQCloseFile D2MPQCloseFile;
+extern FogLibrary::TD2MPQReadFile D2MPQReadFile;
+extern FogLibrary::TD2MPQGetSizeFile D2MPQGetSizeFile;
+extern FogLibrary::TD2FogGetSavePath D2FogGetSavePath;
+extern FogLibrary::TD2FogGetInstallPath D2FogGetInstallPath;
+extern FogLibrary::TD2Fog10212 D2Fog10212;
+extern FogLibrary::TD2GetInstructionPointer D2GetInstructionPointer;
 
 // D2gfx
 extern D2gfxLibrary::TD2GetResolution D2GetResolution;

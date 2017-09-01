@@ -133,6 +133,24 @@ D2GameLibrary::TD2UberDiabloIA D2UberDiabloIA;
 D2GameLibrary::TD2UberBaalIA D2UberBaalIA;
 D2GameLibrary::TD2SaveGame D2SaveGame;
 
+// D2Net
+
+// Fog
+FogLibrary::TD2FogAssertOld D2FogAssertOld;
+FogLibrary::TD2FogAssert D2FogAssert;
+FogLibrary::TD2FogMemAlloc D2FogMemAlloc;
+FogLibrary::TD2FogMemDeAlloc D2FogMemDeAlloc;
+FogLibrary::TD2AllocMem D2AllocMem;
+FogLibrary::TD2FreeMem D2FreeMem;
+FogLibrary::TD2MPQOpenFile D2MPQOpenFile;
+FogLibrary::TD2MPQCloseFile D2MPQCloseFile;
+FogLibrary::TD2MPQReadFile D2MPQReadFile;
+FogLibrary::TD2MPQGetSizeFile D2MPQGetSizeFile;
+FogLibrary::TD2FogGetSavePath D2FogGetSavePath;
+FogLibrary::TD2FogGetInstallPath D2FogGetInstallPath;
+FogLibrary::TD2Fog10212 D2Fog10212;
+FogLibrary::TD2GetInstructionPointer D2GetInstructionPointer;
+
 // D2gfx
 D2gfxLibrary::TD2GetResolution D2GetResolution;
 D2gfxLibrary::TD2FillArea D2FillArea;
@@ -673,9 +691,6 @@ extern LibraryUtility* lu;
 
 void initD2functions()
 {
-	//D2gfxLibrary::TD2FillArea D2FillArea = lu->D2gfx->D2FillArea();
-	//log_msg("Can you see me: %s, %08X", lu->D2Common->DllName, lu->D2Common->DllOffset);
-
 	#define D2S(F, I, R, N, P)	SETFCTADDR(F, I, N);
 	#define D2F(F, I, R, N, P)	SETFCTADDR(F, I, N);
 	#define E2S(F, A, R, N, P)	N = (T##N)(offset_##F + 0x##A);
@@ -684,10 +699,6 @@ void initD2functions()
 	#define F7(X, Z, A,B,C,D,E,F,G,H, R, N, P) setFctAddr((DWORD*)&N, (HMODULE)offset_##Z, (LPCSTR)(version_##Z == VersionUtility::Versions::V113d? H : (version_##Z == VersionUtility::Versions::V113c? G : (version_##Z == VersionUtility::Versions::V112? F : (version_##Z == VersionUtility::Versions::V111b? E : (version_##Z == VersionUtility::Versions::V111? D : (version_##Z == VersionUtility::Versions::V110? C : (version_##Z == VersionUtility::Versions::V109d? B : A))))))));
 	#define A7(X, Z, A,B,C,D,E,F,G,H, R, N, P) N = (T##N)R7(Z,A,B,C,D,E,F,G,H);
 	#define C7(Z, A,B,C,D,E,F,G,H, T, N)       pt##N = (T*)R7(Z,A,B,C,D,E,F,G,H);
-
-
-	// At this point we set the variable to where the function is located.
-	//log_msg("D2FillARea now: %08X and the one in class %08X\n", D2FillArea, lu->D2gfx->D2FillArea);
 
 	// D2Common
 	D2Common11084 = lu->D2Common->D2Common11084;
@@ -800,6 +811,24 @@ void initD2functions()
 	D2UberDiabloIA = lu->D2Game->D2UberDiabloIA;
 	D2UberBaalIA = lu->D2Game->D2UberBaalIA;
 	D2SaveGame = lu->D2Game->D2SaveGame;
+
+	// D2Net
+
+	// Fog
+	D2FogAssertOld = lu->Fog->D2FogAssertOld;
+	D2FogAssert = lu->Fog->D2FogAssert;
+	D2FogMemAlloc = lu->Fog->D2FogMemAlloc;
+	D2FogMemDeAlloc = lu->Fog->D2FogMemDeAlloc;
+	D2AllocMem = lu->Fog->D2AllocMem;
+	D2FreeMem = lu->Fog->D2FreeMem;
+	D2MPQOpenFile = lu->Fog->D2MPQOpenFile;
+	D2MPQCloseFile = lu->Fog->D2MPQCloseFile;
+	D2MPQReadFile = lu->Fog->D2MPQReadFile;
+	D2MPQGetSizeFile = lu->Fog->D2MPQGetSizeFile;
+	D2FogGetSavePath = lu->Fog->D2FogGetSavePath;
+	D2FogGetInstallPath = lu->Fog->D2FogGetInstallPath;
+	D2Fog10212 = lu->Fog->D2Fog10212;
+	D2GetInstructionPointer = lu->Fog->D2GetInstructionPointer;
 
 	// D2gfx
 	D2GetResolution = lu->D2gfx->D2GetResolution;

@@ -12,24 +12,6 @@
 F7(STD,  D2Net,	10005,10005,10005,10035,10020,10036,10024,10015,	DWORD,		D2SendToServer, (DWORD size, DWORD one, void* data));//(DWORD zero, void* data, DWORD size) for 1.10 and before
 F7(STD,  D2Net,	10006,10006,10006,10018,10018,10015,10002,10012,	DWORD,		D2SendToClient, (DWORD zero, DWORD clientID, void* data, DWORD size));
 
-// Fog
-
-F7(STD,  Fog,	10023,10023,10023,00000,00000,00000,00000,00000,	void,		D2FogAssertOld, (const char* ptMessage, DWORD eip, DWORD line));//(STDCALL until 1.10)
-F7(FAST, Fog,	00000,00000,00000,10024,10024,10024,10024,10024,	void,		D2FogAssert, (const char* ptMessage, DWORD eip, DWORD line));
-F7(FAST, Fog,	10042,10042,10042,10042,10042,10042,10042,10042,	void*,		D2FogMemAlloc, (DWORD dwMemSize, LPCSTR lpszErrFile, DWORD ErrLine, DWORD Zero));
-F7(FAST, Fog,	10043,10043,10043,10043,10043,10043,10043,10043,	void*,		D2FogMemDeAlloc, (void* ptMemLoc, LPCSTR lpszErrFile, DWORD ErrLine, DWORD Zero));
-F7(FAST, Fog,	10045,10045,10045,10045,10045,10045,10045,10045,	void*,		D2AllocMem, (DWORD,DWORD dwMemSize, LPCSTR lpszErrFile, DWORD ErrLine, DWORD Zero));
-F7(FAST, Fog,	10046,10046,10046,10046,10046,10046,10046,10046,	void*,		D2FreeMem, (DWORD,void* ptMemLoc, LPCSTR lpszErrFile, DWORD ErrLine, DWORD Zero));
-F7(FAST, Fog,	10102,10102,10102,10102,10102,10102,10102,10102,	DWORD,		D2MPQOpenFile, (char* ptPath, void** buf));
-F7(FAST, Fog,	10103,10103,10103,10103,10103,10103,10103,10103,	DWORD,		D2MPQCloseFile, (void* mpqfile));
-F7(FAST, Fog,	10104,10104,10104,10104,10104,10104,10104,10104,	DWORD,		D2MPQReadFile, (void* mpqfile, BYTE* buffer, DWORD nbToRead, DWORD* nbRead,DWORD,DWORD,DWORD));
-F7(FAST, Fog,	10105,10105,10105,10105,10105,10105,10105,10105,	DWORD,		D2MPQGetSizeFile, (void* mpqfile, DWORD* toReset));
-F7(FAST, Fog,	10115,10115,10115,10115,10115,10115,10115,10115,	void,		D2FogGetSavePath, (char* ptPath, DWORD maxsize));
-F7(FAST, Fog,	10116,10116,10116,10116,10116,10116,10116,10116,	void,		D2FogGetInstallPath, (char* ptPath, DWORD maxsize));
-F7(STD,  Fog,	10212,10212,10212,10212,10212,10212,10212,10212,	void,		D2Fog10212, (DWORD unknow));
-F7(STD,  Fog,	00000,00000,00000,10265,10265,10265,10265,10265,	int,		D2GetInstructionPointer, ());
-
-
 // D2Lang
 
 F7(FAST, D2Lang,	10003,10003,10003,10002,10004,10010,10011,10011,	LPWSTR,		D2GetStringFromString, (const char* ptString));//6FC13BC0 LAutour
