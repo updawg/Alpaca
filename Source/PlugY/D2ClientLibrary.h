@@ -15,6 +15,12 @@ public:
 
 	DWORD RetrieveStashBackgroundOffset();
 
+	// Stat Button Related Functions
+	DWORD DisplayBaseStatsBaseAddress;
+	DWORD DisplayBaseStatsModOffset1 = GetOffsetForVersion(0x12, 0x12, 0x13, 0x13, 0x13, 0x13, 0x13, 0x13);
+	DWORD DisplayBaseStatsModOffset2 = GetOffsetForVersion(0x20, 0x20, 0x14, 0x1C, 0x1C, 0x1C, 0x1C, 0x1C);
+
+	// Types
 	typedef void* (__fastcall *TD2LoadImage) (const char* filename, DWORD filetype);
 	typedef void(__fastcall *TD2FreeImage) (void* image);
 	typedef void(__fastcall *TD2SendMsgToAll) (BYTE* data);

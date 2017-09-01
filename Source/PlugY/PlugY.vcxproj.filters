@@ -51,9 +51,6 @@
     <ClCompile Include="CustomLibraries.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="D2functions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="D2wrapper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -189,6 +186,9 @@
     <ClCompile Include="D2WinLibrary.cpp">
       <Filter>Source Files\Libraries</Filter>
     </ClCompile>
+    <ClCompile Include="D2Functions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bigStash.h">
@@ -207,9 +207,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="customLibraries.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="d2functions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="d2wrapper.h">
@@ -367,6 +364,9 @@
     </ClInclude>
     <ClInclude Include="Library.h">
       <Filter>Header Files\Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="D2Functions.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

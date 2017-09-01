@@ -108,7 +108,7 @@
     <ClCompile Include="D2ClientLibrary.cpp" />
     <ClCompile Include="D2CMPLibrary.cpp" />
     <ClCompile Include="D2CommonLibrary.cpp" />
-    <ClCompile Include="D2functions.cpp" />
+    <ClCompile Include="D2Functions.cpp" />
     <ClCompile Include="D2GameLibrary.cpp" />
     <ClCompile Include="D2gfxLibrary.cpp" />
     <ClCompile Include="D2LangLibrary.cpp" />
@@ -168,7 +168,7 @@
     <ClInclude Include="D2ClientLibrary.h" />
     <ClInclude Include="D2CMPLibrary.h" />
     <ClInclude Include="D2CommonLibrary.h" />
-    <ClInclude Include="d2functions.h" />
+    <ClInclude Include="D2Functions.h" />
     <ClInclude Include="D2GameLibrary.h" />
     <ClInclude Include="D2gfxLibrary.h" />
     <ClInclude Include="D2LangLibrary.h" />

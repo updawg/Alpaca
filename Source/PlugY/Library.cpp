@@ -50,6 +50,11 @@ DWORD Library::LoadDiabloLibrary()
 }
 
 // Return the offset for this specific version of Diablo II.
+DWORD Library::GetOffsetForVersion(DWORD V109, DWORD V109D, DWORD V110, DWORD V111, DWORD V111B, DWORD V112, DWORD V113C, DWORD V113D)
+{
+	return GetOffsetForVersion(CreateOffsets(V109, V109D, V110, V111, V111B, V112, V113C, V113D));
+}
+
 DWORD Library::GetOffsetForVersion(const VersionOffsets& offsets)
 {
 	// properly convert the version to an enum in the future.

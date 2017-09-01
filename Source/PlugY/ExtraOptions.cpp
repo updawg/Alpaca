@@ -8,6 +8,9 @@
 
 #include "common.h"
 #include <stdio.h>
+#include "Utilities\LibraryUtility.h"
+
+extern LibraryUtility* lu;
 
 using Versions = VersionUtility::Versions;
 
@@ -548,9 +551,9 @@ void Install_DisplayBaseStatsValue()
 	// Always print stat button images.
 	mem_seek R7(D2Client, 29B12, 29B02, 30073, 82BBA, 8963A, 6B59A, BD1B5, BF955);
 	memt_byte( 0x8B, 0xEB );	// JMP SHORT D2Client.6FAD0088
-	memt_byte( 0x4C, V7(D2Client, 12, 12, 13, 13, 13, 13, 13, 13) );
+	memt_byte( 0x4C, lu->D2Client->DisplayBaseStatsModOffset1 );
 	memt_byte( 0x24, 0x90 );	// NOP
-	memt_byte( V7(D2Client, 20, 20, 14, 1C, 1C, 1C, 1C, 1C), 0x90 );			// NOP (V109d:0x20 , V110:0x14
+	memt_byte(lu->D2Client->DisplayBaseStatsModOffset2, 0x90 );			// NOP (V109d:0x20 , V110:0x14
 	//6FAD0073     8B4C24 14         MOV ECX,DWORD PTR SS:[ESP+14]
 	//6FB32BBA   > 8B4C24 1C         MOV ECX,DWORD PTR SS:[ESP+1C]
 	//6FB3963A   > 8B4C24 1C         MOV ECX,DWORD PTR SS:[ESP+1C]

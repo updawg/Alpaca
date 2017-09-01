@@ -1,24 +1,22 @@
-/*================================================
-	File created by Yohann NICOLAS.
-	Add support 1.13d by L'Autour.
-
-    This file implements some common and useful
-    function related to some Diablo II mechanisms.
-
-================================================*/
+// Copyright (C) 2004 - 2017  Yohann Nicolas
+// Copyright (C) 2017 L'Autour
+// Copyright (C) 2017 Jonathan Vasquez <jon@xyinn.org>
+//
+// This program is free software : you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 #include "common.h"
 s_shifting shifting;
-
-#define D2F(F, I, R, N, P)	T##N N;
-#define E2S(F, A, R, N, P)	T##N N;
-#define E2F(F, A, R, N, P)	T##N N;
-#define E2C(F, A, T, N)		T* pt##N;
-#define F7(X, Z, A,B,C,D,E,F,G,H, R, N, P) T##N N;
-#define A7(X, Z, A,B,C,D,E,F,G,H, R, N, P) T##N N;
-#define C7(Z, A,B,C,D,E,F,G,H, T, N)       T* pt##N;
-
-// At this point we are creating the variable with type.
 
 // D2Common
 D2CommonLibrary::TD2Common11084 D2Common11084;
@@ -215,14 +213,6 @@ D2WinLibrary::TD2CreateTextBox D2CreateTextBox;
 D2CMPLibrary::TD2CMP10014 D2CMP10014;
 
 DataTables* SgptDataTables;
-
-#undef F7
-#undef A7
-#undef C7
-#undef D2F
-#undef E2S
-#undef E2F
-#undef E2C
 
 using Versions = VersionUtility::Versions;
 
@@ -722,33 +712,11 @@ FCT_ASM ( D2SaveGame_1XX )
 	JMP V2SaveGame
 }}
 
-#define SETFCTADDR(F, I, N) setFctAddr((DWORD*)&N, (HMODULE)offset_##F, (LPCSTR)I)
-void setFctAddr(DWORD* addr, HMODULE module, LPCSTR index)
-{
-	if (index)
-	{
-		*addr = (DWORD)GetProcAddress(module,index);
-		if (!*addr)
-		{
-			log_msg("Bad index fct %d for %08X\n",index,module);
-		}
-		log_msg("Properly set index %d for module %08X. Located at %08X\n", index, module, *addr);
-	} else
-		*addr = NULL;
-}
-
 #include "Utilities\LibraryUtility.h"
 extern LibraryUtility* lu;
 
 void initD2functions()
 {
-	#define D2F(F, I, R, N, P)	SETFCTADDR(F, I, N);
-	#define E2S(F, A, R, N, P)	N = (T##N)(offset_##F + 0x##A);
-	#define E2F(F, A, R, N, P)	N = (T##N)(offset_##F + 0x##A);
-	#define E2C(F, A, T, N)		pt##N = (T*)(offset_##F + 0x##A);
-	#define A7(X, Z, A,B,C,D,E,F,G,H, R, N, P) N = (T##N)R7(Z,A,B,C,D,E,F,G,H);
-	#define C7(Z, A,B,C,D,E,F,G,H, T, N)       pt##N = (T*)R7(Z,A,B,C,D,E,F,G,H);
-
 	// D2Common
 	D2Common11084 = lu->D2Common->D2Common11084;
 	D2GetLevelID = lu->D2Common->D2GetLevelID;
@@ -945,13 +913,6 @@ void initD2functions()
 		D2Common10598 = lu->D2Common->D2Common10598;
 		D2Common10673 = lu->D2Common->D2Common10673;
 	}
-	#undef F7
-	#undef A7
-	#undef C7
-	#undef D2F
-	#undef E2S
-	#undef E2F
-	#undef E2C
 
 	//////////////// MISC FCT ////////////////
 	getDescStrPos = version_D2Common >= Versions::V110  ? getDescStrPos_10 : getDescStrPos_9;
@@ -1050,12 +1011,12 @@ void initD2functions()
 
 	//////////////// STRUCTURE MANAGEMENT ////////////////
 
-	shifting.ptPYPlayerData = *(DWORD*)((DWORD)D2InitPlayerData + V7(D2Common,5D,5D,5D,49,49,49,49,49));
-	shifting.ptSpecificData = V7(D2Common,70,70,14,14,14,14,14,14);
-	shifting.ptGame = V7(D2Common,A4,A4,80,80,80,80,80,80);
-	shifting.ptClientGame = V7(D2Common,170,194,1A8,1A8,1A8,1A8,1A8,1A8);
-	shifting.ptInventory = V7(D2Common,84,84,60,60,60,60,60,60);
-	shifting.ptSkills = V7(D2Common,CC,CC,A8,A8,A8,A8,A8,A8);
-	shifting.ptImage = V7(D2Common,04,04,04,08,08,3C,34,34);
-	shifting.ptFrame = V7(D2Common,08,08,08,44,44,40,00,00);
+	shifting.ptPYPlayerData = *(DWORD*)((DWORD)D2InitPlayerData + lu->D2Common->ptPYPlayerDataOffset);
+	shifting.ptSpecificData = lu->D2Common->ptSpecificDataOffset;
+	shifting.ptGame = lu->D2Common->ptGameOffset;
+	shifting.ptClientGame = lu->D2Common->ptClientGameOffset;
+	shifting.ptInventory = lu->D2Common->ptInventoryOffset;
+	shifting.ptSkills = lu->D2Common->ptSkillsOffset;
+	shifting.ptImage = lu->D2Common->ptImageOffset;
+	shifting.ptFrame = lu->D2Common->ptFrameOffset;
 }

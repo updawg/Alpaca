@@ -1,11 +1,20 @@
-/*================================================
-	File created by Yohann NICOLAS.
-	Add support 1.13d by L'Autour.
+// Copyright (C) 2004 - 2017  Yohann Nicolas
+// Copyright (C) 2017 L'Autour
+// Copyright (C) 2017 Jonathan Vasquez <jon@xyinn.org>
+//
+// This program is free software : you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.If not, see <http://www.gnu.org/licenses/>.
 
-    This file implements some common and useful
-    function related to some Diablo II mechanisms.
-
-================================================*/
 #pragma once
 
 #include "D2CommonLibrary.h"
@@ -47,19 +56,8 @@ extern s_shifting shifting;
 // offset of dll + corresponding offset depending on version
 #define R7(Z,A,B,C,D,E,F,G,H) (offset_##Z + (version_##Z == VersionUtility::Versions::V113d? 0x##H : (version_##Z == VersionUtility::Versions::V113c? 0x##G : (version_##Z == VersionUtility::Versions::V112? 0x##F : (version_##Z == VersionUtility::Versions::V111b? 0x##E : (version_##Z == VersionUtility::Versions::V111? 0x##D : (version_##Z == VersionUtility::Versions::V110? 0x##C : (version_##Z == VersionUtility::Versions::V109d? 0x##B : 0x##A))))))))
 
-// offset depends on version
-#define V7(Z,A,B,C,D,E,F,G,H) (version_##Z == VersionUtility::Versions::V113d? 0x##H : (version_##Z == VersionUtility::Versions::V113c? 0x##G : (version_##Z == VersionUtility::Versions::V112? 0x##F : (version_##Z == VersionUtility::Versions::V111b? 0x##E : (version_##Z == VersionUtility::Versions::V111? 0x##D : (version_##Z == VersionUtility::Versions::V110? 0x##C : (version_##Z == VersionUtility::Versions::V109d? 0x##B : 0x##A)))))))
-
 #define RX(v) (WindowStartX+(v))
 #define RY(v) (ResolutionY+NegWindowStartY-(v))
-
-#define D2F(F, I, R, N, P)	typedef R (FASTCALL *T##N) P; extern T##N N; //static D N = (D)(A);
-#define E2S(F, A, R, N, P)	typedef R (STDCALL  *T##N) P; extern T##N N;
-#define E2F(F, A, R, N, P)	typedef R (FASTCALL *T##N) P; extern T##N N;
-#define E2C(F, A, T, N)		extern T* pt##N;
-#define F7(X, Z, A,B,C,D,E,F,G,H, R, N, P) typedef R (X##CALL  *T##N) P;extern T##N N;
-#define A7(X, Z, A,B,C,D,E,F,G,H, R, N, P) typedef R (X##CALL  *T##N) P; extern T##N N;
-#define C7(Z, A,B,C,D,E,F,G,H, T, N)       extern T* pt##N;
 
 // At this point only typedef and externs are implemented
 
@@ -177,6 +175,16 @@ extern Unit** ptptClientChar;
 extern DWORD* ptNbStatDesc;
 extern DWORD* ptStatDescTable;
 
+#define ResolutionY (*ptResolutionY)
+#define ResolutionX (*ptResolutionX)
+#define NegWindowStartY (*ptNegWindowStartY)
+#define WindowStartX (*ptWindowStartX)
+#define IsLodGame (*ptIsLodGame)
+#define DifficultyLevel (*ptDifficultyLevel)
+#define MouseY (*ptMouseY)
+#define MouseX (*ptMouseX)
+#define ptClientChar (*ptptClientChar)
+
 // D2Game
 extern D2GameLibrary::TD2SetNbPlayers D2SetNbPlayers;
 extern D2GameLibrary::TD2AddClient D2AddClient;
@@ -257,15 +265,8 @@ extern D2WinLibrary::TD2CreateTextBox D2CreateTextBox;
 // D2CMP
 extern D2CMPLibrary::TD2CMP10014 D2CMP10014;
 
+// Other
 extern DataTables* SgptDataTables;
-
-#undef F7
-#undef A7
-#undef C7
-#undef D2F
-#undef E2S
-#undef E2F
-#undef E2C
 
 extern D2CommonLibrary::TD2AddPlayerStat			V2AddPlayerStat;
 extern D2GameLibrary::TD2GetGameByClientID			V2GetGameByClientID;
@@ -277,17 +278,7 @@ void setImage(sDrawImageInfo* data, void* image);
 void setFrame(sDrawImageInfo* data, DWORD frame);
 void __inline fillRect(DWORD x, DWORD y, DWORD Width, DWORD Height, DWORD color, DWORD transTbl){D2FillArea(x,y,x+Width,y+Height,color,transTbl);};
 
-#define ResolutionY (*ptResolutionY)
-#define ResolutionX (*ptResolutionX)
-#define NegWindowStartY (*ptNegWindowStartY)
-#define WindowStartX (*ptWindowStartX)
 #define GameTypeMode (*ptGameTypeMode)
 #define ClientTable (*ptClientTable)
-
-#define IsLodGame (*ptIsLodGame)
-#define DifficultyLevel (*ptDifficultyLevel)
-#define MouseY (*ptMouseY)
-#define MouseX (*ptMouseX)
-#define ptClientChar (*ptptClientChar)
 
 void initD2functions();

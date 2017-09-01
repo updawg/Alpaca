@@ -44,6 +44,9 @@ public:
 
 	// Contains all offsets that are possible for this particular function pointer.
 	VersionOffsets CreateOffsets(DWORD V109, DWORD V109D, DWORD V110, DWORD V111, DWORD V111B, DWORD V112, DWORD V113C, DWORD V113D);
+
+	// Returns offset for this version
+	DWORD GetOffsetForVersion(DWORD V109, DWORD V109D, DWORD V110, DWORD V111, DWORD V111B, DWORD V112, DWORD V113C, DWORD V113D);
 protected:
 	// Each subclass will locate the functions that we need.
 	virtual void SetFunctions() = 0;
