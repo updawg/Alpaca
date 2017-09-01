@@ -117,6 +117,19 @@ D2ClientLibrary::TD2GetClientPlayer D2GetClientPlayer;
 D2ClientLibrary::TD2CleanStatMouseUp D2CleanStatMouseUp;
 D2ClientLibrary::TD2SendToServer3 D2SendToServer3;
 
+// D2Client: Variables
+DWORD* ptResolutionY;
+DWORD* ptResolutionX;
+DWORD* ptNegWindowStartY;
+DWORD* ptWindowStartX;
+DWORD* ptIsLodGame;
+BYTE* ptDifficultyLevel;
+DWORD* ptMouseY;
+DWORD* ptMouseX;
+Unit** ptptClientChar;
+DWORD* ptNbStatDesc;
+DWORD* ptStatDescTable;
+
 // D2Game
 D2GameLibrary::TD2SetNbPlayers D2SetNbPlayers;
 D2GameLibrary::TD2AddClient D2AddClient;
@@ -144,6 +157,9 @@ D2GameLibrary::TD2SaveGame D2SaveGame;
 
 // D2Game: Only 1.10
 D2GameLibrary::TD2GetClient D2GetClient;
+
+// D2Game: Variables
+NetClient** ptClientTable;
 
 // D2Net
 D2NetLibrary::TD2SendToServer D2SendToServer;
@@ -836,6 +852,19 @@ void initD2functions()
 	D2CleanStatMouseUp = lu->D2Client->D2CleanStatMouseUp;
 	D2SendToServer3 = lu->D2Client->D2SendToServer3;
 
+	// D2Client: Variables
+	ptResolutionY = lu->D2Client->ptResolutionY;
+	ptResolutionX = lu->D2Client->ptResolutionX;
+	ptNegWindowStartY = lu->D2Client->ptNegWindowStartY;
+	ptWindowStartX = lu->D2Client->ptWindowStartX;
+	ptIsLodGame = lu->D2Client->ptIsLodGame;
+	ptDifficultyLevel = lu->D2Client->ptDifficultyLevel;
+	ptMouseY = lu->D2Client->ptMouseY;
+	ptMouseX = lu->D2Client->ptMouseX;
+	ptptClientChar = lu->D2Client->ptptClientChar;
+	ptNbStatDesc = lu->D2Client->ptNbStatDesc;
+	ptStatDescTable = lu->D2Client->ptStatDescTable;
+
 	// D2Game
 	D2SetNbPlayers = lu->D2Game->D2SetNbPlayers;
 	D2AddClient = lu->D2Game->D2AddClient;
@@ -863,6 +892,9 @@ void initD2functions()
 
 	// D2Game: Only 1.10
 	D2GetClient = lu->D2Game->D2GetClient;
+
+	// D2Game: Variables
+	ptClientTable = lu->D2Game->ptClientTable;
 
 	// D2Net
 	D2SendToServer = lu->D2Net->D2SendToServer;

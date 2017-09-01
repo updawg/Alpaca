@@ -161,6 +161,19 @@ extern D2ClientLibrary::TD2GetClientPlayer D2GetClientPlayer;
 extern D2ClientLibrary::TD2CleanStatMouseUp D2CleanStatMouseUp;
 extern D2ClientLibrary::TD2SendToServer3 D2SendToServer3;
 
+// D2Client: Variables
+extern DWORD* ptResolutionY;
+extern DWORD* ptResolutionX;
+extern DWORD* ptNegWindowStartY;
+extern DWORD* ptWindowStartX;
+extern DWORD* ptIsLodGame;
+extern BYTE* ptDifficultyLevel;
+extern DWORD* ptMouseY;
+extern DWORD* ptMouseX;
+extern Unit** ptptClientChar;
+extern DWORD* ptNbStatDesc;
+extern DWORD* ptStatDescTable;
+
 // D2Game
 extern D2GameLibrary::TD2SetNbPlayers D2SetNbPlayers;
 extern D2GameLibrary::TD2AddClient D2AddClient;
@@ -188,6 +201,9 @@ extern D2GameLibrary::TD2SaveGame D2SaveGame;
 
 // D2Game: Only 1.10
 extern D2GameLibrary::TD2GetClient D2GetClient;
+
+// D2Game: Variables
+extern NetClient** ptClientTable;
 
 // D2Net
 extern D2NetLibrary::TD2SendToServer D2SendToServer;
