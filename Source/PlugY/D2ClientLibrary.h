@@ -100,4 +100,17 @@ private:
 	TD2GetClientPlayer GetD2GetClientPlayer();
 	TD2CleanStatMouseUp GetD2CleanStatMouseUp();
 	TD2SendToServer3 GetD2SendToServer3();
+
+	// Variables
+	DWORD* GetptResolutionY();
+	DWORD* GetptResolutionX();
+	DWORD* GetptNegWindowStartY();
+	DWORD* GetptWindowStartX();
+	DWORD* GetptIsLodGame();
+	BYTE* GetptDifficultyLevel();
+	DWORD* GetptMouseY();
+	DWORD* GetptMouseX();
+	Unit** GetptptClientChar();
+	DWORD* GetptNbStatDesc();
+	DWORD* GetptStatDescTable();
 };

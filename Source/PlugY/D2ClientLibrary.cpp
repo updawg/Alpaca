@@ -23,6 +23,18 @@ void D2ClientLibrary::SetFunctions()
 	D2GetClientPlayer = GetD2GetClientPlayer();
 	D2CleanStatMouseUp = GetD2CleanStatMouseUp();
 	D2SendToServer3 = GetD2SendToServer3();
+
+	ptResolutionY = GetptResolutionY();
+	ptResolutionX = GetptResolutionX();
+	ptNegWindowStartY = GetptNegWindowStartY();
+	ptWindowStartX = GetptWindowStartX();
+	ptIsLodGame = GetptIsLodGame();
+	ptDifficultyLevel = GetptDifficultyLevel();
+	ptMouseY = GetptMouseY();
+	ptMouseX = GetptMouseX();
+	ptptClientChar = GetptptClientChar();
+	ptNbStatDesc = GetptNbStatDesc();
+	ptStatDescTable = GetptStatDescTable();
 }
 
 DWORD D2ClientLibrary::RetrieveStashBackgroundOffset()
@@ -133,4 +145,59 @@ D2ClientLibrary::TD2CleanStatMouseUp D2ClientLibrary::GetD2CleanStatMouseUp()
 D2ClientLibrary::TD2SendToServer3 D2ClientLibrary::GetD2SendToServer3()
 {
 	return (TD2SendToServer3)RetrieveAddressByAddition(CreateOffsets(0xD210, 0xD200, 0xD990, 0, 0, 0, 0, 0));
+}
+
+DWORD* D2ClientLibrary::GetptResolutionY()
+{
+	return (DWORD*)RetrieveAddressByAddition(CreateOffsets(0xD50E8, 0xD40E0, 0xD40F0, 0xF5C60, 0xF4FC8, 0xDC6E4, 0xDBC4C, 0xF7038));
+}
+
+DWORD* D2ClientLibrary::GetptResolutionX()
+{
+	return (DWORD*)RetrieveAddressByAddition(CreateOffsets(0xD50EC, 0xD40E4, 0xD40F4, 0xF5C5C, 0xF4FC4, 0xDC6E0, 0xDBC48, 0xF7034));
+}
+
+DWORD* D2ClientLibrary::GetptNegWindowStartY()
+{
+	return (DWORD*)RetrieveAddressByAddition(CreateOffsets(0x125AD8, 0x124958, 0x11A74C, 0x11BD28, 0x11BEFC, 0x11BD2C, 0x11B9A4, 0x11D358));
+}
+
+DWORD* D2ClientLibrary::GetptWindowStartX()
+{
+	return (DWORD*)RetrieveAddressByAddition(CreateOffsets(0x125AD4, 0x124954, 0x11A748, 0x11BD24, 0x11BEF8, 0x11BD28, 0x11B9A0, 0x11D354));
+}
+
+DWORD* D2ClientLibrary::GetptIsLodGame()
+{
+	return (DWORD*)RetrieveAddressByAddition(CreateOffsets(0, 0, 0, 0xFB3F4, 0x11A2F4, 0x10330C, 0x119854, 0x1087B4));
+}
+
+BYTE* D2ClientLibrary::GetptDifficultyLevel()
+{
+	return (BYTE*)RetrieveAddressByAddition(CreateOffsets(0, 0, 0x10795C, 0x11BFB8, 0x11C2A8, 0x11BFF4, 0, 0));
+}
+
+DWORD* D2ClientLibrary::GetptMouseY()
+{
+	return (DWORD*)RetrieveAddressByAddition(CreateOffsets(0, 0, 0, 0x10A40C, 0x11B414, 0x101634, 0x11B824, 0x11C94C));
+}
+
+DWORD* D2ClientLibrary::GetptMouseX()
+{
+	return (DWORD*)RetrieveAddressByAddition(CreateOffsets(0, 0, 0, 0x10A410, 0x11B418, 0x101638, 0x11B828, 0x11C950));
+}
+
+Unit** D2ClientLibrary::GetptptClientChar()
+{
+	return (Unit**)RetrieveAddressByAddition(CreateOffsets(0, 0, 0, 0x11C4F0, 0x11C1E0, 0x11C3D0, 0x11BBFC, 0x11D050));
+}
+
+DWORD* D2ClientLibrary::GetptNbStatDesc()
+{
+	return (DWORD*)RetrieveAddressByAddition(CreateOffsets(0xDB918, 0xDA828, 0, 0, 0, 0, 0, 0));
+}
+
+DWORD* D2ClientLibrary::GetptStatDescTable()
+{
+	return (DWORD*)RetrieveAddressByAddition(CreateOffsets(0xDAF98, 0xD9EA8, 0, 0, 0, 0, 0, 0));
 }

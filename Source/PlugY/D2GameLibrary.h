@@ -97,4 +97,7 @@ private:
 
 	// Until 1.10
 	TD2GetClient GetD2GetClient();
+
+	// Variables
+	NetClient** GetptClientTable();
 };
