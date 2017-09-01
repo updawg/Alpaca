@@ -16,6 +16,13 @@ void D2ClientLibrary::SetFunctions()
 	D2ClickOnStashButton = GetD2ClickOnStashButton();
 	D2LoadBuySelBtn = GetD2LoadBuySelBtn();
 	D2ReloadGambleScreen = GetD2ReloadGambleScreen();
+	D2isLODGame = GetD2isLODGame();
+	D2GetDifficultyLevel = GetD2GetDifficultyLevel();
+	D2GetMouseX = GetD2GetMouseX();
+	D2GetMouseY = GetD2GetMouseY();
+	D2GetClientPlayer = GetD2GetClientPlayer();
+	D2CleanStatMouseUp = GetD2CleanStatMouseUp();
+	D2SendToServer3 = GetD2SendToServer3();
 }
 
 DWORD D2ClientLibrary::RetrieveStashBackgroundOffset()
@@ -91,4 +98,39 @@ D2ClientLibrary::TD2LoadBuySelBtn D2ClientLibrary::GetD2LoadBuySelBtn()
 D2ClientLibrary::TD2ReloadGambleScreen D2ClientLibrary::GetD2ReloadGambleScreen()
 {
 	return (TD2ReloadGambleScreen)RetrieveAddressByAddition(CreateOffsets(0, 0, 0, 0x8E480, 0x5BA90, 0x1CC00, 0x4ABE0, 0x7DC60));
+}
+
+D2ClientLibrary::TD2isLODGame D2ClientLibrary::GetD2isLODGame()
+{
+	return (TD2isLODGame)RetrieveAddressByAddition(CreateOffsets(0xBA00, 0xB9F0, 0xC080, 0, 0, 0, 0, 0));
+}
+
+D2ClientLibrary::TD2GetDifficultyLevel D2ClientLibrary::GetD2GetDifficultyLevel()
+{
+	return (TD2GetDifficultyLevel)RetrieveAddressByAddition(CreateOffsets(0, 0, 0xC090, 0, 0, 0, 0, 0));
+}
+
+D2ClientLibrary::TD2GetMouseX D2ClientLibrary::GetD2GetMouseX()
+{
+	return (TD2GetMouseX)RetrieveAddressByAddition(CreateOffsets(0xB6670, 0xB59F0, 0xB7BC0, 0, 0, 0, 0, 0));
+}
+
+D2ClientLibrary::TD2GetMouseY D2ClientLibrary::GetD2GetMouseY()
+{
+	return (TD2GetMouseY)RetrieveAddressByAddition(CreateOffsets(0xB6680, 0xB5A00, 0xB7BD0, 0, 0, 0, 0, 0));
+}
+
+D2ClientLibrary::TD2GetClientPlayer D2ClientLibrary::GetD2GetClientPlayer()
+{
+	return (TD2GetClientPlayer)RetrieveAddressByAddition(CreateOffsets(0x8DC40, 0x8CFC0, 0x883D0, 0, 0, 0, 0, 0));
+}
+
+D2ClientLibrary::TD2CleanStatMouseUp D2ClientLibrary::GetD2CleanStatMouseUp()
+{
+	return (TD2CleanStatMouseUp)RetrieveAddressByAddition(CreateOffsets(0xB920, 0xB910, 0xBF60, 0, 0, 0, 0, 0));
+}
+
+D2ClientLibrary::TD2SendToServer3 D2ClientLibrary::GetD2SendToServer3()
+{
+	return (TD2SendToServer3)RetrieveAddressByAddition(CreateOffsets(0xD210, 0xD200, 0xD990, 0, 0, 0, 0, 0));
 }

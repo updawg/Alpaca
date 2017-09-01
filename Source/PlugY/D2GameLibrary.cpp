@@ -25,6 +25,7 @@ void D2GameLibrary::SetFunctions()
 	D2UberDiabloIA = GetD2UberDiabloIA();
 	D2UberBaalIA = GetD2UberBaalIA();
 	D2SaveGame = GetD2SaveGame();
+	D2GetClient = GetD2GetClient();
 }
 
 D2GameLibrary::TD2SetNbPlayers D2GameLibrary::GetD2SetNbPlayers()
@@ -140,4 +141,9 @@ D2GameLibrary::TD2UberBaalIA D2GameLibrary::GetD2UberBaalIA()
 D2GameLibrary::TD2SaveGame D2GameLibrary::GetD2SaveGame()
 {
 	return (TD2SaveGame)RetrieveAddressByAddition(CreateOffsets(0, 0, 0x89C0, 0xE2390, 0xE66D0, 0xA8090, 0x2C830, 0xBE660));
+}
+
+D2GameLibrary::TD2GetClient D2GameLibrary::GetD2GetClient()
+{
+	return (TD2GetClient)RetrieveAddressByAddition(CreateOffsets(0x7C2C0, 0x7C7B0, 0x8C2E0, 0, 0, 0, 0, 0));
 }

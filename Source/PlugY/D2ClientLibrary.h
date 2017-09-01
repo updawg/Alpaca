@@ -91,4 +91,13 @@ private:
 	TD2ClickOnStashButton GetD2ClickOnStashButton();
 	TD2LoadBuySelBtn GetD2LoadBuySelBtn();
 	TD2ReloadGambleScreen GetD2ReloadGambleScreen();
+
+	// Until 1.10
+	TD2isLODGame GetD2isLODGame();
+	TD2GetDifficultyLevel GetD2GetDifficultyLevel();
+	TD2GetMouseX GetD2GetMouseX();
+	TD2GetMouseY GetD2GetMouseY();
+	TD2GetClientPlayer GetD2GetClientPlayer();
+	TD2CleanStatMouseUp GetD2CleanStatMouseUp();
+	TD2SendToServer3 GetD2SendToServer3();
 };

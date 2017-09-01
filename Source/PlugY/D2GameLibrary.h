@@ -94,4 +94,7 @@ private:
 	TD2UberDiabloIA GetD2UberDiabloIA();
 	TD2UberBaalIA GetD2UberBaalIA();
 	TD2SaveGame GetD2SaveGame();
+
+	// Until 1.10
+	TD2GetClient GetD2GetClient();
 };
