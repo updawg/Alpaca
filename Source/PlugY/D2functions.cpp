@@ -20,8 +20,82 @@ s_shifting shifting;
 #define C7(Z, A,B,C,D,E,F,G,H, T, N)       T* pt##N;
 
 // At this point we are creating the variable with type.
+
+// D2Common
+D2CommonLibrary::TD2Common11084 D2Common11084;
+D2CommonLibrary::TD2GetLevelID D2GetLevelID;
+D2CommonLibrary::TD2GetDropRoom D2GetDropRoom;
+D2CommonLibrary::TD2Common10242 D2Common10242;
+D2CommonLibrary::TD2CanPutItemInInv D2CanPutItemInInv;
+D2CommonLibrary::TD2InvRemoveItem D2InvRemoveItem;
+D2CommonLibrary::TD2InvAddItem D2InvAddItem;
+D2CommonLibrary::TD2Common10250 D2Common10250;
+D2CommonLibrary::TD2Common10273 D2Common10273;
+D2CommonLibrary::TD2InventoryGetFirstItem D2InventoryGetFirstItem;
+D2CommonLibrary::TD2UnitGetNextItem D2UnitGetNextItem;
+D2CommonLibrary::TD2GetRealItem D2GetRealItem;
+D2CommonLibrary::TD2GetPosX D2GetPosX;
+D2CommonLibrary::TD2GetPosY D2GetPosY;
+D2CommonLibrary::TD2GetPosition D2GetPosition;
+D2CommonLibrary::TD2GetMaxGoldBank D2GetMaxGoldBank;
+D2CommonLibrary::TD2GetRoom D2GetRoom;
+D2CommonLibrary::TD2InitPlayerData D2InitPlayerData;
+D2CommonLibrary::TD2GetPlayerData D2GetPlayerData;
+D2CommonLibrary::TD2GetDefence D2GetDefence;
+D2CommonLibrary::TD2GetChanceToBlock D2GetChanceToBlock;
+D2CommonLibrary::TD2GetMaxGold D2GetMaxGold;
+D2CommonLibrary::TD2Common10572 D2Common10572;
+D2CommonLibrary::TD2GetObjectFlags D2GetObjectFlags;
+D2CommonLibrary::TD2SetObjectFlags D2SetObjectFlags;
+D2CommonLibrary::TD2isInState D2isInState;
+D2CommonLibrary::TD2AddPlayerStat D2AddPlayerStat;
+D2CommonLibrary::TD2GetPlayerStat D2GetPlayerStat;
+D2CommonLibrary::TD2GetPlayerBaseStat D2GetPlayerBaseStat;
+D2CommonLibrary::TD2haveDefenceBonus D2haveDefenceBonus;
+D2CommonLibrary::TD2haveFireResBonus D2haveFireResBonus;
+D2CommonLibrary::TD2haveColdResBonus D2haveColdResBonus;
+D2CommonLibrary::TD2haveLightResBonus D2haveLightResBonus;
+D2CommonLibrary::TD2havePoisonResBonus D2havePoisonResBonus;
+D2CommonLibrary::TD2haveDefenceMalus D2haveDefenceMalus;
+D2CommonLibrary::TD2haveFireResMalus D2haveFireResMalus;
+D2CommonLibrary::TD2haveColdResMalus D2haveColdResMalus;
+D2CommonLibrary::TD2haveLightResMalus D2haveLightResMalus;
+D2CommonLibrary::TD2havePoisonResMalus D2havePoisonResMalus;
+D2CommonLibrary::TD2CompileTxtFile D2CompileTxtFile;
+D2CommonLibrary::TD2GetItemsBIN D2GetItemsBIN;
+D2CommonLibrary::TD2GetGemsBIN D2GetGemsBIN;
+D2CommonLibrary::TD2GetCubeMainBIN D2GetCubeMainBIN;
+D2CommonLibrary::TD2GetNbCubeMainBIN D2GetNbCubeMainBIN;
+D2CommonLibrary::TD2GetNextLevelXP D2GetNextLevelXP;
+D2CommonLibrary::TD2GetMaxLevel D2GetMaxLevel;
+D2CommonLibrary::TD2GetDifficultyLevelsBIN D2GetDifficultyLevelsBIN;
+D2CommonLibrary::TD2GetItemQuality D2GetItemQuality;
+D2CommonLibrary::TD2TestFlags D2TestFlags;
+D2CommonLibrary::TD2GetItemLevel D2GetItemLevel;
+D2CommonLibrary::TD2ItemGetPage D2ItemGetPage;
+D2CommonLibrary::TD2ItemSetPage D2ItemSetPage;
+D2CommonLibrary::TD2CheckItemType D2CheckItemType;
+D2CommonLibrary::TD2GetUniqueID D2GetUniqueID;
+D2CommonLibrary::TD2SetAnim D2SetAnim;
+D2CommonLibrary::TD2GetNbRunesBIN D2GetNbRunesBIN;
+D2CommonLibrary::TD2GetRunesBIN D2GetRunesBIN;
+D2CommonLibrary::TD2isEtheral D2isEtheral;
+D2CommonLibrary::TD2SaveItem D2SaveItem;
+D2CommonLibrary::TD2SetSkillBaseLevel D2SetSkillBaseLevel;
+D2CommonLibrary::TD2GetSkillLevel D2GetSkillLevel;
+D2CommonLibrary::TD2GetSkillCost D2GetSkillCost;
+D2CommonLibrary::TD2GetCharStatsBIN D2GetCharStatsBIN;
+D2CommonLibrary::TD2CompileCubeInput D2CompileCubeInput;
+D2CommonLibrary::TD2CompileCubeOutput D2CompileCubeOutput;
+D2CommonLibrary::TD2GetItemTypesBIN D2GetItemTypesBIN;
+D2CommonLibrary::TD2GetItemStatCostBIN D2GetItemStatCostBIN;
+D2CommonLibrary::TD2ReadFile D2ReadFile;
+D2CommonLibrary::TD2LoadSuperuniques D2LoadSuperuniques;
+
+// D2gfx
 D2gfxLibrary::TD2GetResolution D2GetResolution;
 D2gfxLibrary::TD2FillArea D2FillArea;
+D2gfxLibrary::TD2PrintImage D2PrintImage;
 
 #include "../Commons/D2Funcs.h"
 
@@ -48,37 +122,34 @@ D2S(D2Common,10673,	ItemTypesBIN*,		D2Common10673, (DWORD itemTypesID));//ONLY i
 
 using Versions = VersionUtility::Versions;
 
-TD2AddPlayerStat			 V2AddPlayerStat;
-TD2GetPlayerStat			 V2GetPlayerStat;
-TD2GetPlayerBaseStat		 V2GetPlayerBaseStat;
-TD2SetSkillBaseLevel		 V2SetSkillBaseLevel;
+D2CommonLibrary::TD2AddPlayerStat			 V2AddPlayerStat;
+D2CommonLibrary::TD2GetPlayerStat			 V2GetPlayerStat;
+D2CommonLibrary::TD2GetPlayerBaseStat		 V2GetPlayerBaseStat;
+D2CommonLibrary::TD2SetSkillBaseLevel		 V2SetSkillBaseLevel;
+D2CommonLibrary::TD2CompileCubeInput	     V2CompileCubeInput;
+D2CommonLibrary::TD2CompileCubeOutput		 V2CompileCubeOutput;
+D2CommonLibrary::TD2GetItemTypesBIN			 V2GetItemTypesBIN;
+D2CommonLibrary::TD2CompileTxtFile			 compileTxtFile;
+D2CommonLibrary::TD2GetCharStatsBIN			 V2GetCharStatsBIN;
+D2CommonLibrary::TD2GetItemStatCostBIN		 V2GetItemStatCostBIN;
+
 TD2SetSkillBaseLevelOnClient V2SetSkillBaseLevelOnClient;
 TD2PrintStat				 V2PrintStat;
-TD2CompileCubeInput			 V2CompileCubeInput;
-TD2CompileCubeOutput		 V2CompileCubeOutput;
 TD2BroadcastFunction		 V2BroadcastFunction;
 TD2GetGameByClientID		 V2GetGameByClientID;
 TD2SpawnMonster				 V2SpawnMonster;
 TD2VerifIfNotCarry1			 V2VerifIfNotCarry1;
 TD2GameGetObject			 V2GameGetObject;
 TD2TestPositionInRoom		 V2TestPositionInRoom;
-TD2GetItemTypesBIN			 V2GetItemTypesBIN;
-TD2CompileTxtFile			 compileTxtFile;
 WORD (*getDescStrPos) (DWORD statID);
 TD2SendMsgToAll				 V2SendMsgToAll;
 TD2SetColorPopup			 V2SetColorPopup;
 TD2LoadImage				 V2LoadImage;
 TD2PlaySound				 V2PlaySound;
 TD2SendToServer				 V2SendToServer;
-TD2GetCharStatsBIN			 V2GetCharStatsBIN;
-TD2GetItemStatCostBIN		 V2GetItemStatCostBIN;
 TD2SendPacket				 V2SendPacket;
 TD2LoadInventory			 V2LoadInventory;
 TD2SaveGame					 V2SaveGame;
-
-
-
-//D2gfxLibrary::TD2FillArea D2FillArea = lu->D2gfx->D2FillArea;
 
 DWORD getStatDescIDFrom (DWORD statID)//FOR 1.09
 {
@@ -575,8 +646,82 @@ void initD2functions()
 
 	// At this point we set the variable to where the function is located.
 	//log_msg("D2FillARea now: %08X and the one in class %08X\n", D2FillArea, lu->D2gfx->D2FillArea);
+
+	// D2Common
+	D2Common11084 = lu->D2Common->D2Common11084;
+	D2GetLevelID = lu->D2Common->D2GetLevelID;
+	D2GetDropRoom = lu->D2Common->D2GetDropRoom;
+	D2Common10242 = lu->D2Common->D2Common10242;
+	D2CanPutItemInInv = lu->D2Common->D2CanPutItemInInv;
+	D2InvRemoveItem = lu->D2Common->D2InvRemoveItem;
+	D2InvAddItem = lu->D2Common->D2InvAddItem;
+	D2Common10250 = lu->D2Common->D2Common10250;
+	D2Common10273 = lu->D2Common->D2Common10273;
+	D2InventoryGetFirstItem = lu->D2Common->D2InventoryGetFirstItem;
+	D2UnitGetNextItem = lu->D2Common->D2UnitGetNextItem;
+	D2GetRealItem = lu->D2Common->D2GetRealItem;
+	D2GetPosX = lu->D2Common->D2GetPosX;
+	D2GetPosY = lu->D2Common->D2GetPosY;
+	D2GetPosition = lu->D2Common->D2GetPosition;
+	D2GetMaxGoldBank = lu->D2Common->D2GetMaxGoldBank;
+	D2GetRoom = lu->D2Common->D2GetRoom;
+	D2InitPlayerData = lu->D2Common->D2InitPlayerData;
+	D2GetPlayerData = lu->D2Common->D2GetPlayerData;
+	D2GetDefence = lu->D2Common->D2GetDefence;
+	D2GetChanceToBlock = lu->D2Common->D2GetChanceToBlock;
+	D2GetMaxGold = lu->D2Common->D2GetMaxGold;
+	D2Common10572 = lu->D2Common->D2Common10572;
+	D2GetObjectFlags = lu->D2Common->D2GetObjectFlags;
+	D2SetObjectFlags = lu->D2Common->D2SetObjectFlags;
+	D2isInState = lu->D2Common->D2isInState;
+	D2AddPlayerStat = lu->D2Common->D2AddPlayerStat;
+	D2GetPlayerStat = lu->D2Common->D2GetPlayerStat;
+	D2GetPlayerBaseStat = lu->D2Common->D2GetPlayerBaseStat;
+	D2haveDefenceBonus = lu->D2Common->D2haveDefenceBonus;
+	D2haveFireResBonus = lu->D2Common->D2haveFireResBonus;
+	D2haveColdResBonus = lu->D2Common->D2haveColdResBonus;
+	D2haveLightResBonus = lu->D2Common->D2haveLightResBonus;
+	D2havePoisonResBonus = lu->D2Common->D2havePoisonResBonus;
+	D2haveDefenceMalus = lu->D2Common->D2haveDefenceMalus;
+	D2haveFireResMalus = lu->D2Common->D2haveFireResMalus;
+	D2haveColdResMalus = lu->D2Common->D2haveColdResMalus;
+	D2haveLightResMalus = lu->D2Common->D2haveLightResMalus;
+	D2havePoisonResMalus = lu->D2Common->D2havePoisonResMalus;
+	D2CompileTxtFile = lu->D2Common->D2CompileTxtFile;
+	D2GetItemsBIN = lu->D2Common->D2GetItemsBIN;
+	D2GetGemsBIN = lu->D2Common->D2GetGemsBIN;
+	D2GetCubeMainBIN = lu->D2Common->D2GetCubeMainBIN;
+	D2GetNbCubeMainBIN = lu->D2Common->D2GetNbCubeMainBIN;
+	D2GetNextLevelXP = lu->D2Common->D2GetNextLevelXP;
+	D2GetMaxLevel = lu->D2Common->D2GetMaxLevel;
+	D2GetDifficultyLevelsBIN = lu->D2Common->D2GetDifficultyLevelsBIN;
+	D2GetItemQuality = lu->D2Common->D2GetItemQuality;
+	D2TestFlags = lu->D2Common->D2TestFlags;
+	D2GetItemLevel = lu->D2Common->D2GetItemLevel;
+	D2ItemGetPage = lu->D2Common->D2ItemGetPage;
+	D2ItemSetPage = lu->D2Common->D2ItemSetPage;
+	D2CheckItemType = lu->D2Common->D2CheckItemType;
+	D2GetUniqueID = lu->D2Common->D2GetUniqueID;
+	D2SetAnim = lu->D2Common->D2SetAnim;
+	D2GetNbRunesBIN = lu->D2Common->D2GetNbRunesBIN;
+	D2GetRunesBIN = lu->D2Common->D2GetRunesBIN;
+	D2isEtheral = lu->D2Common->D2isEtheral;
+	D2SaveItem = lu->D2Common->D2SaveItem;
+	D2SetSkillBaseLevel = lu->D2Common->D2SetSkillBaseLevel;
+	D2GetSkillLevel = lu->D2Common->D2GetSkillLevel;
+	D2GetSkillCost = lu->D2Common->D2GetSkillCost;
+	D2GetCharStatsBIN = lu->D2Common->D2GetCharStatsBIN;
+	D2CompileCubeInput = lu->D2Common->D2CompileCubeInput;
+	D2CompileCubeOutput = lu->D2Common->D2CompileCubeOutput;
+	D2GetItemTypesBIN = lu->D2Common->D2GetItemTypesBIN;
+	D2GetItemStatCostBIN = lu->D2Common->D2GetItemStatCostBIN;
+	D2ReadFile = lu->D2Common->D2ReadFile;
+	D2LoadSuperuniques = lu->D2Common->D2LoadSuperuniques;
+
+	// D2gfx
 	D2GetResolution = lu->D2gfx->D2GetResolution;
 	D2FillArea = lu->D2gfx->D2FillArea;
+	D2PrintImage = lu->D2gfx->D2PrintImage;
 
 	//log_msg("D2FillARea now: %08X and the one in class %08X\n", lu->D2gfx->D2FillArea, lu->D2gfx->D2FillArea);
 
@@ -640,18 +785,18 @@ void initD2functions()
 		D2GetClient = (TD2GetClient) D2GetClient_111;
 		D2SendToServer3 = (TD2SendToServer3) D2SendToServer3_111;
 		D2SetSkillBaseLevelOnClient = (TD2SetSkillBaseLevelOnClient) D2SetSkillBaseLevelOnClient_111;
-		D2GetCharStatsBIN = (TD2GetCharStatsBIN) D2GetCharStatsBIN_111;
-		D2GetItemStatCostBIN = (TD2GetItemStatCostBIN) D2GetItemStatCostBIN_111;
+		D2GetCharStatsBIN = (D2CommonLibrary::TD2GetCharStatsBIN) D2GetCharStatsBIN_111;
+		D2GetItemStatCostBIN = (D2CommonLibrary::TD2GetItemStatCostBIN) D2GetItemStatCostBIN_111;
 		D2PrintStat = (TD2PrintStat) D2PrintStat_111;
 		D2SendPacket = (TD2SendPacket) D2SendPacket_111;
 		D2LoadInventory = (TD2LoadInventory) D2LoadInventory_111;
-		D2CompileCubeInput = (TD2CompileCubeInput) D2CompileCubeInput_111;
-		D2CompileCubeOutput = (TD2CompileCubeOutput) D2CompileCubeOutput_111;
+		D2CompileCubeInput = (D2CommonLibrary::TD2CompileCubeInput) D2CompileCubeInput_111;
+		D2CompileCubeOutput = (D2CommonLibrary::TD2CompileCubeOutput) D2CompileCubeOutput_111;
 		D2BroadcastFunction = (TD2BroadcastFunction) D2BroadcastFunction_111;
 		D2SpawnMonster = version_D2Game >= Versions::V111b ? (TD2SpawnMonster)D2SpawnMonster_111b : (TD2SpawnMonster)D2SpawnMonster_111;
 		D2VerifIfNotCarry1 = (TD2VerifIfNotCarry1) D2VerifIfNotCarry1_111;
 		D2GameGetObject = (TD2GameGetObject) D2GameGetObject_111;
-		D2GetItemTypesBIN = (TD2GetItemTypesBIN) D2GetItemTypesBIN_111;
+		D2GetItemTypesBIN = (D2CommonLibrary::TD2GetItemTypesBIN) D2GetItemTypesBIN_111;
 		D2TestPositionInRoom = (TD2TestPositionInRoom) D2TestPositionInRoom_111;
 		D2isLODGame = D2isLODGame_111;
 		D2GetDifficultyLevel = D2GetDifficultyLevel_111;
@@ -674,13 +819,13 @@ void initD2functions()
 
 	if ( version_D2Common <= Versions::V109d )
 	{
-		D2AddPlayerStat =				(TD2AddPlayerStat) D2AddPlayerStat_9;
-		D2GetPlayerStat =				(TD2GetPlayerStat) D2GetPlayerStat_9;
-		D2GetPlayerBaseStat =			(TD2GetPlayerBaseStat) D2GetPlayerBaseStat_9;
-		D2SetSkillBaseLevel =			(TD2SetSkillBaseLevel) D2SetSkillBaseLevel_9;
-		D2GetCharStatsBIN =				(TD2GetCharStatsBIN) D2GetCharStatsBIN_9;
-		D2GetItemStatCostBIN =			(TD2GetItemStatCostBIN) D2GetItemStatCostBIN_9;
-		D2GetItemTypesBIN =				(TD2GetItemTypesBIN) D2GetItemTypesBIN_9;
+		D2AddPlayerStat =				(D2CommonLibrary::TD2AddPlayerStat) D2AddPlayerStat_9;
+		D2GetPlayerStat =				(D2CommonLibrary::TD2GetPlayerStat) D2GetPlayerStat_9;
+		D2GetPlayerBaseStat =			(D2CommonLibrary::TD2GetPlayerBaseStat) D2GetPlayerBaseStat_9;
+		D2SetSkillBaseLevel =			(D2CommonLibrary::TD2SetSkillBaseLevel) D2SetSkillBaseLevel_9;
+		D2GetCharStatsBIN =				(D2CommonLibrary::TD2GetCharStatsBIN) D2GetCharStatsBIN_9;
+		D2GetItemStatCostBIN =			(D2CommonLibrary::TD2GetItemStatCostBIN) D2GetItemStatCostBIN_9;
+		D2GetItemTypesBIN =				(D2CommonLibrary::TD2GetItemTypesBIN) D2GetItemTypesBIN_9;
 	}
 
 	if (version_D2Client <= Versions::V109d)
