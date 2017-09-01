@@ -94,12 +94,6 @@ void Install_VariableOnRealm()
 	memt_byte( 0x00, 0x90 );	// NOP
 	//6FA529E5   . 81EC 00040000  SUB ESP,400
 
-	// click on Multiplayer button
-//	mem_seek R7(D2Launch, D5EC, D5CC, EFFC, 0000, 0000, 0000, 0000);
-//	memt_byte( 0xB8, 0xE8 );	// CALL
-//	MEMT_REF4( 0x00000001, caller_MultiPlayerBtnPress);
-	//6FA1EFFC   . B8 01000000    MOV EAX,1
-
 	// click on TCP/IP button
 	mem_seek R7(D2Launch, 87B9, 87C9, 9F99, 11329, 17409, 16659, 17B8E, 1053E);
 	if (version_D2Launch == Versions::V109b || version_D2Launch == Versions::V109d || version_D2Launch == Versions::V110)
