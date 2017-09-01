@@ -70,4 +70,28 @@ public:
 	NetClient** ptClientTable;
 private:
 	void SetFunctions();
+
+	TD2SetNbPlayers GetD2SetNbPlayers();
+	TD2AddClient GetD2AddClient();
+	TD2GetGameByClientID GetD2GetGameByClientID();
+	TD2BroadcastFunction GetD2BroadcastFunction();
+	TD2SendPacket GetD2SendPacket();
+	TD2SetSkillBaseLevelOnClient GetD2SetSkillBaseLevelOnClient();
+	TD2LinkPortal GetD2LinkPortal();
+	TD2VerifIfNotCarry1 GetD2VerifIfNotCarry1();
+	TD2TestPositionInRoom GetD2TestPositionInRoom();
+	TD2SpawnMonster GetD2SpawnMonster();
+	TD2Game235C0 GetD2Game235C0();
+	TD2LoadInventory GetD2LoadInventory();
+	TD2GameGetObject GetD2GameGetObject();
+	TD2CreateUnit GetD2CreateUnit();
+	TD2OpenPandPortal GetD2OpenPandPortal();
+	TD2OpenPandFinalPortal GetD2OpenPandFinalPortal();
+	TD2MephIA GetD2MephIA();
+	TD2DiabloIA GetD2DiabloIA();
+	TD2BaalIA GetD2BaalIA();
+	TD2UberMephIA GetD2UberMephIA();
+	TD2UberDiabloIA GetD2UberDiabloIA();
+	TD2UberBaalIA GetD2UberBaalIA();
+	TD2SaveGame GetD2SaveGame();
 };
