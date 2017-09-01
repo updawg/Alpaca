@@ -549,7 +549,7 @@ void Install_DisplayBaseStatsValue()
 	log_msg("Patch D2Client for display base stats value. (DisplayBaseStatsValue)\n");
 
 	// Always print stat button images.
-	mem_seek R7(D2Client, 29B12, 29B02, 30073, 82BBA, 8963A, 6B59A, BD1B5, BF955);
+	mem_seek (lu->D2Client->DisplayBaseStatsBaseOffset1);
 	memt_byte( 0x8B, 0xEB );	// JMP SHORT D2Client.6FAD0088
 	memt_byte( 0x4C, lu->D2Client->DisplayBaseStatsModOffset1 );
 	memt_byte( 0x24, 0x90 );	// NOP
@@ -561,7 +561,7 @@ void Install_DisplayBaseStatsValue()
 	//6FB6D1B5  |> 8B4C24 1C      MOV ECX,DWORD PTR SS:[ESP+1C]
 	//6FB6F955  |> 8B4C24 1C      MOV ECX,DWORD PTR SS:[ESP+1C]
 
-	mem_seek R7(D2Client, 29B9D, 29B8D, 300FD, 82C54, 896D4, 6B637, BD23E, BF9DE);
+	mem_seek(lu->D2Client->DisplayBaseStatsBaseOffset2);
 	MEMJ_REF4( D2PrintImage, caller_displayBaseStatsValue);
 	//6FB32C53   . E8 82A3F8FF    CALL <JMP.&D2gfx.#10047>
 	//6FB396D3   . E8 D238F8FF    CALL <JMP.&D2gfx.#10044>

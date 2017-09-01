@@ -33,20 +33,21 @@ public:
 	int GameVersion;
 
 	// Retrieves the address by using GetProcAddress
-	DWORD RetrieveAddressByProc(const VersionOffsets moduleOffsets);
+	DWORD GetOffsetByProc(const VersionOffsets moduleOffsets);
+	DWORD GetOffsetByProc(DWORD V109, DWORD V109D, DWORD V110, DWORD V111, DWORD V111B, DWORD V112, DWORD V113C, DWORD V113D);
 
 	// Retrieves the address by adding the DLLs base offset to the recorded offset
-	DWORD RetrieveAddressByAddition(const VersionOffsets moduleOffsets);
+	DWORD GetOffsetByAddition(const VersionOffsets moduleOffsets);
+	DWORD GetOffsetByAddition(DWORD V109, DWORD V109D, DWORD V110, DWORD V111, DWORD V111B, DWORD V112, DWORD V113C, DWORD V113D);
 
-	// Offsets for functions in these specific versions. When updating to a new diablo version, you will want to add an entry to each of the function sets
-	// In each library that require an update.
+	// Offsets for functions in these specific versions. When updating to a new diablo version, you will
+	// want to add an entry to each of the function sets in each library that require an update.
 	DWORD GetOffsetForVersion(const VersionOffsets& offsets);
+	DWORD GetOffsetForVersion(DWORD V109, DWORD V109D, DWORD V110, DWORD V111, DWORD V111B, DWORD V112, DWORD V113C, DWORD V113D);
 
 	// Contains all offsets that are possible for this particular function pointer.
 	VersionOffsets CreateOffsets(DWORD V109, DWORD V109D, DWORD V110, DWORD V111, DWORD V111B, DWORD V112, DWORD V113C, DWORD V113D);
 
-	// Returns offset for this version
-	DWORD GetOffsetForVersion(DWORD V109, DWORD V109D, DWORD V110, DWORD V111, DWORD V111B, DWORD V112, DWORD V113C, DWORD V113D);
 protected:
 	// Each subclass will locate the functions that we need.
 	virtual void SetFunctions() = 0;

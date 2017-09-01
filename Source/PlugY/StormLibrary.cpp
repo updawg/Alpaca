@@ -9,15 +9,15 @@ void StormLibrary::SetFunctions()
 
 StormLibrary::TD2StormMPQOpenFile StormLibrary::GetD2StormMPQOpenFile()
 {
-	return (TD2StormMPQOpenFile)RetrieveAddressByProc(CreateOffsets(268, 268, 268, 268, 268, 268, 268, 268));
+	return (TD2StormMPQOpenFile)GetOffsetByProc(268, 268, 268, 268, 268, 268, 268, 268);
 }
 
 StormLibrary::TD2Storm503 StormLibrary::GetD2Storm503()
 {
-	return (TD2Storm503)RetrieveAddressByProc(CreateOffsets(503, 503, 503, 503, 503, 503, 503, 503));
+	return (TD2Storm503)GetOffsetByProc(503, 503, 503, 503, 503, 503, 503, 503);
 }
 
 StormLibrary::TD2FreeWinMessage StormLibrary::GetD2FreeWinMessage()
 {
-	return (TD2FreeWinMessage)RetrieveAddressByProc(CreateOffsets(511, 511, 511, 511, 511, 511, 511, 511));
+	return (TD2FreeWinMessage)GetOffsetByProc(511, 511, 511, 511, 511, 511, 511, 511);
 }

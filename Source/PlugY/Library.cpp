@@ -87,7 +87,12 @@ VersionOffsets Library::CreateOffsets(DWORD V109, DWORD V109D, DWORD V110, DWORD
 	return indexes;
 }
 
-DWORD Library::RetrieveAddressByProc(const VersionOffsets moduleOffsets)
+DWORD Library::GetOffsetByProc(DWORD V109, DWORD V109D, DWORD V110, DWORD V111, DWORD V111B, DWORD V112, DWORD V113C, DWORD V113D)
+{
+	return GetOffsetByProc(CreateOffsets(V109, V109D, V110, V111, V111B, V112, V113C, V113D));
+}
+
+DWORD Library::GetOffsetByProc(const VersionOffsets moduleOffsets)
 {
 	DWORD proposedOffset = GetOffsetForVersion(moduleOffsets);
 	if (proposedOffset != 0)
@@ -97,7 +102,12 @@ DWORD Library::RetrieveAddressByProc(const VersionOffsets moduleOffsets)
 	return NULL;
 }
 
-DWORD Library::RetrieveAddressByAddition(const VersionOffsets moduleOffsets)
+DWORD Library::GetOffsetByAddition(DWORD V109, DWORD V109D, DWORD V110, DWORD V111, DWORD V111B, DWORD V112, DWORD V113C, DWORD V113D)
+{
+	return GetOffsetByAddition(CreateOffsets(V109, V109D, V110, V111, V111B, V112, V113C, V113D));
+}
+
+DWORD Library::GetOffsetByAddition(const VersionOffsets moduleOffsets)
 {
 	DWORD offset = GetOffsetForVersion(moduleOffsets);
 	DWORD proposedOffset = DllOffset + offset;
@@ -108,23 +118,23 @@ DWORD Library::RetrieveAddressByAddition(const VersionOffsets moduleOffsets)
 DWORD Library::GetFunctionAddress(LPCSTR offset)
 {
 	HMODULE module = (HMODULE)DllOffset;
-	log_msg("Retrieving %s function for offset %08X (%i) by Proc ...", DllName, offset, offset);
+	//log_msg("Retrieving %s function for offset %08X (%i) by Proc ...", DllName, offset, offset);
 
 	DWORD locatedAddress;
-
+	
 	if (offset)
 	{
 		locatedAddress = (DWORD) GetProcAddress(module, offset);
 		if (!locatedAddress)
 		{
 			// Don't exit here cause apparently the plugin still works even if some functions aren't found.
-			log_msg("FAILED.\n");
-			//log_msg("Failed to retrieve %s function for offset %08X (%i) by Proc ...\n", DllName, offset, offset);
+			//log_msg("FAILED.\n");
+			log_msg("Failed to retrieve %s function for offset %08X (%i) by Proc ...\n", DllName, offset, offset);
 		}
-		else
+		/*else
 		{
 			log_msg("SUCCESS. Located at %08X.\n", locatedAddress);
-		}
+		}*/
 		return locatedAddress;
 	}
 

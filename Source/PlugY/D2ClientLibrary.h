@@ -11,14 +11,20 @@ public:
 		DllOffset = LoadDiabloLibrary();
 		DllVersion = GameVersion;
 		SetFunctions();
+
+		// This need to be initialized here and not outside since the dependencies needed to get this value
+		// will not be completed when the class gets instantiated (before the DllName gets set).
+		DisplayBaseStatsBaseOffset1 = GetOffsetByAddition(0x29B12, 0x29B02, 0x30073, 0x82BBA, 0x8963A, 0x6B59A, 0xBD1B5, 0xBF955);
+		DisplayBaseStatsBaseOffset2 = GetOffsetByAddition(0x29B9D, 0x29B8D, 0x300FD, 0x82C54, 0x896D4, 0x6B637, 0xBD23E, 0xBF9DE);
 	};
 
 	DWORD RetrieveStashBackgroundOffset();
 
 	// Stat Button Related Functions
-	DWORD DisplayBaseStatsBaseAddress;
-	DWORD DisplayBaseStatsModOffset1 = GetOffsetForVersion(0x12, 0x12, 0x13, 0x13, 0x13, 0x13, 0x13, 0x13);
-	DWORD DisplayBaseStatsModOffset2 = GetOffsetForVersion(0x20, 0x20, 0x14, 0x1C, 0x1C, 0x1C, 0x1C, 0x1C);
+	DWORD DisplayBaseStatsBaseOffset1;
+	DWORD DisplayBaseStatsBaseOffset2;
+	BYTE DisplayBaseStatsModOffset1 = (BYTE)GetOffsetForVersion(0x12, 0x12, 0x13, 0x13, 0x13, 0x13, 0x13, 0x13);
+	BYTE DisplayBaseStatsModOffset2 = (BYTE)GetOffsetForVersion(0x20, 0x20, 0x14, 0x1C, 0x1C, 0x1C, 0x1C, 0x1C);
 
 	// Types
 	typedef void* (__fastcall *TD2LoadImage) (const char* filename, DWORD filetype);
