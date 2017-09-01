@@ -19,6 +19,10 @@ s_shifting shifting;
 #define A7(X, Z, A,B,C,D,E,F,G,H, R, N, P) T##N N;
 #define C7(Z, A,B,C,D,E,F,G,H, T, N)       T* pt##N;
 
+// At this point we are creating the variable with type.
+D2gfxLibrary::TD2GetResolution D2GetResolution;
+D2gfxLibrary::TD2FillArea D2FillArea;
+
 #include "../Commons/D2Funcs.h"
 
 DataTables* SgptDataTables;
@@ -37,6 +41,10 @@ D2S(D2Common,10581,	CharStatsBIN*,		D2Common10581, (DWORD charID));//ONLY in 1.0
 D2S(D2Common,10598,	ItemStatCostBIN*,	D2Common10598, (DWORD itemStatCostID));//ONLY in 1.09
 D2S(D2Common,10673,	ItemTypesBIN*,		D2Common10673, (DWORD itemTypesID));//ONLY in 1.09
 #undef D2S
+
+//#include "Utilities/LibraryUtility.h"
+//extern LibraryUtility* lu;
+//D2gfxLibrary::TD2FillArea D2FillArea = lu->D2gfx->D2FillArea;
 
 using Versions = VersionUtility::Versions;
 
@@ -67,6 +75,10 @@ TD2GetItemStatCostBIN		 V2GetItemStatCostBIN;
 TD2SendPacket				 V2SendPacket;
 TD2LoadInventory			 V2LoadInventory;
 TD2SaveGame					 V2SaveGame;
+
+
+
+//D2gfxLibrary::TD2FillArea D2FillArea = lu->D2gfx->D2FillArea;
 
 DWORD getStatDescIDFrom (DWORD statID)//FOR 1.09
 {
@@ -543,11 +555,12 @@ void setFctAddr(DWORD* addr, HMODULE module, LPCSTR index)
 		*addr = NULL;
 }
 
-#include "Utilities/LibraryUtility.h"
+#include "Utilities\LibraryUtility.h"
 extern LibraryUtility* lu;
 
 void initD2functions()
 {
+	//D2gfxLibrary::TD2FillArea D2FillArea = lu->D2gfx->D2FillArea();
 	//log_msg("Can you see me: %s, %08X", lu->D2Common->DllName, lu->D2Common->DllOffset);
 
 	#define D2S(F, I, R, N, P)	SETFCTADDR(F, I, N);
@@ -558,6 +571,14 @@ void initD2functions()
 	#define F7(X, Z, A,B,C,D,E,F,G,H, R, N, P) setFctAddr((DWORD*)&N, (HMODULE)offset_##Z, (LPCSTR)(version_##Z == VersionUtility::Versions::V113d? H : (version_##Z == VersionUtility::Versions::V113c? G : (version_##Z == VersionUtility::Versions::V112? F : (version_##Z == VersionUtility::Versions::V111b? E : (version_##Z == VersionUtility::Versions::V111? D : (version_##Z == VersionUtility::Versions::V110? C : (version_##Z == VersionUtility::Versions::V109d? B : A))))))));
 	#define A7(X, Z, A,B,C,D,E,F,G,H, R, N, P) N = (T##N)R7(Z,A,B,C,D,E,F,G,H);
 	#define C7(Z, A,B,C,D,E,F,G,H, T, N)       pt##N = (T*)R7(Z,A,B,C,D,E,F,G,H);
+
+
+	// At this point we set the variable to where the function is located.
+	//log_msg("D2FillARea now: %08X and the one in class %08X\n", D2FillArea, lu->D2gfx->D2FillArea);
+	D2GetResolution = lu->D2gfx->D2GetResolution;
+	D2FillArea = lu->D2gfx->D2FillArea;
+
+	//log_msg("D2FillARea now: %08X and the one in class %08X\n", lu->D2gfx->D2FillArea, lu->D2gfx->D2FillArea);
 
 	#include "../Commons/D2Funcs.h"
 	SgptDataTables = *(DataTables**) R7(D2Common, 0000, 0000, 96A20, 9B74C, 9EE8C, 9B500, 99E1C, A33F0);

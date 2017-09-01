@@ -8,6 +8,8 @@
 ================================================*/
 #pragma once
 
+#include "D2gfxLibrary.h"
+
 // Conversion to 1.09
 struct s_shifting {
 	DWORD ptInventory;
@@ -53,11 +55,16 @@ extern s_shifting shifting;
 #define A7(X, Z, A,B,C,D,E,F,G,H, R, N, P) typedef R (X##CALL  *T##N) P; extern T##N N;
 #define C7(Z, A,B,C,D,E,F,G,H, T, N)       extern T* pt##N;
 
+// At this point only typedef and externs are implemented
 #include "../Commons/D2Funcs.h"
+
+extern D2gfxLibrary::TD2GetResolution D2GetResolution;
+extern D2gfxLibrary::TD2FillArea D2FillArea;
+
 //#undef F7
 //#define F7(X, Z, A,B,C,D,E,F,G,H, R, N, P) 
 // Provide the function pointer types and say that they are going to be found externally.
-typedef DWORD(STDCALL *TD2Common11084) (Room* ptRoom, DWORD zero); extern TD2Common11084 D2Common11084;
+//typedef DWORD(STDCALL *TD2Common11084) (Room* ptRoom, DWORD zero); extern TD2Common11084 D2Common11084;
 
 extern DataTables* SgptDataTables;
 
@@ -69,6 +76,11 @@ extern DataTables* SgptDataTables;
 #undef E2S
 #undef E2F
 #undef E2C
+
+
+//#include "Utilities\LibraryUtility.h"
+//extern LibraryUtility* lu;
+//extern D2gfxLibrary::TD2FillArea D2FillArea;
 
 extern TD2AddPlayerStat				V2AddPlayerStat;
 extern TD2GetGameByClientID			V2GetGameByClientID;
