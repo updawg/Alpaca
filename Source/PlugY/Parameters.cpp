@@ -23,7 +23,6 @@
 #include "savePath.h"
 #include "bigStash.h"
 #include "infinityStash.h"
-#include "othersFeatures.h"
 #include "newInterfaces.h"
 #include "extraOptions.h"
 #include "commands.h"
@@ -49,7 +48,6 @@ const char* S_active_DisableBattleNet = "DisableBattleNet";
 const char* S_active_logFile = "ActiveLogFile";
 const char* S_active_CheckMemory = "ActiveCheckMemory";
 const char* S_active_Commands = "ActiveCommands";
-const char* S_active_othersFeatures = "ActiveAllOthersFeatures";
 
 const char* S_WINDOWED = "WINDOWED";
 const char* S_ActiveWindowed = "ActiveWindowed";
@@ -191,10 +189,6 @@ void init_General(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefaultFi
 	GET_PRIVATE_PROFILE_STRING(S_GENERAL, S_active_CheckMemory, "1");
 	active_CheckMemory = atoi(buffer) != 0;
 	log_msg("active_CheckMemory\t\t\t= %d\n", active_CheckMemory);
-
-	GET_PRIVATE_PROFILE_STRING(S_GENERAL, S_active_othersFeatures, "0");
-	active_othersFeatures = atoi(buffer) != 0;
-	log_msg("active_othersFeatures\t\t= %u\n", active_othersFeatures);
 
 	GET_PRIVATE_PROFILE_STRING(S_GENERAL,S_dllFilenames,"");
 	strcat(buffer,"|");

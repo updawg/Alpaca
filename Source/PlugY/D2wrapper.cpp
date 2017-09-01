@@ -11,7 +11,6 @@
 
 #include "globalVariable.h"		// Install_VariableOnRealm()
 #include "commands.h"			// Install_Commands()
-#include "othersFeatures.h"		// Install_ChangeResolution()
 #include "mainScreen.h"			// Install_PrintPlugYVersion() Install_VersionChange()
 #include "savePath.h"			// Install_ChangingSavePath()
 #include "bigStash.h"			// Install_BigStash()
@@ -305,9 +304,6 @@ void Install_Functions()
 
 	if (active_multiPageStash)
 		Install_MultiPageStash();
-
-	if (active_othersFeatures)
-		Install_OthersFeatures();
 
 	if (active_newInterfaces)
 		Install_NewInterfaces();

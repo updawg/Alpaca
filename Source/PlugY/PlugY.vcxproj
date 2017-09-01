@@ -136,7 +136,6 @@
     <ClCompile Include="NewInterface_Runewords.cpp" />
     <ClCompile Include="NewInterface_Stats.cpp" />
     <ClCompile Include="NewInterface_StatsPageTwo.cpp" />
-    <ClCompile Include="OthersFeatures.cpp" />
     <ClCompile Include="Parameters.cpp" />
     <ClCompile Include="PlayerCustomData.cpp" />
     <ClCompile Include="PlugY.cpp" />
@@ -198,7 +197,6 @@
     <ClInclude Include="newInterface_Runewords.h" />
     <ClInclude Include="newInterface_Stats.h" />
     <ClInclude Include="newInterface_StatsPageTwo.h" />
-    <ClInclude Include="othersFeatures.h" />
     <ClInclude Include="parameters.h" />
     <ClInclude Include="playerCustomData.h" />
     <ClInclude Include="plugYFiles.h" />

@@ -1,5 +1,10 @@
 #include "D2CommonLibrary.h"
 
+DWORD D2CommonLibrary::RetrieveStashGridOffset()
+{
+	return RetrieveAddressByAddition(CreateOffsets(0xC9F3, 0xCA03, 0x14ED3, 0x5FCB5, 0x2A505, 0x1BDB5, 0x82CA5, 0x6CC25));
+}
+
 void D2CommonLibrary::SetFunctions()
 {
 	D2Common11084 = GetD2Common11084();

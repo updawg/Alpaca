@@ -8,6 +8,9 @@
 
 #include "plugYFiles.h"		// Install_PlugYFiles()
 #include "common.h"
+#include "Utilities\LibraryUtility.h"
+
+extern LibraryUtility* lu;
 
 using Versions = VersionUtility::Versions;
 
@@ -79,8 +82,8 @@ void Install_BigStash()
 	log_msg("Patch D2Common & D2Client for make 10x10 squares in the stash. (BigStash)\n");
 
 	// modification of stash grid
-	mem_seek R7(D2Common, C9F3, CA03, 14ED3, 5FCB5, 2A505, 1BDB5, 82CA5, 6CC25);
-	MEMC_REF4( D2CompileTxtFile, caller_modifStashGrid);
+	mem_seek(lu->D2Common->RetrieveStashGridOffset());
+	MEMC_REF4(D2CompileTxtFile, caller_modifStashGrid);
 	//01B64ED2  |. E8 99AEFFFF    CALL D2Common.#10578
 	//6FDAFCB4  |. E8 A7C3FCFF    CALL D2Common.#10653
 	//6FD7A504  |. E8 5743FEFF    CALL D2Common.#10496                     ; \#10496
@@ -89,7 +92,7 @@ void Install_BigStash()
 	//6FDBCC24  |. E8 B7FEF9FF    CALL D2Common.#10037                     ; \#10037
 
 	// modification of stash background
-	mem_seek R7(D2Client, 45B1C, 45B1C, 4C61C, A643C, 749BC, A9D7C, 8CC1C, 943FC);
+	mem_seek(lu->D2Client->RetrieveStashBackgroundOffset());
 	memt_byte( 0x68, 0xE8 );	// CALL caller_changeTradeStash
 	MEMT_REF4( 0x00000104, caller_changeTradeStash);
 	//6FAEC61C  |. 68 04010000    PUSH 104

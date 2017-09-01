@@ -13,6 +13,8 @@ public:
 		SetFunctions();
 	};
 
+	DWORD RetrieveStashBackgroundOffset();
+
 	typedef void* (__fastcall *TD2LoadImage) (const char* filename, DWORD filetype);
 	typedef void(__fastcall *TD2FreeImage) (void* image);
 	typedef void(__fastcall *TD2SendMsgToAll) (BYTE* data);

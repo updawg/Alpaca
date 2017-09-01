@@ -60,11 +60,9 @@ DWORD Library::GetOffsetForVersion(const VersionOffsets& offsets)
 		//log_msg("Found it: %i", it->second);
 		return it->second;
 	}
-	else
-	{
-		log_msg("error finding the address for module %s", DllName);
-		return 0;
-	}
+	
+	// Existing behavior is to return 1.09 (lowest offset/version that we have)
+	return offsets.find(VersionUtility::Versions::V109)->second;
 }
 
 VersionOffsets Library::CreateOffsets(DWORD V109, DWORD V109D, DWORD V110, DWORD V111, DWORD V111B, DWORD V112, DWORD V113C, DWORD V113D)

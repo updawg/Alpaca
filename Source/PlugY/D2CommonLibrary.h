@@ -13,6 +13,8 @@ public:
 		SetFunctions();
 	};
 
+	DWORD RetrieveStashGridOffset();
+
 	typedef DWORD(__stdcall *TD2Common11084) (Room* ptRoom, DWORD zero);
 	typedef DWORD(__stdcall *TD2GetLevelID) (Room* ptRoom);
 	typedef Room* (__stdcall *TD2GetDropRoom) (Room* ptRoom, Position*, Position*, DWORD, DWORD, DWORD, DWORD);
