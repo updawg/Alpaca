@@ -99,9 +99,6 @@
     <ClCompile Include="PlayerCustomData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PlugY.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PlugYFiles.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -185,6 +182,9 @@
     </ClCompile>
     <ClCompile Include="D2Functions.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLibrary.cpp">
+      <Filter>Source Files\Libraries</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -361,6 +361,9 @@
     </ClInclude>
     <ClInclude Include="D2Functions.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLibrary.h">
+      <Filter>Header Files\Libraries</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

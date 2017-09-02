@@ -65,7 +65,7 @@ void freeLibrary( DWORD library )
 
 void freeD2Libraries()
 {
-	if (lu->Game_Version >= Versions::V114a)
+	if (lu->Game->DllVersion >= Versions::V114a)
 		return;
 
 	log_msg("***** Free Libraries *****\n");
@@ -161,22 +161,22 @@ void initD2modules()
 	// I'm just leaving this values because I don't want to spend time at the moment repointing and
 	// testing all of the existing code that re-uses these externs. So for now, just give them the data
 	// that they want but use the LibraryUtility as the backend database.
-	offset_Game = lu->Game_Offset;
+	offset_Game = lu->Game->DllOffset;
 
-	if (VersionUtility::IsEqualOrGreaterThan114(lu->Game_Version))
+	if (VersionUtility::IsEqualOrGreaterThan114(lu->Game->DllVersion))
 	{
 		// It's all in Game.exe so the offset is the same.
-		offset_D2Client = lu->Game_Offset;
-		offset_D2CMP = lu->Game_Offset;
-		offset_D2Common = lu->Game_Offset;;
-		offset_D2Game = lu->Game_Offset;
-		offset_D2gfx = lu->Game_Offset;
-		offset_D2Lang = lu->Game_Offset;
-		offset_D2Launch = lu->Game_Offset;
-		offset_D2Net = lu->Game_Offset;
-		offset_D2Win = lu->Game_Offset;
-		offset_Fog = lu->Game_Offset;
-		offset_Storm = lu->Game_Offset;
+		offset_D2Client = lu->Game->DllOffset;
+		offset_D2CMP = lu->Game->DllOffset;
+		offset_D2Common = lu->Game->DllOffset;
+		offset_D2Game = lu->Game->DllOffset;
+		offset_D2gfx = lu->Game->DllOffset;
+		offset_D2Lang = lu->Game->DllOffset;
+		offset_D2Launch = lu->Game->DllOffset;
+		offset_D2Net = lu->Game->DllOffset;
+		offset_D2Win = lu->Game->DllOffset;
+		offset_Fog = lu->Game->DllOffset;
+		offset_Storm = lu->Game->DllOffset;
 	}
 	else
 	{
@@ -194,17 +194,17 @@ void initD2modules()
 	}
 
 	// All DLLs should match same version as game or problems will happen.
-	version_D2Client = lu->Game_Version;
-	version_D2CMP = lu->Game_Version;
-	version_D2Common = lu->Game_Version;
-	version_D2Game = lu->Game_Version;
-	version_D2gfx = lu->Game_Version;
-	version_D2Lang = lu->Game_Version;
-	version_D2Launch = lu->Game_Version;
-	version_D2Net = lu->Game_Version;
-	version_D2Win = lu->Game_Version;
-	version_Fog = lu->Game_Version;
-	version_Storm = lu->Game_Version;
+	version_D2Client = lu->Game->DllVersion;
+	version_D2CMP = lu->Game->DllVersion;
+	version_D2Common = lu->Game->DllVersion;
+	version_D2Game = lu->Game->DllVersion;
+	version_D2gfx = lu->Game->DllVersion;
+	version_D2Lang = lu->Game->DllVersion;
+	version_D2Launch = lu->Game->DllVersion;
+	version_D2Net = lu->Game->DllVersion;
+	version_D2Win = lu->Game->DllVersion;
+	version_Fog = lu->Game->DllVersion;
+	version_Storm = lu->Game->DllVersion;
 
 	log_msg("\n\n");
 }
@@ -215,7 +215,6 @@ void Install_Functions();
 extern "C" __declspec(dllexport) bool __stdcall Release()
 {
 	log_msg("\n***** ENDING DIABLO II *****\n\n" );
-
 	freeCustomLibraries();
 	freeD2Libraries();
 	return true;
@@ -232,9 +231,9 @@ extern "C" __declspec(dllexport) void* __stdcall Init(LPSTR IniName)
 	// Initialize/Load Libraries
 	lu = new LibraryUtility();
 
-	if (!VersionUtility::IsSupported(lu->Game_Version))
+	if (!VersionUtility::IsSupported(lu->Game->DllVersion))
 	{
-		log_box("Gardenia isn't compatible with this version : %s", VersionUtility::GetVersionAsString(lu->Game_Version));
+		log_box("Gardenia isn't compatible with this version : %s", VersionUtility::GetVersionAsString(lu->Game->DllVersion));
 		Release();
 		exit(0);
 	}

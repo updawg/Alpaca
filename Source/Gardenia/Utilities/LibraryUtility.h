@@ -3,6 +3,7 @@
 #include "../common.h"
 
 #include "../Library.h"
+#include "../GameLibrary.h"
 #include "../D2ClientLibrary.h"
 #include "../D2CMPLibrary.h"
 #include "../D2CommonLibrary.h"
@@ -21,18 +22,13 @@ class LibraryUtility
 public:
 	LibraryUtility();
 
-	void LoadGame();
-
 	// Change the protection scheme of a loaded
 	// DLL called libraryName in memory space at address addr+size to allow us to customize it.
 	void HookLibraries();
 	void UnhookLibraries();
 
-	// This is kinda redundant, the Libraries for each Dll also has this info.
-	int Game_Version;
-	DWORD Game_Offset;
-
 	// Libraries
+	GameLibrary* Game;
 	D2ClientLibrary* D2Client;
 	D2CMPLibrary* D2CMP;
 	D2CommonLibrary* D2Common;

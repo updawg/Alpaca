@@ -5,11 +5,11 @@
 class D2NetLibrary : public Library
 {
 public:
-	D2NetLibrary(DWORD gameOffset, int gameVersion) : Library(gameOffset, gameVersion)
+	D2NetLibrary(int gameVersion) : Library()
 	{
 		DllName = "D2Net.dll";
+		DllVersion = gameVersion;
 		DllOffset = LoadDiabloLibrary();
-		DllVersion = GameVersion;
 		SetFunctions();
 	};
 

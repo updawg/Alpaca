@@ -2,13 +2,7 @@
 #include "Error.h"
 #include "Utilities/VersionUtility.h"
 
-Library::Library(DWORD gameOffset, int gameVersion)
-{
-	// If we can refactor the LoadGame function so that we can safely retrieve its values, then we don't need
-	// to pass them in as a parameter. I'm trying to avoid using global variables.
-	GameOffset = gameOffset;
-	GameVersion = gameVersion;
-}
+Library::Library() {}
 
 void Library::HookLibrary()
 {
@@ -45,7 +39,7 @@ DWORD Library::LoadDiabloLibrary()
 		log_msg("Failed to load library : %s\n", DllName);
 		exit(-1);
 	}
-	log_msg("%s loaded at:\t%08X (%s)\n", DllName, proposedOffset, VersionUtility::GetVersionAsString(GameVersion));
+	log_msg("%s loaded at:\t%08X (%s)\n", DllName, proposedOffset, VersionUtility::GetVersionAsString(DllVersion));
 	return proposedOffset;
 }
 
@@ -57,15 +51,18 @@ DWORD Library::GetOffsetForVersion(DWORD V109, DWORD V109D, DWORD V110, DWORD V1
 
 DWORD Library::GetOffsetForVersion(const VersionOffsets& offsets)
 {
+	//log_msg("For game version: %s\n", VersionUtility::GetVersionAsString(DllVersion));
+
 	// properly convert the version to an enum in the future.
-	VersionOffsets::const_iterator it = offsets.find((VersionUtility::Versions)GameVersion);
+	VersionOffsets::const_iterator it = offsets.find((VersionUtility::Versions)DllVersion);
 	
 	if (it != offsets.end())
 	{
-		//log_msg("Found it: %i", it->second);
+		//log_msg("Found it: %s :: %08X\n", VersionUtility::GetVersionAsString(DllVersion), it->second);
 		return it->second;
 	}
 	
+	//log_msg("Falling back to 1.09A even though game version is: %s\n", VersionUtility::GetVersionAsString(DllVersion));
 	// Existing behavior is to return 1.09 (lowest offset/version that we have)
 	return offsets.find(VersionUtility::Versions::V109)->second;
 }
@@ -95,11 +92,7 @@ DWORD Library::GetOffsetByProc(DWORD V109, DWORD V109D, DWORD V110, DWORD V111, 
 DWORD Library::GetOffsetByProc(const VersionOffsets moduleOffsets)
 {
 	DWORD proposedOffset = GetOffsetForVersion(moduleOffsets);
-	if (proposedOffset != 0)
-	{
-		return GetFunctionAddress((LPCSTR)proposedOffset);
-	}
-	return NULL;
+	return GetFunctionAddress((LPCSTR)proposedOffset);
 }
 
 DWORD Library::GetOffsetByAddition(DWORD V109, DWORD V109D, DWORD V110, DWORD V111, DWORD V111B, DWORD V112, DWORD V113C, DWORD V113D)
@@ -111,7 +104,7 @@ DWORD Library::GetOffsetByAddition(const VersionOffsets moduleOffsets)
 {
 	DWORD offset = GetOffsetForVersion(moduleOffsets);
 	DWORD proposedOffset = DllOffset + offset;
-	//log_msg("Retrieving %s function for offset %08X (%i) by Addition ... SUCCESS. Located at %08X.\n", DllName, offset, offset, proposedOffset);
+	//log_msg("Retrieving %s function for offset %08X (%i) by Addition (on base %08X) ... SUCCESS. Located at %08X.\n", DllName, offset, offset, DllOffset, proposedOffset);
 	return proposedOffset;
 }
 
@@ -120,23 +113,17 @@ DWORD Library::GetFunctionAddress(LPCSTR offset)
 	HMODULE module = (HMODULE)DllOffset;
 	//log_msg("Retrieving %s function for offset %08X (%i) by Proc ...", DllName, offset, offset);
 
-	DWORD locatedAddress;
-	
-	if (offset)
+	DWORD locatedAddress = (DWORD) GetProcAddress(module, offset);
+	//if (!locatedAddress)
+	//{
+	//	// Don't exit here cause apparently the plugin still works even if some functions aren't found.
+	//	//log_msg("FAILED.\n");
+	//	log_msg("Failed to retrieve %s function for offset %08X (%i) by Proc ... Returning %08X\n", DllName, offset, offset, locatedAddress);
+	//}
+	/*else
 	{
-		locatedAddress = (DWORD) GetProcAddress(module, offset);
-		if (!locatedAddress)
-		{
-			// Don't exit here cause apparently the plugin still works even if some functions aren't found.
-			//log_msg("FAILED.\n");
-			log_msg("Failed to retrieve %s function for offset %08X (%i) by Proc ...\n", DllName, offset, offset);
-		}
-		/*else
-		{
-			log_msg("SUCCESS. Located at %08X.\n", locatedAddress);
-		}*/
-		return locatedAddress;
-	}
+		log_msg("SUCCESS. Located at %08X.\n", locatedAddress);
+	}*/
 
-	return NULL;
+	return locatedAddress;
 }

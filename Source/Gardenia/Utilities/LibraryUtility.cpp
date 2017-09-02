@@ -1,57 +1,38 @@
 #include "LibraryUtility.h"
 
-// libname = "D2Common", etc
-// libVersion = offset + shift
-// libOffset = base address where library loaded in OS
-// Shift = ?
-
 LibraryUtility::LibraryUtility()
 {
 	log_msg("***** Get D2 Modules address and version *****\n");
 
 	// We need to load the game now so that we have the version base offsets for the rest of the Dlls.
-	LoadGame();
+	Game = new GameLibrary();
 
-	if (VersionUtility::IsEqualOrGreaterThan114(Game_Version))
+	if (VersionUtility::IsEqualOrGreaterThan114(Game->DllVersion))
 	{
 		log_msg("1.14d support is not implemented.\n");
 		//exit(-1);
 	}
 	else
 	{
-		D2Client = new D2ClientLibrary(Game_Offset, Game_Version);
-		D2CMP = new D2CMPLibrary(Game_Offset, Game_Version);
-		D2Common = new D2CommonLibrary(Game_Offset, Game_Version);
-		D2Game = new D2GameLibrary(Game_Offset, Game_Version);
-		D2gfx = new D2gfxLibrary(Game_Offset, Game_Version);
-		D2Lang = new D2LangLibrary(Game_Offset, Game_Version);
-		D2Launch = new D2LaunchLibrary(Game_Offset, Game_Version);
-		D2Net = new D2NetLibrary(Game_Offset, Game_Version);
-		D2Win = new D2WinLibrary(Game_Offset, Game_Version);
-		Fog = new FogLibrary(Game_Offset, Game_Version);
-		Storm = new StormLibrary(Game_Offset, Game_Version);
-
-		//D2Common->GetD2Common11084();
-		//D2Common->SetD2Common11084Addr();
-		//DWORD off= D2Common->GetD2Common11084_FunctionAddress();
-		//D2Common->D2Common11084 = (TD2Common11084)off;
-		//log_msg("Function address located at: %08X :: %08X", D2Common->GetD2Common11084_FunctionAddress(), D2Common->D2Common11084);
+		D2Client = new D2ClientLibrary(Game->DllVersion);
+		D2CMP = new D2CMPLibrary(Game->DllVersion);
+		D2Common = new D2CommonLibrary(Game->DllVersion);
+		D2Game = new D2GameLibrary(Game->DllVersion);
+		D2gfx = new D2gfxLibrary(Game->DllVersion);
+		D2Lang = new D2LangLibrary(Game->DllVersion);
+		D2Launch = new D2LaunchLibrary(Game->DllVersion);
+		D2Net = new D2NetLibrary(Game->DllVersion);
+		D2Win = new D2WinLibrary(Game->DllVersion);
+		Fog = new FogLibrary(Game->DllVersion);
+		Storm = new StormLibrary(Game->DllVersion);
 	}
-}
-
-void LibraryUtility::LoadGame()
-{
-	Game_Offset = (DWORD)GetModuleHandle(NULL);
-	Game_Version = VersionUtility::GetVersion("Game.exe");
-
-	log_msg("Game.exe loaded at:\t%08X (%s)\n", Game_Offset, VersionUtility::GetVersionAsString(Game_Version));
 }
 
 void LibraryUtility::HookLibraries()
 {
 	log_msg("***** Unprotect Libraries *****\n");
 
-	if (VersionUtility::IsEqualOrGreaterThan114(Game_Version))
+	if (VersionUtility::IsEqualOrGreaterThan114(Game->DllVersion))
 	{
 		log_msg("Hooking 1.14 libraries");
 	}
@@ -74,7 +55,7 @@ void LibraryUtility::UnhookLibraries()
 {
 	log_msg("***** Reprotect Libraries *****\n");
 
-	if (VersionUtility::IsEqualOrGreaterThan114(Game_Version))
+	if (VersionUtility::IsEqualOrGreaterThan114(Game->DllVersion))
 	{
 		log_msg("Unhooking 1.14 libraries");
 	}

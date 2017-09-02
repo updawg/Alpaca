@@ -12,14 +12,19 @@ All code is published as GPL 3+ since that was the license that Yohann released 
 
 This is not a stable version, so use at your own risk.
 
-Install instructions:
-====
-Copy the PlugY folder and the PlugY.dll and PlugY.exe files into the root of your Diablo II
-folder, run Plugy.exe. If you want to change any settings, check the PlugY.ini file.
+Gardenia IS compatible with Bliss Version Switcher. So if you want to have separate stashes
+while you are time traveling, you can. Just point Bliss Version Switcher to use "Gardenia.exe"
+rather than "Game.exe". Bliss Version Switcher will automatically point the save directory
+to the desired version of D2 you want to play (and Gardenia saves the stashes with your
+characters as well). If using the version switcher, do not use the "Active Save Path Change"
+feature in Gardenia.
+
+Bliss Version Switcher URL:
+https://github.com/fearedbliss/Bliss-Version-Switcher
 
 Features
 ====
-Each features can be turn on/off via PlugY.ini (see "COMMENTS ON THE CONFIGURATION FILE")
+Each features can be turn on/off via Gardenia.ini (see "COMMENTS ON THE CONFIGURATION FILE")
 - Disable access to Battle.net.
 - Infinite storage space in the stash.
 - Shared storage space in the stash.

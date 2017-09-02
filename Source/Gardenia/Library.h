@@ -18,9 +18,6 @@ public:
 	// determine the game version for the dll). This should be identical
 	// to the Game Version of the .exe.
 	DWORD LoadDiabloLibrary();
-
-	// Set dll version (should be same as Game)
-	//int GetDllVersion();
 	
 	void HookLibrary();
 	void UnhookLibrary();
@@ -29,8 +26,8 @@ public:
 	DWORD DllOffset;
 	LPCTSTR DllName;
 
-	DWORD GameOffset;
-	int GameVersion;
+	/*DWORD GameOffset;
+	int GameVersion;*/
 
 	// Retrieves the address by using GetProcAddress
 	DWORD GetOffsetByProc(const VersionOffsets moduleOffsets);
@@ -49,11 +46,12 @@ public:
 	VersionOffsets CreateOffsets(DWORD V109, DWORD V109D, DWORD V110, DWORD V111, DWORD V111B, DWORD V112, DWORD V113C, DWORD V113D);
 
 protected:
+	// This constructor is only used to load up the Game.exe since at this point we don't have the version information.
+	// Prevent this class from being instantiated. (pure virtual classes can't be instantiated anyways)
+	Library();
+
 	// Each subclass will locate the functions that we need.
 	virtual void SetFunctions() = 0;
-
-	// Prevent this class from being instantiated. (pure virtual classes can't be instantiated anyways
-	Library(DWORD gameOffset, int gameVersion);
 
 	// Retrieves the address using GetProcAddress
 	DWORD GetFunctionAddress(LPCSTR index);

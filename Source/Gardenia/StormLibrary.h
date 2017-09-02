@@ -5,11 +5,11 @@
 class StormLibrary : public Library
 {
 public:
-	StormLibrary(DWORD gameOffset, int gameVersion) : Library(gameOffset, gameVersion)
+	StormLibrary(int gameVersion) : Library()
 	{
 		DllName = "Storm.dll";
+		DllVersion = gameVersion;
 		DllOffset = LoadDiabloLibrary();
-		DllVersion = GameVersion;
 		SetFunctions();
 	};
 

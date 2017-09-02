@@ -5,11 +5,11 @@
 class D2LaunchLibrary : public Library
 {
 public:
-	D2LaunchLibrary(DWORD gameOffset, int gameVersion) : Library(gameOffset, gameVersion)
+	D2LaunchLibrary(int gameVersion) : Library()
 	{
 		DllName = "D2Launch.dll";
+		DllVersion = gameVersion;
 		DllOffset = LoadDiabloLibrary();
-		DllVersion = GameVersion;
 		SetFunctions();
 	};
 

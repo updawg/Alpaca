@@ -5,11 +5,11 @@
 class D2gfxLibrary : public Library
 {
 public:
-	D2gfxLibrary(DWORD gameOffset, int gameVersion) : Library(gameOffset, gameVersion)
+	D2gfxLibrary(int gameVersion) : Library()
 	{
 		DllName = "D2gfx.dll";
+		DllVersion = gameVersion;
 		DllOffset = LoadDiabloLibrary();
-		DllVersion = GameVersion;
 		SetFunctions();
 	};
 

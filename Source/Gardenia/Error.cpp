@@ -35,13 +35,14 @@ void log_initfile()
 	    log_init = true;
 	}
 	
-	log_msg("<----------------------------------------------->\n"
+	log_msg("<--------------------------------------------->\n"
 			"\n"
-		    "\tGardenia %s by Jonathan Vasquez <jon@xyinn.org>\n"
+		    "\tGardenia %s\n"
+		    "\t%s <%s>\n"
+		    "\t%s\n"
 			"\n"
-			"\n"
-			"<---------- Starting Diablo II Plugin ---------->\n\n\n"
-			,GARDENIA_VERSION);
+			"<---------- Starting Diablo II Plugin -------->\n\n\n"
+			,GARDENIA_VERSION, GARDENIA_AUTHOR_NAME, GARDENIA_AUTHOR_EMAIL, GARDENIA_BUILD_DATE);
 }
 
 void log_box( const char* pFormat, ... )

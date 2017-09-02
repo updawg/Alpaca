@@ -40,7 +40,7 @@ Unit* firstClassicStashItem(Unit* ptChar)
 	return NULL;
 }
 
-DWORD endStashList(Unit* ptChar, Stash* ptStash)//WORKS
+DWORD endStashList(Unit* ptChar, Stash* ptStash)
 {
 	Stash* stash = ptStash;
 	
@@ -53,19 +53,7 @@ DWORD endStashList(Unit* ptChar, Stash* ptStash)//WORKS
 	return 1;
 }
 
-//bool isInList(Stash* list, Stash* pStash)
-//{
-//	Stash* ptStash = list;
-//	while(ptStash)
-//	{
-//		if (ptStash->id == pStash->id) return true;
-//		ptStash = ptStash->nextStash;
-//	}
-//	return false;
-//}
-
-
-Stash* getLastStash(Stash* ptStash)//WORKS
+Stash* getLastStash(Stash* ptStash)
 {
 	Stash* stash = ptStash;
 	
@@ -80,7 +68,7 @@ Stash* newStash(DWORD id)
 {
 	d2_assert( id == 0xFFFFFFFF , "Too much stash", __FILE__, __LINE__);
 	
-	Stash* stash = (Stash*)malloc(sizeof(Stash));//D2AllocMem(memPool, sizeof(Stash),__FILE__,__LINE__,0);
+	Stash* stash = (Stash*)malloc(sizeof(Stash));
 	d2_assert(!stash , "Error on stash allocation.", __FILE__, __LINE__);
 	ZeroMemory(stash, sizeof(Stash));
 	stash->id = id;
@@ -92,7 +80,7 @@ Stash* addStash(Unit* ptChar, bool isShared)
 {
 	Stash* previous;
 	Stash* stash;
-//	DWORD memPool = PCGame ? PCGame->memoryPool :0;
+
 	if (isShared)
 	{
 		previous = getLastStash(PCPY->sharedStash);
@@ -117,7 +105,7 @@ Stash* addStash(Unit* ptChar, bool isShared)
 	return stash;
 }
 
-Stash* getStash(Unit* ptChar, DWORD isShared, DWORD id)//WORKS
+Stash* getStash(Unit* ptChar, DWORD isShared, DWORD id)
 {
 	Stash* ptStash = isShared ? PCPY->sharedStash : PCPY->selfStash;
 
@@ -283,7 +271,7 @@ DWORD loadStash(Unit* ptChar, Stash* ptStash, BYTE data[], DWORD startSize, DWOR
 	return ret;
 }
 
-DWORD loadStashList(Unit* ptChar, BYTE* data, DWORD maxSize, DWORD* curSize, bool isShared)//WORKS
+DWORD loadStashList(Unit* ptChar, BYTE* data, DWORD maxSize, DWORD* curSize, bool isShared)
 {
 	DWORD curStash = 0;
 	Stash* newStash;
@@ -395,7 +383,7 @@ void saveStashList(Unit* ptChar, Stash* ptStash, BYTE** data, DWORD* maxSize, DW
 }
 
 /////// client
-void updateSelectedStashClient(Unit* ptChar)//WORKS
+void updateSelectedStashClient(Unit* ptChar)
 {
 	Stash* newStash = PCPY->currentStash;
 	if (!newStash)
@@ -404,7 +392,7 @@ void updateSelectedStashClient(Unit* ptChar)//WORKS
 	updateClient(ptChar, UC_PAGE_NAME, newStash->name);
 }
 
-void setSelectedStashClient(DWORD stashId, DWORD stashFlags, DWORD flags, bool bOnlyItems)//WORKS
+void setSelectedStashClient(DWORD stashId, DWORD stashFlags, DWORD flags, bool bOnlyItems)
 {
 	log_msg("setSelectedStashClient ID:%d, stashFlags:%d, flags:%08X\n", stashId, stashFlags, flags);
 	Unit* ptChar = D2GetClientPlayer();
@@ -417,7 +405,6 @@ void setSelectedStashClient(DWORD stashId, DWORD stashFlags, DWORD flags, bool b
 	PCPY->flags = flags;
 }
 
-
 void selectStash(Unit* ptChar, Stash* newStash)
 {
 	if (!newStash)
@@ -425,8 +412,6 @@ void selectStash(Unit* ptChar, Stash* newStash)
 	changeToSelectedStash(ptChar, newStash, 0, 0);
 	updateSelectedStashClient(ptChar);
 }
-
-
 
 ///// public functions
 void toggleToSelfStash(Unit* ptChar)
@@ -500,7 +485,7 @@ bool deleteStash(Unit* ptChar, bool isClient)
 {
 	if (firstClassicStashItem(ptChar) != NULL)
 		return false;
-	//if (D2InventoryGetFirstItem())
+
 	Stash* stash = PCPY->currentStash;
 	if (stash->nextStash == NULL)
 	{
@@ -528,7 +513,6 @@ bool deleteStash(Unit* ptChar, bool isClient)
 	return true;
 }
 
-
 void renameCurrentStash(Unit* ptChar, char* name)
 {
 	log_msg("renameCurrentStash : %08X, %s\n", ptChar, name);
@@ -542,7 +526,7 @@ void renameCurrentStash(Unit* ptChar, char* name)
 	log_msg("renameCurrentStash 3\n");
 	if (len > 0)
 	{
-		stash->name = (char *)malloc(len);//D2FogMemAlloc(len,__FILE__,__LINE__,0);
+		stash->name = (char *)malloc(len);
 		strcpy(stash->name, name);
 	}
 	else

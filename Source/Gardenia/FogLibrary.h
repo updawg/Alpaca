@@ -5,11 +5,11 @@
 class FogLibrary : public Library
 {
 public:
-	FogLibrary(DWORD gameOffset, int gameVersion) : Library(gameOffset, gameVersion)
+	FogLibrary(int gameVersion) : Library()
 	{
 		DllName = "Fog.dll";
+		DllVersion = gameVersion;
 		DllOffset = LoadDiabloLibrary();
-		DllVersion = GameVersion;
 		SetFunctions();
 	};
 
