@@ -14,8 +14,6 @@ public:
 	};
 
 	typedef void(__fastcall *TD2SetNbPlayers) (DWORD nbPlayers);
-	typedef Game* (__stdcall *TD2GetGameByClientID) (DWORD clientID);
-	typedef void(__fastcall *TD2BroadcastFunction) (Game* ptGame, void* fct, void* param);
 	typedef DWORD(__fastcall *TD2SendPacket) (void* ptNetClient, LPVOID pData, DWORD size);
 	typedef void(__fastcall *TD2SetSkillBaseLevelOnClient) (void* ptClient, Unit* ptChar, DWORD skillID, DWORD sLvl, DWORD bRemove);
 	typedef DWORD(__stdcall *TD2LinkPortal) (Game* ptGame, Unit* ptObject, DWORD levelEndID, DWORD levelStartID);

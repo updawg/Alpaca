@@ -55,9 +55,6 @@ public:
 	DWORD ptFrameOffset;
 
 	// Types
-	typedef DWORD(__stdcall *TD2Common11084) (Room* ptRoom, DWORD zero);
-	typedef DWORD(__stdcall *TD2GetLevelID) (Room* ptRoom);
-	typedef Room* (__stdcall *TD2GetDropRoom) (Room* ptRoom, Position*, Position*, DWORD, DWORD, DWORD, DWORD);
 	typedef Unit* (__stdcall *TD2Common10242) (Inventory* ptInventory, Unit* ptItem, DWORD bIsClient);
 	typedef Unit* (__stdcall *TD2CanPutItemInInv) (Inventory* ptInventory, Unit* ptItem, DWORD p3, DWORD zero, Unit* ptUnit, const char* file, DWORD line);
 	typedef Unit* (__stdcall *TD2InvRemoveItem) (Inventory* ptInventory, Unit* ptItem);
@@ -69,17 +66,12 @@ public:
 	typedef Unit* (__stdcall *TD2GetRealItem) (Unit* ptUnit);
 	typedef DWORD(__stdcall *TD2GetPosX) (Unit* ptUnit);
 	typedef DWORD(__stdcall *TD2GetPosY) (Unit* ptUnit);
-	typedef void(__stdcall *TD2GetPosition) (Unit* ptUnit, Position* pos);
 	typedef DWORD(__stdcall *TD2GetMaxGoldBank) (Unit* ptUnit);
-	typedef Room* (__stdcall *TD2GetRoom) (Unit* ptUnit);
 	typedef PlayerData* (__stdcall *TD2InitPlayerData) (Unit* ptChar);
 	typedef PlayerData* (__stdcall *TD2GetPlayerData) (Unit* ptChar);
 	typedef DWORD(__stdcall *TD2GetDefence) (Unit* ptChar);
 	typedef DWORD(__stdcall *TD2GetChanceToBlock) (Unit* ptChar, DWORD isLODGame);
 	typedef DWORD(__stdcall *TD2GetMaxGold) (Unit* ptUnit);
-	typedef DWORD(__stdcall *TD2Common10572) (Unit* ptObject, DWORD value);
-	typedef BYTE(__stdcall *TD2GetObjectFlags) (Unit* ptObject);
-	typedef void(__stdcall *TD2SetObjectFlags) (Unit* ptObject, BYTE flags);
 	typedef DWORD(__stdcall *TD2isInState) (Unit* ptChar, DWORD isLODGame);
 	typedef void(__stdcall *TD2AddPlayerStat) (Unit* ptChar, DWORD statID, int amount, DWORD index);
 	typedef int(__stdcall *TD2GetPlayerStat) (Unit* ptChar, DWORD statID, DWORD index);
@@ -103,22 +95,15 @@ public:
 	typedef DWORD(__stdcall *TD2GetMaxLevel) (DWORD classID);
 	typedef DifficultyLevelsBIN* (__stdcall *TD2GetDifficultyLevelsBIN) (DWORD difficultyLevel);
 	typedef DWORD(__stdcall *TD2GetItemQuality) (Unit* ptItem);
-	typedef DWORD(__stdcall *TD2TestFlags) (Unit* ptUnit, DWORD flags, DWORD line, const char* file);
 	typedef DWORD(__stdcall *TD2GetItemLevel) (Unit* ptItem);
 	typedef BYTE(__stdcall *TD2ItemGetPage) (Unit* ptUnit);
 	typedef void(__stdcall *TD2ItemSetPage) (Unit* ptItem, BYTE page);
-	typedef DWORD(__stdcall *TD2CheckItemType) (Unit* ptItem, DWORD itype);
 	typedef int(__stdcall *TD2GetUniqueID) (Unit* ptItem);
 	typedef void(__stdcall *TD2SetAnim) (Unit* ptUnit, int anim);
 	typedef int* (__stdcall *TD2GetNbRunesBIN) ();
 	typedef RunesBIN* (__stdcall *TD2GetRunesBIN) (int runesID);
-	typedef DWORD(__stdcall *TD2isEtheral) (Unit* ptItem);
 	typedef DWORD(__stdcall *TD2SaveItem) (Unit* ptItem, saveBitField* data, DWORD startSize, DWORD p4, DWORD p5, DWORD p6);
-	typedef DWORD(__stdcall *TD2GetSkillLevel) (Unit* ptChar, SkillData* ptSkill, DWORD includingBonus);
-	typedef DWORD(__stdcall *TD2GetSkillCost) (Unit* ptChar, int skpoints, DWORD skillID, DWORD curSkillLevel);
 	typedef CharStatsBIN* (__fastcall *TD2GetCharStatsBIN) (DWORD charID);
-	typedef DWORD(__fastcall *TD2CompileCubeInput) (CubeInput* cubeinput, char* s, DWORD p1, DWORD p2);
-	typedef DWORD(__fastcall *TD2CompileCubeOutput) (CubeOutput* cubeoutput, char* s, DWORD p1, DWORD p2);
 	typedef ItemTypesBIN* (__fastcall *TD2GetItemTypesBIN) (DWORD itemTypesId);
 	typedef ItemStatCostBIN* (__fastcall *TD2GetItemStatCostBIN) (DWORD id);
 	typedef void* (__fastcall *TD2ReadFile) (DWORD unused, char* filename, DWORD* size, const char*, DWORD);

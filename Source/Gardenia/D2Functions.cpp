@@ -189,8 +189,6 @@ DataTables* SgptDataTables;
 D2CommonLibrary::TD2AddPlayerStat			 V2AddPlayerStat;
 D2CommonLibrary::TD2GetPlayerStat			 V2GetPlayerStat;
 D2CommonLibrary::TD2GetPlayerBaseStat		 V2GetPlayerBaseStat;
-D2CommonLibrary::TD2CompileCubeInput	     V2CompileCubeInput;
-D2CommonLibrary::TD2CompileCubeOutput		 V2CompileCubeOutput;
 D2CommonLibrary::TD2GetItemTypesBIN			 V2GetItemTypesBIN;
 D2CommonLibrary::TD2CompileTxtFile			 compileTxtFile;
 D2CommonLibrary::TD2GetCharStatsBIN			 V2GetCharStatsBIN;
