@@ -763,7 +763,8 @@ void initD2functions()
 	// D2CMP
 	D2CMP10014 = lu->D2CMP->D2CMP10014;
 
-	SgptDataTables = *(DataTables**) R7(D2Common, 0000, 0000, 96A20, 9B74C, 9EE8C, 9B500, 99E1C, A33F0);
+	SgptDataTables = *(DataTables**)lu->D2Common->RetrieveSgptDataTables();
+
 	if (version_D2Common < VersionUtility::Versions::V110)
 	{
 		D2Common10581 = lu->D2Common->D2Common10581;

@@ -43,6 +43,7 @@ public:
 	};
 
 	DWORD RetrieveStashGridOffset();
+	DWORD RetrieveSgptDataTables();
 
 	// Structure Management
 	DWORD ptPYPlayerDataOffset;

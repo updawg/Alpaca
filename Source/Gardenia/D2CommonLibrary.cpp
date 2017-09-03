@@ -66,3 +66,8 @@ DWORD D2CommonLibrary::RetrieveStashGridOffset()
 {
 	return GetOffsetByAddition(0xC9F3, 0xCA03, 0x14ED3, 0x5FCB5, 0x2A505, 0x1BDB5, 0x82CA5, 0x6CC25);
 }
+
+DWORD D2CommonLibrary::RetrieveSgptDataTables()
+{
+	return GetOffsetByAddition(0, 0, 0x96A20, 0x9B74C, 0x9EE8C, 0x9B500, 0x99E1C, 0xA33F0);
+}

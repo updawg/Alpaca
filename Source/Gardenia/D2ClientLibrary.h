@@ -36,6 +36,14 @@ public:
 		DisplayBaseStatsBaseOffset2 = GetOffsetByAddition(0x29B9D, 0x29B8D, 0x300FD, 0x82C54, 0x896D4, 0x6B637, 0xBD23E, 0xBF9DE);
 		DisplayBaseStatsModOffset1 = (BYTE)GetOffsetForVersion(0x12, 0x12, 0x13, 0x13, 0x13, 0x13, 0x13, 0x13);
 		DisplayBaseStatsModOffset2 = (BYTE)GetOffsetForVersion(0x20, 0x20, 0x14, 0x1C, 0x1C, 0x1C, 0x1C, 0x1C);
+
+		ResetSelectedPageBaseOffset1 = GetOffsetByAddition(0, 0, 0, 0x4B79E, 0x8F73E, 0x55E0E, 0x65F5E, 0xC41FE);
+		ResetSelectedPageBaseOffset2 = GetOffsetByAddition(0, 0, 0, 0x1E55A, 0x6A8FA, 0xA31DA, 0x3C5EA, 0x3E39A);
+		ResetSelectedPageBaseOffset3 = GetOffsetByAddition(0x88B58, 0x87ED8, 0x83478, 0xA1FBE, 0x6571E, 0x8EF8E, 0, 0);
+		PrintCustomPageBaseOffset = GetOffsetByAddition(0x87697, 0x86A17, 0x81FAB, 0xA3759, 0x66B59, 0x902B9, 0xC3B49, 0x1D549);
+		DontPrintBorderBaseOffset = GetOffsetByAddition(0x58EF6, 0x58EF6, 0x5F4C6, 0x2D366, 0xB5A46, 0x82166, 0x271C6, 0x6D2B6);
+		ManageMouseDownBaseOffset = GetOffsetByAddition(0x2A9DC, 0x2A9CC, 0x312A5, 0x82736, 0x891B6, 0x6B116, 0xBCD36, 0xBF4D6);
+		ManageMouseUpBaseOffset = GetOffsetByAddition(0x2ABBB, 0x2ABAB, 0x3148D, 0x836D9, 0x8A159, 0x6C0B9, 0xBDCB9, 0xC0459);
 	};
 
 	DWORD RetrieveStashBackgroundOffset();
@@ -45,6 +53,15 @@ public:
 	DWORD DisplayBaseStatsBaseOffset2;
 	BYTE DisplayBaseStatsModOffset1;
 	BYTE DisplayBaseStatsModOffset2;
+
+	DWORD ResetSelectedPageBaseOffset1;
+	DWORD ResetSelectedPageBaseOffset2;
+	DWORD ResetSelectedPageBaseOffset3;
+
+	DWORD PrintCustomPageBaseOffset;
+	DWORD DontPrintBorderBaseOffset;
+	DWORD ManageMouseDownBaseOffset; // Play Sound
+	DWORD ManageMouseUpBaseOffset;
 
 	// Types
 	typedef void* (__fastcall *TD2LoadImage) (const char* filename, DWORD filetype);
