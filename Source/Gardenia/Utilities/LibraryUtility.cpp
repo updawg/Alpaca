@@ -21,27 +21,27 @@ LibraryUtility::LibraryUtility()
 {
 	log_msg("***** Get D2 Modules address and version *****\n");
 
-	// We need to load the game now so that we have the version base offsets for the rest of the Dlls.
+	// We need to load the game now so that we have the game version for the rest of the Dlls.
 	Game = new GameLibrary();
 
-	if (VersionUtility::IsEqualOrGreaterThan114(Game->DllVersion))
+	if (VersionUtility::IsEqualOrGreaterThan114(Game->Version))
 	{
 		log_msg("1.14d support is not implemented.\n");
 		//exit(-1);
 	}
 	else
 	{
-		D2Client = new D2ClientLibrary(Game->DllVersion);
-		D2CMP = new D2CMPLibrary(Game->DllVersion);
-		D2Common = new D2CommonLibrary(Game->DllVersion);
-		D2Game = new D2GameLibrary(Game->DllVersion);
-		D2gfx = new D2gfxLibrary(Game->DllVersion);
-		D2Lang = new D2LangLibrary(Game->DllVersion);
-		D2Launch = new D2LaunchLibrary(Game->DllVersion);
-		D2Net = new D2NetLibrary(Game->DllVersion);
-		D2Win = new D2WinLibrary(Game->DllVersion);
-		Fog = new FogLibrary(Game->DllVersion);
-		Storm = new StormLibrary(Game->DllVersion);
+		D2Client = new D2ClientLibrary(Game->Version);
+		D2CMP = new D2CMPLibrary(Game->Version);
+		D2Common = new D2CommonLibrary(Game->Version);
+		D2Game = new D2GameLibrary(Game->Version);
+		D2gfx = new D2gfxLibrary(Game->Version);
+		D2Lang = new D2LangLibrary(Game->Version);
+		D2Launch = new D2LaunchLibrary(Game->Version);
+		D2Net = new D2NetLibrary(Game->Version);
+		D2Win = new D2WinLibrary(Game->Version);
+		Fog = new FogLibrary(Game->Version);
+		Storm = new StormLibrary(Game->Version);
 	}
 }
 
@@ -49,7 +49,7 @@ void LibraryUtility::HookLibraries()
 {
 	log_msg("***** Unprotect Libraries *****\n");
 
-	if (VersionUtility::IsEqualOrGreaterThan114(Game->DllVersion))
+	if (VersionUtility::IsEqualOrGreaterThan114(Game->Version))
 	{
 		log_msg("Hooking 1.14 libraries");
 	}
@@ -72,7 +72,7 @@ void LibraryUtility::UnhookLibraries()
 {
 	log_msg("***** Reprotect Libraries *****\n");
 
-	if (VersionUtility::IsEqualOrGreaterThan114(Game->DllVersion))
+	if (VersionUtility::IsEqualOrGreaterThan114(Game->Version))
 	{
 		log_msg("Unhooking 1.14 libraries");
 	}

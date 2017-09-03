@@ -42,11 +42,11 @@ public:
 		V114d
 	};
 
-	static const bool VersionUtility::IsSupported(int version);
-	static const char* GetVersionAsString(int version);
-	static const bool VersionUtility::IsEqualOrGreaterThan114(int version);
+	static const bool VersionUtility::IsSupported(const int version);
+	static const char* GetVersionAsString(const int version);
+	static const bool VersionUtility::IsEqualOrGreaterThan114(const int version);
 
-	static Versions GetVersion(LPCVOID pVersionResource);
-	static Versions GetVersion(char* gamePath);
-	static Versions GetVersion(HMODULE hModule);
+	static Versions GetVersion(const LPCVOID pVersionResource);
+	static Versions GetVersion(const char* gameExeName);
+	static Versions GetVersion(const HMODULE hModule);
 };

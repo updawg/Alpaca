@@ -23,7 +23,7 @@ using Versions = VersionUtility::Versions;
 
 const char* UnknownVersion = "UNKNOWN";
 
-const char* VersionUtility::GetVersionAsString(int version)
+const char* VersionUtility::GetVersionAsString(const int version)
 {
 	 static std::map<int, const char*> versions = 
 	 {
@@ -55,7 +55,7 @@ const char* VersionUtility::GetVersionAsString(int version)
 	 return UnknownVersion;
 }
 
-const bool VersionUtility::IsSupported(int version)
+const bool VersionUtility::IsSupported(const int version)
 {
 	static std::map<int, std::string> supportedVersions =
 	{
@@ -80,12 +80,12 @@ const bool VersionUtility::IsSupported(int version)
 	return false;
 }
 
-const bool VersionUtility::IsEqualOrGreaterThan114(int version)
+const bool VersionUtility::IsEqualOrGreaterThan114(const int version)
 {
 	return version >= VersionUtility::Versions::V114a;
 }
 
-VersionUtility::Versions VersionUtility::GetVersion(LPCVOID pVersionResource)
+VersionUtility::Versions VersionUtility::GetVersion(const LPCVOID pVersionResource)
 {
 	if (!pVersionResource) return Versions::UNKNOWN;
 
@@ -122,21 +122,21 @@ VersionUtility::Versions VersionUtility::GetVersion(LPCVOID pVersionResource)
 	return Versions::UNKNOWN;
 }
 
-Versions VersionUtility::GetVersion(char* gameExe)
+Versions VersionUtility::GetVersion(const char* gameExeName)
 {
-	DWORD len = GetFileVersionInfoSize(gameExe, NULL);
+	DWORD len = GetFileVersionInfoSize(gameExeName, NULL);
 	if (len == 0)
 		return Versions::UNKNOWN;
 
 	BYTE* pVersionResource = new BYTE[len];
-	GetFileVersionInfo(gameExe, NULL, len, pVersionResource);
+	GetFileVersionInfo(gameExeName, NULL, len, pVersionResource);
 	Versions version = GetVersion(pVersionResource);
 	delete pVersionResource;
 
 	return version;
 }
 
-Versions VersionUtility::GetVersion(HMODULE hModule)
+Versions VersionUtility::GetVersion(const HMODULE hModule)
 {
 	HRSRC hResInfo = FindResource(hModule, MAKEINTRESOURCE(VS_VERSION_INFO), RT_VERSION);
 	if (!hResInfo) return Versions::UNKNOWN;

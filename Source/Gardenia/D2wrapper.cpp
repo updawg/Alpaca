@@ -27,10 +27,7 @@
 #include "language.h"			// Install_LanguageManagement()
 #include "windowed.h"			// installed with Install_PrintPlugYVersion()
 #include "customLibraries.h"
-#include "common.h"
-
-// New library loading stuff
-#include "Utilities/LibraryUtility.h"
+#include "common.h"				// Includes "d2wrapper.h"
 
 using Versions = VersionUtility::Versions;
 
@@ -62,6 +59,18 @@ DWORD offset_Storm = NULL;
 
 // Make this global so people can use it.
 LibraryUtility* lu;
+GameLibrary* GameLib;
+D2ClientLibrary* D2ClientLib;
+D2CMPLibrary* D2CMPLib;
+D2CommonLibrary* D2CommonLib;
+D2GameLibrary* D2GameLib;
+D2gfxLibrary* D2gfxLib;
+D2LangLibrary* D2LangLib;
+D2LaunchLibrary* D2LaunchLib;
+D2NetLibrary* D2NetLib;
+D2WinLibrary* D2WinLib;
+FogLibrary* FogLib;
+StormLibrary* StormLib;
 
 void freeLibrary( DWORD library )
 {
@@ -71,7 +80,7 @@ void freeLibrary( DWORD library )
 
 void freeD2Libraries()
 {
-	if (lu->Game->DllVersion >= Versions::V114a)
+	if (lu->Game->Version >= Versions::V114a)
 		return;
 
 	log_msg("***** Free Libraries *****\n");
@@ -167,22 +176,22 @@ void initD2modules()
 	// I'm just leaving this values because I don't want to spend time at the moment repointing and
 	// testing all of the existing code that re-uses these externs. So for now, just give them the data
 	// that they want but use the LibraryUtility as the backend database.
-	offset_Game = lu->Game->DllOffset;
+	offset_Game = lu->Game->Offset;
 
-	if (VersionUtility::IsEqualOrGreaterThan114(lu->Game->DllVersion))
+	if (VersionUtility::IsEqualOrGreaterThan114(lu->Game->Version))
 	{
 		// It's all in Game.exe so the offset is the same.
-		offset_D2Client = lu->Game->DllOffset;
-		offset_D2CMP = lu->Game->DllOffset;
-		offset_D2Common = lu->Game->DllOffset;
-		offset_D2Game = lu->Game->DllOffset;
-		offset_D2gfx = lu->Game->DllOffset;
-		offset_D2Lang = lu->Game->DllOffset;
-		offset_D2Launch = lu->Game->DllOffset;
-		offset_D2Net = lu->Game->DllOffset;
-		offset_D2Win = lu->Game->DllOffset;
-		offset_Fog = lu->Game->DllOffset;
-		offset_Storm = lu->Game->DllOffset;
+		offset_D2Client = lu->Game->Offset;
+		offset_D2CMP = lu->Game->Offset;
+		offset_D2Common = lu->Game->Offset;
+		offset_D2Game = lu->Game->Offset;
+		offset_D2gfx = lu->Game->Offset;
+		offset_D2Lang = lu->Game->Offset;
+		offset_D2Launch = lu->Game->Offset;
+		offset_D2Net = lu->Game->Offset;
+		offset_D2Win = lu->Game->Offset;
+		offset_Fog = lu->Game->Offset;
+		offset_Storm = lu->Game->Offset;
 	}
 	else
 	{
@@ -200,17 +209,17 @@ void initD2modules()
 	}
 
 	// All DLLs should match same version as game or problems will happen.
-	version_D2Client = lu->Game->DllVersion;
-	version_D2CMP = lu->Game->DllVersion;
-	version_D2Common = lu->Game->DllVersion;
-	version_D2Game = lu->Game->DllVersion;
-	version_D2gfx = lu->Game->DllVersion;
-	version_D2Lang = lu->Game->DllVersion;
-	version_D2Launch = lu->Game->DllVersion;
-	version_D2Net = lu->Game->DllVersion;
-	version_D2Win = lu->Game->DllVersion;
-	version_Fog = lu->Game->DllVersion;
-	version_Storm = lu->Game->DllVersion;
+	version_D2Client = lu->Game->Version;
+	version_D2CMP = lu->Game->Version;
+	version_D2Common = lu->Game->Version;
+	version_D2Game = lu->Game->Version;
+	version_D2gfx = lu->Game->Version;
+	version_D2Lang = lu->Game->Version;
+	version_D2Launch = lu->Game->Version;
+	version_D2Net = lu->Game->Version;
+	version_D2Win = lu->Game->Version;
+	version_Fog = lu->Game->Version;
+	version_Storm = lu->Game->Version;
 
 	log_msg("\n\n");
 }
@@ -237,9 +246,23 @@ extern "C" __declspec(dllexport) void* __stdcall Init(LPSTR IniName)
 	// Initialize/Load Libraries
 	lu = new LibraryUtility();
 
-	if (!VersionUtility::IsSupported(lu->Game->DllVersion))
+	// Expose libraries
+	GameLib = lu->Game;
+	D2ClientLib = lu->D2Client;
+	D2CMPLib = lu->D2CMP;
+	D2CommonLib = lu->D2Common;
+	D2GameLib = lu->D2Game;
+	D2gfxLib = lu->D2gfx;
+	D2LangLib = lu->D2Lang;
+	D2LaunchLib = lu->D2Launch;
+	D2NetLib = lu->D2Net;
+	D2WinLib = lu->D2Win;
+	FogLib = lu->Fog;
+	StormLib = lu->Storm;
+
+	if (!VersionUtility::IsSupported(GameLib->Version))
 	{
-		log_box("Gardenia isn't compatible with this version : %s", VersionUtility::GetVersionAsString(lu->Game->DllVersion));
+		log_box("Gardenia isn't compatible with this version : %s", VersionUtility::GetVersionAsString(GameLib->Version));
 		Release();
 		exit(0);
 	}

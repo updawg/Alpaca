@@ -105,7 +105,7 @@ void Install_VersionChange()// BUG WITH 2MOD if D2Mod started before PlugY ????
 //6FA18016  |. 8BCE           MOV ECX,ESI
 //6FA18018  |. 6A 00          PUSH 0
 
-	if (lu->Game->DllVersion == VersionUtility::Versions::V114d)
+	if (GameLib->Version == VersionUtility::Versions::V114d)
 	{
 		log_msg("Patch here");
 	}

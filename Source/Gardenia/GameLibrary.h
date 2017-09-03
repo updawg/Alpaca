@@ -17,19 +17,22 @@
 
 #pragma once
 
-#include "Library.h"
+#include <windows.h>
+#include "Utilities\VersionUtility.h"
+#include "Error.h"
 
-class GameLibrary : public Library
+class GameLibrary
 {
 public:
-	GameLibrary() : Library()
+	GameLibrary()
 	{
-		DllName = "Game.exe";
-		DllOffset = (DWORD)GetModuleHandle(NULL);
-		DllVersion = VersionUtility::GetVersion("Game.exe");
-		log_msg("Game.exe loaded at:\t%08X (%s)\n", DllOffset, VersionUtility::GetVersionAsString(DllVersion));
-		SetFunctions();
+		Name = "Game.exe";
+		Offset = (DWORD)GetModuleHandle(NULL);
+		Version = VersionUtility::GetVersion(Name);
+		log_msg("Game.exe loaded at:\t%08X (%s)\n", Offset, VersionUtility::GetVersionAsString(Version));
 	};
-private:
-	void SetFunctions();
+
+	char* Name;
+	DWORD Offset;
+	int Version;
 };

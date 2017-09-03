@@ -43,9 +43,6 @@ public:
 	DWORD DllOffset;
 	LPCTSTR DllName;
 
-	/*DWORD GameOffset;
-	int GameVersion;*/
-
 	// Retrieves the address by using GetProcAddress
 	DWORD GetOffsetByProc(const VersionOffsets moduleOffsets);
 	DWORD GetOffsetByProc(DWORD V109, DWORD V109D, DWORD V110, DWORD V111, DWORD V111B, DWORD V112, DWORD V113C, DWORD V113D);

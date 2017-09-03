@@ -19,8 +19,23 @@
 
 #include <windows.h>
 
-// Forward declare so we can make our 'lu' an extern.
-class LibraryUtility;
+#include "Utilities\LibraryUtility.h"
+#include "Utilities\VersionUtility.h"
+
+extern LibraryUtility* lu;
+
+extern GameLibrary* GameLib;
+extern D2ClientLibrary* D2ClientLib;
+extern D2CMPLibrary* D2CMPLib;
+extern D2CommonLibrary* D2CommonLib;
+extern D2GameLibrary* D2GameLib;
+extern D2gfxLibrary* D2gfxLib;
+extern D2LangLibrary* D2LangLib;
+extern D2LaunchLibrary* D2LaunchLib;
+extern D2NetLibrary* D2NetLib;
+extern D2WinLibrary* D2WinLib;
+extern FogLibrary* FogLib;
+extern StormLibrary* StormLib;
 
 //extern int version_Game;
 extern int version_D2Client;
@@ -48,5 +63,3 @@ extern DWORD offset_D2Net;
 extern DWORD offset_D2Win;
 extern DWORD offset_Fog;
 extern DWORD offset_Storm;
-
-extern LibraryUtility* lu;

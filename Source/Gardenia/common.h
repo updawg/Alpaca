@@ -15,11 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+// ** TRY AND REDUCE USAGE OF THIS FILE. **
 #pragma once
 
-//#define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
 #include <windows.h>
-#include <iostream>
 
 #include "../Commons/d2Constants.h"
 #include "../Commons/d2BinFile.h"
@@ -28,18 +27,14 @@
 #include "../Commons/D2UnitStruct.h"
 #include "../Commons/updatingConst.h"
 
-// New version stuff
-#include "Utilities/VersionUtility.h"
-
 #include "Error.h"
 #include "modifMemory.h"
 #include "parameters.h"
 #include "playerCustomData.h" // include common.h
 #include "globalVariable.h" // include common.h
-#include "d2wrapper.h"
+#include "d2wrapper.h" // Includes the LibraryUtility.h
 #include "d2functions.h"
 #include "LocalizedStrings.h"
 
 bool isOnRect(DWORD x, DWORD y, DWORD x0, DWORD y0, DWORD l, DWORD h);
 void freeMessage(sWinMessage* msg);
-

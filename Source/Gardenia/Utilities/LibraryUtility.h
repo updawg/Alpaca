@@ -17,7 +17,9 @@
 
 #pragma once
 
-#include "../common.h"
+//#include "../common.h"
+
+#include "../Error.h"
 
 #include "../Library.h"
 #include "../GameLibrary.h"
