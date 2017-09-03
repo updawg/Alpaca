@@ -62,9 +62,6 @@ extern s_shifting shifting;
 // At this point only typedef and externs are implemented
 
 // D2Common
-extern D2CommonLibrary::TD2Common11084 D2Common11084;
-extern D2CommonLibrary::TD2GetLevelID D2GetLevelID;
-extern D2CommonLibrary::TD2GetDropRoom D2GetDropRoom;
 extern D2CommonLibrary::TD2Common10242 D2Common10242;
 extern D2CommonLibrary::TD2CanPutItemInInv D2CanPutItemInInv;
 extern D2CommonLibrary::TD2InvRemoveItem D2InvRemoveItem;
@@ -76,17 +73,12 @@ extern D2CommonLibrary::TD2UnitGetNextItem D2UnitGetNextItem;
 extern D2CommonLibrary::TD2GetRealItem D2GetRealItem;
 extern D2CommonLibrary::TD2GetPosX D2GetPosX;
 extern D2CommonLibrary::TD2GetPosY D2GetPosY;
-extern D2CommonLibrary::TD2GetPosition D2GetPosition;
 extern D2CommonLibrary::TD2GetMaxGoldBank D2GetMaxGoldBank;
-extern D2CommonLibrary::TD2GetRoom D2GetRoom;
 extern D2CommonLibrary::TD2InitPlayerData D2InitPlayerData;
 extern D2CommonLibrary::TD2GetPlayerData D2GetPlayerData;
 extern D2CommonLibrary::TD2GetDefence D2GetDefence;
 extern D2CommonLibrary::TD2GetChanceToBlock D2GetChanceToBlock;
 extern D2CommonLibrary::TD2GetMaxGold D2GetMaxGold;
-extern D2CommonLibrary::TD2Common10572 D2Common10572;
-extern D2CommonLibrary::TD2GetObjectFlags D2GetObjectFlags;
-extern D2CommonLibrary::TD2SetObjectFlags D2SetObjectFlags;
 extern D2CommonLibrary::TD2isInState D2isInState;
 extern D2CommonLibrary::TD2AddPlayerStat D2AddPlayerStat;
 extern D2CommonLibrary::TD2GetPlayerStat D2GetPlayerStat;
@@ -110,23 +102,15 @@ extern D2CommonLibrary::TD2GetNextLevelXP D2GetNextLevelXP;
 extern D2CommonLibrary::TD2GetMaxLevel D2GetMaxLevel;
 extern D2CommonLibrary::TD2GetDifficultyLevelsBIN D2GetDifficultyLevelsBIN;
 extern D2CommonLibrary::TD2GetItemQuality D2GetItemQuality;
-extern D2CommonLibrary::TD2TestFlags D2TestFlags;
 extern D2CommonLibrary::TD2GetItemLevel D2GetItemLevel;
 extern D2CommonLibrary::TD2ItemGetPage D2ItemGetPage;
 extern D2CommonLibrary::TD2ItemSetPage D2ItemSetPage;
-extern D2CommonLibrary::TD2CheckItemType D2CheckItemType;
 extern D2CommonLibrary::TD2GetUniqueID D2GetUniqueID;
 extern D2CommonLibrary::TD2SetAnim D2SetAnim;
 extern D2CommonLibrary::TD2GetNbRunesBIN D2GetNbRunesBIN;
 extern D2CommonLibrary::TD2GetRunesBIN D2GetRunesBIN;
-extern D2CommonLibrary::TD2isEtheral D2isEtheral;
 extern D2CommonLibrary::TD2SaveItem D2SaveItem;
-extern D2CommonLibrary::TD2SetSkillBaseLevel D2SetSkillBaseLevel;
-extern D2CommonLibrary::TD2GetSkillLevel D2GetSkillLevel;
-extern D2CommonLibrary::TD2GetSkillCost D2GetSkillCost;
 extern D2CommonLibrary::TD2GetCharStatsBIN D2GetCharStatsBIN;
-extern D2CommonLibrary::TD2CompileCubeInput D2CompileCubeInput;
-extern D2CommonLibrary::TD2CompileCubeOutput D2CompileCubeOutput;
 extern D2CommonLibrary::TD2GetItemTypesBIN D2GetItemTypesBIN;
 extern D2CommonLibrary::TD2GetItemStatCostBIN D2GetItemStatCostBIN;
 extern D2CommonLibrary::TD2ReadFile D2ReadFile;
@@ -146,12 +130,10 @@ extern D2ClientLibrary::TD2PrintStatsPage D2PrintStatsPage;
 extern D2ClientLibrary::TD2PrintStat D2PrintStat;
 extern D2ClientLibrary::TD2SetColorPopup D2SetColorPopup;
 extern D2ClientLibrary::TD2PlaySound D2PlaySound;
-extern D2ClientLibrary::TD2GetCurrentNPC D2GetCurrentNPC;
 extern D2ClientLibrary::TD2SendToServerXX D2SendToServerXX;
 extern D2ClientLibrary::TD2TogglePage D2TogglePage;
 extern D2ClientLibrary::TD2ClickOnStashButton D2ClickOnStashButton;
 extern D2ClientLibrary::TD2LoadBuySelBtn D2LoadBuySelBtn;
-extern D2ClientLibrary::TD2ReloadGambleScreen D2ReloadGambleScreen;
 
 // D2Client: Only 1.10
 extern D2ClientLibrary::TD2isLODGame D2isLODGame;
@@ -187,27 +169,13 @@ extern DWORD* ptStatDescTable;
 
 // D2Game
 extern D2GameLibrary::TD2SetNbPlayers D2SetNbPlayers;
-extern D2GameLibrary::TD2AddClient D2AddClient;
-extern D2GameLibrary::TD2GetGameByClientID D2GetGameByClientID;
-extern D2GameLibrary::TD2BroadcastFunction D2BroadcastFunction;
 extern D2GameLibrary::TD2SendPacket D2SendPacket;
 extern D2GameLibrary::TD2SetSkillBaseLevelOnClient D2SetSkillBaseLevelOnClient;
 extern D2GameLibrary::TD2LinkPortal D2LinkPortal;
 extern D2GameLibrary::TD2VerifIfNotCarry1 D2VerifIfNotCarry1;
 extern D2GameLibrary::TD2TestPositionInRoom D2TestPositionInRoom;
-extern D2GameLibrary::TD2SpawnMonster D2SpawnMonster;
-extern D2GameLibrary::TD2Game235C0 D2Game235C0;
 extern D2GameLibrary::TD2LoadInventory D2LoadInventory;
 extern D2GameLibrary::TD2GameGetObject D2GameGetObject;
-extern D2GameLibrary::TD2CreateUnit D2CreateUnit;
-extern D2GameLibrary::TD2OpenPandPortal D2OpenPandPortal;
-extern D2GameLibrary::TD2OpenPandFinalPortal D2OpenPandFinalPortal;
-extern D2GameLibrary::TD2MephIA D2MephIA;
-extern D2GameLibrary::TD2DiabloIA D2DiabloIA;
-extern D2GameLibrary::TD2BaalIA D2BaalIA;
-extern D2GameLibrary::TD2UberMephIA D2UberMephIA;
-extern D2GameLibrary::TD2UberDiabloIA D2UberDiabloIA;
-extern D2GameLibrary::TD2UberBaalIA D2UberBaalIA;
 extern D2GameLibrary::TD2SaveGame D2SaveGame;
 
 // D2Game: Only 1.10
@@ -267,10 +235,7 @@ extern D2CMPLibrary::TD2CMP10014 D2CMP10014;
 
 // Other
 extern DataTables* SgptDataTables;
-
-extern D2CommonLibrary::TD2AddPlayerStat			V2AddPlayerStat;
-extern D2GameLibrary::TD2GetGameByClientID			V2GetGameByClientID;
-extern D2GameLibrary::TD2SpawnMonster				V2SpawnMonster;
+extern D2CommonLibrary::TD2AddPlayerStat V2AddPlayerStat;
 
 extern WORD (*getDescStrPos)	(DWORD statID);
 extern void* (STDCALL *compileTxtFile)(DWORD unused, const char* filename, BINField* ptFields, DWORD* ptRecordCount, DWORD recordLength);

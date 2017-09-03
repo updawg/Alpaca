@@ -1,4 +1,4 @@
-// Copyright (C) 2004 - 2017  Yohann Nicolas
+// Copyright (C) 2004-2017  Yohann Nicolas
 // Copyright (C) 2017 L'Autour
 // Copyright (C) 2017 Jonathan Vasquez <jon@xyinn.org>
 //
@@ -16,12 +16,12 @@
 // along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 #include "common.h"
+#include "Utilities\LibraryUtility.h"
+
+extern LibraryUtility* lu;
 s_shifting shifting;
 
 // D2Common
-D2CommonLibrary::TD2Common11084 D2Common11084;
-D2CommonLibrary::TD2GetLevelID D2GetLevelID;
-D2CommonLibrary::TD2GetDropRoom D2GetDropRoom;
 D2CommonLibrary::TD2Common10242 D2Common10242;
 D2CommonLibrary::TD2CanPutItemInInv D2CanPutItemInInv;
 D2CommonLibrary::TD2InvRemoveItem D2InvRemoveItem;
@@ -33,17 +33,12 @@ D2CommonLibrary::TD2UnitGetNextItem D2UnitGetNextItem;
 D2CommonLibrary::TD2GetRealItem D2GetRealItem;
 D2CommonLibrary::TD2GetPosX D2GetPosX;
 D2CommonLibrary::TD2GetPosY D2GetPosY;
-D2CommonLibrary::TD2GetPosition D2GetPosition;
 D2CommonLibrary::TD2GetMaxGoldBank D2GetMaxGoldBank;
-D2CommonLibrary::TD2GetRoom D2GetRoom;
 D2CommonLibrary::TD2InitPlayerData D2InitPlayerData;
 D2CommonLibrary::TD2GetPlayerData D2GetPlayerData;
 D2CommonLibrary::TD2GetDefence D2GetDefence;
 D2CommonLibrary::TD2GetChanceToBlock D2GetChanceToBlock;
 D2CommonLibrary::TD2GetMaxGold D2GetMaxGold;
-D2CommonLibrary::TD2Common10572 D2Common10572;
-D2CommonLibrary::TD2GetObjectFlags D2GetObjectFlags;
-D2CommonLibrary::TD2SetObjectFlags D2SetObjectFlags;
 D2CommonLibrary::TD2isInState D2isInState;
 D2CommonLibrary::TD2AddPlayerStat D2AddPlayerStat;
 D2CommonLibrary::TD2GetPlayerStat D2GetPlayerStat;
@@ -67,23 +62,15 @@ D2CommonLibrary::TD2GetNextLevelXP D2GetNextLevelXP;
 D2CommonLibrary::TD2GetMaxLevel D2GetMaxLevel;
 D2CommonLibrary::TD2GetDifficultyLevelsBIN D2GetDifficultyLevelsBIN;
 D2CommonLibrary::TD2GetItemQuality D2GetItemQuality;
-D2CommonLibrary::TD2TestFlags D2TestFlags;
 D2CommonLibrary::TD2GetItemLevel D2GetItemLevel;
 D2CommonLibrary::TD2ItemGetPage D2ItemGetPage;
 D2CommonLibrary::TD2ItemSetPage D2ItemSetPage;
-D2CommonLibrary::TD2CheckItemType D2CheckItemType;
 D2CommonLibrary::TD2GetUniqueID D2GetUniqueID;
 D2CommonLibrary::TD2SetAnim D2SetAnim;
 D2CommonLibrary::TD2GetNbRunesBIN D2GetNbRunesBIN;
 D2CommonLibrary::TD2GetRunesBIN D2GetRunesBIN;
-D2CommonLibrary::TD2isEtheral D2isEtheral;
 D2CommonLibrary::TD2SaveItem D2SaveItem;
-D2CommonLibrary::TD2SetSkillBaseLevel D2SetSkillBaseLevel;
-D2CommonLibrary::TD2GetSkillLevel D2GetSkillLevel;
-D2CommonLibrary::TD2GetSkillCost D2GetSkillCost;
 D2CommonLibrary::TD2GetCharStatsBIN D2GetCharStatsBIN;
-D2CommonLibrary::TD2CompileCubeInput D2CompileCubeInput;
-D2CommonLibrary::TD2CompileCubeOutput D2CompileCubeOutput;
 D2CommonLibrary::TD2GetItemTypesBIN D2GetItemTypesBIN;
 D2CommonLibrary::TD2GetItemStatCostBIN D2GetItemStatCostBIN;
 D2CommonLibrary::TD2ReadFile D2ReadFile;
@@ -103,12 +90,10 @@ D2ClientLibrary::TD2PrintStatsPage D2PrintStatsPage;
 D2ClientLibrary::TD2PrintStat D2PrintStat;
 D2ClientLibrary::TD2SetColorPopup D2SetColorPopup;
 D2ClientLibrary::TD2PlaySound D2PlaySound;
-D2ClientLibrary::TD2GetCurrentNPC D2GetCurrentNPC;
 D2ClientLibrary::TD2SendToServerXX D2SendToServerXX;
 D2ClientLibrary::TD2TogglePage D2TogglePage;
 D2ClientLibrary::TD2ClickOnStashButton D2ClickOnStashButton;
 D2ClientLibrary::TD2LoadBuySelBtn D2LoadBuySelBtn;
-D2ClientLibrary::TD2ReloadGambleScreen D2ReloadGambleScreen;
 
 // D2Client: Only 1.10
 D2ClientLibrary::TD2isLODGame D2isLODGame;
@@ -134,27 +119,13 @@ DWORD* ptStatDescTable;
 
 // D2Game
 D2GameLibrary::TD2SetNbPlayers D2SetNbPlayers;
-D2GameLibrary::TD2AddClient D2AddClient;
-D2GameLibrary::TD2GetGameByClientID D2GetGameByClientID;
-D2GameLibrary::TD2BroadcastFunction D2BroadcastFunction;
 D2GameLibrary::TD2SendPacket D2SendPacket;
 D2GameLibrary::TD2SetSkillBaseLevelOnClient D2SetSkillBaseLevelOnClient;
 D2GameLibrary::TD2LinkPortal D2LinkPortal;
 D2GameLibrary::TD2VerifIfNotCarry1 D2VerifIfNotCarry1;
 D2GameLibrary::TD2TestPositionInRoom D2TestPositionInRoom;
-D2GameLibrary::TD2SpawnMonster D2SpawnMonster;
-D2GameLibrary::TD2Game235C0 D2Game235C0;
 D2GameLibrary::TD2LoadInventory D2LoadInventory;
 D2GameLibrary::TD2GameGetObject D2GameGetObject;
-D2GameLibrary::TD2CreateUnit D2CreateUnit;
-D2GameLibrary::TD2OpenPandPortal D2OpenPandPortal;
-D2GameLibrary::TD2OpenPandFinalPortal D2OpenPandFinalPortal;
-D2GameLibrary::TD2MephIA D2MephIA;
-D2GameLibrary::TD2DiabloIA D2DiabloIA;
-D2GameLibrary::TD2BaalIA D2BaalIA;
-D2GameLibrary::TD2UberMephIA D2UberMephIA;
-D2GameLibrary::TD2UberDiabloIA D2UberDiabloIA;
-D2GameLibrary::TD2UberBaalIA D2UberBaalIA;
 D2GameLibrary::TD2SaveGame D2SaveGame;
 
 // D2Game: Only 1.10
@@ -214,13 +185,10 @@ D2CMPLibrary::TD2CMP10014 D2CMP10014;
 
 DataTables* SgptDataTables;
 
-using Versions = VersionUtility::Versions;
-
 // D2Common
 D2CommonLibrary::TD2AddPlayerStat			 V2AddPlayerStat;
 D2CommonLibrary::TD2GetPlayerStat			 V2GetPlayerStat;
 D2CommonLibrary::TD2GetPlayerBaseStat		 V2GetPlayerBaseStat;
-D2CommonLibrary::TD2SetSkillBaseLevel		 V2SetSkillBaseLevel;
 D2CommonLibrary::TD2CompileCubeInput	     V2CompileCubeInput;
 D2CommonLibrary::TD2CompileCubeOutput		 V2CompileCubeOutput;
 D2CommonLibrary::TD2GetItemTypesBIN			 V2GetItemTypesBIN;
@@ -237,9 +205,6 @@ D2ClientLibrary::TD2PlaySound				 V2PlaySound;
 
 // D2Game
 D2GameLibrary::TD2SetSkillBaseLevelOnClient	 V2SetSkillBaseLevelOnClient;
-D2GameLibrary::TD2BroadcastFunction			 V2BroadcastFunction;
-D2GameLibrary::TD2GetGameByClientID			 V2GetGameByClientID;
-D2GameLibrary::TD2SpawnMonster				 V2SpawnMonster;
 D2GameLibrary::TD2VerifIfNotCarry1			 V2VerifIfNotCarry1;
 D2GameLibrary::TD2GameGetObject				 V2GameGetObject;
 D2GameLibrary::TD2TestPositionInRoom		 V2TestPositionInRoom;
@@ -252,7 +217,7 @@ WORD (*getDescStrPos) (DWORD statID);
 // D2Net
 D2NetLibrary::TD2SendToServer				 V2SendToServer;
 
-DWORD getStatDescIDFrom (DWORD statID)//FOR 1.09
+DWORD getStatDescIDFrom (DWORD statID) //FOR 1.09
 {
 	DWORD* desc = ptStatDescTable;
 	DWORD curDesc = 0;
@@ -286,15 +251,6 @@ FCT_ASM ( D2GetPlayerBaseStat_9 )//(Unit* ptChar, DWORD statID, DWORD index)
 	PUSH DWORD PTR SS:[ESP+0x8]
 	CALL V2GetPlayerBaseStat
 	RETN 0x0C
-}}
-
-FCT_ASM ( D2SetSkillBaseLevel_9 )//(Unit* ptChar, DWORD skillID, DWORD slvl, DWORD bRemove, char*, DWORD));
-	PUSH DWORD PTR SS:[ESP+0x10]
-	PUSH DWORD PTR SS:[ESP+0x10]
-	PUSH DWORD PTR SS:[ESP+0x10]
-	PUSH DWORD PTR SS:[ESP+0x10]
-	CALL V2SetSkillBaseLevel
-	RETN 0x18
 }}
 
 FCT_ASM ( D2SetSkillBaseLevelOnClient_9 )//(void* ptClient, Unit* ptChar, DWORD skillID, DWORD newValue, DWORD zero)
@@ -601,61 +557,6 @@ FCT_ASM ( D2LoadInventory_111 )
 	JMP V2LoadInventory
 }}
 
-FCT_ASM ( D2CompileCubeInput_111 )
-	PUSH EBX
-	MOV EBX,ECX
-	MOV EAX,EDX
-	CALL V2CompileCubeInput
-	POP EBX
-	RETN 8
-}}
-
-FCT_ASM ( D2CompileCubeOutput_111 )
-	PUSH EBX
-	MOV EBX,ECX
-	PUSH EDX
-	CALL V2CompileCubeOutput
-	POP EBX
-	RETN 8
-}}
-
-FCT_ASM ( D2BroadcastFunction_111 )
-	PUSH EDI
-	PUSH EBX
-	MOV EAX,ECX
-	MOV EDI,EDX
-	MOV EBX,DWORD PTR SS:[ESP+0xC]
-	CALL V2BroadcastFunction
-	POP EBX
-	POP EDI
-	RETN 4
-}}
-
-FCT_ASM ( D2SpawnMonster_111 )
-	PUSH DWORD PTR SS:[ESP+0x18]
-	PUSH DWORD PTR SS:[ESP+0x14]
-	PUSH DWORD PTR SS:[ESP+0x14]
-	PUSH DWORD PTR SS:[ESP+0x14]
-	PUSH ECX
-	MOV ECX,DWORD PTR SS:[ESP+0x18]
-	MOV EAX,DWORD PTR SS:[ESP+0x28]
-	CALL V2SpawnMonster
-	RETN 0x18
-}}
-
-FCT_ASM ( D2SpawnMonster_111b )
-	PUSH DWORD PTR SS:[ESP+0x10]
-	PUSH DWORD PTR SS:[ESP+0x10]
-	PUSH DWORD PTR SS:[ESP+0x10]
-	PUSH EDX
-	PUSH ECX
-	MOV EAX,DWORD PTR SS:[ESP+0x18]
-	MOV EDX,DWORD PTR SS:[ESP+0x2C]
-	MOV ECX,DWORD PTR SS:[ESP+0x28]//superuniqueID
-	CALL V2SpawnMonster
-	RETN 0x18
-}}
-
 FCT_ASM ( D2VerifIfNotCarry1_111 )
 	PUSH EBX
 	PUSH ECX
@@ -698,13 +599,6 @@ FCT_ASM ( D2SendToServer_1XX )
 	RETN 0xC
 }}
 
-FCT_ASM ( D2GetGameByClientID_1XX )
-	POP EAX
-	POP ECX
-	PUSH EAX
-	JMP V2GetGameByClientID
-}}
-
 FCT_ASM ( D2SaveGame_1XX )
 	POP EAX
 	POP ECX
@@ -712,15 +606,9 @@ FCT_ASM ( D2SaveGame_1XX )
 	JMP V2SaveGame
 }}
 
-#include "Utilities\LibraryUtility.h"
-extern LibraryUtility* lu;
-
 void initD2functions()
 {
 	// D2Common
-	D2Common11084 = lu->D2Common->D2Common11084;
-	D2GetLevelID = lu->D2Common->D2GetLevelID;
-	D2GetDropRoom = lu->D2Common->D2GetDropRoom;
 	D2Common10242 = lu->D2Common->D2Common10242;
 	D2CanPutItemInInv = lu->D2Common->D2CanPutItemInInv;
 	D2InvRemoveItem = lu->D2Common->D2InvRemoveItem;
@@ -732,17 +620,12 @@ void initD2functions()
 	D2GetRealItem = lu->D2Common->D2GetRealItem;
 	D2GetPosX = lu->D2Common->D2GetPosX;
 	D2GetPosY = lu->D2Common->D2GetPosY;
-	D2GetPosition = lu->D2Common->D2GetPosition;
 	D2GetMaxGoldBank = lu->D2Common->D2GetMaxGoldBank;
-	D2GetRoom = lu->D2Common->D2GetRoom;
 	D2InitPlayerData = lu->D2Common->D2InitPlayerData;
 	D2GetPlayerData = lu->D2Common->D2GetPlayerData;
 	D2GetDefence = lu->D2Common->D2GetDefence;
 	D2GetChanceToBlock = lu->D2Common->D2GetChanceToBlock;
 	D2GetMaxGold = lu->D2Common->D2GetMaxGold;
-	D2Common10572 = lu->D2Common->D2Common10572;
-	D2GetObjectFlags = lu->D2Common->D2GetObjectFlags;
-	D2SetObjectFlags = lu->D2Common->D2SetObjectFlags;
 	D2isInState = lu->D2Common->D2isInState;
 	D2AddPlayerStat = lu->D2Common->D2AddPlayerStat;
 	D2GetPlayerStat = lu->D2Common->D2GetPlayerStat;
@@ -766,23 +649,15 @@ void initD2functions()
 	D2GetMaxLevel = lu->D2Common->D2GetMaxLevel;
 	D2GetDifficultyLevelsBIN = lu->D2Common->D2GetDifficultyLevelsBIN;
 	D2GetItemQuality = lu->D2Common->D2GetItemQuality;
-	D2TestFlags = lu->D2Common->D2TestFlags;
 	D2GetItemLevel = lu->D2Common->D2GetItemLevel;
 	D2ItemGetPage = lu->D2Common->D2ItemGetPage;
 	D2ItemSetPage = lu->D2Common->D2ItemSetPage;
-	D2CheckItemType = lu->D2Common->D2CheckItemType;
 	D2GetUniqueID = lu->D2Common->D2GetUniqueID;
 	D2SetAnim = lu->D2Common->D2SetAnim;
 	D2GetNbRunesBIN = lu->D2Common->D2GetNbRunesBIN;
 	D2GetRunesBIN = lu->D2Common->D2GetRunesBIN;
-	D2isEtheral = lu->D2Common->D2isEtheral;
 	D2SaveItem = lu->D2Common->D2SaveItem;
-	D2SetSkillBaseLevel = lu->D2Common->D2SetSkillBaseLevel;
-	D2GetSkillLevel = lu->D2Common->D2GetSkillLevel;
-	D2GetSkillCost = lu->D2Common->D2GetSkillCost;
 	D2GetCharStatsBIN = lu->D2Common->D2GetCharStatsBIN;
-	D2CompileCubeInput = lu->D2Common->D2CompileCubeInput;
-	D2CompileCubeOutput = lu->D2Common->D2CompileCubeOutput;
 	D2GetItemTypesBIN = lu->D2Common->D2GetItemTypesBIN;
 	D2GetItemStatCostBIN = lu->D2Common->D2GetItemStatCostBIN;
 	D2ReadFile = lu->D2Common->D2ReadFile;
@@ -797,12 +672,10 @@ void initD2functions()
 	D2PrintStat = lu->D2Client->D2PrintStat;
 	D2SetColorPopup = lu->D2Client->D2SetColorPopup;
 	D2PlaySound = lu->D2Client->D2PlaySound;
-	D2GetCurrentNPC = lu->D2Client->D2GetCurrentNPC;
 	D2SendToServerXX = lu->D2Client->D2SendToServerXX;
 	D2TogglePage = lu->D2Client->D2TogglePage;
 	D2ClickOnStashButton = lu->D2Client->D2ClickOnStashButton;
 	D2LoadBuySelBtn = lu->D2Client->D2LoadBuySelBtn;
-	D2ReloadGambleScreen = lu->D2Client->D2ReloadGambleScreen;
 
 	// D2Client: Only 1.10
 	D2isLODGame = lu->D2Client->D2isLODGame;
@@ -828,27 +701,13 @@ void initD2functions()
 
 	// D2Game
 	D2SetNbPlayers = lu->D2Game->D2SetNbPlayers;
-	D2AddClient = lu->D2Game->D2AddClient;
-	D2GetGameByClientID = lu->D2Game->D2GetGameByClientID;
-	D2BroadcastFunction = lu->D2Game->D2BroadcastFunction;
 	D2SendPacket = lu->D2Game->D2SendPacket;
 	D2SetSkillBaseLevelOnClient = lu->D2Game->D2SetSkillBaseLevelOnClient;
 	D2LinkPortal = lu->D2Game->D2LinkPortal;
 	D2VerifIfNotCarry1 = lu->D2Game->D2VerifIfNotCarry1;
 	D2TestPositionInRoom = lu->D2Game->D2TestPositionInRoom;
-	D2SpawnMonster = lu->D2Game->D2SpawnMonster;
-	D2Game235C0 = lu->D2Game->D2Game235C0;
 	D2LoadInventory = lu->D2Game->D2LoadInventory;
 	D2GameGetObject = lu->D2Game->D2GameGetObject;
-	D2CreateUnit = lu->D2Game->D2CreateUnit;
-	D2OpenPandPortal = lu->D2Game->D2OpenPandPortal;
-	D2OpenPandFinalPortal = lu->D2Game->D2OpenPandFinalPortal;
-	D2MephIA = lu->D2Game->D2MephIA;
-	D2DiabloIA = lu->D2Game->D2DiabloIA;
-	D2BaalIA = lu->D2Game->D2BaalIA;
-	D2UberMephIA = lu->D2Game->D2UberMephIA;
-	D2UberDiabloIA = lu->D2Game->D2UberDiabloIA;
-	D2UberBaalIA = lu->D2Game->D2UberBaalIA;
 	D2SaveGame = lu->D2Game->D2SaveGame;
 
 	// D2Game: Only 1.10
@@ -902,12 +761,12 @@ void initD2functions()
 	D2GetPixelRect = lu->D2Win->D2GetPixelRect;
 	D2PrintTextPopup = lu->D2Win->D2PrintTextPopup;
 	D2CreateTextBox = lu->D2Win->D2CreateTextBox;
-
+	
 	// D2CMP
 	D2CMP10014 = lu->D2CMP->D2CMP10014;
 
 	SgptDataTables = *(DataTables**) R7(D2Common, 0000, 0000, 96A20, 9B74C, 9EE8C, 9B500, 99E1C, A33F0);
-	if (version_D2Common < Versions::V110)
+	if (version_D2Common < VersionUtility::Versions::V110)
 	{
 		D2Common10581 = lu->D2Common->D2Common10581;
 		D2Common10598 = lu->D2Common->D2Common10598;
@@ -915,13 +774,12 @@ void initD2functions()
 	}
 
 	//////////////// MISC FCT ////////////////
-	getDescStrPos = version_D2Common >= Versions::V110  ? getDescStrPos_10 : getDescStrPos_9;
-	compileTxtFile = version_D2Common >= Versions::V111 ? compileTxtFile_111 : version_D2Common == Versions::V110 ? compileTxtFile_10 : compileTxtFile_9;
+	getDescStrPos = version_D2Common >= VersionUtility::Versions::V110  ? getDescStrPos_10 : getDescStrPos_9;
+	compileTxtFile = version_D2Common >= VersionUtility::Versions::V111 ? compileTxtFile_111 : version_D2Common == VersionUtility::Versions::V110 ? compileTxtFile_10 : compileTxtFile_9;
 
 	V2AddPlayerStat = D2AddPlayerStat;
 	V2GetPlayerStat = D2GetPlayerStat;
 	V2GetPlayerBaseStat = D2GetPlayerBaseStat;
-	V2SetSkillBaseLevel = D2SetSkillBaseLevel;
 	V2SetSkillBaseLevelOnClient = D2SetSkillBaseLevelOnClient;
 	V2PrintStat = D2PrintStat;
 	V2SendMsgToAll = D2SendMsgToAll;
@@ -933,11 +791,6 @@ void initD2functions()
 	V2SendToServer = D2SendToServer;
 	V2SendPacket = D2SendPacket;
 	V2LoadInventory = D2LoadInventory;
-	V2CompileCubeInput = D2CompileCubeInput;
-	V2CompileCubeOutput = D2CompileCubeOutput;
-	V2BroadcastFunction = D2BroadcastFunction;
-	V2GetGameByClientID = D2GetGameByClientID;
-	V2SpawnMonster = D2SpawnMonster;
 	V2VerifIfNotCarry1 = D2VerifIfNotCarry1;
 	V2GameGetObject = D2GameGetObject;
 	V2TestPositionInRoom = D2TestPositionInRoom;
@@ -946,7 +799,7 @@ void initD2functions()
 
 	//////////////// REDIRECT ON CUSTOM FUNCTIONS ////////////////
 
-	if ( version_D2Client >= Versions::V111 )
+	if ( version_D2Client >= VersionUtility::Versions::V111 )
 	{
 		D2SendMsgToAll = (D2ClientLibrary::TD2SendMsgToAll) D2SendMsgToAll_111;
 		D2SetColorPopup = (D2ClientLibrary::TD2SetColorPopup) D2SetColorPopup_111;
@@ -961,10 +814,6 @@ void initD2functions()
 		D2PrintStat = (D2ClientLibrary::TD2PrintStat) D2PrintStat_111;
 		D2SendPacket = (D2GameLibrary::TD2SendPacket) D2SendPacket_111;
 		D2LoadInventory = (D2GameLibrary::TD2LoadInventory) D2LoadInventory_111;
-		D2CompileCubeInput = (D2CommonLibrary::TD2CompileCubeInput) D2CompileCubeInput_111;
-		D2CompileCubeOutput = (D2CommonLibrary::TD2CompileCubeOutput) D2CompileCubeOutput_111;
-		D2BroadcastFunction = (D2GameLibrary::TD2BroadcastFunction) D2BroadcastFunction_111;
-		D2SpawnMonster = version_D2Game >= Versions::V111b ? (D2GameLibrary::TD2SpawnMonster)D2SpawnMonster_111b : (D2GameLibrary::TD2SpawnMonster)D2SpawnMonster_111;
 		D2VerifIfNotCarry1 = (D2GameLibrary::TD2VerifIfNotCarry1) D2VerifIfNotCarry1_111;
 		D2GameGetObject = (D2GameLibrary::TD2GameGetObject) D2GameGetObject_111;
 		D2GetItemTypesBIN = (D2CommonLibrary::TD2GetItemTypesBIN) D2GetItemTypesBIN_111;
@@ -984,27 +833,25 @@ void initD2functions()
 	else
 	{
 		D2SendToServer = (D2NetLibrary::TD2SendToServer) D2SendToServer_1XX;
-		D2GetGameByClientID = (D2GameLibrary::TD2GetGameByClientID) D2GetGameByClientID_1XX;
 		D2SaveGame = (D2GameLibrary::TD2SaveGame) D2SaveGame_1XX;
 	}
 
-	if ( version_D2Common <= Versions::V109d )
+	if ( version_D2Common <= VersionUtility::Versions::V109d )
 	{
 		D2AddPlayerStat =				(D2CommonLibrary::TD2AddPlayerStat) D2AddPlayerStat_9;
 		D2GetPlayerStat =				(D2CommonLibrary::TD2GetPlayerStat) D2GetPlayerStat_9;
 		D2GetPlayerBaseStat =			(D2CommonLibrary::TD2GetPlayerBaseStat) D2GetPlayerBaseStat_9;
-		D2SetSkillBaseLevel =			(D2CommonLibrary::TD2SetSkillBaseLevel) D2SetSkillBaseLevel_9;
 		D2GetCharStatsBIN =				(D2CommonLibrary::TD2GetCharStatsBIN) D2GetCharStatsBIN_9;
 		D2GetItemStatCostBIN =			(D2CommonLibrary::TD2GetItemStatCostBIN) D2GetItemStatCostBIN_9;
 		D2GetItemTypesBIN =				(D2CommonLibrary::TD2GetItemTypesBIN) D2GetItemTypesBIN_9;
 	}
 
-	if (version_D2Client <= Versions::V109d)
+	if (version_D2Client <= VersionUtility::Versions::V109d)
 	{
 		D2PrintStat = (D2ClientLibrary::TD2PrintStat)D2PrintStat_9;
 	}
 
-	if (version_D2Game <= Versions::V109d)
+	if (version_D2Game <= VersionUtility::Versions::V109d)
 	{
 		D2SetSkillBaseLevelOnClient = (D2GameLibrary::TD2SetSkillBaseLevelOnClient)D2SetSkillBaseLevelOnClient_9;
 	}

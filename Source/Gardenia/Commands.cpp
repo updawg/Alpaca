@@ -52,29 +52,6 @@ const char * CMD_DISPLAY_MANA = "/dm";
 
 const char * CMD_LISTCUBEFORMULA="/listcube";
 
-void gambleReload(Unit* ptChar)
-{
-	Unit* ptNPC = D2GetCurrentNPC();
-	if (ptNPC)
-	{
-		D2TogglePage(0xC,1,0);
-		__asm {
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-			NOP
-		}
-		D2ReloadGambleScreen();
-	}
-}
-//6FACFFD4  |. E8 77F90000    CALL D2Client.6FADF950
-
 void savePlayers(Unit* ptChar)
 {
 	if (active_savegame)

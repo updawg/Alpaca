@@ -55,12 +55,10 @@ public:
 	typedef DWORD(__fastcall *TD2PrintStat) (Unit* ptItem, Stats* ptStats, DWORD statID, DWORD statIndex, DWORD statValue, LPWSTR lpText);
 	typedef LPWSTR(__fastcall *TD2SetColorPopup) (LPWSTR popupText, DWORD color);
 	typedef DWORD(__fastcall *TD2PlaySound) (DWORD id, DWORD, DWORD, DWORD, DWORD);
-	typedef Unit* (__fastcall *TD2GetCurrentNPC) ();
 	typedef void(__fastcall *TD2SendToServerXX) (DWORD size, BYTE * data);
 	typedef void(__fastcall *TD2TogglePage) (DWORD a, DWORD b, DWORD c);
 	typedef void(__fastcall *TD2ClickOnStashButton) (DWORD x, DWORD y);
 	typedef void* (__stdcall *TD2LoadBuySelBtn) ();
-	typedef void(__fastcall *TD2ReloadGambleScreen) ();
 
 	TD2LoadImage D2LoadImage;
 	TD2FreeImage D2FreeImage;
@@ -70,12 +68,10 @@ public:
 	TD2PrintStat D2PrintStat;
 	TD2SetColorPopup D2SetColorPopup;
 	TD2PlaySound D2PlaySound;
-	TD2GetCurrentNPC D2GetCurrentNPC;
 	TD2SendToServerXX D2SendToServerXX;
 	TD2TogglePage D2TogglePage;
 	TD2ClickOnStashButton D2ClickOnStashButton;
 	TD2LoadBuySelBtn D2LoadBuySelBtn;
-	TD2ReloadGambleScreen D2ReloadGambleScreen;
 
 	// Until 1.10
 	typedef DWORD(__fastcall *TD2isLODGame) ();

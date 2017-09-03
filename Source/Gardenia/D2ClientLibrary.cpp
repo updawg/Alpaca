@@ -10,12 +10,10 @@ void D2ClientLibrary::SetFunctions()
 	D2PrintStat = (TD2PrintStat)GetOffsetByAddition(0x4BB20, 0x4BB20, 0x521C0, 0xB8CB0, 0x21250, 0x88EA0, 0x54E10, 0x2CE40);
 	D2SetColorPopup = (TD2SetColorPopup)GetOffsetByAddition(0x85A60, 0x84DE0, 0x80430, 0x9EEB0, 0x62070, 0x8B7A0, 0xBF5F0, 0x18820);
 	D2PlaySound = (TD2PlaySound)GetOffsetByAddition(0xB4360, 0xB36E0, 0xB5820, 0x3ACC0, 0x54210, 0x31FA0, 0x88A70, 0x26270);
-	D2GetCurrentNPC = (TD2GetCurrentNPC)GetOffsetByAddition(0, 0, 0, 0, 0x571C0, 0x18450, 0x46150, 0x790D0);
 	D2SendToServerXX = (TD2SendToServerXX)GetOffsetByAddition(0, 0, 0, 0x73260, 0x5DE40, 0x791A0, 0x143E0, 0xB61F0);
 	D2TogglePage = (TD2TogglePage)GetOffsetByAddition(0x88940, 0x87CC0, 0x83260, 0xA1F30, 0x65690, 0x8EF00, 0xC2790, 0x1C190);
 	D2ClickOnStashButton = (TD2ClickOnStashButton)GetOffsetByAddition(0, 0, 0, 0xA6520, 0x710C0, 0xA6640, 0x8CD00, 0x90C10);
 	D2LoadBuySelBtn = (TD2LoadBuySelBtn)GetOffsetByAddition(0x897B0, 0x88B30, 0x84110, 0x9E3B0, 0x621C0, 0x8B8F0, 0xBEAF0, 0x18AA0);
-	D2ReloadGambleScreen = (TD2ReloadGambleScreen)GetOffsetByAddition(0, 0, 0, 0x8E480, 0x5BA90, 0x1CC00, 0x4ABE0, 0x7DC60);
 	
 	// Until 1.10
 	D2isLODGame = (TD2isLODGame)GetOffsetByAddition(0xBA00, 0xB9F0, 0xC080, 0, 0, 0, 0, 0);
