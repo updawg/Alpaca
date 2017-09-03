@@ -1,3 +1,20 @@
+// Copyright (C) 2004-2017  Yohann Nicolas
+// Copyright (C) 2017 L'Autour
+// Copyright (C) 2017 Jonathan Vasquez <jon@xyinn.org>
+//
+// This program is free software : you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program. If not, see <http://www.gnu.org/licenses/>.
+
 #pragma once
 
 #include "Library.h"
@@ -91,41 +108,4 @@ public:
 	DWORD* ptStatDescTable;
 private:
 	void SetFunctions();
-
-	TD2LoadImage GetD2LoadImage();
-	TD2FreeImage GetD2FreeImage();
-	TD2SendMsgToAll GetD2SendMsgToAll();
-	TD2GetLastMonsterIDFight GetD2GetLastMonsterIDFight();
-	TD2PrintStatsPage GetD2PrintStatsPage();
-	TD2PrintStat GetD2PrintStat();
-	TD2SetColorPopup GetD2SetColorPopup();
-	TD2PlaySound GetD2PlaySound();
-	TD2GetCurrentNPC GetD2GetCurrentNPC();
-	TD2SendToServerXX GetD2SendToServerXX();
-	TD2TogglePage GetD2TogglePage();
-	TD2ClickOnStashButton GetD2ClickOnStashButton();
-	TD2LoadBuySelBtn GetD2LoadBuySelBtn();
-	TD2ReloadGambleScreen GetD2ReloadGambleScreen();
-
-	// Until 1.10
-	TD2isLODGame GetD2isLODGame();
-	TD2GetDifficultyLevel GetD2GetDifficultyLevel();
-	TD2GetMouseX GetD2GetMouseX();
-	TD2GetMouseY GetD2GetMouseY();
-	TD2GetClientPlayer GetD2GetClientPlayer();
-	TD2CleanStatMouseUp GetD2CleanStatMouseUp();
-	TD2SendToServer3 GetD2SendToServer3();
-
-	// Variables
-	DWORD* GetptResolutionY();
-	DWORD* GetptResolutionX();
-	DWORD* GetptNegWindowStartY();
-	DWORD* GetptWindowStartX();
-	DWORD* GetptIsLodGame();
-	BYTE* GetptDifficultyLevel();
-	DWORD* GetptMouseY();
-	DWORD* GetptMouseX();
-	Unit** GetptptClientChar();
-	DWORD* GetptNbStatDesc();
-	DWORD* GetptStatDescTable();
 };

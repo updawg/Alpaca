@@ -2,22 +2,7 @@
 
 void StormLibrary::SetFunctions()
 {
-	D2StormMPQOpenFile = GetD2StormMPQOpenFile();
-	D2Storm503 = GetD2Storm503();
-	D2FreeWinMessage = GetD2FreeWinMessage();
-}
-
-StormLibrary::TD2StormMPQOpenFile StormLibrary::GetD2StormMPQOpenFile()
-{
-	return (TD2StormMPQOpenFile)GetOffsetByProc(268, 268, 268, 268, 268, 268, 268, 268);
-}
-
-StormLibrary::TD2Storm503 StormLibrary::GetD2Storm503()
-{
-	return (TD2Storm503)GetOffsetByProc(503, 503, 503, 503, 503, 503, 503, 503);
-}
-
-StormLibrary::TD2FreeWinMessage StormLibrary::GetD2FreeWinMessage()
-{
-	return (TD2FreeWinMessage)GetOffsetByProc(511, 511, 511, 511, 511, 511, 511, 511);
+	D2StormMPQOpenFile = (TD2StormMPQOpenFile)GetOffsetByProc(268, 268, 268, 268, 268, 268, 268, 268);
+	D2Storm503 = (TD2Storm503)GetOffsetByProc(503, 503, 503, 503, 503, 503, 503, 503);
+	D2FreeWinMessage = (TD2FreeWinMessage)GetOffsetByProc(511, 511, 511, 511, 511, 511, 511, 511);
 }

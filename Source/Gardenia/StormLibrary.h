@@ -22,8 +22,4 @@ public:
 	TD2FreeWinMessage D2FreeWinMessage;
 private:
 	void SetFunctions();
-
-	TD2StormMPQOpenFile GetD2StormMPQOpenFile();
-	TD2Storm503 GetD2Storm503();
-	TD2FreeWinMessage GetD2FreeWinMessage();
 };

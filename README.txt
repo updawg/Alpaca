@@ -22,6 +22,8 @@ feature in Gardenia.
 Bliss Version Switcher URL:
 https://github.com/fearedbliss/Bliss-Version-Switcher
 
+Compiled with Visual Studio 2017.
+
 Features
 ====
 Each features can be turn on/off via Gardenia.ini (see "COMMENTS ON THE CONFIGURATION FILE")

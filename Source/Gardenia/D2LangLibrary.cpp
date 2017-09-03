@@ -2,28 +2,8 @@
 
 void D2LangLibrary::SetFunctions()
 {
-	D2GetStringFromString = GetD2GetStringFromString();
-	D2GetStringFromIndex = GetD2GetStringFromIndex();
-	D2GetLang = GetD2GetLang();
-	D2PrintBigNumber = GetD2PrintBigNumber();
+	D2GetStringFromString = (TD2GetStringFromString)GetOffsetByProc(10003, 10003, 10003, 10002, 10004, 10010, 10011, 10011);
+	D2GetStringFromIndex = (TD2GetStringFromIndex)GetOffsetByProc(10004, 10004, 10004, 10005, 10000, 10005, 10003, 10004);
+	D2GetLang = (TD2GetLang)GetOffsetByProc(10007, 10007, 10007, 10009, 10013, 10002, 10009, 10001);
+	D2PrintBigNumber = (TD2PrintBigNumber)GetOffsetByProc(10010, 10010, 10010, 0, 0, 0, 0, 0);
 }
-
-D2LangLibrary::TD2GetStringFromString D2LangLibrary::GetD2GetStringFromString()
-{
-	return (TD2GetStringFromString)GetOffsetByProc(10003, 10003, 10003, 10002, 10004, 10010, 10011, 10011);
-}
-
-D2LangLibrary::TD2GetStringFromIndex D2LangLibrary::GetD2GetStringFromIndex()
-{
-	return (TD2GetStringFromIndex)GetOffsetByProc(10004, 10004, 10004, 10005, 10000, 10005, 10003, 10004);
-}
-
-D2LangLibrary::TD2GetLang D2LangLibrary::GetD2GetLang()
-{
-	return (TD2GetLang)GetOffsetByProc(10007, 10007, 10007, 10009, 10013, 10002, 10009, 10001);
-}
-
-D2LangLibrary::TD2PrintBigNumber D2LangLibrary::GetD2PrintBigNumber()
-{
-	return (TD2PrintBigNumber)GetOffsetByProc(10010, 10010, 10010, 0, 0, 0, 0, 0);
-}	

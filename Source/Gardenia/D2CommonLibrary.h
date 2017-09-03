@@ -1,3 +1,20 @@
+// Copyright (C) 2004-2017  Yohann Nicolas
+// Copyright (C) 2017 L'Autour
+// Copyright (C) 2017 Jonathan Vasquez <jon@xyinn.org>
+//
+// This program is free software : you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program. If not, see <http://www.gnu.org/licenses/>.
+
 #pragma once
 
 #include "Library.h"
@@ -108,11 +125,6 @@ public:
 	typedef void* (__fastcall *TD2ReadFile) (DWORD unused, char* filename, DWORD* size, const char*, DWORD);
 	typedef void(__stdcall *TD2LoadSuperuniques) (DWORD mempool);
 
-	// Only 1.09
-	typedef CharStatsBIN* (__stdcall *TD2Common10581) (DWORD charID);
-	typedef ItemStatCostBIN* (__stdcall *TD2Common10598) (DWORD itemStatCostID);
-	typedef ItemTypesBIN* (__stdcall *TD2Common10673) (DWORD itemTypesID);
-
 	TD2Common11084 D2Common11084;
 	TD2GetLevelID D2GetLevelID;
 	TD2GetDropRoom D2GetDropRoom;
@@ -184,84 +196,13 @@ public:
 	TD2LoadSuperuniques D2LoadSuperuniques;
 
 	// Only 1.09
+	typedef CharStatsBIN* (__stdcall *TD2Common10581) (DWORD charID);
+	typedef ItemStatCostBIN* (__stdcall *TD2Common10598) (DWORD itemStatCostID);
+	typedef ItemTypesBIN* (__stdcall *TD2Common10673) (DWORD itemTypesID);
+
 	TD2Common10581 D2Common10581;
 	TD2Common10598 D2Common10598;
 	TD2Common10673 D2Common10673;
 private:
 	void SetFunctions();
-
-	TD2Common11084 GetD2Common11084();
-	TD2GetLevelID GetD2GetLevelID();
-	TD2GetDropRoom GetD2GetDropRoom();
-	TD2Common10242 GetD2Common10242();
-	TD2CanPutItemInInv GetD2CanPutItemInInv();
-	TD2InvRemoveItem GetD2InvRemoveItem();
-	TD2InvAddItem GetD2InvAddItem();
-	TD2Common10250 GetD2Common10250();
-	TD2Common10273 GetD2Common10273();
-	TD2InventoryGetFirstItem GetD2InventoryGetFirstItem();
-	TD2UnitGetNextItem GetD2UnitGetNextItem();
-	TD2GetRealItem GetD2GetRealItem();
-	TD2GetPosX GetD2GetPosX();
-	TD2GetPosY GetD2GetPosY();
-	TD2GetPosition GetD2GetPosition();
-	TD2GetMaxGoldBank GetD2GetMaxGoldBank();
-	TD2GetRoom GetD2GetRoom();
-	TD2InitPlayerData GetD2InitPlayerData();
-	TD2GetPlayerData GetD2GetPlayerData();
-	TD2GetDefence GetD2GetDefence();
-	TD2GetChanceToBlock GetD2GetChanceToBlock();
-	TD2GetMaxGold GetD2GetMaxGold();
-	TD2Common10572 GetD2Common10572();
-	TD2GetObjectFlags GetD2GetObjectFlags();
-	TD2SetObjectFlags GetD2SetObjectFlags();
-	TD2isInState GetD2isInState();
-	TD2AddPlayerStat GetD2AddPlayerStat();
-	TD2GetPlayerStat GetD2GetPlayerStat();
-	TD2GetPlayerBaseStat GetD2GetPlayerBaseStat();
-	TD2haveDefenceBonus GetD2haveDefenceBonus();
-	TD2haveFireResBonus GetD2haveFireResBonus();
-	TD2haveColdResBonus GetD2haveColdResBonus();
-	TD2haveLightResBonus GetD2haveLightResBonus();
-	TD2havePoisonResBonus GetD2havePoisonResBonus();
-	TD2haveDefenceMalus GetD2haveDefenceMalus();
-	TD2haveFireResMalus GetD2haveFireResMalus();
-	TD2haveColdResMalus GetD2haveColdResMalus();
-	TD2haveLightResMalus GetD2haveLightResMalus();
-	TD2havePoisonResMalus GetD2havePoisonResMalus();
-	TD2CompileTxtFile GetD2CompileTxtFile();
-	TD2GetItemsBIN GetD2GetItemsBIN();
-	TD2GetGemsBIN GetD2GetGemsBIN();
-	TD2GetCubeMainBIN GetD2GetCubeMainBIN();
-	TD2GetNbCubeMainBIN GetD2GetNbCubeMainBIN();
-	TD2GetNextLevelXP GetD2GetNextLevelXP();
-	TD2GetMaxLevel GetD2GetMaxLevel();
-	TD2GetDifficultyLevelsBIN GetD2GetDifficultyLevelsBIN();
-	TD2GetItemQuality GetD2GetItemQuality();
-	TD2TestFlags GetD2TestFlags();
-	TD2GetItemLevel GetD2GetItemLevel();
-	TD2ItemGetPage GetD2ItemGetPage();
-	TD2ItemSetPage GetD2ItemSetPage();
-	TD2CheckItemType GetD2CheckItemType();
-	TD2GetUniqueID GetD2GetUniqueID();
-	TD2SetAnim GetD2SetAnim();
-	TD2GetNbRunesBIN GetD2GetNbRunesBIN();
-	TD2GetRunesBIN GetD2GetRunesBIN();
-	TD2isEtheral GetD2isEtheral();
-	TD2SaveItem GetD2SaveItem();
-	TD2SetSkillBaseLevel GetD2SetSkillBaseLevel();
-	TD2GetSkillLevel GetD2GetSkillLevel();
-	TD2GetSkillCost GetD2GetSkillCost();
-	TD2GetCharStatsBIN GetD2GetCharStatsBIN();
-	TD2CompileCubeInput GetD2CompileCubeInput();
-	TD2CompileCubeOutput GetD2CompileCubeOutput();
-	TD2GetItemTypesBIN GetD2GetItemTypesBIN();
-	TD2GetItemStatCostBIN GetD2GetItemStatCostBIN();
-	TD2ReadFile GetD2ReadFile();
-	TD2LoadSuperuniques GetD2LoadSuperuniques();
-
-	// Only 1.09
-	TD2Common10581 GetD2Common10581();
-	TD2Common10598 GetD2Common10598();
-	TD2Common10673 GetD2Common10673();
 };
