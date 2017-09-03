@@ -1,10 +1,19 @@
-/*=================================================================
-	File created by Yohann NICOLAS.
-	Add support 1.13d by L'Autour.
-
-	Unassign Stats Point for futher re-assignment.
-
-=================================================================*/
+// Copyright (C) 2004-2017 Yohann Nicolas
+// Copyright (C) 2017 L'Autour
+// Copyright (C) 2017 Jonathan Vasquez <jon@xyinn.org>
+//
+// This program is free software : you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "plugYFiles.h"			// Install_PlugYImagesFiles()
 #include "interface_Stats.h"	// Install_InterfaceStats()
@@ -17,123 +26,7 @@ using Versions = VersionUtility::Versions;
 bool active_StatsShiftClickLimit=1;
 DWORD limitValueToShiftClick=5;
 
-void UnassignStr(Unit* ptChar, int nb)
-{
-	log_msg("Start Unassign Strengh\n");
-
-	int currentStr, removePtsNb;
-	CharStatsBIN* charStats = D2GetCharStatsBIN(ptChar->nPlayerClass);
-
-	currentStr = D2GetPlayerBaseStat( ptChar, STATS_STRENGTH, 0 );
-	if (currentStr <= charStats->baseSTR) return;
-	removePtsNb = currentStr - charStats->baseSTR >= nb ? nb : currentStr - charStats->baseSTR;
-	if (currentStr - removePtsNb < 1) removePtsNb = currentStr - 1;
-
-	log_msg("Start Unassign Strengh (cur %d, base %d, rem %d)\n",currentStr,charStats->baseSTR,removePtsNb);
-	D2AddPlayerStat( ptChar, STATS_STRENGTH,	-removePtsNb ,0 );
-	D2AddPlayerStat( ptChar, STATS_STATPTS,		removePtsNb ,0 );
-}
-
-void UnassignDex(Unit* ptChar, int nb)
-{
-	log_msg("Start Unassign Dexterity\n");
-
-	int currentDex, removePtsNb;
-	CharStatsBIN* charStats = D2GetCharStatsBIN(ptChar->nPlayerClass);
-	
-	currentDex = D2GetPlayerBaseStat( ptChar, STATS_DEXTERITY, 0 );
-	if (currentDex <= charStats->baseDEX) return;
-	removePtsNb = currentDex - charStats->baseDEX >= nb ? nb : currentDex - charStats->baseDEX;
-	if (currentDex - removePtsNb < 1) removePtsNb = currentDex - 1;
-
-	log_msg("Start Unassign Dexterity (cur %d, base %d, rem %d)\n",currentDex,charStats->baseDEX,removePtsNb);
-	D2AddPlayerStat( ptChar, STATS_DEXTERITY,	-removePtsNb ,0 );
-	D2AddPlayerStat( ptChar, STATS_STATPTS,		removePtsNb ,0 );
-}
-
-void UnassignVit(Unit* ptChar, int nb)
-{
-	log_msg("Start Unassign Vitality\n");
-
-	int currentVit, removePtsNb, removeVitNb, removeStaNb;
-	CharStatsBIN* charStats = D2GetCharStatsBIN(ptChar->nPlayerClass);
-	
-	currentVit = D2GetPlayerBaseStat( ptChar, STATS_VITALITY, 0 );
-	if (currentVit <= charStats->baseVIT) return;
-	removePtsNb = currentVit - charStats->baseVIT >= nb ? nb : currentVit - charStats->baseVIT;
-	if (currentVit - removePtsNb < 1) removePtsNb = currentVit - 1;
-	removeVitNb = removePtsNb * (charStats->lifePerVitality << 6);
-	removeStaNb = removePtsNb * (charStats->staminaPerVitality << 6);
-	
-	log_msg("Start Unassign Vitality (cur %d, base %d, rem %d)\n",currentVit,charStats->baseVIT,removePtsNb);
-	D2AddPlayerStat( ptChar, STATS_VITALITY,	-removePtsNb ,0 );
-	D2AddPlayerStat( ptChar, STATS_MAXHP,		-removeVitNb ,0 );
-	D2AddPlayerStat( ptChar, STATS_MAXSTAMINA,	-removeStaNb ,0 );
-	D2AddPlayerStat( ptChar, STATS_STATPTS,		removePtsNb ,0 );
-}
-
-void UnassignEne(Unit* ptChar, int nb)
-{
-	log_msg("Start Unassign Energy\n");
-
-	int currentEne, removePtsNb, removeManNb;
-	CharStatsBIN* charStats = D2GetCharStatsBIN(ptChar->nPlayerClass);
-	
-	currentEne = D2GetPlayerBaseStat( ptChar, STATS_ENERGY, 0);
-	if (currentEne <= charStats->baseENE) return;
-	removePtsNb = currentEne - charStats->baseENE >= nb ? nb : currentEne - charStats->baseENE;
-	if (currentEne - removePtsNb < 1) removePtsNb = currentEne - 1;
-	removeManNb = removePtsNb * (charStats->manaPerMagic << 6);
-	
-	log_msg("Start Unassign Energy (cur %d, base %d, rem %d)\n",currentEne,charStats->baseENE,removePtsNb);
-	D2AddPlayerStat( ptChar, STATS_ENERGY,		-removePtsNb ,0 );
-	D2AddPlayerStat( ptChar, STATS_MAXMANA,		-removeManNb ,0 );
-	D2AddPlayerStat( ptChar, STATS_STATPTS,		removePtsNb ,0 );
-}
-
-void UnassignStrPoint(Unit* ptChar)
-{
-	UnassignStr(ptChar, 1);
-}
-
-void UnassignStrPoints(Unit* ptChar)
-{
-	UnassignStr(ptChar, active_StatsShiftClickLimit ? limitValueToShiftClick: 0x7FFFFFFF);
-}
-
-void UnassignDexPoint(Unit* ptChar)
-{
-	UnassignDex(ptChar, 1);
-}
-
-void UnassignDexPoints(Unit* ptChar)
-{
-	UnassignDex(ptChar, active_StatsShiftClickLimit ? limitValueToShiftClick: 0x7FFFFFFF);
-}
-
-void UnassignVitPoint(Unit* ptChar)
-{
-	UnassignVit(ptChar, 1);
-}
-
-void UnassignVitPoints(Unit* ptChar)
-{
-	UnassignVit(ptChar, active_StatsShiftClickLimit ? limitValueToShiftClick: 0x7FFFFFFF);
-}
-
-void UnassignEnePoint(Unit* ptChar)
-{
-	UnassignEne(ptChar, 1);
-}
-
-void UnassignEnePoints(Unit* ptChar)
-{
-	UnassignEne(ptChar, active_StatsShiftClickLimit ? limitValueToShiftClick: 0x7FFFFFFF);
-}
-
-
 //////////////////////////////////
-
 
 void STDCALL printDisabledStatsBtn(WORD statID, sDrawImageInfo* data, DWORD x, DWORD y, DWORD p4, DWORD p5, DWORD p6)
 {

@@ -1,29 +1,23 @@
-/*=================================================================
-	File created by Yohann NICOLAS.
-
-  Stucture of binary file
-
-=================================================================*/
+// Copyright (C) 2004-2017 Yohann Nicolas
+// Copyright (C) 2017 L'Autour
+// Copyright (C) 2017 Jonathan Vasquez <jon@xyinn.org>
+//
+// This program is free software : you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
 #include <windows.h>
-/*
-struct D2ShrinesTXT 
-{ 
-      BYTE     Code;                         //+00 
-     BYTE     NotUsed1[3];               //+01 
-     DWORD     Arg1;                         //+04 
-    DWORD     Arg2;                         //+08
-    DWORD     DurInFrames;               //+0C
-      BYTE     ResetTimeInMinutes;          //+10
-     BYTE     Rarity;                         //+11 
-     char     ViewName[0x1F];               //+12 
-     char     NiftyPhrase[0x7F];          //+32 
-     BYTE     EffectClass;               //+B2
-     BYTE     NotUsed2;                    //+B3
-      DWORD     LevelMin;                    //+B4
- };*/
   
 enum D2CubeItemFlag  
 {  
@@ -1201,63 +1195,3 @@ struct DataTables//01EE6A20 * 01FDA2D0 //second comments=1.11
 	DWORD			nbRunes;			//+EDC
 	RunesBIN*		runes;				//+EE0
 };
-
-
-/* NEXT NOT TESTED IN 1.10 (1.09b)
-
-struct AffixTxt
-{
-    BYTE    mName[0x21];     // +00
-    WORD    mVersion;        // +22
-    DWORD   mMod1code;       // +24
-    DWORD   mMod1param;      // +28
-    DWORD   mMod1min;        // +2c
-    DWORD   mMod1max;        // +30
-    DWORD   mMod2code;       // +34
-    DWORD   mMod2param;      // +38
-    DWORD   mMod2min;        // +3c
-    DWORD   mMod2max;        // +40
-    DWORD   mMod3code;       // +44
-    DWORD   mMod3param;      // +48
-    DWORD   mMod3min;        // +4c
-    DWORD   mMod3max;        // +50
-    WORD    mSpawnable;      // +54
-    WORD    mTransformcolor; // +56
-    DWORD   mLevel;          // +58
-    DWORD   mGroup;          // +5c
-    DWORD   mMaxlevel;       // +60
-    BYTE    mRare;           // +64
-    BYTE    mLevelreq;       // +65
-    BYTE    mClassspecific;  // +66
-    BYTE    mClass;          // +67
-    BYTE    classlevelreq;   // +68
-    BYTE    itype1;          // +69
-    BYTE    itype2;          // +6a
-    BYTE    itype3;          // +6b
-    BYTE    itype4;          // +6c
-    BYTE    itype5;          // +6d
-    BYTE    itype6;          // +6e
-    BYTE    itype7;          // +6f
-    BYTE    etype1;          // +70
-    BYTE    etype2;          // +71
-    BYTE    etype3;          // +72
-    BYTE    etype4;          // +73
-    BYTE    etype5;          // +74
-    DWORD   frequency;       // +75
-    DWORD   mDivide;         // +79
-    DWORD   mMultiply;       // +7D
-    DWORD   mAdd;            // +81
-};
-
-struct AffixTxtTable
-{
-    DWORD       mNbAffix;           // +00 = total affixes
-    AffixTxt*   mStartTable;        // +04 = beginnig ptr
-    AffixTxt*   mSuffixTable;       // +08 = suffix.txt ptr
-    AffixTxt*   mPrefixTable;       // +0c = prefix.txt ptr
-    AffixTxt*   mAutomagicTable;    // +10 = automagic.txt ptr
-};
-*/
-
-
-/*================================= END OF FILE =================================*/

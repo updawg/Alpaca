@@ -1,10 +1,19 @@
-/*=================================================================
-	File created by Yohann NICOLAS.
-	Add support 1.13d by L'Autour.
-
-	Updating server.
-
-=================================================================*/
+// Copyright (C) 2004-2017 Yohann Nicolas
+// Copyright (C) 2017 L'Autour
+// Copyright (C) 2017 Jonathan Vasquez <jon@xyinn.org>
+//
+// This program is free software : you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "updateServer.h"
 #include "statsPoints.h"
@@ -25,15 +34,6 @@ int STDCALL handleServerUpdate(Unit* ptChar, WORD param)
 	log_msg("Received custom message: type=%i, arg=%i\n", type, arg);
 	switch(type)
 	{
-		case US_UNASSIGN_STR_POINT :	UnassignStrPoint( ptChar ); return 1;
-		case US_UNASSIGN_ENE_POINT :	UnassignEnePoint( ptChar ); return 1;
-		case US_UNASSIGN_DEX_POINT :	UnassignDexPoint( ptChar ); return 1;
-		case US_UNASSIGN_VIT_POINT :	UnassignVitPoint( ptChar ); return 1;
-		case US_UNASSIGN_STR_POINTS :	UnassignStrPoints( ptChar ); return 1;
-		case US_UNASSIGN_ENE_POINTS :	UnassignEnePoints( ptChar ); return 1;
-		case US_UNASSIGN_DEX_POINTS :	UnassignDexPoints( ptChar ); return 1;
-		case US_UNASSIGN_VIT_POINTS :	UnassignVitPoints( ptChar ); return 1;
-
 		case US_SET_INDEX:				setCurrentStashIndex(ptChar, 1); return 1;
 		case US_SET_MAIN_INDEX:			setCurrentStashIndex(ptChar, 2); return 1;
 		case US_RESET_INDEX:			setCurrentStashIndex(ptChar, 0); return 1;
@@ -177,4 +177,3 @@ void Install_UpdateServer()
 	isInstalled = true;
 }
 
-/*================================= END OF FILE =================================*/

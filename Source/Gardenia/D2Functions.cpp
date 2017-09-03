@@ -1,4 +1,4 @@
-// Copyright (C) 2004-2017  Yohann Nicolas
+// Copyright (C) 2004-2017 Yohann Nicolas
 // Copyright (C) 2017 L'Autour
 // Copyright (C) 2017 Jonathan Vasquez <jon@xyinn.org>
 //
@@ -13,7 +13,7 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with this program.If not, see <http://www.gnu.org/licenses/>.
+// along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "common.h"
 #include "Utilities\LibraryUtility.h"

@@ -1,9 +1,19 @@
-/*=================================================================
-	File created by Yohann NICOLAS.
-
-  Add an extra save file for each characters.
-
-=================================================================*/
+// Copyright (C) 2004-2017 Yohann Nicolas
+// Copyright (C) 2017 L'Autour
+// Copyright (C) 2017 Jonathan Vasquez <jon@xyinn.org>
+//
+// This program is free software : you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "extendedSaveFile.h"
 #include "infinityStash.h"
@@ -15,7 +25,6 @@
 #define BUFFER_SIZE 0x4000
 #define FILE_VERSION 0x3130			//"01"
 #define FILE_EXTENDED 0x4D545343	//"CSTM"
-
 
 BYTE * readExtendedSaveFile(char* name, DWORD* size)//WORKS
 {
@@ -164,4 +173,3 @@ void saveExtendedSaveFile(Unit* ptChar, BYTE** data, DWORD* maxSize, DWORD* curS
 	}
 }
 
-/*================================= END OF FILE =================================*/

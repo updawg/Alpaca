@@ -1,4 +1,4 @@
-// Copyright (C) 2004 - 2017  Yohann Nicolas
+// Copyright (C) 2004-2017 Yohann Nicolas
 // Copyright (C) 2017 L'Autour
 // Copyright (C) 2017 Jonathan Vasquez <jon@xyinn.org>
 //
@@ -21,7 +21,7 @@
 #define GARDENIA_VERSION "0.06"
 #define GARDENIA_AUTHOR_NAME "Jonathan Vasquez"
 #define GARDENIA_AUTHOR_EMAIL "jon@xyinn.org"
-#define GARDENIA_BUILD_DATE "September 2, 2017 @ 22:33 ET"
+#define GARDENIA_BUILD_DATE "September 2, 2017 @ 23:21 ET"
 
 enum TargetMod
 {

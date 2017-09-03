@@ -1,4 +1,4 @@
-// Copyright (C) 2004-2017  Yohann Nicolas
+// Copyright (C) 2004-2017 Yohann Nicolas
 // Copyright (C) 2017 L'Autour
 // Copyright (C) 2017 Jonathan Vasquez <jon@xyinn.org>
 //

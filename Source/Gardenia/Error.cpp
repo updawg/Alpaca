@@ -1,4 +1,4 @@
-// Copyright (C) 2004-2017  Yohann Nicolas
+// Copyright (C) 2004-2017 Yohann Nicolas
 // Copyright (C) 2017 L'Autour
 // Copyright (C) 2017 Jonathan Vasquez <jon@xyinn.org>
 //
@@ -109,4 +109,3 @@ void d2_assert( bool pCondition, char* pMessage, char* pLocation, int pLineNbr )
 	}
 }
 
-/*================================= END OF FILE =================================*/

@@ -39,9 +39,6 @@
     <ClCompile Include="BigStash.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ClientSaveFile.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Commands.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -189,9 +186,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bigStash.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="clientSaveFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="commands.h">

@@ -101,7 +101,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BigStash.cpp" />
-    <ClCompile Include="ClientSaveFile.cpp" />
     <ClCompile Include="Commands.cpp" />
     <ClCompile Include="Common.cpp" />
     <ClCompile Include="CustomLibraries.cpp" />
@@ -159,7 +158,6 @@
     <ClInclude Include="..\Commons\D2UnitStruct.h" />
     <ClInclude Include="..\Commons\updatingConst.h" />
     <ClInclude Include="bigStash.h" />
-    <ClInclude Include="clientSaveFile.h" />
     <ClInclude Include="commands.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="customData.h" />
