@@ -195,18 +195,21 @@ void initD2modules()
 	}
 	else
 	{
-		offset_D2Client = lu->D2Client->DllOffset;
-		offset_D2CMP = lu->D2CMP->DllOffset;
-		offset_D2Common = lu->D2Common->DllOffset;
-		offset_D2Game = lu->D2Game->DllOffset;
-		offset_D2gfx = lu->D2gfx->DllOffset;
-		offset_D2Lang = lu->D2Lang->DllOffset;
-		offset_D2Launch = lu->D2Launch->DllOffset;
-		offset_D2Net = lu->D2Net->DllOffset;
-		offset_D2Win = lu->D2Win->DllOffset;
-		offset_Fog = lu->Fog->DllOffset;
-		offset_Storm = lu->Storm->DllOffset;
+		offset_D2Client = lu->D2Client->Offset;
+		offset_D2CMP = lu->D2CMP->Offset;
+		offset_D2Common = lu->D2Common->Offset;
+		offset_D2Game = lu->D2Game->Offset;
+		offset_D2gfx = lu->D2gfx->Offset;
+		offset_D2Lang = lu->D2Lang->Offset;
+		offset_D2Launch = lu->D2Launch->Offset;
+		offset_D2Net = lu->D2Net->Offset;
+		offset_D2Win = lu->D2Win->Offset;
+		offset_Fog = lu->Fog->Offset;
+		offset_Storm = lu->Storm->Offset;
 	}
+
+	// This can be removed once we remove any R7 and other macros that are still depending on them.
+	// Then they can all target Game->Version.
 
 	// All DLLs should match same version as game or problems will happen.
 	version_D2Client = lu->Game->Version;

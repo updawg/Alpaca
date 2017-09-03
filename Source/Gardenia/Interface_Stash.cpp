@@ -476,7 +476,7 @@ void Install_InterfaceStash()
 
 	// Manage mouse down (Play sound)
 	mem_seek R7(D2Client, 45091, 45091, 4BBA1, B4666, 7FDD6, B54A6, 9B8A6, 9FC76);
-	MEMC_REF4( version_D2Client >= Versions::V111 ? (DWORD)D2ClickOnStashButton : (DWORD)D2isLODGame, version_D2Client >= Versions::V111 ? caller_manageBtnDown_111 : caller_manageBtnDown);
+	MEMC_REF4( GameLib->Version >= Versions::V111 ? (DWORD)D2ClickOnStashButton : (DWORD)D2isLODGame, GameLib->Version >= Versions::V111 ? caller_manageBtnDown_111 : caller_manageBtnDown);
 	//6FAEBBA0   > E8 DB04FCFF    CALL D2Client.6FAAC080
 	//6FB64665   . E8 B61EFFFF    CALL D2Client.6FB56520
 	//6FB2FDD5   . E8 E612FFFF    CALL D2Client.6FB210C0
@@ -486,7 +486,7 @@ void Install_InterfaceStash()
 
 	// Manage mouse up
 	mem_seek R7(D2Client, 455F9, 455F9, 4C0F9, B57B9, 7FC09, B52D9, 9B6D9, 9FAA9);
-	MEMC_REF4( version_D2Client >= Versions::V111 ? (DWORD)D2ClickOnStashButton : (DWORD)D2isLODGame, version_D2Client >= Versions::V111 ? caller_manageBtnUp_111 : caller_manageBtnUp);
+	MEMC_REF4( GameLib->Version >= Versions::V111 ? (DWORD)D2ClickOnStashButton : (DWORD)D2isLODGame, GameLib->Version >= Versions::V111 ? caller_manageBtnUp_111 : caller_manageBtnUp);
 	//6FAEC0F8   > E8 83FFFBFF    CALL D2Client.6FAAC080
 	//6FB657B8   > E8 630DFFFF    CALL D2Client.6FB56520
 	//6FB2FC08   > E8 B314FFFF    CALL D2Client.6FB210C0

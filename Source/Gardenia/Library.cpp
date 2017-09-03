@@ -24,39 +24,39 @@ Library::Library() {}
 void Library::HookLibrary()
 {
 	DWORD dw = 0;
-	BYTE* offsetPESignature = DllOffset + *(BYTE**)((BYTE*) DllOffset + 0x3C);
+	BYTE* offsetPESignature = Offset + *(BYTE**)((BYTE*) Offset + 0x3C);
 	DWORD sizeOfCode = *(DWORD*)(offsetPESignature + 0x1C);
-	BYTE* baseOfCode = DllOffset + *(BYTE**)(offsetPESignature + 0x2C);
+	BYTE* baseOfCode = Offset + *(BYTE**)(offsetPESignature + 0x2C);
 	if (!VirtualProtect(baseOfCode, sizeOfCode, PAGE_EXECUTE_READWRITE, &dw))
 	{
-		log_msg("Failed to hook library : %s. (%08X,%08X)\n", DllName, baseOfCode, sizeOfCode);
+		log_msg("Failed to hook library : %s. (%08X,%08X)\n", Name, baseOfCode, sizeOfCode);
 		exit(-1);
 	}
-	log_msg("%s successfully hooked. (%08X,%08X)\n", DllName, baseOfCode, sizeOfCode);
+	log_msg("%s successfully hooked. (%08X,%08X)\n", Name, baseOfCode, sizeOfCode);
 }
 
 void Library::UnhookLibrary()
 {
 	DWORD dw = 0;
-	BYTE* offsetPESignature = DllOffset + *(BYTE**)((BYTE*) DllOffset + 0x3C);
+	BYTE* offsetPESignature = Offset + *(BYTE**)((BYTE*) Offset + 0x3C);
 	DWORD sizeOfCode = *(DWORD*)(offsetPESignature + 0x1C);
-	BYTE* baseOfCode = DllOffset + *(BYTE**)(offsetPESignature + 0x2C);
+	BYTE* baseOfCode = Offset + *(BYTE**)(offsetPESignature + 0x2C);
 	if (!VirtualProtect(baseOfCode, sizeOfCode, PAGE_EXECUTE_READ, &dw))
-		log_msg("Failed to unhook library : %s. (%08X,%08X)\n", DllName, baseOfCode, sizeOfCode);
+		log_msg("Failed to unhook library : %s. (%08X,%08X)\n", Name, baseOfCode, sizeOfCode);
 	else
-		log_msg("%s successfully unhooked. (%08X,%08X)\n", DllName, baseOfCode, sizeOfCode);
+		log_msg("%s successfully unhooked. (%08X,%08X)\n", Name, baseOfCode, sizeOfCode);
 }
 
 DWORD Library::LoadDiabloLibrary()
 {
-	DWORD proposedOffset = (DWORD)LoadLibrary(DllName);
+	DWORD proposedOffset = (DWORD)LoadLibrary(Name);
 
 	if (proposedOffset == NULL)
 	{
-		log_msg("Failed to load library : %s\n", DllName);
+		log_msg("Failed to load library : %s\n", Name);
 		exit(-1);
 	}
-	log_msg("%s loaded at:\t%08X (%s)\n", DllName, proposedOffset, VersionUtility::GetVersionAsString(DllVersion));
+	log_msg("%s loaded at:\t%08X (%s)\n", Name, proposedOffset, VersionUtility::GetVersionAsString(Version));
 	return proposedOffset;
 }
 
@@ -68,18 +68,18 @@ DWORD Library::GetOffsetForVersion(DWORD V109, DWORD V109D, DWORD V110, DWORD V1
 
 DWORD Library::GetOffsetForVersion(const VersionOffsets& offsets)
 {
-	//log_msg("For game version: %s\n", VersionUtility::GetVersionAsString(DllVersion));
+	//log_msg("For game version: %s\n", VersionUtility::GetVersionAsString(Version));
 
 	// properly convert the version to an enum in the future.
-	VersionOffsets::const_iterator it = offsets.find((VersionUtility::Versions)DllVersion);
+	VersionOffsets::const_iterator it = offsets.find((VersionUtility::Versions)Version);
 	
 	if (it != offsets.end())
 	{
-		//log_msg("Found it: %s :: %08X\n", VersionUtility::GetVersionAsString(DllVersion), it->second);
+		//log_msg("Found it: %s :: %08X\n", VersionUtility::GetVersionAsString(Version), it->second);
 		return it->second;
 	}
 	
-	//log_msg("Falling back to 1.09A even though game version is: %s\n", VersionUtility::GetVersionAsString(DllVersion));
+	//log_msg("Falling back to 1.09A even though game version is: %s\n", VersionUtility::GetVersionAsString(Version));
 	// Existing behavior is to return 1.09 (lowest offset/version that we have)
 	return offsets.find(VersionUtility::Versions::V109)->second;
 }
@@ -120,22 +120,22 @@ DWORD Library::GetOffsetByAddition(DWORD V109, DWORD V109D, DWORD V110, DWORD V1
 DWORD Library::GetOffsetByAddition(const VersionOffsets moduleOffsets)
 {
 	DWORD offset = GetOffsetForVersion(moduleOffsets);
-	DWORD proposedOffset = DllOffset + offset;
-	//log_msg("Retrieving %s function for offset %08X (%i) by Addition (on base %08X) ... SUCCESS. Located at %08X.\n", DllName, offset, offset, DllOffset, proposedOffset);
+	DWORD proposedOffset = Offset + offset;
+	//log_msg("Retrieving %s function for offset %08X (%i) by Addition (on base %08X) ... SUCCESS. Located at %08X.\n", Name, offset, offset, Offset, proposedOffset);
 	return proposedOffset;
 }
 
 DWORD Library::GetFunctionAddress(LPCSTR offset)
 {
-	HMODULE module = (HMODULE)DllOffset;
-	//log_msg("Retrieving %s function for offset %08X (%i) by Proc ...", DllName, offset, offset);
+	HMODULE module = (HMODULE)Offset;
+	//log_msg("Retrieving %s function for offset %08X (%i) by Proc ...", Name, offset, offset);
 
 	DWORD locatedAddress = (DWORD) GetProcAddress(module, offset);
 	//if (!locatedAddress)
 	//{
 	//	// Don't exit here cause apparently the plugin still works even if some functions aren't found.
 	//	//log_msg("FAILED.\n");
-	//	log_msg("Failed to retrieve %s function for offset %08X (%i) by Proc ... Returning %08X\n", DllName, offset, offset, locatedAddress);
+	//	log_msg("Failed to retrieve %s function for offset %08X (%i) by Proc ... Returning %08X\n", Name, offset, offset, locatedAddress);
 	//}
 	/*else
 	{

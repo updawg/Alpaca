@@ -24,9 +24,9 @@ class D2CMPLibrary : public Library
 public:
 	D2CMPLibrary(int gameVersion) : Library()
 	{
-		DllName = "D2CMP.dll";
-		DllVersion = gameVersion;
-		DllOffset = LoadDiabloLibrary();
+		Name = "D2CMP.dll";
+		Version = gameVersion;
+		Offset = LoadDiabloLibrary();
 		SetFunctions();
 	};
 

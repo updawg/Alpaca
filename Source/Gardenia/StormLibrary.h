@@ -24,9 +24,9 @@ class StormLibrary : public Library
 public:
 	StormLibrary(int gameVersion) : Library()
 	{
-		DllName = "Storm.dll";
-		DllVersion = gameVersion;
-		DllOffset = LoadDiabloLibrary();
+		Name = "Storm.dll";
+		Version = gameVersion;
+		Offset = LoadDiabloLibrary();
 		SetFunctions();
 	};
 

@@ -281,7 +281,7 @@ void Install_PlayerCustomData()
 	log_msg("Patch D2Game & D2Client & D2Common for Player's custom data. (PlayerCustomData)\n");
 
 	// Initialize custom data.
-	mem_seek(version_D2Client == Versions::V113d ? offset_D2Common + 0x170DE : version_D2Client == Versions::V113c ?  offset_D2Common + 0x309BE : version_D2Client == Versions::V112 ? offset_D2Common + 0x585EE : version_D2Client == Versions::V111b ? offset_D2Common + 0x5BFCE : version_D2Common == Versions::V111 ? offset_D2Common + 0x4ED5E :(DWORD)D2InitPlayerData + 0x62 );
+	mem_seek(GameLib->Version == Versions::V113d ? offset_D2Common + 0x170DE : GameLib->Version == Versions::V113c ?  offset_D2Common + 0x309BE : GameLib->Version == Versions::V112 ? offset_D2Common + 0x585EE : GameLib->Version == Versions::V111b ? offset_D2Common + 0x5BFCE : version_D2Common == Versions::V111 ? offset_D2Common + 0x4ED5E :(DWORD)D2InitPlayerData + 0x62 );
 	MEMJ_REF4( D2AllocMem, init_PlayerCustomData);
 	//01BD0381  |. E8 C03F0000    CALL <JMP.&Fog.#10045>
 	//6FD9ED5D  |. E8 94A4FBFF    CALL <JMP.&Fog.#10045>

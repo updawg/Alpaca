@@ -307,12 +307,12 @@ void Install_NewInterfaces()
 	Install_InterfaceStats();
 
 	log_msg("Patch D2Client for new custom page interface. (NewInterfaces)\n");
-	if (lu->D2Client->DllVersion >= VersionUtility::Versions::V110 )
+	if (lu->D2Client->Version >= VersionUtility::Versions::V110 )
 		extraHiddenPage=1;
 
 	if (selectMainPageOnOpenning)
 	{
-		if (lu->D2Client->DllVersion >= VersionUtility::Versions::V111 )
+		if (lu->D2Client->Version >= VersionUtility::Versions::V111 )
 		{
 			//Reset selectedPage variable on opening stats page
 			mem_seek(lu->D2Client->ResetSelectedPageBaseOffset1);
@@ -339,18 +339,18 @@ void Install_NewInterfaces()
 	// Don't print Border
 	mem_seek(lu->D2Client->DontPrintBorderBaseOffset);
 	memt_byte( 0xB9, 0xE8 );	// CALL caller_DontPrintBorder
-	MEMT_REF4( 0x00000012, lu->D2Client->DllVersion >= VersionUtility::Versions::V111 ? caller_DontPrintBorder_111 : caller_DontPrintBorder);
+	MEMT_REF4( 0x00000012, lu->D2Client->Version >= VersionUtility::Versions::V111 ? caller_DontPrintBorder_111 : caller_DontPrintBorder);
 
 	// Manage mouse down (Play sound)
 	mem_seek(lu->D2Client->ManageMouseDownBaseOffset);
 	memt_byte( 0x8D, 0xE8 );	// CALL
-	MEMT_REF4( 0x00008088, lu->D2Client->DllVersion >= VersionUtility::Versions::V111 ? caller_mouseCustomPageLeftDown_111 : lu->D2Client->DllVersion == VersionUtility::Versions::V110 ? caller_mouseCustomPageLeftDown : caller_mouseCustomPageLeftDown_9);
+	MEMT_REF4( 0x00008088, lu->D2Client->Version >= VersionUtility::Versions::V111 ? caller_mouseCustomPageLeftDown_111 : lu->D2Client->Version == VersionUtility::Versions::V110 ? caller_mouseCustomPageLeftDown : caller_mouseCustomPageLeftDown_9);
 	memt_byte( 0x00, 0x90 );	// NOP
 
 	// Manage mouse up
 	mem_seek(lu->D2Client->ManageMouseUpBaseOffset);
 	memt_byte( 0xA1, 0xE8 );	// CALL caller_mouseCustomPageLeftUp
-	MEMT_REF4( ptWindowStartX, lu->D2Client->DllVersion >= VersionUtility::Versions::V111 ? caller_mouseCustomPageLeftUp_111 : lu->D2Client->DllVersion == VersionUtility::Versions::V110 ? caller_mouseCustomPageLeftUp : caller_mouseCustomPageLeftUp_9);
+	MEMT_REF4( ptWindowStartX, lu->D2Client->Version >= VersionUtility::Versions::V111 ? caller_mouseCustomPageLeftUp_111 : lu->D2Client->Version == VersionUtility::Versions::V110 ? caller_mouseCustomPageLeftUp : caller_mouseCustomPageLeftUp_9);
 
 	log_msg("\n");
 

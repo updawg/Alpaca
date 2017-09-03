@@ -39,9 +39,9 @@ public:
 	void HookLibrary();
 	void UnhookLibrary();
 
-	int DllVersion;
-	DWORD DllOffset;
-	LPCTSTR DllName;
+	char* Name;
+	DWORD Offset;
+	int Version;
 
 	// Retrieves the address by using GetProcAddress
 	DWORD GetOffsetByProc(const VersionOffsets moduleOffsets);

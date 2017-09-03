@@ -798,7 +798,7 @@ void initD2functions()
 
 	//////////////// REDIRECT ON CUSTOM FUNCTIONS ////////////////
 
-	if ( version_D2Client >= VersionUtility::Versions::V111 )
+	if ( GameLib->Version >= VersionUtility::Versions::V111 )
 	{
 		D2SendMsgToAll = (D2ClientLibrary::TD2SendMsgToAll) D2SendMsgToAll_111;
 		D2SetColorPopup = (D2ClientLibrary::TD2SetColorPopup) D2SetColorPopup_111;
@@ -845,7 +845,7 @@ void initD2functions()
 		D2GetItemTypesBIN =				(D2CommonLibrary::TD2GetItemTypesBIN) D2GetItemTypesBIN_9;
 	}
 
-	if (version_D2Client <= VersionUtility::Versions::V109d)
+	if (GameLib->Version <= VersionUtility::Versions::V109d)
 	{
 		D2PrintStat = (D2ClientLibrary::TD2PrintStat)D2PrintStat_9;
 	}

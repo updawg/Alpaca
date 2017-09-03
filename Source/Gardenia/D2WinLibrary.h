@@ -24,9 +24,9 @@ class D2WinLibrary : public Library
 public:
 	D2WinLibrary(int gameVersion) : Library()
 	{
-		DllName = "D2Win.dll";
-		DllVersion = gameVersion;
-		DllOffset = LoadDiabloLibrary();
+		Name = "D2Win.dll";
+		Version = gameVersion;
+		Offset = LoadDiabloLibrary();
 		SetFunctions();
 	};
 

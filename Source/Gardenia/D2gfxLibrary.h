@@ -24,9 +24,9 @@ class D2gfxLibrary : public Library
 public:
 	D2gfxLibrary(int gameVersion) : Library()
 	{
-		DllName = "D2gfx.dll";
-		DllVersion = gameVersion;
-		DllOffset = LoadDiabloLibrary();
+		Name = "D2gfx.dll";
+		Version = gameVersion;
+		Offset = LoadDiabloLibrary();
 		SetFunctions();
 	};
 

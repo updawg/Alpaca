@@ -173,7 +173,7 @@ void Install_StatsLimitShiftClick()
 	mem_seek R7(D2Client, 2ACD0, 2ACC0, 315CD, 83915, 8A395, 6C2F5, BDEF5, C0695);
 	memt_byte( 0xFF, 0x90 );	// NOP
 	memt_byte( 0x15, 0xE8 );	// CALL
-	MEMD_REF4( GetKeyState, version_D2Client >= Versions::V111 ? caller_LimitShift_111 : caller_LimitShift);
+	MEMD_REF4( GetKeyState, GameLib->Version >= Versions::V111 ? caller_LimitShift_111 : caller_LimitShift);
 	//6FAD15CD   . FF15 68E0B66F  CALL DWORD PTR DS:[<&USER32.GetKeyState>]
 	//6FB33915   . FF15 CCF0B76F  CALL DWORD PTR DS:[<&USER32.GetKeyState>]
 	//6FB3A395   . FF15 08F1B76F  CALL DWORD PTR DS:[<&USER32.GetKeyState>]

@@ -24,13 +24,13 @@ class D2CommonLibrary : public Library
 public:
 	D2CommonLibrary(int gameVersion) : Library()
 	{
-		DllName = "D2Common.dll";
-		DllVersion = gameVersion;
-		DllOffset = LoadDiabloLibrary();
+		Name = "D2Common.dll";
+		Version = gameVersion;
+		Offset = LoadDiabloLibrary();
 		SetFunctions();
 
 		// These need to be initialized here, they cannot be inlined in the variable declaration
-		// because they would be initialized before the class was able to set the DllVersion variable
+		// because they would be initialized before the class was able to set the Version variable
 		// which are used in the GetOffsetForVersion function.
 		ptPYPlayerDataOffset = GetOffsetForVersion(0x5D, 0x5D, 0x5D, 0x49, 0x49, 0x49, 0x49, 0x49);
 		ptSpecificDataOffset = GetOffsetForVersion(0x70, 0x70, 0x14, 0x14, 0x14, 0x14, 0x14, 0x14);

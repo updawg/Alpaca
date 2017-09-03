@@ -21,7 +21,7 @@
 #define GARDENIA_VERSION "0.07"
 #define GARDENIA_AUTHOR_NAME "Jonathan Vasquez"
 #define GARDENIA_AUTHOR_EMAIL "jon@xyinn.org"
-#define GARDENIA_BUILD_DATE "September 3, 2017 @ 09:47 ET"
+#define GARDENIA_BUILD_DATE "September 3, 2017 @ 10:00 ET"
 
 enum TargetMod
 {

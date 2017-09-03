@@ -24,9 +24,9 @@ class FogLibrary : public Library
 public:
 	FogLibrary(int gameVersion) : Library()
 	{
-		DllName = "Fog.dll";
-		DllVersion = gameVersion;
-		DllOffset = LoadDiabloLibrary();
+		Name = "Fog.dll";
+		Version = gameVersion;
+		Offset = LoadDiabloLibrary();
 		SetFunctions();
 	};
 

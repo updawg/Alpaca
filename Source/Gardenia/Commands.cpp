@@ -422,7 +422,7 @@ void Install_Commands()
 	// Run custom commmand
 	mem_seek R7(D2Client, 2C120, 2C110, 32BDD, C1EE6, 91C16, 86926, 70AE6, B1FD6);
 	memt_byte( 0x83, 0xE8 );	// CALL 
-	MEMT_REF4( 0xC08508C4 , version_D2Client == Versions::V113d ? caller_Commands_113d : version_D2Client >= Versions::V111 ? caller_Commands_111 : caller_Commands);
+	MEMT_REF4( 0xC08508C4 , GameLib->Version == Versions::V113d ? caller_Commands_113d : GameLib->Version >= Versions::V111 ? caller_Commands_111 : caller_Commands);
 	//6FB71EE6   . 83C4 08        ADD ESP,8
 	//6FB71EE7   . 85C0           TEST EAX,EAX
 	//6FB41C16  |. 83C4 08        ADD ESP,8

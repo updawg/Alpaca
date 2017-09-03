@@ -24,13 +24,13 @@ class D2ClientLibrary : public Library
 public:
 	D2ClientLibrary(int gameVersion) : Library()
 	{
-		DllName = "D2Client.dll";
-		DllVersion = gameVersion;
-		DllOffset = LoadDiabloLibrary();
+		Name = "D2Client.dll";
+		Version = gameVersion;
+		Offset = LoadDiabloLibrary();
 		SetFunctions();
 
 		// These need to be initialized here, they cannot be inlined in the variable declaration
-		// because they would be initialized before the class was able to set the DllVersion variable
+		// because they would be initialized before the class was able to set the Version variable
 		// which are used in the GetOffsetForVersion function.
 		DisplayBaseStatsBaseOffset1 = GetOffsetByAddition(0x29B12, 0x29B02, 0x30073, 0x82BBA, 0x8963A, 0x6B59A, 0xBD1B5, 0xBF955);
 		DisplayBaseStatsBaseOffset2 = GetOffsetByAddition(0x29B9D, 0x29B8D, 0x300FD, 0x82C54, 0x896D4, 0x6B637, 0xBD23E, 0xBF9DE);

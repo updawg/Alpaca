@@ -153,7 +153,7 @@ void Install_DisplayItemLevel()
 	// print the text in the final buffer
 	mem_seek R7(D2Client,	3D47C,	3D47C,	438A1, ADD0A, 789DA, AE0AA, 941C0, 98590);
 	memt_byte( 0x68 , 0xE8);
-	MEMT_REF4( 0x100, version_D2Client >= Versions::V113c ? caller_displayItemlevel_113 : version_D2Client >= Versions::V111 ? caller_displayItemlevel_111 : version_D2Client == Versions::V110 ? caller_displayItemlevel : caller_displayItemlevel_9);
+	MEMT_REF4( 0x100, GameLib->Version >= Versions::V113c ? caller_displayItemlevel_113 : GameLib->Version >= Versions::V111 ? caller_displayItemlevel_111 : GameLib->Version == Versions::V110 ? caller_displayItemlevel : caller_displayItemlevel_9);
 	//6FAE38A1   . 68 00010000        PUSH 100
 	//6FB5DD0A  |. 68 00010000        PUSH 100
 	//6FB289DA  |. 68 00010000	      PUSH 100
@@ -164,7 +164,7 @@ void Install_DisplayItemLevel()
 	// print the text in the final buffer (for set items)
 	mem_seek R7(D2Client,	3C452,	3C452,	427BE, AC773, 77773, ACEB3, 92FE3, 973B3);
 	memt_byte( 0x68 , 0xE8);
-	MEMT_REF4( 0x100, version_D2Client >= Versions::V111  ? caller_displayItemlevelSet_111 : version_D2Client == Versions::V110 ? caller_displayItemlevelSet : caller_displayItemlevelSet_9);
+	MEMT_REF4( 0x100, GameLib->Version >= Versions::V111  ? caller_displayItemlevelSet_111 : GameLib->Version == Versions::V110 ? caller_displayItemlevelSet : caller_displayItemlevelSet_9);
 	//6FAE27BE   . 68 00010000        PUSH 100
 	//6FB5C773  |. 68 00010000        PUSH 100
 	//6FB27773  |. 68 00010000        PUSH 100
@@ -205,7 +205,7 @@ void SendPlayersCommand()
 	memset(&data,0,sizeof(data));
 	data.displayType=0x15;
 	data.un=1;
-	data.zero=0;//*(BYTE*)(offset_D2Client+0x112CFC); in 1.10
+	data.zero=0;
 	data.null=NULL;
 	sprintf(data.string, msgNBPlayersString, nbPlayersCommand);
 	D2SendMsgToAll((BYTE*)&data);
@@ -224,7 +224,7 @@ void Install_SendPlayersCommand()
 	log_msg("Patch D2Client for init default nb /players. (SendPlayersCommand)\n");
 
 	infoEnabledSendPlayersCommand = (DWORD*)R7(D2Client, 111D60, 110BC0, 107960, 11BFBC, 11C2AC, 11BFF8, 11C394, 11D1DC);
-	if ( version_D2Client >= Versions::V110 )
+	if ( GameLib->Version >= Versions::V110 )
 		msgNBPlayersString = (char*)R7(D2Client, 0000, 0000, D8448, D06A8, D4748, D4680, D4E00, D470C);
 
 	// Set nb Player to default
@@ -399,54 +399,29 @@ void Install_AlwaysDisplayLifeMana()
 
 	log_msg("Patch D2Client for always display life and mana. (ALwaysPrintLifeMana)\n");
 
-	if ( version_D2Client >= Versions::V113c )
+	if ( GameLib->Version >= Versions::V113c )
 	{
 		mem_seek R7(D2Client, 0000, 0000, 0000, 0000, 0000, 0000, 2764A, 6D6FA);
 		memt_byte( 0x0F , 0x90);
 		memt_byte( 0x8C , 0xE8);
 		MEMT_REF4( 0x000000BC, caller_AlwaysDisplayLife_113);
-		//6FAD764A  |. 0F8C BC000000  JL D2Client.6FAD770C
-		//6FAD7650  |. 83FA 6E        CMP EDX,6E
-		//6FAD7653  |. 0F8F B3000000  JG D2Client.6FAD770C
-		//6FAD7659  |. A1 4CBCB86F    MOV EAX,DWORD PTR DS:[6FB8BC4C]
-
-		//6FAD7667  |. 0F8C A4000000  JL D2Client.6FAD7711
-		//6FB1D717  |. 0F8C A4000000  JL D2Client.6FB1D7C1
-	} else {
+	}
+	else
+	{
 		// Always display life.
 		mem_seek R7(D2Client, 58B32, 58B32, 5F102, 2D713, B5DF3, 81733, 0000, 0000);
 		memt_byte( 0xA1 , 0xE8);
-		MEMT_REF4( ptResolutionY , version_D2Client >= Versions::V111 ? caller_AlwaysDisplayLife_111 : caller_AlwaysDisplayLife);
-		//6FADD713  |. A1 605CBA6F    MOV EAX,DWORD PTR DS:[6FBA5C60]
-		//6FB65DF3  |. A1 C84FBA6F    MOV EAX,DWORD PTR DS:[6FBA4FC8]
-		//6FB31733  |. A1 E4C6B86F    MOV EAX,DWORD PTR DS:[6FB8C6E4]
+		MEMT_REF4( ptResolutionY , GameLib->Version >= Versions::V111 ? caller_AlwaysDisplayLife_111 : caller_AlwaysDisplayLife);
 	}
 
-
 	// Always display mana.
-	if ( version_D2Client >= Versions::V113c )
+	if ( GameLib->Version >= Versions::V113c )
 	{
-		//mem_seek R7(D2Client, 0000, 0000, 0000, 0000, 0000, 0000, 27711);
-		//memt_byte( 0x8B , 0x90);
-		//memt_byte( 0x0D , 0xE8);
-		//MEMT_REF4( offset_D2Client + 0x11C4B4 , caller_AlwaysDisplayMana_113);
 		mem_seek R7(D2Client, 0000, 0000, 0000, 0000, 0000, 0000, 2770C, 6D7BC);
 		memt_byte( 0xA1 , 0xE8);
 		MEMT_REF4( ptResolutionY , caller_AlwaysDisplayMana_113);
-		//6FAD770C  |> A1 4CBCB86F    MOV EAX,DWORD PTR DS:[6FB8BC4C]
-		//6FAD7711  |> 8B0D B4C4BC6F  MOV ECX,DWORD PTR DS:[6FBCC4B4]
-
-		//6FAD7708  |. 8B5424 10      MOV EDX,DWORD PTR SS:[ESP+10]
-
-		//6FAD77C7  |> 5F             POP EDI
-		//6FAD77C8  |. 5E             POP ESI
-		//6FAD77C9  |. 5D             POP EBP
-		//6FAD77CA  |. 5B             POP EBX
-		//6FAD77CB  |. 81C4 28030000  ADD ESP,328
-		//6FAD77D1  \. C3             RETN
-		//6FB1D7BC  |> A1 3870BA6F    MOV EAX,DWORD PTR DS:[6FB8BC4C]
 	}
-	else if ( version_D2Client >= Versions::V110 )
+	else if ( GameLib->Version >= Versions::V110 )
 	{
 		mem_seek R7(D2Client, 0000, 0000, 5F1E6, 2D7FB, B5EDB, 8181B, 0000, 0000);
 		memt_byte( 0x5F , 0xE8);
@@ -456,31 +431,18 @@ void Install_AlwaysDisplayLifeMana()
 		memt_byte( 0x02 , 0x90);	// NOP
 		memt_byte( 0x00 , 0x90);	// NOP
 		memt_byte( 0x00 , 0x90);	// NOP
-		//6FADD7FB  |. 5F             POP EDI
-		//6FADD7FC  |. 5E             POP ESI
-		//6FADD7FD  |. 5D             POP EBP
-		//6FADD7FE  |. 5B             POP EBX
-		//6FADD7FF  |. 81C4 5C020000  ADD ESP,25C
-		//6FB65EDB  |. 5F             POP EDI
-		//6FB65EDC  |. 5E             POP ESI
-		//6FB65EDD  |. 5D             POP EBP
-		//6FB65EDE  |. 5B             POP EBX
-		//6FB65EDF  |. 81C4 5C020000  ADD ESP,25C
-		//6FB3181B  |. 5F             POP EDI
-		//6FB3181C  |. 5E             POP ESI
-		//6FB3181D  |. 5D             POP EBP
-		//6FB3181E  |. 5B             POP EBX
-		//6FB3181F  |. 81C4 5C020000  ADD ESP,25C
-		//6FB31825  |. C3             RETN
-	} else {
+	}
+	else
+	{
 		mem_seek R7(D2Client, 58C09, 58C09, 0000, 0000, 0000, 0000, 0000, 0000);
 		memt_byte( 0xE9 , 0xE8);
 		MEMT_REF4( 0x000000C2 , caller_AlwaysDisplayMana_9);
-		//6FAF8C09   . E9 C2000000    JMP D2Client.6FAF8CD0
 	}
 
-	if (active_AlwaysDisplayLifeMana==2)
-		active_AlwaysDisplayLifeMana=0;
+	if (active_AlwaysDisplayLifeMana == 2)
+	{
+		active_AlwaysDisplayLifeMana = 0;
+	}
 
 	log_msg("\n");
 

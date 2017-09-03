@@ -24,9 +24,9 @@ class D2LangLibrary : public Library
 public:
 	D2LangLibrary(int gameVersion) : Library()
 	{
-		DllName = "D2Lang.dll";
-		DllVersion = gameVersion;
-		DllOffset = LoadDiabloLibrary();
+		Name = "D2Lang.dll";
+		Version = gameVersion;
+		Offset = LoadDiabloLibrary();
 		SetFunctions();
 	};
 
