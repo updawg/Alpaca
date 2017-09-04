@@ -22,13 +22,7 @@
 class D2gfxLibrary : public Library
 {
 public:
-	D2gfxLibrary(int gameVersion) : Library()
-	{
-		Name = "D2gfx.dll";
-		Version = gameVersion;
-		Offset = LoadDiabloLibrary();
-		SetFunctions();
-	};
+	D2gfxLibrary(int gameVersion);
 
 	typedef DWORD(__stdcall *TD2GetResolution) ();
 	typedef void(__stdcall *TD2FillArea) (DWORD x1, DWORD y1, DWORD x2, DWORD y2, DWORD color, DWORD transTbl);

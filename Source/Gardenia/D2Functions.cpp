@@ -16,9 +16,7 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "common.h"
-#include "Utilities\LibraryUtility.h"
 
-extern LibraryUtility* lu;
 s_shifting shifting;
 
 // D2Common
@@ -422,10 +420,6 @@ BYTE  FASTCALL	D2GetDifficultyLevel_111(){return DifficultyLevel;}
 DWORD STDCALL	D2GetMouseX_111(){return MouseX;}
 DWORD STDCALL	D2GetMouseY_111(){return MouseY;}
 Unit* STDCALL	D2GetClientPlayer_111(){return ptClientChar;}
-
-DWORD *StatMouse1, *StatMouse2, *StatMouse3, *StatMouse4;
-void FASTCALL D2CleanStatMouseUp_111(){*StatMouse1=*StatMouse2=*StatMouse3=*StatMouse4=0;}
-
 Unit* STDCALL	D2GetRealItem_111(Unit* ptItem){return ptItem;}
 
 FCT_ASM ( D2SendMsgToAll_111 )
@@ -607,174 +601,174 @@ FCT_ASM ( D2SaveGame_1XX )
 void initD2functions()
 {
 	// D2Common
-	D2Common10242 = lu->D2Common->D2Common10242;
-	D2CanPutItemInInv = lu->D2Common->D2CanPutItemInInv;
-	D2InvRemoveItem = lu->D2Common->D2InvRemoveItem;
-	D2InvAddItem = lu->D2Common->D2InvAddItem;
-	D2Common10250 = lu->D2Common->D2Common10250;
-	D2Common10273 = lu->D2Common->D2Common10273;
-	D2InventoryGetFirstItem = lu->D2Common->D2InventoryGetFirstItem;
-	D2UnitGetNextItem = lu->D2Common->D2UnitGetNextItem;
-	D2GetRealItem = lu->D2Common->D2GetRealItem;
-	D2GetPosX = lu->D2Common->D2GetPosX;
-	D2GetPosY = lu->D2Common->D2GetPosY;
-	D2GetMaxGoldBank = lu->D2Common->D2GetMaxGoldBank;
-	D2InitPlayerData = lu->D2Common->D2InitPlayerData;
-	D2GetPlayerData = lu->D2Common->D2GetPlayerData;
-	D2GetDefence = lu->D2Common->D2GetDefence;
-	D2GetChanceToBlock = lu->D2Common->D2GetChanceToBlock;
-	D2GetMaxGold = lu->D2Common->D2GetMaxGold;
-	D2isInState = lu->D2Common->D2isInState;
-	D2AddPlayerStat = lu->D2Common->D2AddPlayerStat;
-	D2GetPlayerStat = lu->D2Common->D2GetPlayerStat;
-	D2GetPlayerBaseStat = lu->D2Common->D2GetPlayerBaseStat;
-	D2haveDefenceBonus = lu->D2Common->D2haveDefenceBonus;
-	D2haveFireResBonus = lu->D2Common->D2haveFireResBonus;
-	D2haveColdResBonus = lu->D2Common->D2haveColdResBonus;
-	D2haveLightResBonus = lu->D2Common->D2haveLightResBonus;
-	D2havePoisonResBonus = lu->D2Common->D2havePoisonResBonus;
-	D2haveDefenceMalus = lu->D2Common->D2haveDefenceMalus;
-	D2haveFireResMalus = lu->D2Common->D2haveFireResMalus;
-	D2haveColdResMalus = lu->D2Common->D2haveColdResMalus;
-	D2haveLightResMalus = lu->D2Common->D2haveLightResMalus;
-	D2havePoisonResMalus = lu->D2Common->D2havePoisonResMalus;
-	D2CompileTxtFile = lu->D2Common->D2CompileTxtFile;
-	D2GetItemsBIN = lu->D2Common->D2GetItemsBIN;
-	D2GetGemsBIN = lu->D2Common->D2GetGemsBIN;
-	D2GetCubeMainBIN = lu->D2Common->D2GetCubeMainBIN;
-	D2GetNbCubeMainBIN = lu->D2Common->D2GetNbCubeMainBIN;
-	D2GetNextLevelXP = lu->D2Common->D2GetNextLevelXP;
-	D2GetMaxLevel = lu->D2Common->D2GetMaxLevel;
-	D2GetDifficultyLevelsBIN = lu->D2Common->D2GetDifficultyLevelsBIN;
-	D2GetItemQuality = lu->D2Common->D2GetItemQuality;
-	D2GetItemLevel = lu->D2Common->D2GetItemLevel;
-	D2ItemGetPage = lu->D2Common->D2ItemGetPage;
-	D2ItemSetPage = lu->D2Common->D2ItemSetPage;
-	D2GetUniqueID = lu->D2Common->D2GetUniqueID;
-	D2SetAnim = lu->D2Common->D2SetAnim;
-	D2GetNbRunesBIN = lu->D2Common->D2GetNbRunesBIN;
-	D2GetRunesBIN = lu->D2Common->D2GetRunesBIN;
-	D2SaveItem = lu->D2Common->D2SaveItem;
-	D2GetCharStatsBIN = lu->D2Common->D2GetCharStatsBIN;
-	D2GetItemTypesBIN = lu->D2Common->D2GetItemTypesBIN;
-	D2GetItemStatCostBIN = lu->D2Common->D2GetItemStatCostBIN;
-	D2ReadFile = lu->D2Common->D2ReadFile;
-	D2LoadSuperuniques = lu->D2Common->D2LoadSuperuniques;
+	D2Common10242 = D2Common->D2Common10242;
+	D2CanPutItemInInv = D2Common->D2CanPutItemInInv;
+	D2InvRemoveItem = D2Common->D2InvRemoveItem;
+	D2InvAddItem = D2Common->D2InvAddItem;
+	D2Common10250 = D2Common->D2Common10250;
+	D2Common10273 = D2Common->D2Common10273;
+	D2InventoryGetFirstItem = D2Common->D2InventoryGetFirstItem;
+	D2UnitGetNextItem = D2Common->D2UnitGetNextItem;
+	D2GetRealItem = D2Common->D2GetRealItem;
+	D2GetPosX = D2Common->D2GetPosX;
+	D2GetPosY = D2Common->D2GetPosY;
+	D2GetMaxGoldBank = D2Common->D2GetMaxGoldBank;
+	D2InitPlayerData = D2Common->D2InitPlayerData;
+	D2GetPlayerData = D2Common->D2GetPlayerData;
+	D2GetDefence = D2Common->D2GetDefence;
+	D2GetChanceToBlock = D2Common->D2GetChanceToBlock;
+	D2GetMaxGold = D2Common->D2GetMaxGold;
+	D2isInState = D2Common->D2isInState;
+	D2AddPlayerStat = D2Common->D2AddPlayerStat;
+	D2GetPlayerStat = D2Common->D2GetPlayerStat;
+	D2GetPlayerBaseStat = D2Common->D2GetPlayerBaseStat;
+	D2haveDefenceBonus = D2Common->D2haveDefenceBonus;
+	D2haveFireResBonus = D2Common->D2haveFireResBonus;
+	D2haveColdResBonus = D2Common->D2haveColdResBonus;
+	D2haveLightResBonus = D2Common->D2haveLightResBonus;
+	D2havePoisonResBonus = D2Common->D2havePoisonResBonus;
+	D2haveDefenceMalus = D2Common->D2haveDefenceMalus;
+	D2haveFireResMalus = D2Common->D2haveFireResMalus;
+	D2haveColdResMalus = D2Common->D2haveColdResMalus;
+	D2haveLightResMalus = D2Common->D2haveLightResMalus;
+	D2havePoisonResMalus = D2Common->D2havePoisonResMalus;
+	D2CompileTxtFile = D2Common->D2CompileTxtFile;
+	D2GetItemsBIN = D2Common->D2GetItemsBIN;
+	D2GetGemsBIN = D2Common->D2GetGemsBIN;
+	D2GetCubeMainBIN = D2Common->D2GetCubeMainBIN;
+	D2GetNbCubeMainBIN = D2Common->D2GetNbCubeMainBIN;
+	D2GetNextLevelXP = D2Common->D2GetNextLevelXP;
+	D2GetMaxLevel = D2Common->D2GetMaxLevel;
+	D2GetDifficultyLevelsBIN = D2Common->D2GetDifficultyLevelsBIN;
+	D2GetItemQuality = D2Common->D2GetItemQuality;
+	D2GetItemLevel = D2Common->D2GetItemLevel;
+	D2ItemGetPage = D2Common->D2ItemGetPage;
+	D2ItemSetPage = D2Common->D2ItemSetPage;
+	D2GetUniqueID = D2Common->D2GetUniqueID;
+	D2SetAnim = D2Common->D2SetAnim;
+	D2GetNbRunesBIN = D2Common->D2GetNbRunesBIN;
+	D2GetRunesBIN = D2Common->D2GetRunesBIN;
+	D2SaveItem = D2Common->D2SaveItem;
+	D2GetCharStatsBIN = D2Common->D2GetCharStatsBIN;
+	D2GetItemTypesBIN = D2Common->D2GetItemTypesBIN;
+	D2GetItemStatCostBIN = D2Common->D2GetItemStatCostBIN;
+	D2ReadFile = D2Common->D2ReadFile;
+	D2LoadSuperuniques = D2Common->D2LoadSuperuniques;
 
 	// D2Client
-	D2LoadImage = lu->D2Client->D2LoadImage;
-	D2FreeImage = lu->D2Client->D2FreeImage;
-	D2SendMsgToAll = lu->D2Client->D2SendMsgToAll;
-	D2GetLastMonsterIDFight = lu->D2Client->D2GetLastMonsterIDFight;
-	D2PrintStatsPage = lu->D2Client->D2PrintStatsPage;
-	D2PrintStat = lu->D2Client->D2PrintStat;
-	D2SetColorPopup = lu->D2Client->D2SetColorPopup;
-	D2PlaySound = lu->D2Client->D2PlaySound;
-	D2SendToServerXX = lu->D2Client->D2SendToServerXX;
-	D2TogglePage = lu->D2Client->D2TogglePage;
-	D2ClickOnStashButton = lu->D2Client->D2ClickOnStashButton;
-	D2LoadBuySelBtn = lu->D2Client->D2LoadBuySelBtn;
+	D2LoadImage = D2Client->D2LoadImage;
+	D2FreeImage = D2Client->D2FreeImage;
+	D2SendMsgToAll = D2Client->D2SendMsgToAll;
+	D2GetLastMonsterIDFight = D2Client->D2GetLastMonsterIDFight;
+	D2PrintStatsPage = D2Client->D2PrintStatsPage;
+	D2PrintStat = D2Client->D2PrintStat;
+	D2SetColorPopup = D2Client->D2SetColorPopup;
+	D2PlaySound = D2Client->D2PlaySound;
+	D2SendToServerXX = D2Client->D2SendToServerXX;
+	D2TogglePage = D2Client->D2TogglePage;
+	D2ClickOnStashButton = D2Client->D2ClickOnStashButton;
+	D2LoadBuySelBtn = D2Client->D2LoadBuySelBtn;
 
 	// D2Client: Only 1.10
-	D2isLODGame = lu->D2Client->D2isLODGame;
-	D2GetDifficultyLevel = lu->D2Client->D2GetDifficultyLevel;
-	D2GetMouseX = lu->D2Client->D2GetMouseX;
-	D2GetMouseY = lu->D2Client->D2GetMouseY;
-	D2GetClientPlayer = lu->D2Client->D2GetClientPlayer;
-	D2CleanStatMouseUp = lu->D2Client->D2CleanStatMouseUp;
-	D2SendToServer3 = lu->D2Client->D2SendToServer3;
+	D2isLODGame = D2Client->D2isLODGame;
+	D2GetDifficultyLevel = D2Client->D2GetDifficultyLevel;
+	D2GetMouseX = D2Client->D2GetMouseX;
+	D2GetMouseY = D2Client->D2GetMouseY;
+	D2GetClientPlayer = D2Client->D2GetClientPlayer;
+	D2CleanStatMouseUp = D2Client->D2CleanStatMouseUp;
+	D2SendToServer3 = D2Client->D2SendToServer3;
 
 	// D2Client: Variables
-	ptResolutionY = lu->D2Client->ptResolutionY;
-	ptResolutionX = lu->D2Client->ptResolutionX;
-	ptNegWindowStartY = lu->D2Client->ptNegWindowStartY;
-	ptWindowStartX = lu->D2Client->ptWindowStartX;
-	ptIsLodGame = lu->D2Client->ptIsLodGame;
-	ptDifficultyLevel = lu->D2Client->ptDifficultyLevel;
-	ptMouseY = lu->D2Client->ptMouseY;
-	ptMouseX = lu->D2Client->ptMouseX;
-	ptptClientChar = lu->D2Client->ptptClientChar;
-	ptNbStatDesc = lu->D2Client->ptNbStatDesc;
-	ptStatDescTable = lu->D2Client->ptStatDescTable;
+	ptResolutionY = D2Client->ptResolutionY;
+	ptResolutionX = D2Client->ptResolutionX;
+	ptNegWindowStartY = D2Client->ptNegWindowStartY;
+	ptWindowStartX = D2Client->ptWindowStartX;
+	ptIsLodGame = D2Client->ptIsLodGame;
+	ptDifficultyLevel = D2Client->ptDifficultyLevel;
+	ptMouseY = D2Client->ptMouseY;
+	ptMouseX = D2Client->ptMouseX;
+	ptptClientChar = D2Client->ptptClientChar;
+	ptNbStatDesc = D2Client->ptNbStatDesc;
+	ptStatDescTable = D2Client->ptStatDescTable;
 
 	// D2Game
-	D2SetNbPlayers = lu->D2Game->D2SetNbPlayers;
-	D2SendPacket = lu->D2Game->D2SendPacket;
-	D2SetSkillBaseLevelOnClient = lu->D2Game->D2SetSkillBaseLevelOnClient;
-	D2LinkPortal = lu->D2Game->D2LinkPortal;
-	D2VerifIfNotCarry1 = lu->D2Game->D2VerifIfNotCarry1;
-	D2TestPositionInRoom = lu->D2Game->D2TestPositionInRoom;
-	D2LoadInventory = lu->D2Game->D2LoadInventory;
-	D2GameGetObject = lu->D2Game->D2GameGetObject;
-	D2SaveGame = lu->D2Game->D2SaveGame;
+	D2SetNbPlayers = D2Game->D2SetNbPlayers;
+	D2SendPacket = D2Game->D2SendPacket;
+	D2SetSkillBaseLevelOnClient = D2Game->D2SetSkillBaseLevelOnClient;
+	D2LinkPortal = D2Game->D2LinkPortal;
+	D2VerifIfNotCarry1 = D2Game->D2VerifIfNotCarry1;
+	D2TestPositionInRoom = D2Game->D2TestPositionInRoom;
+	D2LoadInventory = D2Game->D2LoadInventory;
+	D2GameGetObject = D2Game->D2GameGetObject;
+	D2SaveGame = D2Game->D2SaveGame;
 
 	// D2Game: Only 1.10
-	D2GetClient = lu->D2Game->D2GetClient;
+	D2GetClient = D2Game->D2GetClient;
 
 	// D2Game: Variables
-	ptClientTable = lu->D2Game->ptClientTable;
+	ptClientTable = D2Game->ptClientTable;
 
 	// D2Net
-	D2SendToServer = lu->D2Net->D2SendToServer;
-	D2SendToClient = lu->D2Net->D2SendToClient;
+	D2SendToServer = D2Net->D2SendToServer;
+	D2SendToClient = D2Net->D2SendToClient;
 
 	// Fog
-	D2FogAssertOld = lu->Fog->D2FogAssertOld;
-	D2FogAssert = lu->Fog->D2FogAssert;
-	D2FogMemAlloc = lu->Fog->D2FogMemAlloc;
-	D2FogMemDeAlloc = lu->Fog->D2FogMemDeAlloc;
-	D2AllocMem = lu->Fog->D2AllocMem;
-	D2FreeMem = lu->Fog->D2FreeMem;
-	D2MPQOpenFile = lu->Fog->D2MPQOpenFile;
-	D2MPQCloseFile = lu->Fog->D2MPQCloseFile;
-	D2MPQReadFile = lu->Fog->D2MPQReadFile;
-	D2MPQGetSizeFile = lu->Fog->D2MPQGetSizeFile;
-	D2FogGetSavePath = lu->Fog->D2FogGetSavePath;
-	D2FogGetInstallPath = lu->Fog->D2FogGetInstallPath;
-	D2Fog10212 = lu->Fog->D2Fog10212;
-	D2GetInstructionPointer = lu->Fog->D2GetInstructionPointer;
+	D2FogAssertOld = Fog->D2FogAssertOld;
+	D2FogAssert = Fog->D2FogAssert;
+	D2FogMemAlloc = Fog->D2FogMemAlloc;
+	D2FogMemDeAlloc = Fog->D2FogMemDeAlloc;
+	D2AllocMem = Fog->D2AllocMem;
+	D2FreeMem = Fog->D2FreeMem;
+	D2MPQOpenFile = Fog->D2MPQOpenFile;
+	D2MPQCloseFile = Fog->D2MPQCloseFile;
+	D2MPQReadFile = Fog->D2MPQReadFile;
+	D2MPQGetSizeFile = Fog->D2MPQGetSizeFile;
+	D2FogGetSavePath = Fog->D2FogGetSavePath;
+	D2FogGetInstallPath = Fog->D2FogGetInstallPath;
+	D2Fog10212 = Fog->D2Fog10212;
+	D2GetInstructionPointer = Fog->D2GetInstructionPointer;
 
 	// D2Lang
-	D2GetStringFromString = lu->D2Lang->D2GetStringFromString;
-	D2GetStringFromIndex = lu->D2Lang->D2GetStringFromIndex;
-	D2GetLang = lu->D2Lang->D2GetLang;
-	D2PrintBigNumber = lu->D2Lang->D2PrintBigNumber;
+	D2GetStringFromString = D2Lang->D2GetStringFromString;
+	D2GetStringFromIndex = D2Lang->D2GetStringFromIndex;
+	D2GetLang = D2Lang->D2GetLang;
+	D2PrintBigNumber = D2Lang->D2PrintBigNumber;
 
 	// Storm
-	D2StormMPQOpenFile = lu->Storm->D2StormMPQOpenFile;
-	D2Storm503 = lu->Storm->D2Storm503;
-	D2FreeWinMessage = lu->Storm->D2FreeWinMessage;
+	D2StormMPQOpenFile = Storm->D2StormMPQOpenFile;
+	D2Storm503 = Storm->D2Storm503;
+	D2FreeWinMessage = Storm->D2FreeWinMessage;
 
 	// D2gfx
-	D2GetResolution = lu->D2gfx->D2GetResolution;
-	D2FillArea = lu->D2gfx->D2FillArea;
-	D2PrintImage = lu->D2gfx->D2PrintImage;
+	D2GetResolution = D2gfx->D2GetResolution;
+	D2FillArea = D2gfx->D2FillArea;
+	D2PrintImage = D2gfx->D2PrintImage;
 
 	// D2Win
-	D2PrintLineOnTextBox = lu->D2Win->D2PrintLineOnTextBox;
-	D2PrintString = lu->D2Win->D2PrintString;
-	D2GetPixelLen = lu->D2Win->D2GetPixelLen;
-	D2SetFont = lu->D2Win->D2SetFont;
-	D2PrintPopup = lu->D2Win->D2PrintPopup;
-	D2GetPixelRect = lu->D2Win->D2GetPixelRect;
-	D2PrintTextPopup = lu->D2Win->D2PrintTextPopup;
-	D2CreateTextBox = lu->D2Win->D2CreateTextBox;
+	D2PrintLineOnTextBox = D2Win->D2PrintLineOnTextBox;
+	D2PrintString = D2Win->D2PrintString;
+	D2GetPixelLen = D2Win->D2GetPixelLen;
+	D2SetFont = D2Win->D2SetFont;
+	D2PrintPopup = D2Win->D2PrintPopup;
+	D2GetPixelRect = D2Win->D2GetPixelRect;
+	D2PrintTextPopup = D2Win->D2PrintTextPopup;
+	D2CreateTextBox = D2Win->D2CreateTextBox;
 	
 	// D2CMP
-	D2CMP10014 = lu->D2CMP->D2CMP10014;
+	D2CMP10014 = D2CMP->D2CMP10014;
 
-	SgptDataTables = *(DataTables**)lu->D2Common->RetrieveSgptDataTables();
+	SgptDataTables = *(DataTables**)D2Common->GetOffsetByAddition(0, 0, 0x96A20, 0x9B74C, 0x9EE8C, 0x9B500, 0x99E1C, 0xA33F0);
 
-	if (version_D2Common < VersionUtility::Versions::V110)
+	if (Game->Version < VersionUtility::Versions::V110)
 	{
-		D2Common10581 = lu->D2Common->D2Common10581;
-		D2Common10598 = lu->D2Common->D2Common10598;
-		D2Common10673 = lu->D2Common->D2Common10673;
+		D2Common10581 = D2Common->D2Common10581;
+		D2Common10598 = D2Common->D2Common10598;
+		D2Common10673 = D2Common->D2Common10673;
 	}
 
 	//////////////// MISC FCT ////////////////
-	getDescStrPos = version_D2Common >= VersionUtility::Versions::V110  ? getDescStrPos_10 : getDescStrPos_9;
-	compileTxtFile = version_D2Common >= VersionUtility::Versions::V111 ? compileTxtFile_111 : version_D2Common == VersionUtility::Versions::V110 ? compileTxtFile_10 : compileTxtFile_9;
+	getDescStrPos = Game->Version >= VersionUtility::Versions::V110  ? getDescStrPos_10 : getDescStrPos_9;
+	compileTxtFile = Game->Version >= VersionUtility::Versions::V111 ? compileTxtFile_111 : Game->Version == VersionUtility::Versions::V110 ? compileTxtFile_10 : compileTxtFile_9;
 
 	V2AddPlayerStat = D2AddPlayerStat;
 	V2GetPlayerStat = D2GetPlayerStat;
@@ -798,7 +792,7 @@ void initD2functions()
 
 	//////////////// REDIRECT ON CUSTOM FUNCTIONS ////////////////
 
-	if ( GameLib->Version >= VersionUtility::Versions::V111 )
+	if (Game->Version >= VersionUtility::Versions::V111)
 	{
 		D2SendMsgToAll = (D2ClientLibrary::TD2SendMsgToAll) D2SendMsgToAll_111;
 		D2SetColorPopup = (D2ClientLibrary::TD2SetColorPopup) D2SetColorPopup_111;
@@ -823,11 +817,6 @@ void initD2functions()
 		D2GetMouseY = D2GetMouseY_111;
 		D2GetClientPlayer = D2GetClientPlayer_111;
 		D2GetRealItem = D2GetRealItem_111;
-		D2CleanStatMouseUp = D2CleanStatMouseUp_111;
-		StatMouse1 = (DWORD*)R7(D2Client, 0000, 0000, 0000, 11C004, 11C2F4, 11C040, 11C3DC, 11D224);
-		StatMouse2 = (DWORD*)R7(D2Client, 0000, 0000, 0000, 11C008, 11C2F8, 11C044, 11C3E0, 11D228);
-		StatMouse3 = (DWORD*)R7(D2Client, 0000, 0000, 0000, 11C020, 11C310, 11C05C, 11C3F8, 11D240);
-		StatMouse4 = (DWORD*)R7(D2Client, 0000, 0000, 0000, 11C024, 11C314, 11C060, 11C3FC, 11D244);
 	} 
 	else
 	{
@@ -835,7 +824,7 @@ void initD2functions()
 		D2SaveGame = (D2GameLibrary::TD2SaveGame) D2SaveGame_1XX;
 	}
 
-	if ( version_D2Common <= VersionUtility::Versions::V109d )
+	if (Game->Version <= VersionUtility::Versions::V109d)
 	{
 		D2AddPlayerStat =				(D2CommonLibrary::TD2AddPlayerStat) D2AddPlayerStat_9;
 		D2GetPlayerStat =				(D2CommonLibrary::TD2GetPlayerStat) D2GetPlayerStat_9;
@@ -845,24 +834,24 @@ void initD2functions()
 		D2GetItemTypesBIN =				(D2CommonLibrary::TD2GetItemTypesBIN) D2GetItemTypesBIN_9;
 	}
 
-	if (GameLib->Version <= VersionUtility::Versions::V109d)
+	if (Game->Version <= VersionUtility::Versions::V109d)
 	{
 		D2PrintStat = (D2ClientLibrary::TD2PrintStat)D2PrintStat_9;
 	}
 
-	if (version_D2Game <= VersionUtility::Versions::V109d)
+	if (Game->Version <= VersionUtility::Versions::V109d)
 	{
 		D2SetSkillBaseLevelOnClient = (D2GameLibrary::TD2SetSkillBaseLevelOnClient)D2SetSkillBaseLevelOnClient_9;
 	}
 
 	//////////////// STRUCTURE MANAGEMENT ////////////////
 
-	shifting.ptPYPlayerData = *(DWORD*)((DWORD)D2InitPlayerData + lu->D2Common->ptPYPlayerDataOffset);
-	shifting.ptSpecificData = lu->D2Common->ptSpecificDataOffset;
-	shifting.ptGame = lu->D2Common->ptGameOffset;
-	shifting.ptClientGame = lu->D2Common->ptClientGameOffset;
-	shifting.ptInventory = lu->D2Common->ptInventoryOffset;
-	shifting.ptSkills = lu->D2Common->ptSkillsOffset;
-	shifting.ptImage = lu->D2Common->ptImageOffset;
-	shifting.ptFrame = lu->D2Common->ptFrameOffset;
+	shifting.ptPYPlayerData = *(DWORD*)((DWORD)D2InitPlayerData + D2Common->ptPYPlayerDataOffset);
+	shifting.ptSpecificData = D2Common->ptSpecificDataOffset;
+	shifting.ptGame = D2Common->ptGameOffset;
+	shifting.ptClientGame = D2Common->ptClientGameOffset;
+	shifting.ptInventory = D2Common->ptInventoryOffset;
+	shifting.ptSkills = D2Common->ptSkillsOffset;
+	shifting.ptImage = D2Common->ptImageOffset;
+	shifting.ptFrame = D2Common->ptFrameOffset;
 }

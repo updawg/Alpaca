@@ -17,6 +17,14 @@
 
 #include "D2CMPLibrary.h"
 
+D2CMPLibrary::D2CMPLibrary(int gameVersion) : Library()
+{
+	Name = "D2CMP.dll";
+	Version = gameVersion;
+	Offset = LoadDiabloLibrary();
+	SetFunctions();
+}
+
 void D2CMPLibrary::SetFunctions()
 {
 	D2CMP10014 = (TD2CMP10014)GetOffsetByProc(10032, 10032, 10032, 10021, 10014, 10106, 10065, 10020);

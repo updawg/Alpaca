@@ -17,6 +17,14 @@
 
 #include "D2ClientLibrary.h"
 
+D2ClientLibrary::D2ClientLibrary(int gameVersion) : Library()
+{
+	Name = "D2Client.dll";
+	Version = gameVersion;
+	Offset = LoadDiabloLibrary();
+	SetFunctions();
+}
+
 void D2ClientLibrary::SetFunctions()
 {
 	D2LoadImage = (TD2LoadImage)GetOffsetByAddition(0x1000, 0x1000, 0x1000, 0x75D00, 0xA9070, 0xBEF70, 0x2B420, 0xA9480);
@@ -38,7 +46,7 @@ void D2ClientLibrary::SetFunctions()
 	D2GetMouseX = (TD2GetMouseX)GetOffsetByAddition(0xB6670, 0xB59F0, 0xB7BC0, 0, 0, 0, 0, 0);
 	D2GetMouseY = (TD2GetMouseY)GetOffsetByAddition(0xB6680, 0xB5A00, 0xB7BD0, 0, 0, 0, 0, 0);
 	D2GetClientPlayer = (TD2GetClientPlayer)GetOffsetByAddition(0x8DC40, 0x8CFC0, 0x883D0, 0, 0, 0, 0, 0);
-	D2CleanStatMouseUp = (TD2CleanStatMouseUp)GetOffsetByAddition(0xB920, 0xB910, 0xBF60, 0, 0, 0, 0, 0);
+	D2CleanStatMouseUp = GetD2CleanStatMouseUp();
 	D2SendToServer3 = (TD2SendToServer3)GetOffsetByAddition(0xD210, 0xD200, 0xD990, 0, 0, 0, 0, 0);
 
 	// Variables
@@ -53,9 +61,38 @@ void D2ClientLibrary::SetFunctions()
 	ptptClientChar = (Unit**)GetOffsetByAddition(0, 0, 0, 0x11C4F0, 0x11C1E0, 0x11C3D0, 0x11BBFC, 0x11D050);
 	ptNbStatDesc = (DWORD*)GetOffsetByAddition(0xDB918, 0xDA828, 0, 0, 0, 0, 0, 0);
 	ptStatDescTable = (DWORD*)GetOffsetByAddition(0xDAF98, 0xD9EA8, 0, 0, 0, 0, 0, 0);
+
+	StatMouse1 = (DWORD*)GetOffsetByAddition(0, 0, 0, 0x11C004, 0x11C2F4, 0x11C040, 0x11C3DC, 0x11D224);
+	StatMouse2 = (DWORD*)GetOffsetByAddition(0, 0, 0, 0x11C008, 0x11C2F8, 0x11C044, 0x11C3E0, 0x11D228);
+	StatMouse3 = (DWORD*)GetOffsetByAddition(0, 0, 0, 0x11C020, 0x11C310, 0x11C05C, 0x11C3F8, 0x11D240);
+	StatMouse4 = (DWORD*)GetOffsetByAddition(0, 0, 0, 0x11C024, 0x11C314, 0x11C060, 0x11C3FC, 0x11D244);
 }
 
-DWORD D2ClientLibrary::RetrieveStashBackgroundOffset()
+DWORD* D2ClientLibrary::StatMouse1;
+DWORD* D2ClientLibrary::StatMouse2;
+DWORD* D2ClientLibrary::StatMouse3;
+DWORD* D2ClientLibrary::StatMouse4;
+
+void __fastcall D2ClientLibrary::D2CleanStatMouseUp_111()
 {
-	return GetOffsetByAddition(0x45B1C, 0x45B1C, 0x4C61C, 0xA643C, 0x749BC, 0xA9D7C, 0x8CC1C, 0x943FC);
+	*StatMouse1 = 0;
+	*StatMouse2 = 0;
+	*StatMouse3 = 0;
+	*StatMouse4 = 0;
+}
+
+D2ClientLibrary::TD2CleanStatMouseUp D2ClientLibrary::GetD2CleanStatMouseUp()
+{
+	DWORD location;
+
+	if (Version >= VersionUtility::Versions::V111)
+	{
+		location = (DWORD)&D2ClientLibrary::D2CleanStatMouseUp_111;
+	}
+	else
+	{
+		location = GetOffsetByAddition(0xB920, 0xB910, 0xBF60, 0, 0, 0, 0, 0);
+	}
+
+	return (TD2CleanStatMouseUp)location;
 }

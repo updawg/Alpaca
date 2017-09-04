@@ -24,8 +24,6 @@
 #include "windowed.h"
 #include "common.h"
 
-using Versions = VersionUtility::Versions;
-
 bool active_Commands=true;
 
 bool active_listAllCubeFormula=true;
@@ -406,7 +404,7 @@ MANAGESOUNDCHAOSDEBUG:
 	RETN 8
 }}
 
-
+// [Patch]
 void Install_Commands()
 {
 	static int isInstalled = false;
@@ -416,25 +414,13 @@ void Install_Commands()
 
 	log_msg("Patch D2Client for install commands. (Commands)\n");
 
-	active_listAllCubeFormula = version_D2Common >= Versions::V110;
-	active_savegame = version_D2Common >= Versions::V111;
+	active_listAllCubeFormula = Game->Version >= VersionUtility::Versions::V110;
+	active_savegame = Game->Version >= VersionUtility::Versions::V111;
 
 	// Run custom commmand
-	mem_seek R7(D2Client, 2C120, 2C110, 32BDD, C1EE6, 91C16, 86926, 70AE6, B1FD6);
-	memt_byte( 0x83, 0xE8 );	// CALL 
-	MEMT_REF4( 0xC08508C4 , GameLib->Version == Versions::V113d ? caller_Commands_113d : GameLib->Version >= Versions::V111 ? caller_Commands_111 : caller_Commands);
-	//6FB71EE6   . 83C4 08        ADD ESP,8
-	//6FB71EE7   . 85C0           TEST EAX,EAX
-	//6FB41C16  |. 83C4 08        ADD ESP,8
-	//6FB41C19  |. 85C0           TEST EAX,EAX
-	//6FB36926  |. 83C4 08        ADD ESP,8
-	//6FB36929  |. 85C0           TEST EAX,EAX
-	//6FB20AE6  |. 83C4 08        ADD ESP,8
-	//6FB20AE9  |. 85C0           TEST EAX,EAX
-	//6FB20AE6  |. 83C4 08        ADD ESP,8
-	//6FB20AE9  |. 85C0           TEST EAX,EAX
-	//6FB61FD6  |. 83C4 08        ADD ESP,8
-	//6FB61FD9  |. 85C0           TEST EAX,EAX
+	mem_seek(D2Client->GetOffsetByAddition(0x2C120, 0x2C110, 0x32BDD, 0xC1EE6, 0x91C16, 0x86926, 0x70AE6, 0xB1FD6));
+	memt_byte(0x83, 0xE8); 
+	MEMT_REF4(0xC08508C4, Game->Version == VersionUtility::Versions::V113d ? caller_Commands_113d : Game->Version >= VersionUtility::Versions::V111 ? caller_Commands_111 : caller_Commands);
 
 	log_msg("\n");
 

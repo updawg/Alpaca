@@ -22,13 +22,7 @@
 class D2NetLibrary : public Library
 {
 public:
-	D2NetLibrary(int gameVersion) : Library()
-	{
-		Name = "D2Net.dll";
-		Version = gameVersion;
-		Offset = LoadDiabloLibrary();
-		SetFunctions();
-	};
+	D2NetLibrary(int gameVersion);
 
 	typedef DWORD(__stdcall *TD2SendToServer) (DWORD size, DWORD one, void* data);
 	typedef DWORD(__stdcall *TD2SendToClient) (DWORD zero, DWORD clientID, void* data, DWORD size);

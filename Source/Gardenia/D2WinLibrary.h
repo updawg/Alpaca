@@ -22,13 +22,7 @@
 class D2WinLibrary : public Library
 {
 public:
-	D2WinLibrary(int gameVersion) : Library()
-	{
-		Name = "D2Win.dll";
-		Version = gameVersion;
-		Offset = LoadDiabloLibrary();
-		SetFunctions();
-	};
+	D2WinLibrary(int gameVersion);
 
 	typedef void(__fastcall *TD2PrintLineOnTextBox) (void* screen, char* s, DWORD color);
 	typedef void(__fastcall *TD2PrintString) (LPWSTR s, DWORD x, DWORD y, DWORD color, DWORD bfalse);

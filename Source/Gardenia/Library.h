@@ -26,6 +26,8 @@
 #include "../Commons/d2BinFile.h"
 #include "../Commons/d2Struct.h"
 
+#include "modifMemory.h"
+
 using VersionOffsets = std::map<VersionUtility::Versions, DWORD>;
 
 class Library

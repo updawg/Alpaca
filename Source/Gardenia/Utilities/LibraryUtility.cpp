@@ -19,7 +19,7 @@
 
 LibraryUtility::LibraryUtility()
 {
-	log_msg("***** Get D2 Modules address and version *****\n");
+	log_msg("***** Get D2 Modules address and version *****\n\n");
 
 	// We need to load the game now so that we have the game version for the rest of the Dlls.
 	Game = new GameLibrary();
@@ -43,6 +43,7 @@ LibraryUtility::LibraryUtility()
 		Fog = new FogLibrary(Game->Version);
 		Storm = new StormLibrary(Game->Version);
 	}
+	log_msg("\n");
 }
 
 void LibraryUtility::HookLibraries()
@@ -65,7 +66,7 @@ void LibraryUtility::HookLibraries()
 		Storm->HookLibrary();
 	}
 
-	log_msg("\n\n");
+	log_msg("\n");
 }
 
 void LibraryUtility::UnhookLibraries()
@@ -88,5 +89,5 @@ void LibraryUtility::UnhookLibraries()
 		Storm->UnhookLibrary();
 	}
 
-	log_msg("\n\n");
+	log_msg("\n");
 }

@@ -22,8 +22,6 @@
 #include "common.h"
 #include <stdio.h>
 
-using Versions = VersionUtility::Versions;
-
 static struct
 {
 	union{
@@ -443,7 +441,7 @@ FCT_ASM ( initBtnsStates )
 	RETN
 }}
 
-
+// [Patch]
 void Install_InterfaceStash()
 {
 	static int isInstalled = false;
@@ -455,78 +453,34 @@ void Install_InterfaceStash()
 	log_msg("Patch D2Client for stash interface. (InterfaceStash)\n");
 
 	// Print button images
-	mem_seek R7(D2Client, 39060, 39060, 3F399, B1006, 7DF86, B3656, 99A56, 9DE26);
-	MEMC_REF4( D2LoadBuySelBtn, printBtns);
-	//6FADF398  |. E8 734D0400    CALL D2Client.6FB24110
-	//6FB61005  |. E8 A6D3FEFF    CALL D2Client.6FB4E3B0
-	//6FB2DF85  |. E8 3642FEFF    CALL D2Client.6FB121C0
-	//6FB63655  |. E8 9682FDFF    CALL D2Client.6FB3B8F0
-	//6FB49A55  |. E8 96500200    CALL D2Client.6FB6EAF0
-	//6FB4DE25  |. E8 76ACF7FF    CALL D2Client.6FAC8AA0
+	mem_seek(D2Client->GetOffsetByAddition(0x39060, 0x39060, 0x3F399, 0xB1006, 0x7DF86, 0xB3656, 0x99A56, 0x9DE26));
+	MEMC_REF4(D2Client->D2LoadBuySelBtn, printBtns);
 
 	// print page number
-	mem_seek R7(D2Client, 3903C, 3903C, 3F375, B0FE3, 7DF63, B3633, 99A33, 9DE03);
-	MEMJ_REF4( D2PrintString, printPageNumber);
-	//6FADF374  |. E8 3FCC0800    CALL <JMP.&D2Win.#10117>
-	//6FB60FE2  |. E8 99C2F5FF    CALL <JMP.&D2Win.#10020>
-	//6FB2DF62  |. E8 19F3F8FF    CALL <JMP.&D2Win.#10064>
-	//6FB63632  |. E8 299DF5FF    CALL <JMP.&D2Win.#10001>
-	//6FB49A32  |. E8 4739F7FF    CALL <JMP.&D2Win.#10150>
-	//6FB4DE02  |. E8 4739F7FF    CALL <JMP.&D2Win.#10076>
+	mem_seek(D2Client->GetOffsetByAddition(0x3903C, 0x3903C, 0x3F375, 0xB0FE3, 0x7DF63, 0xB3633, 0x99A33, 0x9DE03));
+	MEMJ_REF4(D2Win->D2PrintString, printPageNumber);
 
 	// Manage mouse down (Play sound)
-	mem_seek R7(D2Client, 45091, 45091, 4BBA1, B4666, 7FDD6, B54A6, 9B8A6, 9FC76);
-	MEMC_REF4( GameLib->Version >= Versions::V111 ? (DWORD)D2ClickOnStashButton : (DWORD)D2isLODGame, GameLib->Version >= Versions::V111 ? caller_manageBtnDown_111 : caller_manageBtnDown);
-	//6FAEBBA0   > E8 DB04FCFF    CALL D2Client.6FAAC080
-	//6FB64665   . E8 B61EFFFF    CALL D2Client.6FB56520
-	//6FB2FDD5   . E8 E612FFFF    CALL D2Client.6FB210C0
-	//6FB654A5   . E8 9611FFFF    CALL D2Client.6FB56640
-	//6FB4B8A5   . E8 5614FFFF    CALL D2Client.6FB3CD00
-	//6FB4FC75   . E8 960FFFFF    CALL D2Client.6FB40C10
+	mem_seek(D2Client->GetOffsetByAddition(0x45091, 0x45091, 0x4BBA1, 0xB4666, 0x7FDD6, 0xB54A6, 0x9B8A6, 0x9FC76));
+	MEMC_REF4(Game->Version >= VersionUtility::Versions::V111 ? (DWORD)D2ClickOnStashButton : (DWORD)D2isLODGame, Game->Version >= VersionUtility::Versions::V111 ? caller_manageBtnDown_111 : caller_manageBtnDown);
 
 	// Manage mouse up
-	mem_seek R7(D2Client, 455F9, 455F9, 4C0F9, B57B9, 7FC09, B52D9, 9B6D9, 9FAA9);
-	MEMC_REF4( GameLib->Version >= Versions::V111 ? (DWORD)D2ClickOnStashButton : (DWORD)D2isLODGame, GameLib->Version >= Versions::V111 ? caller_manageBtnUp_111 : caller_manageBtnUp);
-	//6FAEC0F8   > E8 83FFFBFF    CALL D2Client.6FAAC080
-	//6FB657B8   > E8 630DFFFF    CALL D2Client.6FB56520
-	//6FB2FC08   > E8 B314FFFF    CALL D2Client.6FB210C0
-	//6FB652D8   > E8 6313FFFF    CALL D2Client.6FB56640
-	//6FB4B6D8   > E8 2316FFFF    CALL D2Client.6FB3CD00
-	//6FB4FAA8   > E8 6311FFFF    CALL D2Client.6FB40C10
+	mem_seek(D2Client->GetOffsetByAddition(0x455F9, 0x455F9, 0x4C0F9, 0xB57B9, 0x7FC09, 0xB52D9, 0x9B6D9, 0x9FAA9));
+	MEMC_REF4(Game->Version >= VersionUtility::Versions::V111 ? (DWORD)D2ClickOnStashButton : (DWORD)D2isLODGame, Game->Version >= VersionUtility::Versions::V111 ? caller_manageBtnUp_111 : caller_manageBtnUp);
 
 	// init state of button on open stash page
-	mem_seek R7(D2Client, 45B3A, 45B3A, 4C63A, A645A, 749DA, A9D9A, 8CC3A, 9441A);
-	memt_byte( 0x81, 0xE9 );	// CALL initBtnsStates
-	MEMT_REF4( 0x000104C4, initBtnsStates);
-	memt_byte( 0x00, 0x90 );
-	//6FAE5B3A  |> 81C4 04010000  ADD ESP,104
-	//6FAE5B3A  |> 81C4 04010000  ADD ESP,104
-	//6FAEC63A  |> 81C4 04010000  ADD ESP,104
-	//6FB5645A  |> 81C4 04010000  ADD ESP,104
-	//6FB249DA  |> 81C4 04010000  ADD ESP,104
-	//6FB59D9A  |> 81C4 04010000  ADD ESP,104
-	//6FB3CC3A  |> 81C4 04010000  ADD ESP,104
-	//6FB4441A  |> 81C4 04010000  ADD ESP,104
+	mem_seek(D2Client->GetOffsetByAddition(0x45B3A, 0x45B3A, 0x4C63A, 0xA645A, 0x749DA, 0xA9D9A, 0x8CC3A, 0x9441A));
+	memt_byte(0x81, 0xE9);
+	MEMT_REF4(0x000104C4, initBtnsStates);
+	memt_byte(0x00, 0x90);
 
 	// init the search of print in green the item set name we have in stash
-	mem_seek R7(D2Client, 3F098, 3F098, 45997, A71F4, 71F64, A7314, 8D434, 91A24);
-	MEMJ_REF4( D2InventoryGetFirstItem, initGetNextItemForSet);
-	//6FAE5996  |. E8 D5500800    CALL <JMP.&D2Common.#10277>
-	//6FB571F3  |. E8 D64EF6FF    CALL <JMP.&D2Common.#10402>
-	//6FB21F63  |. E8 96A1F9FF    CALL <JMP.&D2Common.#10535>
-	//6FB57313  |. E8 8250F6FF    CALL <JMP.&D2Common.#11151>
-	//6FB3D433  |. E8 B8F0F7FF    CALL <JMP.&D2Common.#10460>
-	//6FB41A23  |. E8 96A7F7FF    CALL <JMP.&D2Common.#11040>
+	mem_seek(D2Client->GetOffsetByAddition(0x3F098, 0x3F098, 0x45997, 0xA71F4, 0x71F64, 0xA7314, 0x8D434, 0x91A24));
+	MEMJ_REF4(D2Common->D2InventoryGetFirstItem, initGetNextItemForSet);
 
 	// Get next item for print in green the item set name we have in stash
-	mem_seek R7(D2Client, 3F0FA, 3F0FA, 45A1C, A728B, 71FFB, A73AB, 8D4CB, 91ABB);
-	MEMJ_REF4( D2UnitGetNextItem, getNextItemForSet);
-	//6FAE5A1B   E8 4A500800      CALL <JMP.&D2Common.#10304>
-	//6FB5728A  |. E8 0B4FF6FF    |CALL <JMP.&D2Common.#10934>
-	//6FB21FFA  |. E8 A1A1F9FF    |CALL <JMP.&D2Common.#11140>
-	//6FB573AA  |. E8 7550F6FF    |CALL <JMP.&D2Common.#10770>
-	//6FB3D4CA  |. E8 99F0F7FF    |CALL <JMP.&D2Common.#10464>
-	//6FB41ABA  |. E8 A3A8F7FF    |CALL <JMP.&D2Common.#10879>
+	mem_seek(D2Client->GetOffsetByAddition(0x3F0FA, 0x3F0FA, 0x45A1C, 0xA728B, 0x71FFB, 0xA73AB, 0x8D4CB, 0x91ABB));
+	MEMJ_REF4(D2Common->D2UnitGetNextItem, getNextItemForSet);
 
 	log_msg("\n");
 

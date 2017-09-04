@@ -17,6 +17,14 @@
 
 #include "D2LangLibrary.h"
 
+D2LangLibrary::D2LangLibrary(int gameVersion) : Library()
+{
+	Name = "D2Lang.dll";
+	Version = gameVersion;
+	Offset = LoadDiabloLibrary();
+	SetFunctions();
+}
+
 void D2LangLibrary::SetFunctions()
 {
 	D2GetStringFromString = (TD2GetStringFromString)GetOffsetByProc(10003, 10003, 10003, 10002, 10004, 10010, 10011, 10011);

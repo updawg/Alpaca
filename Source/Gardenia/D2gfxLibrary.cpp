@@ -17,6 +17,14 @@
 
 #include "D2gfxLibrary.h"
 
+D2gfxLibrary::D2gfxLibrary(int gameVersion) : Library()
+{
+	Name = "D2gfx.dll";
+	Version = gameVersion;
+	Offset = LoadDiabloLibrary();
+	SetFunctions();
+}
+
 void D2gfxLibrary::SetFunctions()
 {
 	D2GetResolution = (TD2GetResolution)GetOffsetByProc(10005, 10005, 10005, 10000, 10063, 10043, 10031, 10012);

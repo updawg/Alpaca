@@ -23,8 +23,6 @@
 #define STASH_TAG 0x5453			//"ST"
 #define JM_TAG 0x4D4A 				//"JM"
 
-using Versions = VersionUtility::Versions;
-
 DWORD maxSelfPages = -1;
 DWORD maxSharedPages = -1;
 DWORD nbPagesPerIndex = 10;
@@ -946,7 +944,7 @@ continue_carry1OutOfStash:
 	RETN
 }}
 
-
+// [Patch]
 void Install_MultiPageStash()
 {
 	static int isInstalled = false;
@@ -955,67 +953,39 @@ void Install_MultiPageStash()
 	Install_PlayerCustomData();
 	Install_InterfaceStash();
 
-	changeToSelectedStash = version_D2Common >= Versions::V110 ? changeToSelectedStash_10 : changeToSelectedStash_9;
+	changeToSelectedStash = Game->Version >= VersionUtility::Versions::V110 ? changeToSelectedStash_10 : changeToSelectedStash_9;
 
-	if ( version_D2Game >= Versions::V110 )
+	if (Game->Version >= VersionUtility::Versions::V110 )
 	{
 		log_msg("Patch D2Game for carry1 unique item. (MultiPageStash)\n");
 
 		// Cannot put 2 items carry1 in inventory
-		mem_seek R7(D2Game, 0000, 0000, 55050, 57CA3, 2FE63, 99B03, CF1E3, 6B013);
-		MEMJ_REF4( D2ItemSetPage , version_D2Game >= Versions::V111 ? caller_carry1Limit_111 : caller_carry1Limit);
-		//6FC8504F   . E8 94670900    CALL <JMP.&D2Common.#10720>
-		//01FD7CA2   . E8 6329FBFF    CALL <JMP.&D2Common.#10485>
-		//01F9FE62   . E8 47A8FDFF    CALL <JMP.&D2Common.#10608>
-		//6FCB9B02   . E8 9709F7FF    CALL <JMP.&D2Common.#10223>
-		//6FCEF1E2   . E8 47B7F3FF    CALL <JMP.&D2Common.#10012>
-		//6FC8B012   . E8 13F7F9FF    CALL <JMP.&D2Common.#11026>
+		mem_seek(D2Game->GetOffsetByAddition(0, 0, 0x55050, 0x57CA3, 0x2FE63, 0x99B03, 0xCF1E3, 0x6B013));
+		MEMJ_REF4(D2Common->D2ItemSetPage, Game->Version >= VersionUtility::Versions::V111 ? caller_carry1Limit_111 : caller_carry1Limit);
 
 		// Cannot put 2 items carry1 in inventory by swapping
-		mem_seek R7(D2Game, 0000, 0000, 558D9, 58968, 310E8, 9B6E8, D10C8, 6BC78);
-		MEMJ_REF4( D2ItemGetPage , version_D2Game >= Versions::V112 ? caller_carry1LimitSwap_112 : version_D2Game >= Versions::V111 ? caller_carry1LimitSwap_111 : caller_carry1LimitSwap);
-		//6FC858D8   . E8 175F0900    CALL <JMP.&D2Common.#10719>
-		//01FD8967   . E8 8E1DFBFF    CALL <JMP.&D2Common.#10820>
-		//01FA10E7   . E8 9A96FDFF    CALL <JMP.&D2Common.#10505>
-		//6FCBB6E7   . E8 CAEDF6FF    CALL <JMP.&D2Common.#10370>
-		//6FCF10C7   . E8 F895F3FF    CALL <JMP.&D2Common.#10020>
-		//6FC8BC77   . E8 22E9F9FF    CALL <JMP.&D2Common.#10810>
+		mem_seek(D2Game->GetOffsetByAddition(0, 0, 0x558D9, 0x58968, 0x310E8, 0x9B6E8, 0xD10C8, 0x6BC78));
+		MEMJ_REF4(D2Common->D2ItemGetPage , Game->Version >= VersionUtility::Versions::V112 ? caller_carry1LimitSwap_112 : Game->Version >= VersionUtility::Versions::V111 ? caller_carry1LimitSwap_111 : caller_carry1LimitSwap);
 
-		if ( version_D2Game >= Versions::V111 )
+		if (Game->Version >= VersionUtility::Versions::V111 )
 		{
 			// Cannot put 2 items carry1 in inventory when drop cube
-			mem_seek R7(D2Game, 0000, 0000, 0000, 3D935, 49FD5, 17AD5, D7B75, B7B15);
-			MEMJ_REF4( D2CanPutItemInInv , caller_carry1LimitWhenDrop_111);
-			//01FBD934  |. E8 5BD3FCFF    |CALL <JMP.&D2Common.#10855>
-			//01FB9FD4  |. E8 3912FCFF    |CALL <JMP.&D2Common.#10813>
-			//6FC37AD4  |. E8 0535FFFF    |CALL <JMP.&D2Common.#10289>
-			//6FCF7B74  |. E8 232FF3FF    |CALL <JMP.&D2Common.#10133>
-			//6FCD7B14  |. E8 7D32F5FF    |CALL <JMP.&D2Common.#10402>
-		} else {
+			mem_seek(D2Game->GetOffsetByAddition(0, 0, 0, 0x3D935, 0x49FD5, 0x17AD5, 0xD7B75, 0xB7B15));
+			MEMJ_REF4(D2Common->D2CanPutItemInInv , caller_carry1LimitWhenDrop_111);
+		}
+		else
+		{
 			// Cannot put 2 items carry1 in inventory when drop cube
-			mem_seek R7(D2Game, 0000, 0000, 14341, 0000, 0000, 0000, 0000, 0000);
-			memt_byte( 0xBA ,0xE8);
-			MEMT_REF4( 0x00000806 , caller_carry1LimitWhenDrop);
-			//6FC44341  |. BA 06080000    |MOV EDX,806
+			mem_seek(D2Game->GetOffsetByAddition(0, 0, 0x14341, 0, 0, 0, 0, 0));
+			memt_byte(0xBA, 0xE8);
+			MEMT_REF4(0x806, caller_carry1LimitWhenDrop);
 		}
 
 		// Verif only carry1 out of stash page when pick up an item
-		mem_seek R7(D2Game, 0000, 0000, 1299E, 38E3B, 43F0B, 1209B, D211B, B301B);
-		memt_byte( 0x8B ,0xE8);
-		MEMT_REF4( version_D2Game >= Versions::V111 ? 0x850C2474 : 0x85102444 , version_D2Game >= Versions::V111 ? caller_carry1OutOfStash_111 : caller_carry1OutOfStash);
-		memt_byte( version_D2Game >= Versions::V111 ? 0xF6 : 0xC0 ,0x90);
-		//6FC4299E  |. 8B4424 10      |MOV EAX,DWORD PTR SS:[ESP+10]
-		//6FC429A2  |. 85C0           |TEST EAX,EAX
-		//01FB8E3B  |. 8B7424 0C      |MOV ESI,DWORD PTR SS:[ESP+C]
-		//01FB8E3F  |. 85F6           |TEST ESI,ESI
-		//01FB3F0B  |. 8B7424 0C      |MOV ESI,DWORD PTR SS:[ESP+C]
-		//01FB3F0F  |. 85F6           |TEST ESI,ESI
-		//6FC3209B  |. 8B7424 0C      |MOV ESI,DWORD PTR SS:[ESP+C]
-		//6FC3209F  |. 85F6           |TEST ESI,ESI
-		//6FCF211B  |. 8B7424 0C      |MOV ESI,DWORD PTR SS:[ESP+C]
-		//6FCF211F  |. 85F6           |TEST ESI,ESI
-		//6FCD301B  |. 8B7424 0C      |MOV ESI,DWORD PTR SS:[ESP+C]
-		//6FCD301F  |. 85F6           |TEST ESI,ESI
+		mem_seek(D2Game->GetOffsetByAddition(0, 0, 0x1299E, 0x38E3B, 0x43F0B, 0x1209B, 0xD211B, 0xB301B));
+		memt_byte(0x8B, 0xE8);
+		MEMT_REF4(Game->Version >= VersionUtility::Versions::V111 ? 0x850C2474 : 0x85102444, Game->Version >= VersionUtility::Versions::V111 ? caller_carry1OutOfStash_111 : caller_carry1OutOfStash);
+		memt_byte(Game->Version >= VersionUtility::Versions::V111 ? 0xF6 : 0xC0, 0x90);
 
 		log_msg("\n");
 	}

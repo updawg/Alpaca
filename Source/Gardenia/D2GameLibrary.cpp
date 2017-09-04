@@ -17,6 +17,14 @@
 
 #include "D2GameLibrary.h"
 
+D2GameLibrary::D2GameLibrary(int gameVersion) : Library()
+{
+	Name = "D2Game.dll";
+	Version = gameVersion;
+	Offset = LoadDiabloLibrary();
+	SetFunctions();
+}
+
 void D2GameLibrary::SetFunctions()
 {
 	D2SetNbPlayers = (TD2SetNbPlayers)GetOffsetByProc(10059, 10059, 10059, 10039, 10007, 10037, 10049, 10002);

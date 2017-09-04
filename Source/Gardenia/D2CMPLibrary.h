@@ -22,13 +22,7 @@
 class D2CMPLibrary : public Library
 {
 public:
-	D2CMPLibrary(int gameVersion) : Library()
-	{
-		Name = "D2CMP.dll";
-		Version = gameVersion;
-		Offset = LoadDiabloLibrary();
-		SetFunctions();
-	};
+	D2CMPLibrary(int gameVersion);
 
 	typedef DWORD(__stdcall *TD2CMP10014) (void* image);
 

@@ -17,6 +17,14 @@
 
 #include "D2NetLibrary.h"
 
+D2NetLibrary::D2NetLibrary(int gameVersion) : Library()
+{
+	Name = "D2Net.dll";
+	Version = gameVersion;
+	Offset = LoadDiabloLibrary();
+	SetFunctions();
+}
+
 void D2NetLibrary::SetFunctions()
 {
 	D2SendToServer = (TD2SendToServer)GetOffsetByProc(10005, 10005, 10005, 10035, 10020, 10036, 10024, 10015);

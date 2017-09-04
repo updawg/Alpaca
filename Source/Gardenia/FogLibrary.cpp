@@ -17,6 +17,14 @@
 
 #include "FogLibrary.h"
 
+FogLibrary::FogLibrary(int gameVersion) : Library()
+{
+	Name = "Fog.dll";
+	Version = gameVersion;
+	Offset = LoadDiabloLibrary();
+	SetFunctions();
+}
+
 void FogLibrary::SetFunctions()
 {
 	D2FogAssertOld = (TD2FogAssertOld)GetOffsetByProc(10023, 10023, 10023, 0, 0, 0, 0, 0);

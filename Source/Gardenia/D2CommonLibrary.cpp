@@ -17,6 +17,26 @@
 
 #include "D2CommonLibrary.h"
 
+D2CommonLibrary::D2CommonLibrary(int gameVersion) : Library()
+{
+	Name = "D2Common.dll";
+	Version = gameVersion;
+	Offset = LoadDiabloLibrary();
+	SetFunctions();
+
+	// These need to be initialized here, they cannot be inlined in the variable declaration
+	// because they would be initialized before the class was able to set the Version variable
+	// which are used in the GetOffsetForVersion function.
+	ptPYPlayerDataOffset = GetOffsetForVersion(0x5D, 0x5D, 0x5D, 0x49, 0x49, 0x49, 0x49, 0x49);
+	ptSpecificDataOffset = GetOffsetForVersion(0x70, 0x70, 0x14, 0x14, 0x14, 0x14, 0x14, 0x14);
+	ptGameOffset = GetOffsetForVersion(0xA4, 0xA4, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80);
+	ptClientGameOffset = GetOffsetForVersion(0x170, 0x194, 0x1A8, 0x1A8, 0x1A8, 0x1A8, 0x1A8, 0x1A8);
+	ptInventoryOffset = GetOffsetForVersion(0x84, 0x84, 0x60, 0x60, 0x60, 0x60, 0x60, 0x60);
+	ptSkillsOffset = GetOffsetForVersion(0xCC, 0xCC, 0xA8, 0xA8, 0xA8, 0xA8, 0xA8, 0xA8);
+	ptImageOffset = GetOffsetForVersion(0x04, 0x04, 0x04, 0x08, 0x08, 0x3C, 0x34, 0x34);
+	ptFrameOffset = GetOffsetForVersion(0x08, 0x08, 0x08, 0x44, 0x44, 0x40, 0, 0);
+}
+
 void D2CommonLibrary::SetFunctions()
 {
 	D2Common10242 = (TD2Common10242)GetOffsetByProc(10242, 10242, 10242, 0, 0, 0, 0, 0);
@@ -77,14 +97,4 @@ void D2CommonLibrary::SetFunctions()
 	D2Common10581 = (TD2Common10581)GetOffsetByProc(10581, 10581, 0, 0, 0, 0, 0, 0);
 	D2Common10598 = (TD2Common10598)GetOffsetByProc(10598, 10598, 0, 0, 0, 0, 0, 0);
 	D2Common10673 = (TD2Common10673)GetOffsetByProc(10673, 10673, 0, 0, 0, 0, 0, 0);
-}
-
-DWORD D2CommonLibrary::RetrieveStashGridOffset()
-{
-	return GetOffsetByAddition(0xC9F3, 0xCA03, 0x14ED3, 0x5FCB5, 0x2A505, 0x1BDB5, 0x82CA5, 0x6CC25);
-}
-
-DWORD D2CommonLibrary::RetrieveSgptDataTables()
-{
-	return GetOffsetByAddition(0, 0, 0x96A20, 0x9B74C, 0x9EE8C, 0x9B500, 0x99E1C, 0xA33F0);
 }

@@ -47,14 +47,11 @@ extern s_shifting shifting;
 #define RANDOM(V) ((int)(rand()/(RAND_MAX+1.0)*(V)))
 
 #define PCPlayerData (*(PlayerData**)((DWORD)(ptChar)+shifting.ptSpecificData)) //->ptPlayerData
-#define PCGame (*(Game**)((DWORD)(ptChar)+shifting.ptGame)) //->ptGame
-#define PClientGame (*(Game**)((DWORD)(ptClient)+shifting.ptClientGame)) //ptClient->ptGame
+#define PCGame (*(GameStruct**)((DWORD)(ptChar)+shifting.ptGame)) //->ptGame
+#define PClientGame (*(GameStruct**)((DWORD)(ptClient)+shifting.ptClientGame)) //ptClient->ptGame
 #define PCInventory (*(Inventory**)((DWORD)(ptChar)+shifting.ptInventory)) //->ptInventory
 #define PCPY ((PYPlayerData*)((DWORD)PCPlayerData+shifting.ptPYPlayerData)) //->ptPYPlayerData
 #define PCSkills (*(Skills**)((DWORD)(ptChar)+shifting.ptSkills)) //->ptSkills
-
-// offset of dll + corresponding offset depending on version
-#define R7(Z,A,B,C,D,E,F,G,H) (offset_##Z + (version_##Z == VersionUtility::Versions::V113d? 0x##H : (version_##Z == VersionUtility::Versions::V113c? 0x##G : (version_##Z == VersionUtility::Versions::V112? 0x##F : (version_##Z == VersionUtility::Versions::V111b? 0x##E : (version_##Z == VersionUtility::Versions::V111? 0x##D : (version_##Z == VersionUtility::Versions::V110? 0x##C : (version_##Z == VersionUtility::Versions::V109d? 0x##B : 0x##A))))))))
 
 #define RX(v) (WindowStartX+(v))
 #define RY(v) (ResolutionY+NegWindowStartY-(v))

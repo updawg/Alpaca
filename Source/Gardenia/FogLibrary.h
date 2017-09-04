@@ -22,13 +22,7 @@
 class FogLibrary : public Library
 {
 public:
-	FogLibrary(int gameVersion) : Library()
-	{
-		Name = "Fog.dll";
-		Version = gameVersion;
-		Offset = LoadDiabloLibrary();
-		SetFunctions();
-	};
+	FogLibrary(int gameVersion);
 
 	typedef void(__stdcall *TD2FogAssertOld) (const char* ptMessage, DWORD eip, DWORD line);
 	typedef void(__fastcall *TD2FogAssert) (const char* ptMessage, DWORD eip, DWORD line);

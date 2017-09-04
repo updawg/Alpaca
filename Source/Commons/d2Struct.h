@@ -19,7 +19,7 @@
 
 #include <windows.h>
 struct Unit;
-struct Game;
+struct GameStruct;
 struct Room;
 
 #pragma pack(1)
@@ -81,7 +81,7 @@ struct ItemGenerationData //size=0x84
 {
 	Unit*	ptMonster;		//+00
 	BYTE	uk1[0x04];		//+04
-	Game*	ptGame;			//+08
+	GameStruct*	ptGame;			//+08
 	DWORD	ilvl;			//+0C
 	BYTE	uk2[0x04];		//+10
 	DWORD	nTxtFileNo;		//+14

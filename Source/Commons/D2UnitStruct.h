@@ -99,7 +99,7 @@ struct ActMap//ptGame+BC size=0x60
 
 struct NetClient;
 
-struct Game
+struct GameStruct
 {                              			//Offset from Code.
 	BYTE	uk1[0x18];					//+00
 	DWORD	_ptLock;					//+18 Unknown  
@@ -327,7 +327,7 @@ struct NetClient
 	DWORD	counter;					//+184
 	DWORD	currentSize;				//+188
 	BYTE	uk4[0x1C];					//+18C
-	Game*	ptGame;						//+1A8
+	GameStruct*	ptGame;						//+1A8
 };
 
 struct PlayerData   
@@ -385,7 +385,7 @@ struct Unit
 	Stats*		ptStats;				//+5C
 	Inventory*	ptInventory;		    //+60
 	BYTE		uk5[0x1C];				//+64
-	Game*		ptGame;					//+80
+	GameStruct*		ptGame;					//+80
 	BYTE		uk6[0x24];				//+84
 	Skills*		ptSkills;				//+A8
 	void*		ptCombatData;			//+AC

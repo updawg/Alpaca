@@ -22,13 +22,7 @@
 class D2LangLibrary : public Library
 {
 public:
-	D2LangLibrary(int gameVersion) : Library()
-	{
-		Name = "D2Lang.dll";
-		Version = gameVersion;
-		Offset = LoadDiabloLibrary();
-		SetFunctions();
-	};
+	D2LangLibrary(int gameVersion);
 
 	typedef LPWSTR(__fastcall *TD2GetStringFromString) (const char* ptString);
 	typedef LPWSTR(__fastcall *TD2GetStringFromIndex) (WORD dwIndexNum);

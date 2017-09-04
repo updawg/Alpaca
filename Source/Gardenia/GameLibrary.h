@@ -23,13 +23,7 @@
 class GameLibrary : public Library
 {
 public:
-	GameLibrary() : Library()
-	{
-		Name = "Game.exe";
-		Offset = (DWORD)GetModuleHandle(NULL);
-		Version = VersionUtility::GetVersion(Name);
-		log_msg("Game.exe loaded at:\t%08X (%s)\n", Offset, VersionUtility::GetVersionAsString(Version));
-	};
+	GameLibrary();
 private:
 	void SetFunctions();
 };

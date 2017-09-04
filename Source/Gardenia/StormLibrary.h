@@ -22,13 +22,7 @@
 class StormLibrary : public Library
 {
 public:
-	StormLibrary(int gameVersion) : Library()
-	{
-		Name = "Storm.dll";
-		Version = gameVersion;
-		Offset = LoadDiabloLibrary();
-		SetFunctions();
-	};
+	StormLibrary(int gameVersion);
 
 	typedef DWORD(__stdcall *TD2StormMPQOpenFile) (DWORD zero, LPCSTR fileName, DWORD dwSearchScope, void** buffer);
 	typedef void(__stdcall *TD2Storm503) (DWORD, DWORD, DWORD);

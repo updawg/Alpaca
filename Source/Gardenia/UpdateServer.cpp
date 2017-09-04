@@ -21,8 +21,6 @@
 #include "commands.h"
 #include "common.h"
 
-using Versions = VersionUtility::Versions;
-
 int renameIndex = 0;
 char renameString[16];
 DWORD PageSwap;
@@ -130,7 +128,7 @@ END_RCM:
 	RETN 8
 }}
 
-
+// [Patch]
 void Install_UpdateServer()
 {
 	static int isInstalled = false;
@@ -139,37 +137,22 @@ void Install_UpdateServer()
 	log_msg("Patch D2Game for received button click message. (UpdateServer)\n");
 
 	// manage button click message from Client.
-	mem_seek R7(D2Game, 4A702, 4AAC2, 56EA2, 54AE3, 2C773, 975C3, CC983, 676C3);
-	if (version_D2Game >= Versions::V111) {
-		memt_byte( 0xC1, 0x57 );	// PUSH EDI
-		memt_byte( 0xEE, 0xE8 );	// CALL caller_handleServerUpdate
-		MEMT_REF4( 0xF88B5708, caller_handleServerUpdate);
-		//01FD4AE3   . C1EE 08        SHR ESI,8
-		//01FD4AE6   . 57             PUSH EDI
-		//01FD4AE7   . 8BF8           MOV EDI,EAX
-		//01F9C773   . C1EE 08        SHR ESI,8
-		//01F9C776   . 57             PUSH EDI
-		//01F9C777   . 8BF8           MOV EDI,EAX
-		//6FCB75C3   . C1EE 08        SHR ESI,8
-		//6FCB75C6   . 57             PUSH EDI
-		//6FCB75C7   . 8BF8           MOV EDI,EAX
-		//6FCEC983   . C1EE 08        SHR ESI,8
-		//6FCEC986   . 57             PUSH EDI
-		//6FCEC987   . 8BF8           MOV EDI,EAX
-		//066A76C3  |.  C1EE 08       SHR ESI,8
-		//066A76C6  |.  57            PUSH EDI
-		//066A76C7  |.  8BF8          MOV EDI,EAX
-	} else if (version_D2Game == Versions::V110) {
-		memt_byte( 0xC1, 0xE8 );	// CALL caller_handleServerUpdate
-		MEMT_REF4( 0xF88B08EE, caller_handleServerUpdate);
-		//6FC86EA2   . C1EE 08        SHR ESI,8
-		//6FC86EA5   . 8BF8           MOV EDI,EAX
-	} else {
-		memt_byte( 0x33, 0xE8 );	// CALL caller_handleServerUpdate
-		MEMT_REF4( 0x508B66D2, caller_handleServerUpdate_9);
-		memt_byte( 0x01, 0x90 );	// NOP
-		//6FC7A702   . 33D2           XOR EDX,EDX
-		//6FC7A704   . 66:8B50 01     MOV DX,WORD PTR DS:[EAX+1]
+	mem_seek(D2Game->GetOffsetByAddition(0x4A702, 0x4AAC2, 0x56EA2, 0x54AE3, 0x2C773, 0x975C3, 0xCC983, 0x676C3));
+	if (Game->Version >= VersionUtility::Versions::V111) {
+		memt_byte(0xC1, 0x57);
+		memt_byte(0xEE, 0xE8);
+		MEMT_REF4(0xF88B5708, caller_handleServerUpdate);
+	}
+	else if (Game->Version == VersionUtility::Versions::V110)
+	{
+		memt_byte(0xC1, 0xE8);
+		MEMT_REF4(0xF88B08EE, caller_handleServerUpdate);
+	}
+	else
+	{
+		memt_byte(0x33, 0xE8);
+		MEMT_REF4(0x508B66D2, caller_handleServerUpdate_9);
+		memt_byte(0x01, 0x90);
 	}
 
 	log_msg("\n");

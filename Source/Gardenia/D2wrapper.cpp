@@ -18,7 +18,6 @@
 #include "globalVariable.h"		// Install_VariableOnRealm()
 #include "commands.h"			// Install_Commands()
 #include "mainScreen.h"			// Install_PrintPlugYVersion() Install_VersionChange()
-#include "savePath.h"			// Install_ChangingSavePath()
 #include "bigStash.h"			// Install_BigStash()
 #include "statsPoints.h"		// Install_StatsPoints() Install_StatsLimitShiftClick()
 #include "infinityStash.h"		// Install_MultiPageStash()
@@ -29,73 +28,45 @@
 #include "customLibraries.h"
 #include "common.h"				// Includes "d2wrapper.h"
 
-using Versions = VersionUtility::Versions;
-
-// Required Files
-int version_D2Client = Versions::UNKNOWN;
-int version_D2CMP = Versions::UNKNOWN;
-int version_D2Common = Versions::UNKNOWN;
-int version_D2Game = Versions::UNKNOWN;
-int version_D2gfx = Versions::UNKNOWN;
-int version_D2Lang = Versions::UNKNOWN;
-int version_D2Launch = Versions::UNKNOWN;
-int version_D2Net = Versions::UNKNOWN;
-int version_D2Win = Versions::UNKNOWN;
-int version_Fog = Versions::UNKNOWN;
-int version_Storm = Versions::UNKNOWN;
-
-DWORD offset_Game = NULL;
-DWORD offset_D2Client = NULL;
-DWORD offset_D2CMP = NULL;
-DWORD offset_D2Common = NULL;
-DWORD offset_D2Game = NULL;
-DWORD offset_D2gfx = NULL;
-DWORD offset_D2Lang = NULL;
-DWORD offset_D2Launch = NULL;
-DWORD offset_D2Net = NULL;
-DWORD offset_D2Win = NULL;
-DWORD offset_Fog = NULL;
-DWORD offset_Storm = NULL;
-
 // Make this global so people can use it.
 LibraryUtility* lu;
-GameLibrary* GameLib;
-D2ClientLibrary* D2ClientLib;
-D2CMPLibrary* D2CMPLib;
-D2CommonLibrary* D2CommonLib;
-D2GameLibrary* D2GameLib;
-D2gfxLibrary* D2gfxLib;
-D2LangLibrary* D2LangLib;
-D2LaunchLibrary* D2LaunchLib;
-D2NetLibrary* D2NetLib;
-D2WinLibrary* D2WinLib;
-FogLibrary* FogLib;
-StormLibrary* StormLib;
+GameLibrary* Game;
+D2ClientLibrary* D2Client;
+D2CMPLibrary* D2CMP;
+D2CommonLibrary* D2Common;
+D2GameLibrary* D2Game;
+D2gfxLibrary* D2gfx;
+D2LangLibrary* D2Lang;
+D2LaunchLibrary* D2Launch;
+D2NetLibrary* D2Net;
+D2WinLibrary* D2Win;
+FogLibrary* Fog;
+StormLibrary* Storm;
 
-void freeLibrary( DWORD library )
+void freeLibrary(DWORD library)
 {
-	if (library && library != offset_Game)
+	if (library && library != Game->Offset)
 		FreeLibrary((HMODULE)library);
 }
 
 void freeD2Libraries()
 {
-	if (lu->Game->Version >= Versions::V114a)
+	if (Game->Version >= VersionUtility::Versions::V114a)
 		return;
 
 	log_msg("***** Free Libraries *****\n");
 
-	freeLibrary( offset_D2Client );
-	freeLibrary( offset_D2CMP );
-	freeLibrary( offset_D2Common );
-	freeLibrary( offset_D2Game );
-	freeLibrary( offset_D2gfx );
-	freeLibrary( offset_D2Lang );
-	freeLibrary( offset_D2Launch );
-	freeLibrary( offset_D2Net );
-	freeLibrary( offset_D2Win );
-	freeLibrary( offset_Fog );
-	freeLibrary( offset_Storm );
+	freeLibrary(D2Client->Offset);
+	freeLibrary(D2CMP->Offset);
+	freeLibrary(D2Common->Offset);
+	freeLibrary(D2Game->Offset);
+	freeLibrary(D2gfx->Offset);
+	freeLibrary(D2Lang->Offset);
+	freeLibrary(D2Launch->Offset);
+	freeLibrary(D2Net->Offset);
+	freeLibrary(D2Win->Offset);
+	freeLibrary(Fog->Offset);
+	freeLibrary(Storm->Offset);
 
 	log_msg("\n\n");
 }
@@ -168,64 +139,9 @@ void loadCustomLibraries()
 	if(dllFilenames)
 		D2FogMemDeAlloc(dllFilenames,__FILE__,__LINE__,0);
 
-	log_msg("\n\n");
+	log_msg("\n");
 }
 
-void initD2modules()
-{
-	// I'm just leaving this values because I don't want to spend time at the moment repointing and
-	// testing all of the existing code that re-uses these externs. So for now, just give them the data
-	// that they want but use the LibraryUtility as the backend database.
-	offset_Game = lu->Game->Offset;
-
-	if (VersionUtility::IsEqualOrGreaterThan114(lu->Game->Version))
-	{
-		// It's all in Game.exe so the offset is the same.
-		offset_D2Client = lu->Game->Offset;
-		offset_D2CMP = lu->Game->Offset;
-		offset_D2Common = lu->Game->Offset;
-		offset_D2Game = lu->Game->Offset;
-		offset_D2gfx = lu->Game->Offset;
-		offset_D2Lang = lu->Game->Offset;
-		offset_D2Launch = lu->Game->Offset;
-		offset_D2Net = lu->Game->Offset;
-		offset_D2Win = lu->Game->Offset;
-		offset_Fog = lu->Game->Offset;
-		offset_Storm = lu->Game->Offset;
-	}
-	else
-	{
-		offset_D2Client = lu->D2Client->Offset;
-		offset_D2CMP = lu->D2CMP->Offset;
-		offset_D2Common = lu->D2Common->Offset;
-		offset_D2Game = lu->D2Game->Offset;
-		offset_D2gfx = lu->D2gfx->Offset;
-		offset_D2Lang = lu->D2Lang->Offset;
-		offset_D2Launch = lu->D2Launch->Offset;
-		offset_D2Net = lu->D2Net->Offset;
-		offset_D2Win = lu->D2Win->Offset;
-		offset_Fog = lu->Fog->Offset;
-		offset_Storm = lu->Storm->Offset;
-	}
-
-	// This can be removed once we remove any R7 and other macros that are still depending on them.
-	// Then they can all target Game->Version.
-
-	// All DLLs should match same version as game or problems will happen.
-	version_D2Client = lu->Game->Version;
-	version_D2CMP = lu->Game->Version;
-	version_D2Common = lu->Game->Version;
-	version_D2Game = lu->Game->Version;
-	version_D2gfx = lu->Game->Version;
-	version_D2Lang = lu->Game->Version;
-	version_D2Launch = lu->Game->Version;
-	version_D2Net = lu->Game->Version;
-	version_D2Win = lu->Game->Version;
-	version_Fog = lu->Game->Version;
-	version_Storm = lu->Game->Version;
-
-	log_msg("\n\n");
-}
 //////////////////////////////////// EXPORTS FUNCTIONS ////////////////////////////////////
 
 void Install_Functions();
@@ -249,28 +165,26 @@ extern "C" __declspec(dllexport) void* __stdcall Init(LPSTR IniName)
 	// Initialize/Load Libraries
 	lu = new LibraryUtility();
 
-	// Expose libraries
-	GameLib = lu->Game;
-	D2ClientLib = lu->D2Client;
-	D2CMPLib = lu->D2CMP;
-	D2CommonLib = lu->D2Common;
-	D2GameLib = lu->D2Game;
-	D2gfxLib = lu->D2gfx;
-	D2LangLib = lu->D2Lang;
-	D2LaunchLib = lu->D2Launch;
-	D2NetLib = lu->D2Net;
-	D2WinLib = lu->D2Win;
-	FogLib = lu->Fog;
-	StormLib = lu->Storm;
+	// Expose libraries so its easier to reference.
+	Game = lu->Game;
+	D2Client = lu->D2Client;
+	D2CMP = lu->D2CMP;
+	D2Common = lu->D2Common;
+	D2Game = lu->D2Game;
+	D2gfx = lu->D2gfx;
+	D2Lang = lu->D2Lang;
+	D2Launch = lu->D2Launch;
+	D2Net = lu->D2Net;
+	D2Win = lu->D2Win;
+	Fog = lu->Fog;
+	Storm = lu->Storm;
 
-	if (!VersionUtility::IsSupported(GameLib->Version))
+	if (!VersionUtility::IsSupported(Game->Version))
 	{
-		log_box("Gardenia isn't compatible with this version : %s", VersionUtility::GetVersionAsString(GameLib->Version));
+		log_box("Gardenia isn't compatible with this version : %s", VersionUtility::GetVersionAsString(Game->Version));
 		Release();
 		exit(0);
 	}
-
-	initD2modules();
 
 	initD2functions();
 
@@ -286,9 +200,9 @@ extern "C" __declspec(dllexport) void* __stdcall Init(LPSTR IniName)
 
 	initCustomLibraries();
 
-	loadLocalizedStrings(D2GetLang());
+	loadLocalizedStrings(D2Lang->D2GetLang());
 
-	log_msg("***** ENTERING DIABLO II *****\n\n" );
+	log_msg("***** ENTERING DIABLO II *****\n");
 
 	active_logFile = active_logFile - 1;
 
@@ -315,9 +229,6 @@ void Install_Functions()
 
 	if (active_DisplayBaseStatsValue)
 		Install_DisplayBaseStatsValue();
-
-	if (active_changingSavePath)
-		Install_ChangingSavePath();
 
 	if (active_StatsShiftClickLimit)
 		Install_StatsLimitShiftClick();
@@ -349,5 +260,5 @@ void Install_Functions()
 	if (active_LadderRunewords)
 		Install_LadderRunewords();
 
-	log_msg("\nDLL patched sucessfully.\n\n\n");
+	log_msg("DLL patched sucessfully.\n\n");
 }

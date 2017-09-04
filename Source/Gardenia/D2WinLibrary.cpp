@@ -17,6 +17,14 @@
 
 #include "D2WinLibrary.h"
 
+D2WinLibrary::D2WinLibrary(int gameVersion) : Library()
+{
+	Name = "D2Win.dll";
+	Version = gameVersion;
+	Offset = LoadDiabloLibrary();
+	SetFunctions();
+}
+
 void D2WinLibrary::SetFunctions()
 {
 	D2PrintLineOnTextBox = (TD2PrintLineOnTextBox)GetOffsetByProc(10046, 10046, 10046, 10061, 10075, 10015, 10022, 10051);

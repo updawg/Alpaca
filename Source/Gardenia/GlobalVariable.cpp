@@ -19,8 +19,6 @@
 #include "common.h"
 #include <stdio.h>
 
-using Versions = VersionUtility::Versions;
-
 bool onRealm=false;
 bool needToInit=false;
 int previouslyOnRealm = -1;
@@ -89,49 +87,46 @@ notFound:
 	RETN
 }}
 
+// [Patch]
 void Install_VariableOnRealm()
 {
 	static int isInstalled = false;
 	if (isInstalled) return;
 
-	log_msg("Patch D2Launch for set not on realm variable. (VariableonRealm)\n");
+	log_msg("Patch D2Launch for disabling online buttons. (VariableonRealm)\n");
 
 	// click on Battle.net button
-	mem_seek R7(D2Launch, 8195, 81A5, 9915, 129E5, 18AA5, 17D15, 19295, 11C65);
-	memt_byte( 0x81, 0xE8 );	// CALL
-	MEMT_REF4( 0x000400EC, caller_BnetBtnPress);
-	memt_byte( 0x00, 0x90 );	// NOP
-	//6FA529E5   . 81EC 00040000  SUB ESP,400
+	mem_seek(D2Launch->GetOffsetByAddition(0x8195, 0x81A5, 0x9915, 0x129E5, 0x18AA5, 0x17D15, 0x19295, 0x11C65));
+	memt_byte(0x81, 0xE8);
+	MEMT_REF4(0x000400EC, caller_BnetBtnPress);
+	memt_byte(0, 0x90);
 
 	// click on TCP/IP button
-	mem_seek R7(D2Launch, 87B9, 87C9, 9F99, 11329, 17409, 16659, 17B8E, 1053E);
-	if (version_D2Launch == Versions::V109b || version_D2Launch == Versions::V109d || version_D2Launch == Versions::V110)
+	mem_seek(D2Launch->GetOffsetByAddition(0x87B9, 0x87C9, 0x9F99, 0x11329, 0x17409, 0x16659, 0x17B8E, 0x1053E));
+	if (Game->Version == VersionUtility::Versions::V109b || Game->Version == VersionUtility::Versions::V109d || Game->Version == VersionUtility::Versions::V110)
 	{
-		memt_byte( 0xBD, 0xE8 );	// CALL
-		MEMT_REF4( 0x00000001, caller_TCPIPBtnPress);
-	} else {
-		memt_byte( 0xBE, 0xE8 );	// CALL
-		MEMT_REF4( 0x00000040, caller_TCPIPBtnPress111);
-		//6FA51329   . BE 40000000    MOV ESI,40
+		memt_byte(0xBD, 0xE8);
+		MEMT_REF4(1, caller_TCPIPBtnPress);
+	}
+	else
+	{
+		memt_byte(0xBE, 0xE8);
+		MEMT_REF4(0x40, caller_TCPIPBtnPress111);
 	}
 
 	// click on SinglePlayer button
-	mem_seek R7(D2Launch, D1F6, D1E6, EC16, B726, 117E6, 10A56, 11F36, A906);
-	memt_byte( 0xBA, 0xE8 );	// CALL
-	MEMT_REF4( 0x00000400, caller_SinglePlayerBtnPress);
-	//6FA4B726   . BA 00040000    MOV EDX,400
+	mem_seek(D2Launch->GetOffsetByAddition(0xD1F6, 0xD1E6, 0xEC16, 0xB726, 0x117E6, 0x10A56, 0x11F36, 0xA906));
+	memt_byte(0xBA, 0xE8);
+	MEMT_REF4(0x400, caller_SinglePlayerBtnPress);
 
-	if (version_D2Game == Versions::V110)
+	if (Game->Version == VersionUtility::Versions::V110)
 	{
 		log_msg("\nPatch D2Game for fixing ptClient removing bug. (VariableonRealm)\n");
 		//Bug crash ptClient search fix (for Megalixir Mod).
-		mem_seek R7(D2Game, 0000, 0000, 2B97, 0000, 0000, 0000, 0000, 0000);
-		memt_byte( 0x39 ,0xE8);
-		MEMT_REF4( 0x8B0C7429 , caller_fixClientRemovingBug);
-		memt_byte( 0xC1 ,0x90);
-		//6FC32B97  |> 3929           CMP DWORD PTR DS:[ECX],EBP
-		//6FC32B99  |. 74 0C          JE SHORT D2Game.6FC32BA7
-		//6FC32B9B  |> 8BC1           MOV EAX,ECX
+		mem_seek(D2Game->GetOffsetByAddition(0, 0, 0x2B97, 0, 0, 0, 0, 0));
+		memt_byte(0x39, 0xE8);
+		MEMT_REF4(0x8B0C7429, caller_fixClientRemovingBug);
+		memt_byte(0xC1, 0x90);
 	}
 
 	log_msg("\n");

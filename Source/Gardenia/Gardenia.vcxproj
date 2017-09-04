@@ -139,7 +139,6 @@
     <ClCompile Include="Parameters.cpp" />
     <ClCompile Include="PlayerCustomData.cpp" />
     <ClCompile Include="PlugYFiles.cpp" />
-    <ClCompile Include="SavePath.cpp" />
     <ClCompile Include="SavePlayerData.cpp" />
     <ClCompile Include="SharedSaveFile.cpp" />
     <ClCompile Include="StatsPoints.cpp" />

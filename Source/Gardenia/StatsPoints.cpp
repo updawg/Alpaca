@@ -21,8 +21,6 @@
 #include "common.h"
 #include <stdio.h>
 
-using Versions = VersionUtility::Versions;
-
 bool active_StatsShiftClickLimit=1;
 DWORD limitValueToShiftClick=5;
 
@@ -170,16 +168,10 @@ void Install_StatsLimitShiftClick()
 	log_msg("Patch D2Client for limit the assigment of stat points when shift is used. (LimitShift)\n");
 
 	// Limit the assigment of stat points.
-	mem_seek R7(D2Client, 2ACD0, 2ACC0, 315CD, 83915, 8A395, 6C2F5, BDEF5, C0695);
-	memt_byte( 0xFF, 0x90 );	// NOP
-	memt_byte( 0x15, 0xE8 );	// CALL
-	MEMD_REF4( GetKeyState, GameLib->Version >= Versions::V111 ? caller_LimitShift_111 : caller_LimitShift);
-	//6FAD15CD   . FF15 68E0B66F  CALL DWORD PTR DS:[<&USER32.GetKeyState>]
-	//6FB33915   . FF15 CCF0B76F  CALL DWORD PTR DS:[<&USER32.GetKeyState>]
-	//6FB3A395   . FF15 08F1B76F  CALL DWORD PTR DS:[<&USER32.GetKeyState>]
-	//6FB1C2F5   . FF15 10F1B76F  CALL DWORD PTR DS:[<&USER32.GetKeyState>>; \GetKeyState
-	//6FB6DEF5   . FF15 04F1B76F  CALL DWORD PTR DS:[<&USER32.GetKeyState>>; \GetKeyState
-	//6FB70695   . FF15 2001B86F  CALL DWORD PTR DS:[<&USER32.GetKeyState>>; \GetKeyState
+	mem_seek(D2Client->GetOffsetByAddition(0x2ACD0, 0x2ACC0, 0x315CD, 0x83915, 0x8A395, 0x6C2F5, 0xBDEF5, 0xC0695));
+	memt_byte(0xFF, 0x90);
+	memt_byte(0x15, 0xE8);
+	MEMD_REF4(GetKeyState, Game->Version >= VersionUtility::Versions::V111 ? caller_LimitShift_111 : caller_LimitShift);
 
 	log_msg("\n");
 

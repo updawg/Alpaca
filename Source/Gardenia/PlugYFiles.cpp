@@ -19,8 +19,6 @@
 #include "common.h"
 #include <stdio.h>
 
-using Versions = VersionUtility::Versions;
-
 extern bool active_newInterfaces;
 extern bool active_multiPageStash;
 extern bool active_sharedGold;
@@ -39,7 +37,7 @@ DWORD STDCALL isModFile (char* filename)
 		strcpy(fileTemp,filename);
 		D2FogGetInstallPath(filename,0x104-strlen(filename));
 		strcat(filename,fileTemp);
-		log_msg("-> %s\n", filename);
+		log_msg("-> %s\n\n", filename);
 		if ((GetFileAttributesA(filename) & 0x10) == 0)
 			return true;
 	}
@@ -84,6 +82,7 @@ ISNOTMODDATA:
 	JMP DWORD PTR CS:[LeaveCriticalSection]
 }}
 
+// [Patch]
 void Install_PlugYFiles()
 {
 	static int isInstalled = false;
@@ -92,22 +91,15 @@ void Install_PlugYFiles()
 	log_msg("Patch Storm to found custom file. (PlugYFiles)\n");
 
 	// Try in Diablo II\Gardenia\ if file not found
-	mem_seek R7(Storm,	192C6, 19296, 18677, 2CC69, 14259, 121E9, 28D89, 2DA79);//( (DWORD)D2Storm268 + V7(Storm, 01A8, 01A8, 01AB, 0429, 0429, 0429, 0000) );
-	memt_byte( 0xFF ,0x90); // NOP
-	memt_byte( 0x15 ,0xE8); // CALL
-	MEMD_REF4( LeaveCriticalSection, version_Storm >= Versions::V111 ? caller_isModFile_111 : caller_isModFile);
-	//6FFC8677  |. FF15 F411FE6F  CALL DWORD PTR DS:[<&KERNEL32.LeaveCriti>; \LeaveCriticalSection
-	//6FC1CC69  |. FF15 3832C36F  CALL DWORD PTR DS:[<&KERNEL32.LeaveCriti>; \LeaveCriticalSection
-	//6FC04259  |. FF15 3832C36F  CALL DWORD PTR DS:[<&KERNEL32.LeaveCriti>; \LeaveCriticalSection
-	//6FC021E9  |. FF15 4432C36F  CALL DWORD PTR DS:[<&KERNEL32.LeaveCriti>; \LeaveCriticalSection
-	//6FC18D89  |. FF15 5832C36F  CALL DWORD PTR DS:[<&KERNEL32.LeaveCriti>; \LeaveCriticalSection
-	//6FC1DA79  |. FF15 3C32C36F  CALL DWORD PTR DS:[<&KERNEL32.LeaveCriti>; \LeaveCriticalSection
+	mem_seek(Storm->GetOffsetByAddition(0x192C6, 0x19296, 0x18677, 0x2CC69, 0x14259, 0x121E9, 0x28D89, 0x2DA79));
+	memt_byte(0xFF, 0x90);
+	memt_byte(0x15, 0xE8);
+	MEMD_REF4(LeaveCriticalSection, Game->Version >= VersionUtility::Versions::V111 ? caller_isModFile_111 : caller_isModFile);
 
 	log_msg("\n" );
 
 	isInstalled = true;
 }
-//6FFC7EF0 >/$ 8B4C24 10      MOV ECX,DWORD PTR SS:[ESP+10]
 
 /****************************************************************************************************/
 
@@ -159,6 +151,7 @@ FCT_ASM ( caller_freeCustomImages )
 	RETN
 }}
 
+// [Patch]
 void Install_PlugYImagesFiles()
 {
 	static int isInstalled = false;
@@ -169,26 +162,14 @@ void Install_PlugYImagesFiles()
 	log_msg("Patch D2Client to load/free custom images. (PlugYImagesFiles)\n");
 
 	// Load custom images
-	mem_seek R7(D2Client, 57E21, 57E21, 5E4B1, 2E101, B67E1, 82761, 27EAE, 6E0BE);
-	memt_byte( 0xB9 ,0xE8);
-	MEMT_REF4( 0x0000000C , caller_loadCustomImages);
-	//6FAFE4B1  |. B9 0C000000    MOV ECX,0C
-	//6FADE101  |. B9 0C000000    MOV ECX,0C
-	//6FB667E1  |. B9 0C000000    MOV ECX,0C
-	//6FB32761  |. B9 0C000000    MOV ECX,0C
-	//6FAD7EAE  |. B9 0C000000    MOV ECX,0C
-	//6FB1E0BE  |. B9 0C000000    MOV ECX,0C
+	mem_seek(D2Client->GetOffsetByAddition(0x57E21, 0x57E21, 0x5E4B1, 0x2E101, 0xB67E1, 0x82761, 0x27EAE, 0x6E0BE));
+	memt_byte(0xB9 ,0xE8);
+	MEMT_REF4(0xC, caller_loadCustomImages);
 
 	// Free custom images
-	mem_seek R7(D2Client, 57FA9, 57FA9, 5E639, 2D12D, B580D, 8158D, 26F8D, 6D07D);
-	memt_byte( 0xB9 ,0xE8);
-	MEMT_REF4( 0x0000000C , caller_freeCustomImages);
-	//6FAFE639  |> B9 0C000000    MOV ECX,0C
-	//6FADD12D  |> B9 0C000000    MOV ECX,0C
-	//6FB6580D  |> B9 0C000000    MOV ECX,0C
-	//6FB3158D  |> B9 0C000000    MOV ECX,0C
-	//6FAD6F8D  |> B9 0C000000    MOV ECX,0C
-	//6FB1D07D  |> B9 0C000000    MOV ECX,0C
+	mem_seek(D2Client->GetOffsetByAddition(0x57FA9, 0x57FA9, 0x5E639, 0x2D12D, 0xB580D, 0x8158D, 0x26F8D, 0x6D07D));
+	memt_byte(0xB9 ,0xE8);
+	MEMT_REF4(0xC, caller_freeCustomImages);
 
 	log_msg("\n" );
 
@@ -231,7 +212,7 @@ FCT_ASM ( caller_freeTxtFiles )
 	JMP D2Fog10212
 }}
 
-
+// [Patch]
 void Install_PlugYTxtFiles()
 {
 	static int isInstalled = false;
@@ -241,11 +222,9 @@ void Install_PlugYTxtFiles()
 
 	log_msg("Patch D2Common to load/free custom txt files. (PlugYTxtFiles)\n");
 
-//	lookupItemStatCost =  (void*)R7(D2Common, A1D70, A1D70, AA1D8, 0000, 0000, 0000, 0000);
-
 	// Load custom txt files
-	mem_seek R7(D2Common, 7F4B, 7F4B, 2F7D7, 76854, 37444, 81C44, 5D6E4, 855E4);
-	MEMC_REF4( D2LoadSuperuniques, version_D2Common >= Versions::V111 ? caller_loadTxtFiles_111 : caller_loadTxtFiles );
+	mem_seek(D2Common->GetOffsetByAddition(0x7F4B, 0x7F4B, 0x2F7D7, 0x76854, 0x37444, 0x81C44, 0x5D6E4, 0x855E4));
+	MEMC_REF4(D2Common->D2LoadSuperuniques, Game->Version >= VersionUtility::Versions::V111 ? caller_loadTxtFiles_111 : caller_loadTxtFiles );
 	//6FD47F4A  |. E8 B1750100    CALL D2Common.6FD5F500
 	//6FD47F4A  |. E8 C1750100    CALL D2Common.6FD5F510
 	//01B6F7D6  |. E8 C5A7FFFF    CALL D2Common.01B69FA0
@@ -256,16 +235,8 @@ void Install_PlugYTxtFiles()
 	//6FDD55E3  |. E8 58B6FFFF    CALL D2Common.6FDD0C40                   ; \D2Common.6FDD0C40
 
 	// Free custom txt files
-	mem_seek R7(D2Common, 79EC, 79EC, 10186, 332B3, 15AB3, 44E13, 5E8B3, FAA3);
-	MEMJ_REF4( D2Fog10212, caller_freeTxtFiles );
-	//6FD479EB   . E8 C8C00600    CALL <JMP.&Fog.#10212>
-	//6FD479EB   . E8 C8C00600    CALL <JMP.&Fog.#10212>
-	//01B50185  |. E8 F8410700    CALL <JMP.&Fog.#10212>
-	//6FD832B2  |. E8 755FFDFF    CALL <JMP.&Fog.#10212>
-	//6FD65AB2  |. E8 B537FFFF    CALL <JMP.&Fog.#10212>
-	//6FD94E12  |. E8 1744FCFF    CALL <JMP.&Fog.#10212>
-	//6FDAE8B2  |. E8 8FA9FAFF    CALL <JMP.&Fog.#10212>
-	//6FD5FAA2  |. E8 5FB4FFFF    CALL <JMP.&Fog.#10212>
+	mem_seek(D2Common->GetOffsetByAddition(0x79EC, 0x79EC, 0x10186, 0x332B3, 0x15AB3, 0x44E13, 0x5E8B3, 0xFAA3));
+	MEMJ_REF4(Fog->D2Fog10212, caller_freeTxtFiles);
 
 	log_msg("\n" );
 

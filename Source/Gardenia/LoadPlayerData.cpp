@@ -20,10 +20,6 @@
 #include "sharedSaveFile.h"
 #include "common.h"
 
-using Versions = VersionUtility::Versions;
-
-/************************************ LOADING ***********************************/
-
 DWORD STDCALL LoadSPCustomData(Unit* ptChar)
 {
 	DWORD size = 0;
@@ -477,6 +473,7 @@ go_to_default:
 	RETN
 }}
 
+// [Patch]
 void Install_LoadPlayerData()
 {
 	static int isInstalled = false;
@@ -485,95 +482,51 @@ void Install_LoadPlayerData()
 	log_msg("Patch D2Game & D2Client for load Player's custom data. (LoadPlayerData)\n");
 
 	// Load SP player custom data.
-	mem_seek R7(D2Game, 5046F, 5086F, 5CB0F, BB8ED, 278CD, 465BD, 5638D, 3BCCD);
-	memt_byte( 0x8B, 0xE8); // CALL caller_LoadSPPlayerCustomData
-	MEMT_REF4( 0x75F685F0 , caller_LoadSPPlayerCustomData);
-	memt_byte( 0x16, 0x90); // NOP
-	//6FC8CB0F   8BF0             MOV ESI,EAX
-	//6FC8CB11   85F6             TEST ESI,ESI
-	//6FC8CB13   75 16            JNZ SHORT D2Game.6FC8CB2B
-	//0203B8ED  |> 8BF0           MOV ESI,EAX
-	//0203B8EF  |. 85F6           TEST ESI,ESI
-	//0203B8F1  |. 75 16          JNZ SHORT D2Game.0203B909
-	//01F978CD  |> 8BF0           MOV ESI,EAX
-	//01F978CF  |. 85F6           TEST ESI,ESI
-	//01F978D1  |. 75 16          JNZ SHORT D2Game.01F978E9
-	//6FC665BD  |> 8BF0           MOV ESI,EAX
-	//6FC665BF  |. 85F6           TEST ESI,ESI
-	//6FC665C1  |. 75 16          JNZ SHORT D2Game.6FC665D9
-	//6FC7638D  |> 8BF0           MOV ESI,EAX
-	//6FC7638F  |. 85F6           TEST ESI,ESI
-	//6FC76391  |. 75 16          JNZ SHORT D2Game.6FC763A9
-	//6FC5BCCD  |> 8BF0           MOV ESI,EAX
-	//6FC5BCCF  |. 85F6           TEST ESI,ESI
-	//6FC5BCD1  |. 75 16          JNZ SHORT D2Game.6FC5BCE9
+	mem_seek(D2Game->GetOffsetByAddition(0x5046F, 0x5086F, 0x5CB0F, 0xBB8ED, 0x278CD, 0x465BD, 0x5638D, 0x3BCCD));
+	memt_byte(0x8B, 0xE8);
+	MEMT_REF4(0x75F685F0 , caller_LoadSPPlayerCustomData);
+	memt_byte(0x16, 0x90);
 
 	// Load MP player custom data.
-	mem_seek R7(D2Game, 50790, 50B90, 5CC66, BB777, 27757, 46447, 56217, 3BB57);
-	memt_byte( 0x83, 0xE8);
-	MEMT_REF4( version_D2Game >= Versions::V111 ? 0x2174003B : version_D2Game == Versions::V110 ? 0x4674003F : 0x1D74003F, version_D2Game >= Versions::V111 ? caller_LoadMPPlayerCustomData_111 : version_D2Game == Versions::V110 ? caller_LoadMPPlayerCustomData: caller_LoadMPPlayerCustomData_9);
-	//6FC8CC66  . 833F 00         CMP DWORD PTR DS:[EDI],0
-	//6FC8CC69  . 74 46           JE SHORT D2Game.6FC8CCB1
-	//0203B777  |> 833B 00        CMP DWORD PTR DS:[EBX],0
-	//0203B77A  |. 74 21          JE SHORT D2Game.0203B79D
-	//01F97757  |> 833B 00        CMP DWORD PTR DS:[EBX],0
-	//01F9775A  |. 74 21          JE SHORT D2Game.01F9777D
-	//6FC66447  |> 833B 00        CMP DWORD PTR DS:[EBX],0
-	//6FC6644A  |. 74 21          JE SHORT D2Game.6FC6646D
-	//6FC76217  |> 833B 00        CMP DWORD PTR DS:[EBX],0
-	//6FC7621A  |. 74 21          JE SHORT D2Game.6FC7623D
-	//6FC5BB57  |> 833B 00        CMP DWORD PTR DS:[EBX],0
-	//6FC5BB5A  |. 74 21          JE SHORT D2Game.6FC5BB7D
+	mem_seek(D2Game->GetOffsetByAddition(0x50790, 0x50B90, 0x5CC66, 0xBB777, 0x27757, 0x46447, 0x56217, 0x3BB57));
+	memt_byte(0x83, 0xE8);
+	MEMT_REF4(Game->Version >= VersionUtility::Versions::V111 ? 0x2174003B : Game->Version == VersionUtility::Versions::V110 ? 0x4674003F : 0x1D74003F, Game->Version >= VersionUtility::Versions::V111 ? caller_LoadMPPlayerCustomData_111 : Game->Version == VersionUtility::Versions::V110 ? caller_LoadMPPlayerCustomData: caller_LoadMPPlayerCustomData_9);
 
 	// Send save files to Server.
-	mem_seek R7(D2Client, CF42, CF32, D5A2, 733FC, 5DFDC, 7933C, 1457C, B638C);
-	MEMJ_REF4( D2FogGetSavePath, version_D2Game >= Versions::V111 ? caller_SendSaveFiles_111 : caller_SendSaveFiles);
-	//6FAAD5A1  |. E8 88D10B00    CALL <JMP.&Fog.#10115>
-	//6FB233FB  |. E8 CA8AF9FF    CALL <JMP.&Fog.#10115>
-	//6FB0DFDB  |. E8 C6DEFAFF    CALL <JMP.&Fog.#10115>
-	//6FB2933B  |. E8 6A2CF9FF    CALL <JMP.&Fog.#10115>
-	//6FAC457B  |. E8 187AFFFF    CALL <JMP.&Fog.#10115>
-	//6FB6638B  |. E8 2E5BF5FF    CALL <JMP.&Fog.#10115>
+	mem_seek(D2Client->GetOffsetByAddition(0xCF42, 0xCF32, 0xD5A2, 0x733FC, 0x5DFDC, 0x7933C, 0x1457C, 0xB638C));
+	MEMJ_REF4(Fog->D2FogGetSavePath, Game->Version >= VersionUtility::Versions::V111 ? caller_SendSaveFiles_111 : caller_SendSaveFiles);
 
 	// Receive save files from client.
-	mem_seek R7(D2Game, 183A, 183A, 191A, 376E9, 703D9, 624D9, CAF39, D53E9);
-	memt_byte( 0x8B ,0xE8);
-	if ( version_D2Game >= Versions::V111 ) {
-		MEMT_REF4( 0xB60F005D, caller_ReceiveSaveFiles_111);
-		memt_byte( 0x45 ,0x90);
-		memt_byte( 0x04 ,0x90);
-		//01FB76E9  |. 8B5D 00        MOV EBX,DWORD PTR SS:[EBP]
-		//01FB76EC  |. 0FB645 04      MOVZX EAX,BYTE PTR SS:[EBP+4]
-		//01FE03D9  |. 8B5D 00        MOV EBX,DWORD PTR SS:[EBP]
-		//01FE03DC  |. 0FB645 04      MOVZX EAX,BYTE PTR SS:[EBP+4]
-		//6FC824D9  |. 8B5D 00        MOV EBX,DWORD PTR SS:[EBP]
-		//6FC824DC  |. 0FB645 04      MOVZX EAX,BYTE PTR SS:[EBP+4]
-		//6FCEAF39  |. 8B5D 00        MOV EBX,DWORD PTR SS:[EBP]
-		//6FCEAF3C  |. 0FB645 04      MOVZX EAX,BYTE PTR SS:[EBP+4]
-		//6FCF53E9  |. 8B5D 00        MOV EBX,DWORD PTR SS:[EBP]
-		//6FCF53EC  |. 0FB645 04      MOVZX EAX,BYTE PTR SS:[EBP+4]
-	} else {
-		MEMT_REF4( 0x04468A3E, caller_ReceiveSaveFiles);
-		//6FC3191A  |. 8B3E           MOV EDI,DWORD PTR DS:[ESI]
-		//6FC3191C  |. 8A46 04        MOV AL,BYTE PTR DS:[ESI+4]
+	mem_seek(D2Game->GetOffsetByAddition(0x183A, 0x183A, 0x191A, 0x376E9, 0x703D9, 0x624D9, 0xCAF39, 0xD53E9));
+	memt_byte(0x8B, 0xE8);
+	if (Game->Version >= VersionUtility::Versions::V111 ) {
+		MEMT_REF4(0xB60F005D, caller_ReceiveSaveFiles_111);
+		memt_byte(0x45, 0x90);
+		memt_byte(0x04, 0x90);
 	}
-
-	if ( version_Fog <= Versions::V109d )
+	else
 	{
-		mem_seek R7(Fog, 47DE, 45AE, 0000, 0000, 0000, 0000, 0000, 0000);
-		memt_byte( 0x8B ,0xE8);
-		MEMT_REF4( 0x891C2444, version_Fog == Versions::V109b? caller_BugFix109b : caller_BugFix109d);
-		memt_byte( 0x44 ,0x90);
-		memt_byte( 0x24 ,0x90);
-		memt_byte( 0x20 ,0x90);
-		//6FF545AE  |> 8B4424 1C      |MOV EAX,DWORD PTR SS:[ESP+1C]           ;  Case 2 of switch 6FF5454C
-		//6FF545B2  |. 894424 20      |MOV DWORD PTR SS:[ESP+20],EAX
+		MEMT_REF4(0x04468A3E, caller_ReceiveSaveFiles);
 	}
 
-	if ( version_D2Game == Versions::V109b || version_D2Game == Versions::V109d )
+	if (Game->Version <= VersionUtility::Versions::V109d )
+	{
+		mem_seek(Fog->GetOffsetByAddition(0x47DE, 0x45AE, 0, 0, 0, 0, 0, 0));
+		memt_byte(0x8B, 0xE8);
+		MEMT_REF4(0x891C2444, Game->Version == VersionUtility::Versions::V109b ? caller_BugFix109b : caller_BugFix109d);
+		memt_byte(0x44 ,0x90);
+		memt_byte(0x24 ,0x90);
+		memt_byte(0x20 ,0x90);
+	}
+
+	if (Game->Version == VersionUtility::Versions::V109b || Game->Version == VersionUtility::Versions::V109d)
+	{
 		customPackID -= 3;
-	else if ( version_D2Game == Versions::V110 )
-		customPackID --;
+	}
+	else if (Game->Version == VersionUtility::Versions::V110)
+	{
+		customPackID--;
+	}
 
 	log_msg("\n");
 

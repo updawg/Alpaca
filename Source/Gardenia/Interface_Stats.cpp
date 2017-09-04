@@ -21,8 +21,6 @@
 #include "common.h"
 #include <stdio.h>
 
-using Versions = VersionUtility::Versions;
-
 static struct
 {
 	union{
@@ -242,7 +240,7 @@ fin_statsPageMouseUp:
 	RETN 4
 }}
 
-
+// [Patch]
 void Install_InterfaceStats()
 {
 	static int isInstalled = false;
@@ -253,77 +251,31 @@ void Install_InterfaceStats()
 	log_msg("Patch D2Client for stats interface. (InterfaceStats)\n");
 
 	// Print new buttons images
-	mem_seek R7(D2Client, 2A7BE, 2A7AE, 30F86, 83636, 8A0B6, 6C016, BDC16, C03B6);
-	memt_byte( 0x5F, 0xE9 );	// JMP
-	MEMT_REF4( 0x815B5D5E, GameLib->Version >= Versions::V111 ? caller_printStatsPageBtns_111: GameLib->Version == Versions::V110 ? caller_printStatsPageBtns : caller_printStatsPageBtns_9);
-	//6FAD0F86   . 5F                   POP EDI
-	//6FAD0F87   . 5E                   POP ESI
-	//6FAD0F88   . 5D                   POP EBP
-	//6FAD0F89   . 5B                   POP EBX
-	//6FAD0F8A   . 81C4 B0030000        ADD ESP,3B0
-	//6FAD0F90   . C3                   RETN
-	//6FB33636   . 5F             POP EDI
-	//6FB33637   . 5E             POP ESI
-	//6FB33638   . 5D             POP EBP
-	//6FB33639   . 5B             POP EBX
-	//6FB3363A   . 81C4 70030000  ADD ESP,370
-	//6FB33640   . C3             RETN
-	//6FB3A0B6   . 5F             POP EDI
-	//6FB3A0B7   . 5E             POP ESI
-	//6FB3A0B8   . 5D             POP EBP
-	//6FB3A0B9   . 5B             POP EBX
-	//6FB3A0BA   . 81C4 70030000  ADD ESP,370
-	//6FB3A0C0   . C3             RETN
-	//6FB1C016   . 5F             POP EDI
-	//6FB1C017   . 5E             POP ESI
-	//6FB1C018   . 5D             POP EBP
-	//6FB1C019   . 5B             POP EBX
-	//6FB1C01A   . 81C4 70030000  ADD ESP,370
-	//6FB1C020   . C3             RETN
-	//6FB6DC16  |. 5F             POP EDI
-	//6FB6DC17  |. 5E             POP ESI
-	//6FB6DC18  |. 5D             POP EBP
-	//6FB6DC19  |. 5B             POP EBX
-	//6FB6DC1A  |. 81C4 70030000  ADD ESP,370
-	//6FB6DC20  \. C3             RETN
-	//6FB703B6  |. 5F             POP EDI
-	//6FB703B7  |. 5E             POP ESI
-	//6FB703B8  |. 5D             POP EBP
-	//6FB703B9  |. 5B             POP EBX
-	//6FB703BA  |. 81C4 70030000  ADD ESP,370
-	//6FB703Ñ0  \. C3             RETN
+	mem_seek(D2Client->GetOffsetByAddition(0x2A7BE, 0x2A7AE, 0x30F86, 0x83636, 0x8A0B6, 0x6C016, 0xBDC16, 0xC03B6));
+	memt_byte(0x5F, 0xE9);
+	MEMT_REF4(0x815B5D5E, Game->Version >= VersionUtility::Versions::V111 ? caller_printStatsPageBtns_111: Game->Version == VersionUtility::Versions::V110 ? caller_printStatsPageBtns : caller_printStatsPageBtns_9);
 
-	if ( GameLib->Version >= Versions::V111 )
+	if ( Game->Version >= VersionUtility::Versions::V111 )
 	{
 		// Manage mouse down (Play sound)
-		mem_seek R7(D2Client, 2AA6D, 2AA5D, 3133D, 827C8, 89248, 6B1A8, BCDC8, BF568);
-		memt_byte( 0xA1, 0xE8 );
-		MEMT_REF4( ptptClientChar, caller_statsPageMouseDown);
-		//6FB327C8   . A1 F0C4BC6F    MOV EAX,DWORD PTR DS:[6FBCC4F0]
-		//6FB39248   . A1 E0C1BC6F    MOV EAX,DWORD PTR DS:[6FBCC1E0]
-		//6FB1B1A8   . A1 D0C3BC6F    MOV EAX,DWORD PTR DS:[6FBCC3D0]
-		//6FB6CDC8   . A1 FCBBBC6F    MOV EAX,DWORD PTR DS:[6FBCBBFC]
-		//6FB6F568   . A1 50D0BC6F    MOV EAX,DWORD PTR DS:[6FBCD050]
+		mem_seek(D2Client->GetOffsetByAddition(0x2AA6D, 0x2AA5D, 0x3133D, 0x827C8, 0x89248, 0x6B1A8, 0xBCDC8, 0xBF568));
+		memt_byte(0xA1, 0xE8);
+		MEMT_REF4(D2Client->ptptClientChar, caller_statsPageMouseDown);
 
 		// Manage mouse up
-		mem_seek R7(D2Client, 2AC43, 2AC33, 3151A, 83853, 8A2D3, 6C233, BDE33, C05D3);
-		memt_byte( 0xA1, 0xE8 );
-		MEMT_REF4( ptptClientChar, caller_statsPageMouseUp);
-		//6FB33853   . A1 F0C4BC6F    MOV EAX,DWORD PTR DS:[6FBCC4F0]
-		//6FB3A2D3   . A1 E0C1BC6F    MOV EAX,DWORD PTR DS:[6FBCC1E0]
-		//6FB1C233   . A1 D0C3BC6F    MOV EAX,DWORD PTR DS:[6FBCC3D0]
-		//6FB6DE33   . A1 FCBBBC6F    MOV EAX,DWORD PTR DS:[6FBCBBFC]
-		//6FB705D3   . A1 50D0BC6F    MOV EAX,DWORD PTR DS:[6FBCD050]
-	} else {
+		mem_seek(D2Client->GetOffsetByAddition(0x2AC43, 0x2AC33, 0x3151A, 0x83853, 0x8A2D3, 0x6C233, 0xBDE33, 0xC05D3));
+		memt_byte(0xA1, 0xE8);
+		MEMT_REF4(D2Client->ptptClientChar, caller_statsPageMouseUp);
+	}
+	else
+	{
 		// Manage mouse down (Play sound)
-		mem_seek R7(D2Client, 2AA6D, 2AA5D, 3133D, 827C8, 89248, 6B1A8, 0000, 0000);
-		MEMC_REF4( D2GetClientPlayer, caller_statsPageMouseDown);
-		//6FAD133C   . E8 8F700500    CALL D2Client.6FB283D0
+		mem_seek(D2Client->GetOffsetByAddition(0x2AA6D, 0x2AA5D, 0x3133D, 0x827C8, 0x89248, 0x6B1A8, 0, 0));
+		MEMC_REF4(D2Client->D2GetClientPlayer, caller_statsPageMouseDown);
 
 		// Manage mouse up
-		mem_seek R7(D2Client, 2AC43, 2AC33, 3151A, 83853, 8A2D3, 6C233, 0000, 0000);
-		MEMC_REF4( D2GetClientPlayer, GameLib->Version == Versions::V110 ? caller_statsPageMouseUp : caller_statsPageMouseUp_9);//0x00056EB2
-		//6FAD1519   . E8 B26E0500    CALL D2Client.6FB283D0
+		mem_seek(D2Client->GetOffsetByAddition(0x2AC43, 0x2AC33, 0x3151A, 0x83853, 0x8A2D3, 0x6C233, 0, 0));
+		MEMC_REF4(D2Client->D2GetClientPlayer, Game->Version == VersionUtility::Versions::V110 ? caller_statsPageMouseUp : caller_statsPageMouseUp_9);
 	}
 
 	log_msg("\n");

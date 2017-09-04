@@ -51,7 +51,7 @@ void log_initfile()
 		    "\t%s <%s>\n"
 		    "\t%s\n"
 			"\n"
-			"<---------- Starting Diablo II Plugin -------->\n\n\n"
+			"<---------- Starting Diablo II Plugin -------->\n\n"
 			,GARDENIA_VERSION, GARDENIA_AUTHOR_NAME, GARDENIA_AUTHOR_EMAIL, GARDENIA_BUILD_DATE);
 }
 

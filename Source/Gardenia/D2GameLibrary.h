@@ -22,23 +22,17 @@
 class D2GameLibrary : public Library
 {
 public:
-	D2GameLibrary(int gameVersion) : Library()
-	{
-		Name = "D2Game.dll";
-		Version = gameVersion;
-		Offset = LoadDiabloLibrary();
-		SetFunctions();
-	};
+	D2GameLibrary(int gameVersion);
 
 	typedef void(__fastcall *TD2SetNbPlayers) (DWORD nbPlayers);
 	typedef DWORD(__fastcall *TD2SendPacket) (void* ptNetClient, LPVOID pData, DWORD size);
 	typedef void(__fastcall *TD2SetSkillBaseLevelOnClient) (void* ptClient, Unit* ptChar, DWORD skillID, DWORD sLvl, DWORD bRemove);
-	typedef DWORD(__stdcall *TD2LinkPortal) (Game* ptGame, Unit* ptObject, DWORD levelEndID, DWORD levelStartID);
+	typedef DWORD(__stdcall *TD2LinkPortal) (GameStruct* ptGame, Unit* ptObject, DWORD levelEndID, DWORD levelStartID);
 	typedef DWORD(__fastcall *TD2VerifIfNotCarry1) (Unit* ptItem, ItemsBIN* itemsData, Unit* ptFirstItem);
 	typedef Room* (__fastcall *TD2TestPositionInRoom) (Room* ptRoom, DWORD x, DWORD y);
-	typedef DWORD(__fastcall *TD2LoadInventory) (Game* ptGame, Unit* pChar, saveBitField* pdata, DWORD p2, DWORD maxSize, DWORD p4, DWORD *ptNbBytesRead);
-	typedef Unit* (__fastcall *TD2GameGetObject) (Game* ptGame, DWORD type, DWORD itemNum);
-	typedef void(__stdcall *TD2SaveGame) (Game* ptGame);
+	typedef DWORD(__fastcall *TD2LoadInventory) (GameStruct* ptGame, Unit* pChar, saveBitField* pdata, DWORD p2, DWORD maxSize, DWORD p4, DWORD *ptNbBytesRead);
+	typedef Unit* (__fastcall *TD2GameGetObject) (GameStruct* ptGame, DWORD type, DWORD itemNum);
+	typedef void(__stdcall *TD2SaveGame) (GameStruct* ptGame);
 
 	TD2SetNbPlayers D2SetNbPlayers;
 	TD2SendPacket D2SendPacket;

@@ -17,6 +17,14 @@
 
 #include "GameLibrary.h"
 
+GameLibrary::GameLibrary() : Library()
+{
+	Name = "Game.exe";
+	Offset = (DWORD)GetModuleHandle(NULL);
+	Version = VersionUtility::GetVersion(Name);
+	log_msg("Game.exe loaded at:\t%08X (%s)\n", Offset, VersionUtility::GetVersionAsString(Version));
+}
+
 void GameLibrary::SetFunctions()
 {
 

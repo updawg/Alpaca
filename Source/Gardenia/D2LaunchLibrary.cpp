@@ -17,6 +17,14 @@
 
 #include "D2LaunchLibrary.h"
 
+D2LaunchLibrary::D2LaunchLibrary(int gameVersion) : Library()
+{
+	Name = "D2Launch.dll";
+	Version = gameVersion;
+	Offset = LoadDiabloLibrary();
+	SetFunctions();
+}
+
 void D2LaunchLibrary::SetFunctions()
 {
 	

@@ -25,9 +25,6 @@
 #include "newInterface_Runewords.h"
 #include "common.h"
 #include <stdio.h>
-#include "Utilities\LibraryUtility.h"
-
-extern LibraryUtility* lu;
 
 bool active_newInterfaces=false;
 bool selectMainPageOnOpenning=true;
@@ -296,6 +293,7 @@ END_resetSelectedPage:
 	RETN
 }}
 
+// [Patch]
 void Install_NewInterfaces()
 {
 	static int isInstalled = false;
@@ -307,50 +305,52 @@ void Install_NewInterfaces()
 	Install_InterfaceStats();
 
 	log_msg("Patch D2Client for new custom page interface. (NewInterfaces)\n");
-	if (lu->D2Client->Version >= VersionUtility::Versions::V110 )
-		extraHiddenPage=1;
+	if (Game->Version >= VersionUtility::Versions::V110)
+	{
+		extraHiddenPage = 1;
+	}
 
 	if (selectMainPageOnOpenning)
 	{
-		if (lu->D2Client->Version >= VersionUtility::Versions::V111 )
+		if (Game->Version >= VersionUtility::Versions::V111 )
 		{
-			//Reset selectedPage variable on opening stats page
-			mem_seek(lu->D2Client->ResetSelectedPageBaseOffset1);
-			memt_byte( 0x83, 0xE8 );	// CALL caller_resetSelectedPage
-			MEMT_REF4( 0x1F7426F8, caller_resetSelectedPageByToolBar);
+			// Reset selectedPage variable on opening stats page
+			mem_seek(D2Client->GetOffsetByAddition(0, 0, 0, 0x4B79E, 0x8F73E, 0x55E0E, 0x65F5E, 0xC41FE));
+			memt_byte(0x83, 0xE8);
+			MEMT_REF4(0x1F7426F8, caller_resetSelectedPageByToolBar);
 
-			mem_seek(lu->D2Client->ResetSelectedPageBaseOffset2);
-			memt_byte( 0x55, 0xE8 );	// CALL caller_resetSelectedPage
-			MEMT_REF4( 0xD53BED33, caller_resetSelectedPageByKey);
+			mem_seek(D2Client->GetOffsetByAddition(0, 0, 0, 0x1E55A, 0x6A8FA, 0xA31DA, 0x3C5EA, 0x3E39A));
+			memt_byte(0x55, 0xE8);
+			MEMT_REF4(0xD53BED33, caller_resetSelectedPageByKey);
 		} 
 		else 
 		{
-			//Reset selectedPage variable on opening stats page
-			mem_seek(lu->D2Client->ResetSelectedPageBaseOffset3); // ((DWORD)D2TogglePage + 0x218);
-			memt_byte( 0x85, 0xE8 );	// CALL caller_resetSelectedPage
-			MEMT_REF4( 0xC2940FC0, caller_resetSelectedPage);
+			// Reset selectedPage variable on opening stats page
+			mem_seek(D2Client->GetOffsetByAddition(0x88B58, 0x87ED8, 0x83478, 0xA1FBE, 0x6571E, 0x8EF8E, 0, 0));
+			memt_byte(0x85, 0xE8);
+			MEMT_REF4(0xC2940FC0, caller_resetSelectedPage);
 		}
 	}
 
 	// Print custom page
-	mem_seek(lu->D2Client->PrintCustomPageBaseOffset);
-	MEMC_REF4( D2PrintStatsPage, printCustomPage);
+	mem_seek(D2Client->GetOffsetByAddition(0x87697, 0x86A17, 0x81FAB, 0xA3759, 0x66B59, 0x902B9, 0xC3B49, 0x1D549));
+	MEMC_REF4(D2Client->D2PrintStatsPage, printCustomPage);
 
 	// Don't print Border
-	mem_seek(lu->D2Client->DontPrintBorderBaseOffset);
-	memt_byte( 0xB9, 0xE8 );	// CALL caller_DontPrintBorder
-	MEMT_REF4( 0x00000012, lu->D2Client->Version >= VersionUtility::Versions::V111 ? caller_DontPrintBorder_111 : caller_DontPrintBorder);
+	mem_seek(D2Client->GetOffsetByAddition(0x58EF6, 0x58EF6, 0x5F4C6, 0x2D366, 0xB5A46, 0x82166, 0x271C6, 0x6D2B6));
+	memt_byte(0xB9, 0xE8);
+	MEMT_REF4(0x00000012, Game->Version >= VersionUtility::Versions::V111 ? caller_DontPrintBorder_111 : caller_DontPrintBorder);
 
 	// Manage mouse down (Play sound)
-	mem_seek(lu->D2Client->ManageMouseDownBaseOffset);
-	memt_byte( 0x8D, 0xE8 );	// CALL
-	MEMT_REF4( 0x00008088, lu->D2Client->Version >= VersionUtility::Versions::V111 ? caller_mouseCustomPageLeftDown_111 : lu->D2Client->Version == VersionUtility::Versions::V110 ? caller_mouseCustomPageLeftDown : caller_mouseCustomPageLeftDown_9);
-	memt_byte( 0x00, 0x90 );	// NOP
+	mem_seek(D2Client-> GetOffsetByAddition(0x2A9DC, 0x2A9CC, 0x312A5, 0x82736, 0x891B6, 0x6B116, 0xBCD36, 0xBF4D6));
+	memt_byte(0x8D, 0xE8);
+	MEMT_REF4(0x00008088, Game->Version >= VersionUtility::Versions::V111 ? caller_mouseCustomPageLeftDown_111 : Game->Version == VersionUtility::Versions::V110 ? caller_mouseCustomPageLeftDown : caller_mouseCustomPageLeftDown_9);
+	memt_byte(0x00, 0x90);
 
 	// Manage mouse up
-	mem_seek(lu->D2Client->ManageMouseUpBaseOffset);
-	memt_byte( 0xA1, 0xE8 );	// CALL caller_mouseCustomPageLeftUp
-	MEMT_REF4( ptWindowStartX, lu->D2Client->Version >= VersionUtility::Versions::V111 ? caller_mouseCustomPageLeftUp_111 : lu->D2Client->Version == VersionUtility::Versions::V110 ? caller_mouseCustomPageLeftUp : caller_mouseCustomPageLeftUp_9);
+	mem_seek(D2Client->GetOffsetByAddition(0x2ABBB, 0x2ABAB, 0x3148D, 0x836D9, 0x8A159, 0x6C0B9, 0xBDCB9, 0xC0459));
+	memt_byte(0xA1, 0xE8);
+	MEMT_REF4(ptWindowStartX, Game->Version >= VersionUtility::Versions::V111 ? caller_mouseCustomPageLeftUp_111 : Game->Version == VersionUtility::Versions::V110 ? caller_mouseCustomPageLeftUp : caller_mouseCustomPageLeftUp_9);
 
 	log_msg("\n");
 

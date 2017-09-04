@@ -19,8 +19,6 @@
 #include "common.h"
 #include <stdio.h>
 
-using Versions = VersionUtility::Versions;
-
 bool active_ChangeLanguage = true;
 DWORD selectedLanguage = LNG_ENG;
 
@@ -39,7 +37,7 @@ DWORD STDCALL languageManagement ()
 	return *ptCurrentLanguage;
 }
 
-
+// [Patch]
 void Install_LanguageManagement()
 {
 	static int isInstalled = false;
@@ -47,15 +45,12 @@ void Install_LanguageManagement()
 	
 	log_msg("Patch D2Lang for language management. (LanguageManagement)\n");
 
-	ptCurrentLanguage = *(DWORD**)((DWORD)D2GetLang + (version_D2Lang >= Versions::V111 ? 0x51: 0x5C));
+	ptCurrentLanguage = *(DWORD**)((DWORD)D2Lang->D2GetLang + (Game->Version >= VersionUtility::Versions::V111 ? 0x51: 0x5C));
 
 	// Language management
-	mem_seek( (DWORD)D2GetLang + (version_D2Lang >= Versions::V111 ? 0x3E : 0x49));//6FC13E39-6FC10000
-	memt_byte( 0xA1 , 0xE8);
-	MEMT_REF4( ptCurrentLanguage, languageManagement);
-	//6FC13E39  |. A1 EC0CC26F    MOV EAX,DWORD PTR DS:[6FC20CEC]
-	//003D91FE  |. A1 1C0A3E00    MOV EAX,DWORD PTR DS:[3E0A1C]
-	//003DA0AE  |. A1 1C0A3E00    MOV EAX,DWORD PTR DS:[3E0A1C]
+	mem_seek((DWORD)D2GetLang + (Game->Version >= VersionUtility::Versions::V111 ? 0x3E : 0x49));
+	memt_byte(0xA1, 0xE8);
+	MEMT_REF4(ptCurrentLanguage, languageManagement);
 
 	log_msg("\n");
 

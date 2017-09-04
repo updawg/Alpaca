@@ -17,6 +17,14 @@
 
 #include "StormLibrary.h"
 
+StormLibrary::StormLibrary(int gameVersion) : Library()
+{
+	Name = "Storm.dll";
+	Version = gameVersion;
+	Offset = LoadDiabloLibrary();
+	SetFunctions();
+}
+
 void StormLibrary::SetFunctions()
 {
 	D2StormMPQOpenFile = (TD2StormMPQOpenFile)GetOffsetByProc(268, 268, 268, 268, 268, 268, 268, 268);

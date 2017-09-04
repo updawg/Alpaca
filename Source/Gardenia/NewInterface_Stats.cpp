@@ -22,8 +22,6 @@
 #include "common.h"
 #include <stdio.h>
 
-using Versions = VersionUtility::Versions;
-
 #define	getXCloseBtn()			360
 #define	getLCloseBtn()			32
 #define	getYCloseBtn()			(ResolutionY - 60)
@@ -252,7 +250,7 @@ void STDCALL printNewStatsPage()
 	nbPixel = D2GetPixelLen(text);
 	D2PrintString(text, MILIEU(0xD,0x29,nbPixel), 0x3B, color, 0);//ESI,EBX,EDI
 
-if (GameLib->Version <= Versions::V110)
+if (Game->Version <= VersionUtility::Versions::V110)
 {
 	//print Experience
 	curValue = D2GetPlayerStat(ptChar, STATS_EXPERIENCE, 0);
@@ -542,11 +540,8 @@ if (GameLib->Version <= Versions::V110)
 	DWORD y = D2GetMouseY();
 
 
-	if (isOnCloseBtn(x,y))			// print popup "close"
+	if (isOnCloseBtn(x,y)) // print popup "close"
 	{
-		//lpText = D2GetStringFromIndex(0x1030);
-		//nbPixel = D2GetPixelLen(lpText);
-		//D2PrintPopup(lpText, getXCloseBtn()+getLCloseBtn()/2-nbPixel/2, getYCloseBtn()-getHCloseBtn(), WHITE, 0);
 		D2PrintPopup(D2GetStringFromIndex(0x1030), getXCloseBtn()+getLCloseBtn()/2, getYCloseBtn()-getHCloseBtn(), WHITE, 1);
 	}
 	else if (isOnPreviousPageBtn(x,y))	//print popup "previous page"
@@ -561,30 +556,42 @@ if (GameLib->Version <= Versions::V110)
 	}
 	else if (isOnRect(x, y, 0xAD, 0x137, 0x15, 0x13))
 	{
-if ( GameLib->Version <= Versions::V110 )
-{
-		DWORD avgChanceMonsterWillHitYou=53;//TODO
-		if (avgChanceMonsterWillHitYou<5) 		avgChanceMonsterWillHitYou = 5;
-		else if (avgChanceMonsterWillHitYou>95) avgChanceMonsterWillHitYou = 95;
 		
-		int chanceToBlock = D2GetChanceToBlock(ptChar, D2isLODGame());
-		if (chanceToBlock <= 0)
+		if (Game->Version <= VersionUtility::Versions::V110 )
 		{
-			//......TODO
-			chanceToBlock=0;
+			DWORD avgChanceMonsterWillHitYou = 53;//TODO
+	
+			if (avgChanceMonsterWillHitYou < 5)
+			{
+				avgChanceMonsterWillHitYou = 5;
+			}
+			else if (avgChanceMonsterWillHitYou > 95)
+			{
+				avgChanceMonsterWillHitYou = 95;
+			}
+		
+			int chanceToBlock = D2GetChanceToBlock(ptChar, D2isLODGame());
+			if (chanceToBlock <= 0)
+			{
+				//......TODO
+				chanceToBlock = 0;
+			}
+			
+			int monsterID = D2GetLastMonsterIDFight();
+			MonStatsBIN* monStats = SgptDataTables->monStats + monsterID;
+			d2_assert((monsterID<0) || (monsterID >= (int)SgptDataTables->nbMonStats) || !monStats, "ptStats", __FILE__, __LINE__);
+			LPWSTR monsterStr = D2GetStringFromIndex(monStats->monsterNameID);
+			if (chanceToBlock)
+			{
+				swprintf(text, D2GetStringFromIndex(0x2779), chanceToBlock, avgChanceMonsterWillHitYou, monsterStr, avgChanceMonsterWillHitYou);
+			}
+			else
+			{
+				swprintf(text, D2GetStringFromIndex(0x2778), monsterStr, avgChanceMonsterWillHitYou);
+			}
+			//D2swprintf(0x80
+			D2PrintTextPopup(text,0x8B,0xA5,*(BYTE*)0x6FBB1A50,2,WHITE);
 		}
-
-		int monsterID = D2GetLastMonsterIDFight();
-		MonStatsBIN* monStats = SgptDataTables->monStats + monsterID;
-		d2_assert((monsterID<0) || (monsterID >= (int)SgptDataTables->nbMonStats) || !monStats, "ptStats", __FILE__, __LINE__);
-		LPWSTR monsterStr = D2GetStringFromIndex(monStats->monsterNameID);
-		if (chanceToBlock)
-			swprintf(text,D2GetStringFromIndex(0x2779),chanceToBlock,avgChanceMonsterWillHitYou,monsterStr,avgChanceMonsterWillHitYou);
-		else
-			swprintf(text,D2GetStringFromIndex(0x2778),monsterStr,avgChanceMonsterWillHitYou);
-		//D2swprintf(0x80
-		D2PrintTextPopup(text,0x8B,0xA5,*(BYTE*)0x6FBB1A50,2,WHITE);
-}
 	}
 }
 

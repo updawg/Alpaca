@@ -21,12 +21,8 @@
 #include "loadPlayerData.h" //Install_LoadPlayerData()
 #include "common.h"
 
-using Versions = VersionUtility::Versions;
-
 bool active_PlayerCustomData = true;
 bool openSharedStashOnLoading = false;
-
-/*********************************** UPDATING ***********************************/
 
 Stash* getStashFromItem(Unit* ptChar, Unit* ptItem)
 {
@@ -62,7 +58,7 @@ Stash* getStashFromItem(Unit* ptChar, Unit* ptItem)
 }
 
 
-Unit* FASTCALL updateItem(Game* ptGame, DWORD type, DWORD itemNum, Unit* ptChar)
+Unit* FASTCALL updateItem(GameStruct* ptGame, DWORD type, DWORD itemNum, Unit* ptChar)
 {
 	Unit* ptItem = D2GameGetObject(ptGame, type, itemNum);
 	if (ptGame->isLODGame && (D2ItemGetPage(ptItem) == 4))
@@ -268,7 +264,7 @@ FCT_ASM ( callerClient_getNextItemToFree_9 )
 	RETN 4
 }}
 
-
+// [Patch]
 void Install_PlayerCustomData()
 {
 	static int isInstalled = false;
@@ -281,142 +277,67 @@ void Install_PlayerCustomData()
 	log_msg("Patch D2Game & D2Client & D2Common for Player's custom data. (PlayerCustomData)\n");
 
 	// Initialize custom data.
-	mem_seek(GameLib->Version == Versions::V113d ? offset_D2Common + 0x170DE : GameLib->Version == Versions::V113c ?  offset_D2Common + 0x309BE : GameLib->Version == Versions::V112 ? offset_D2Common + 0x585EE : GameLib->Version == Versions::V111b ? offset_D2Common + 0x5BFCE : version_D2Common == Versions::V111 ? offset_D2Common + 0x4ED5E :(DWORD)D2InitPlayerData + 0x62 );
-	MEMJ_REF4( D2AllocMem, init_PlayerCustomData);
-	//01BD0381  |. E8 C03F0000    CALL <JMP.&Fog.#10045>
-	//6FD9ED5D  |. E8 94A4FBFF    CALL <JMP.&Fog.#10045>
-	//6FDABFCD  |. E8 34D2FAFF    CALL <JMP.&Fog.#10045>
-	//6FDA85ED  |. E8 240CFBFF    CALL <JMP.&Fog.#10045>
-	//6FD809BD  |. E8 6088FDFF    CALL <JMP.&Fog.#10045>
-	//6FD670DD  |. E8 0C3EFFFF    CALL <JMP.&Fog.#10045>
+	mem_seek(D2Common->GetOffsetByAddition(0x70462, 0x70562, 0x80382, 0x4ED5E, 0x5BFCE, 0x585EE, 0x309BE, 0x170DE));
+	MEMJ_REF4(Fog->D2AllocMem, init_PlayerCustomData);
 
-	if ( version_D2Game >= Versions::V111 )
+	if (Game->Version >= VersionUtility::Versions::V111 )
 	{
 		// update item
-		mem_seek R7(D2Game, 10933, 10C03, 1100D, 8BC71, C3C51, 5F2A1, 9BB91, 75C81);
-		memt_byte( 0x8B ,0xE8); // CALL
-		MEMT_REF4( 0x52182454, caller_updateItem_111);
-		//0200BC71  |> 8B5424 18      |MOV EDX,DWORD PTR SS:[ESP+18]
-		//0200BC75  |. 52             |PUSH EDX                                ; /Arg1
-		//02023C51  |> 8B5424 18      |MOV EDX,DWORD PTR SS:[ESP+18]
-		//02023C55  |. 52             |PUSH EDX                                ; /Arg1
-		//6FC7F2A1  |> 8B5424 18      |MOV EDX,DWORD PTR SS:[ESP+18]
-		//6FC7F2A5  |. 52             |PUSH EDX                                ; /Arg1
-		//6FCBBB91  |> 8B5424 18      |MOV EDX,DWORD PTR SS:[ESP+18]
-		//6FCBBB95  |. 52             |PUSH EDX
-		//6FC95C81  |> 8B5424 18      |MOV EDX,DWORD PTR SS:[ESP+18]
-		//6FC95C85  |. 52             |PUSH EDX
+		mem_seek(D2Game->GetOffsetByAddition(0x10933, 0x10C03, 0x1100D, 0x8BC71, 0xC3C51, 0x5F2A1, 0x9BB91, 0x75C81));
+		memt_byte(0x8B, 0xE8);
+		MEMT_REF4(0x52182454, caller_updateItem_111);
 
-		mem_seek R7(D2Game, 1097B, 10C4B, 11058, 8BCD1, C3CB1, 5F301, 9BBF1, 75CE1);
-		memt_byte( 0x8B ,0xE8); // CALL
-		MEMT_REF4( 0x52182454, caller_updateItemB_111);
-		//0200BCD1  |> 8B5424 18      ||MOV EDX,DWORD PTR SS:[ESP+18]
-		//0200BCD5  |. 52             ||PUSH EDX                               ; /Arg1
-		//02023CB1  |> 8B5424 18      ||MOV EDX,DWORD PTR SS:[ESP+18]
-		//02023CB5  |. 52             ||PUSH EDX                               ; /Arg1
-		//6FC7F301  |> 8B5424 18      ||MOV EDX,DWORD PTR SS:[ESP+18]
-		//6FC7F305  |. 52             ||PUSH EDX                               ; /Arg1
-		//6FCBBBF1  |> 8B5424 18      ||MOV EDX,DWORD PTR SS:[ESP+18]
-		//6FCBBBF5  |. 52             ||PUSH EDX
-		//6FC95CE1  |> 8B5424 18      ||MOV EDX,DWORD PTR SS:[ESP+18]
-		//6FC95CE5  |. 52             ||PUSH EDX
-
-	} else {
+		mem_seek(D2Game->GetOffsetByAddition(0x1097B, 0x10C4B, 0x11058, 0x8BCD1, 0xC3CB1, 0x5F301, 0x9BBF1, 0x75CE1));
+		memt_byte(0x8B, 0xE8);
+		MEMT_REF4(0x52182454, caller_updateItemB_111);
+	}
+	else
+	{
 		// update item
-		mem_seek R7(D2Game, 10933, 10C03, 1100D, 8BC71, C3C51, 5F2A1, 0000, 0000);
-		MEMC_REF4( D2GameGetObject, version_D2Game == Versions::V110?caller_updateItem: caller_updateItem_9);
-		//6FC4100C  |. E8 EFAA0700    |CALL D2Game.6FCBBB00
-		mem_seek R7(D2Game, 1097B, 10C4B, 11058, 8BCD1, C3CB1, 5F301, 0000, 0000);
-		MEMC_REF4( D2GameGetObject, version_D2Game == Versions::V110?caller_updateItem: caller_updateItem_9);
-		//6FC41057  |. E8 A4AA0700    ||CALL D2Game.6FCBBB00
+		mem_seek(D2Game->GetOffsetByAddition(0x10933, 0x10C03, 0x1100D, 0x8BC71, 0xC3C51, 0x5F2A1, 0, 0));
+		MEMC_REF4(D2Game->D2GameGetObject, Game->Version == VersionUtility::Versions::V110? caller_updateItem: caller_updateItem_9);
+
+		mem_seek(D2Game->GetOffsetByAddition(0x1097B, 0x10C4B, 0x11058, 0x8BCD1, 0xC3CB1, 0x5F301, 0, 0));
+		MEMC_REF4(D2Game->D2GameGetObject, Game->Version == VersionUtility::Versions::V110? caller_updateItem: caller_updateItem_9);
 	}
 
 	// Update client on loading
-	mem_seek R7(D2Game, 23EB, 2426, 25D4, 53482, C6A32, ED502, 4BF12, E7548);//6FC325D4-6FC30000
-	memt_byte( 0x5F ,0xE8); // CALL
-	MEMT_REF4( 0xC0335D5E , caller_updateClientPlayerOnLoading);
-	//6FC325D4  |> 5F             POP EDI
-	//6FC325D5  |. 5E             POP ESI
-	//6FC325D6  |. 5D             POP EBP
-	//6FC325D7  |. 33C0           XOR EAX,EAX
-	//01FD3482  |> 5F             POP EDI
-	//01FD3483  |. 5E             POP ESI
-	//01FD3484  |. 5D             POP EBP
-	//01FD3485  |. 33C0           XOR EAX,EAX
-	//02026A32  |> 5F             POP EDI
-	//02026A33  |. 5E             POP ESI
-	//02026A34  |. 5D             POP EBP
-	//02026A35  |. 33C0           XOR EAX,EAX
-	//6FD0D502  |> 5F             POP EDI
-	//6FD0D503  |. 5E             POP ESI
-	//6FD0D504  |. 5D             POP EBP
-	//6FD0D505  |. 33C0           XOR EAX,EAX
-	//6FC6BF12  |> 5F             POP EDI
-	//6FC6BF13  |. 5E             POP ESI
-	//6FC6BF14  |. 5D             POP EBP
-	//6FC6BF15  |. 33C0           XOR EAX,EAX
-	//6FD07548  |> 5F             POP EDI
-	//6FD07549  |. 5E             POP ESI
-	//6FD0754A  |. 5D             POP EBP
-	//6FD0754B  |. 33C0           XOR EAX,EAX
+	mem_seek(D2Game->GetOffsetByAddition(0x23EB, 0x2426, 0x25D4, 0x53482, 0xC6A32, 0xED502, 0x4BF12, 0xE7548));
+	memt_byte(0x5F, 0xE8);
+	MEMT_REF4(0xC0335D5E, caller_updateClientPlayerOnLoading);
 
 	// Free custom data.
-	mem_seek R7(D2Common, 7055C, 7065C, 80483, 4F82D, 5C9CD, 5856D, 3093D, 1705D);
-	MEMJ_REF4( D2FreeMem, free_PlayerCustomData);
-	//01BD0482  |. E8 C53E0000    CALL <JMP.&Fog.#10046>
-	//6FD9F82C  |. E8 E399FBFF    CALL <JMP.&Fog.#10046>
-	//6FDAC9CC  |. E8 3BC8FAFF    CALL <JMP.&Fog.#10046>
-	//6FDA856C  |. E8 E70CFBFF    CALL <JMP.&Fog.#10046>
-	//6FD8093C  |. E8 E788FDFF    CALL <JMP.&Fog.#10046>
-	//6FD6705C  |. E8 CF3EFFFF    CALL <JMP.&Fog.#10046>
+	mem_seek(D2Common->GetOffsetByAddition(0x7055C, 0x7065C, 0x80483, 0x4F82D, 0x5C9CD, 0x5856D, 0x3093D, 0x1705D));
+	MEMJ_REF4(Fog->D2FreeMem, free_PlayerCustomData);
 
 	// Free item in Stash (Server-side)
-	mem_seek R7(D2Game, 7D12B, 7D62B, 8D5A4, 99112, BFDB2, 94242, E1162, 6F7C2);
-	MEMJ_REF4( D2UnitGetNextItem, version_D2Game >= Versions::V111 ? callerServer_getNextItemToFree_111 : version_D2Game == Versions::V110 ? callerServer_getNextItemToFree : callerServer_getNextItemToFree_9);//0x0005E204
-	//6FCBD5A3   . E8 04E20500    CALL <JMP.&D2Common.#10304>
-	//02019111  |. E8 5016F7FF    |CALL <JMP.&D2Common.#10934>
-	//0202FDB1  |. E8 30AAF4FF    |CALL <JMP.&D2Common.#11140>
-	//6FCB4241  |. E8 8862F7FF    |CALL <JMP.&D2Common.#10770>
-	//6FD01161  |. E8 6693F2FF    |CALL <JMP.&D2Common.#10464>
-	//6FC8F7C1  |. E8 44AEF9FF    |CALL <JMP.&D2Common.#10879>
+	mem_seek(D2Game->GetOffsetByAddition(0x7D12B, 0x7D62B, 0x8D5A4, 0x99112, 0xBFDB2, 0x94242, 0xE1162, 0x6F7C2));
+	MEMJ_REF4(D2Common->D2UnitGetNextItem, Game->Version >= VersionUtility::Versions::V111 ? callerServer_getNextItemToFree_111 : Game->Version == VersionUtility::Versions::V110 ? callerServer_getNextItemToFree : callerServer_getNextItemToFree_9);
 
 	// Free item in Stash (Client-side)
-	mem_seek R7(D2Client, 8EF8F, 8E30F, 89B32, 26404, 4C264, 1F2D4, A5C94, 621E4);//6FB29B31-6FAA0000
-	MEMJ_REF4( D2UnitGetNextItem, version_D2Game >= Versions::V111 ? callerClient_getNextItemToFree_111 : version_D2Game == Versions::V110 ? callerClient_getNextItemToFree : callerClient_getNextItemToFree_9);//0x00040F34
-	//6FB29B31   E8 340F0400      CALL <JMP.&D2Common.#10304>
-	//6FAD6403  |. E8 925DFEFF    |CALL <JMP.&D2Common.#10934>
-	//6FAFC263  |. E8 38FFFBFF    |CALL <JMP.&D2Common.#11140>
-	//6FACF2D3  |. E8 4CD1FEFF    |CALL <JMP.&D2Common.#10770>
-	//6FB55C93  |. E8 D068F6FF    |CALL <JMP.&D2Common.#10464>
-	//6FB121E3  |. E8 7AA1FAFF    |CALL <JMP.&D2Common.#10879>
+	mem_seek(D2Client->GetOffsetByAddition(0x8EF8F, 0x8E30F, 0x89B32, 0x26404, 0x4C264, 0x1F2D4, 0xA5C94, 0x621E4));
+	MEMJ_REF4(D2Common->D2UnitGetNextItem, Game->Version >= VersionUtility::Versions::V111 ? callerClient_getNextItemToFree_111 : Game->Version == VersionUtility::Versions::V110 ? callerClient_getNextItemToFree : callerClient_getNextItemToFree_9);
 
-	if ( version_D2Common >= Versions::V110 )
+	if (Game->Version >= VersionUtility::Versions::V110)
 	{
 		// Test if it's already removed from inventory
-		mem_seek R7(D2Common, 0000, 0000, 4E689, 26E33, 42133, 6AE93, 21B23, 3B393);
-		memt_byte( 0x0D , 0x07);
-		//01D2E688   75 0D            JNZ SHORT D2Common.01D2E697
-		//6FD76E32  |. 74 0D          JE SHORT D2Common.6FD76E41
-		//6FD92132  |. 74 0D          JE SHORT D2Common.6FD92141
-		//6FDBAE92  |. 74 0D          JE SHORT D2Common.6FDBAEA1
-		//6FD71B22  |. 74 0D          JE SHORT D2Common.6FD71B31
-		//6FD8B392  |. 74 0D          JE SHORT D2Common.6FD8B3A1
-	} else {
-		mem_seek R7(D2Game, 7D176, 7D676, 0000, 0000, 0000, 0000, 0000, 0000);
-		memt_byte( 0x74 , 0x90);//MOV EAX,EDI
-		memt_byte( 0x35 , 0x90);//NOP
-		//6FCAD176  |. 74 35          |JE SHORT D2Game.6FCAD1AD
+		mem_seek(D2Common->GetOffsetByAddition(0, 0, 0x4E689, 0x26E33, 0x42133, 0x6AE93, 0x21B23, 0x3B393));
+		memt_byte(0x0D, 0x07);
+	}
+	else
+	{
+		mem_seek(D2Game->GetOffsetByAddition(0x7D176, 0x7D676, 0, 0, 0, 0, 0, 0));
+		memt_byte(0x74, 0x90);
+		memt_byte(0x35, 0x90);
 
-		mem_seek R7(D2Client, 8F0CA, 8E44A, 0000, 0000, 0000, 0000, 0000, 0000);
-		memt_byte( 0x0F , 0x90);//MOV EAX,EDI
-		memt_byte( 0x84 , 0x90);//NOP
-		memt_dword( 0x000000BF , 0x90909090);//NOP
-		//6FB2F0CA  |. 0F84 BF000000  |JE D2Client.6FB2F18F
+		mem_seek(D2Client->GetOffsetByAddition(0x8F0CA, 0x8E44A, 0, 0, 0, 0, 0, 0));
+		memt_byte(0x0F, 0x90);
+		memt_byte(0x84, 0x90);
+		memt_dword(0x000000BF , 0x90909090);
 
-		mem_seek R7(D2Client, 8F13C, 8E4BC, 0000, 0000, 0000, 0000, 0000, 0000);
-		memt_byte( 0x74 , 0x90);//MOV EAX,EDI
-		memt_byte( 0x6F , 0x90);//NOP
-		//6FB2F13C  |. 74 6F          |JE SHORT D2Client.6FB2F1AD
+		mem_seek(D2Client->GetOffsetByAddition(0x8F13C, 0x8E4BC, 0, 0, 0, 0, 0, 0));
+		memt_byte(0x74 , 0x90);
+		memt_byte(0x6F , 0x90);
 	}
 
 	log_msg("\n");

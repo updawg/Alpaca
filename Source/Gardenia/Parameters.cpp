@@ -30,7 +30,6 @@
 
 #include "statsPoints.h"
 #include "mainScreen.h"
-#include "savePath.h"
 #include "bigStash.h"
 #include "infinityStash.h"
 #include "newInterfaces.h"
@@ -38,8 +37,6 @@
 #include "commands.h"
 #include "language.h"
 #include "windowed.h"
-
-using Versions = VersionUtility::Versions;
 
 char* modDataDirectory = "Gardenia";
 bool active_plugin = true;
@@ -77,10 +74,6 @@ const char* S_selectedLanguage = "SelectedLanguage";
 const char* S_active_LanguageManagement = "ActiveLanguageManagement";
 const char* S_defaultLanguage = "DefaultLanguage";
 const char* S_availableLanguages = "AvailableLanguages";
-
-const char* S_SAVEPATH = "SAVEPATH";
-const char* S_active_changingSavePath = "ActiveSavePathChange";
-const char* S_savePath = "SavePath";
 
 const char* S_MAIN_SCREEN = "MAIN SCREEN";
 const char* S_active_VersionTextChange = "ActiveVersionTextChange";
@@ -186,7 +179,7 @@ void init_General(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefaultFi
 {
 	GET_PRIVATE_PROFILE_STRING(S_GENERAL, S_active_DisableBattleNet, "0");
 	active_DisableBattleNet = atoi(buffer) != 0;
-	log_msg("active_DisableBattleNet\t\t= %d\n", active_DisableBattleNet);
+	log_msg("active_DisableBattleNet\t\t\t= %d\n", active_DisableBattleNet);
 
 	GET_PRIVATE_PROFILE_STRING(S_GENERAL, S_active_logFile, "0");
 	active_logFile = atoi(buffer)+1;
@@ -235,15 +228,15 @@ void init_Windowed(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefaultF
 
 		GET_PRIVATE_PROFILE_STRING(S_WINDOWED, S_SetWindowPos, "0");
 		active_SetWindowPos = atoi(buffer) != 0;
-		log_msg("active_MoveAndResizeWindow\t= %d\n", active_SetWindowPos);
+		log_msg("active_MoveAndResizeWindow\t\t= %d\n", active_SetWindowPos);
 
 		GET_PRIVATE_PROFILE_STRING(S_WINDOWED, S_X, "0");
 		windowedX = atoi(buffer);
-		log_msg("windowedX\t\t\t\t\t= %d\n", windowedX);
+		log_msg("windowedX\t\t\t\t= %d\n", windowedX);
 
 		GET_PRIVATE_PROFILE_STRING(S_WINDOWED, S_Y, "0");
 		windowedY = atoi(buffer);
-		log_msg("windowedY\t\t\t\t\t= %d\n", windowedY);
+		log_msg("windowedY\t\t\t\t= %d\n", windowedY);
 
 		GET_PRIVATE_PROFILE_STRING(S_WINDOWED, S_Width, "0");
 		windowedWidth = atoi(buffer);
@@ -255,7 +248,7 @@ void init_Windowed(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefaultF
 
 		GET_PRIVATE_PROFILE_STRING(S_WINDOWED, S_LockMouseOnStartup, "0");
 		active_LockMouseOnStartup = atoi(buffer) != 0;
-		log_msg("active_LockMouseOnStartup\t= %d\n\n", active_LockMouseOnStartup);
+		log_msg("active_LockMouseOnStartup\t\t= %d\n\n", active_LockMouseOnStartup);
 	}
 }
 
@@ -263,7 +256,7 @@ void init_ActiveLanguage(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDe
 {
 	GET_PRIVATE_PROFILE_STRING(S_LANGUAGE, S_active_ChangeLanguage, "0");
 	active_ChangeLanguage = atoi(buffer) != 0;
-	log_msg("active_ChangeLanguage\t\t= %d\n", active_ChangeLanguage);
+	log_msg("active_ChangeLanguage\t\t\t= %d\n", active_ChangeLanguage);
 
 	if (active_ChangeLanguage)
 	{
@@ -284,7 +277,7 @@ void init_ActiveLanguage(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDe
 			case BIN('P','O','L',0) : selectedLanguage=LNG_POL;break;
 			case BIN('R','U','S',0) : selectedLanguage=LNG_RUS;break;
 			default: active_ChangeLanguage = false;
-			log_msg("active_ChangeLanguage\t\t= %d (because bad language string : %s)\n", active_ChangeLanguage, buffer);
+			log_msg("active_ChangeLanguage\t\t\t= %d (because bad language string : %s)\n", active_ChangeLanguage, buffer);
 		}
 	}
 	if (active_ChangeLanguage)
@@ -293,7 +286,7 @@ void init_ActiveLanguage(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDe
 
 	GET_PRIVATE_PROFILE_STRING(S_LANGUAGE, S_active_LanguageManagement, "0");
 	active_LanguageManagement = atoi(buffer) != 0;
-	log_msg("active_LanguageManagement\t= %d\n", active_LanguageManagement);
+	log_msg("active_LanguageManagement\t\t= %d\n", active_LanguageManagement);
 
 	if (active_LanguageManagement)
 	{
@@ -346,86 +339,27 @@ void init_ActiveLanguage(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDe
 	log_msg("\n");
 }
 
-
-void init_SavePath(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefaultFile, char* buffer, DWORD maxSize)
-{
-	GET_PRIVATE_PROFILE_STRING3(S_SAVEPATH, S_active_changingSavePath, "0");
-	active_changingSavePath = atoi(buffer) != 0;
-	log_msg("active_changingSavePath\t\t= %u\n", active_changingSavePath);
-
-	if (active_changingSavePath)
-	{
-		int curSize =  0;
-		int start = 0;
-		GET_PRIVATE_PROFILE_STRING3(S_SAVEPATH, S_savePath, "Save\\");
-
-		while (buffer[curSize])
-			curSize++;
-
-		if ( (curSize>0) && buffer[curSize-1] != (BYTE)'\\')
-		{
-			buffer[curSize++] = (BYTE)'\\';
-			buffer[curSize]='\0';
-		}
-		while (buffer[start] == '\\')
-			start++;
-
-		if (!buffer[start])
-		{
-			active_changingSavePath = false;
-			log_msg("active_changingSavePath\t\t= %u (no valid savePath)\n\n", active_changingSavePath);
-//			log_msg("\tsavePath\t\t\t= %s\n", savePath);
-			return;
-		}
-
-		if (buffer[start+1]!=':')
-		{
-			char buf[MAX_PATH];
-			buf[0]=NULL;
-			D2FogGetInstallPath(buf,MAX_PATH);
-			savePath = (char*)D2FogMemAlloc(strlen(buf) + curSize - start + 1,__FILE__,__LINE__,0);
-			strcpy(savePath,buf);
-			strcat(savePath,&buffer[start]);
-		} else {
-			savePath = (char*)D2FogMemAlloc(curSize-start+1,__FILE__,__LINE__,0);
-			strcpy(savePath,&buffer[start]);
-		}
-		log_msg("savePath\t\t\t\t\t= %s\n", savePath);
-	}
-	log_msg("\n");
-}
-
-
 void init_VersionText(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefaultFile, char* buffer, DWORD maxSize)
 {
 	GET_PRIVATE_PROFILE_STRING(S_MAIN_SCREEN, S_active_VersionTextChange, "0");
 	active_VersionTextChange = atoi(buffer) != 0;
-	log_msg("active_VersionTextChange\t= %u\n", active_VersionTextChange);
+	log_msg("active_VersionTextChange\t\t= %u\n", active_VersionTextChange);
 
 	if (active_VersionTextChange)
 	{
 		GET_PRIVATE_PROFILE_STRING(S_MAIN_SCREEN, S_versionText, versionText);
 		if (!buffer[0])
 		{
-			switch(version_D2Game)
+			switch(Game->Version)
 			{
-			//case V107: //"v 1.07"
-			//case V108: //"v 1.08"
-			//case V109: //"v 1.09"
-			case Versions::V109b: //"v 1.09"
-			case Versions::V109d: //"v 1.09"
-			//case V110: //"v 1.10"
-			//case V111: //"v 1.11"
-			case Versions::V111b: //"v 1.11"
-			//case V112: //"v 1.12"
-			case Versions::V113c: //"v 1.13"
-			case Versions::V113d: //"v 1.13"
-			case Versions::V114a: //"v 1.14"
-			//case V114b: //"v 1.14b"
-			//case V114c: //"v 1.14c"
-			//case V114d: //"v 1.14d"
-				strcpy(buffer, "v ");
-				strcat(buffer, VersionUtility::GetVersionAsString(version_D2Game));
+			case VersionUtility::Versions::V109b:
+			case VersionUtility::Versions::V109d:
+			case VersionUtility::Versions::V111b:
+			case VersionUtility::Versions::V113c:
+			case VersionUtility::Versions::V113d:
+			case VersionUtility::Versions::V114a:
+				strcpy(buffer, "v");
+				strcat(buffer, VersionUtility::GetVersionAsString(Game->Version));
 				break;
 			default:
 				active_VersionTextChange=0;
@@ -434,7 +368,7 @@ void init_VersionText(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefau
 
 		versionText = (char*)D2FogMemAlloc(strlen(buffer)+1,__FILE__,__LINE__,0);
 		strcpy(versionText,buffer);
-		log_msg("versionText\t\t\t\t\t= %s\n", versionText);
+		log_msg("versionText\t\t\t\t= %s\n", versionText);
 
 		GET_PRIVATE_PROFILE_STRING(S_MAIN_SCREEN, S_modVersionColor, "0");
 		modVersionColor = atoi(buffer);
@@ -443,7 +377,7 @@ void init_VersionText(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefau
 
 	GET_PRIVATE_PROFILE_STRING(S_MAIN_SCREEN, S_active_PrintPlugYVersion, "1");
 	active_PrintPlugYVersion = atoi(buffer) != 0;
-	log_msg("active_PrintPlugYVersion\t= %u\n", active_PrintPlugYVersion);
+	log_msg("active_PrintPlugYVersion\t\t= %u\n", active_PrintPlugYVersion);
 
 	if (active_PrintPlugYVersion)
 	{
@@ -463,7 +397,7 @@ void init_Stash(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefaultFile
 
 	GET_PRIVATE_PROFILE_STRING(S_STASH, S_active_multiPageStash, "0");
 	active_multiPageStash = atoi(buffer) != 0;
-	log_msg("active_multiPageStash\t\t= %u\n", active_multiPageStash);
+	log_msg("active_multiPageStash\t\t\t= %u\n", active_multiPageStash);
 
 	if (active_multiPageStash)
 	{
@@ -538,11 +472,11 @@ void init_Stash(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefaultFile
 
 		GET_PRIVATE_PROFILE_STRING(S_STASH, S_separateHardSoftStash, "1");
 		separateHardSoftStash = atoi(buffer) != 0;
-		log_msg("separateHardSoftStash\t\t= %u\n", separateHardSoftStash);
+		log_msg("separateHardSoftStash\t\t\t= %u\n", separateHardSoftStash);
 
 		GET_PRIVATE_PROFILE_STRING(S_STASH, S_displaySharedSetItemNameInGreen, "1");
 		displaySharedSetItemNameInGreen = atoi(buffer) != 0;
-		log_msg("displaySharedSetItemNameInGreen = %u\n", displaySharedSetItemNameInGreen);
+		log_msg("displaySharedSetItemNameInGreen\t\t= %u\n", displaySharedSetItemNameInGreen);
 
 		GET_PRIVATE_PROFILE_STRING(S_STASH, S_active_sharedGold, "1");
 		active_sharedGold = atoi(buffer) != 0;
@@ -556,7 +490,7 @@ void init_StatsPoints(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefau
 {
 	GET_PRIVATE_PROFILE_STRING(S_STATS_POINTS, S_active_StatsShiftClickLimit, "0");
 	active_StatsShiftClickLimit = atoi(buffer) != 0;
-	log_msg("active_StatsShiftClickLimit\t= %u\n", active_StatsShiftClickLimit);
+	log_msg("active_StatsShiftClickLimit\t\t= %u\n", active_StatsShiftClickLimit);
 
 	if (active_StatsShiftClickLimit)
 	{
@@ -571,17 +505,17 @@ void init_NewInterfaces(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDef
 {
 	GET_PRIVATE_PROFILE_STRING(S_INTERFACE, S_active_newInterfaces, "0");
 	active_newInterfaces = atoi(buffer) != 0;
-	log_msg("active_newInterfaces\t\t= %d\n", active_newInterfaces);
+	log_msg("active_newInterfaces\t\t\t= %d\n", active_newInterfaces);
 
 	if (active_newInterfaces)
 	{
 		GET_PRIVATE_PROFILE_STRING(S_INTERFACE, S_selectMainPageOnOpenning, "1");
 		selectMainPageOnOpenning = atoi(buffer) != 0;
-		log_msg("selectMainPageOnOpenning\t= %u\n", selectMainPageOnOpenning);
+		log_msg("selectMainPageOnOpenning\t\t= %u\n", selectMainPageOnOpenning);
 
 		GET_PRIVATE_PROFILE_STRING(S_INTERFACE, S_printBackgroundOnMainPage, "1");
 		printBackgroundOnMainPage = atoi(buffer) != 0;
-		log_msg("printBackgroundOnMainPage\t= %u\n", printBackgroundOnMainPage);
+		log_msg("printBackgroundOnMainPage\t\t= %u\n", printBackgroundOnMainPage);
 	}
 	log_msg("\n");
 }
@@ -590,18 +524,18 @@ void init_ExtraOptions(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefa
 {
 	GET_PRIVATE_PROFILE_STRING(S_EXTRA, S_nbPlayersCommandByDefault, "0");
 	nbPlayersCommandByDefault = atoi(buffer);
-	if (version_D2Common == Versions::V109 || version_D2Common == Versions::V109b)
+	if (Game->Version == VersionUtility::Versions::V109 || Game->Version == VersionUtility::Versions::V109b)
 		{if (nbPlayersCommandByDefault > 64) nbPlayersCommandByDefault=64;}
 	else if (nbPlayersCommandByDefault > 8) nbPlayersCommandByDefault=8;
-	log_msg("nbPlayersCommandByDefault\t= %d\n", nbPlayersCommandByDefault);
+	log_msg("nbPlayersCommandByDefault\t\t= %d\n", nbPlayersCommandByDefault);
 
 	GET_PRIVATE_PROFILE_STRING(S_EXTRA, S_active_DisplayItemLevel, "0");
 	active_DisplayItemLevel = atoi(buffer);
-	log_msg("active_DisplayItemLevel\t\t= %d\n", active_DisplayItemLevel);
+	log_msg("active_DisplayItemLevel\t\t\t= %d\n", active_DisplayItemLevel);
 
 	GET_PRIVATE_PROFILE_STRING(S_EXTRA, S_active_AlwaysDisplayLifeMana, "0");
 	active_AlwaysDisplayLifeMana = atoi(buffer);
-	log_msg("active_AlwaysDisplayLifeMana= %d\n", active_AlwaysDisplayLifeMana);
+	log_msg("active_AlwaysDisplayLifeMana\t\t= %d\n", active_AlwaysDisplayLifeMana);
 
 	GET_PRIVATE_PROFILE_STRING(S_EXTRA, S_active_RunLODs, "0");
 	active_RunLODs = atoi(buffer);
@@ -609,22 +543,20 @@ void init_ExtraOptions(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefa
 
 	GET_PRIVATE_PROFILE_STRING(S_EXTRA, S_active_EnabledTXTFilesWithMSExcel, "0");
 	active_EnabledTXTFilesWithMSExcel = atoi(buffer);
-	log_msg("active_EnabledTXTFilesWithMSExcel= %u\n\n", active_EnabledTXTFilesWithMSExcel);
+	log_msg("active_EnabledTXTFilesWithMSExcel\t= %u\n\n", active_EnabledTXTFilesWithMSExcel);
 
 	GET_PRIVATE_PROFILE_STRING(S_EXTRA, S_active_DisplayBaseStatsValue, "0");
 	active_DisplayBaseStatsValue = atoi(buffer);
-	log_msg("active_DisplayBaseStatsValue= %u\n\n", active_DisplayBaseStatsValue);
+	log_msg("active_DisplayBaseStatsValue\t\t= %u\n\n", active_DisplayBaseStatsValue);
 
 	GET_PRIVATE_PROFILE_STRING(S_EXTRA, S_active_LadderRunewords, "0");
 	active_LadderRunewords = atoi(buffer);
-	if (active_LadderRunewords && (version_D2Common == Versions::V109b || version_D2Common == Versions::V109d) ) {
+	if (active_LadderRunewords && (Game->Version == VersionUtility::Versions::V109b || Game->Version == VersionUtility::Versions::V109d) ) {
 		active_LadderRunewords = 0;
-		log_msg("active_LadderRunewords\t= %d (Warning : Warning : this feature is only for LoD version 1.10 or higher, so it's automatically disabled)\n", active_LadderRunewords);
+		log_msg("active_LadderRunewords\t\t\t= %d (Warning : Warning : this feature is only for LoD version 1.10 or higher, so it's automatically disabled)\n", active_LadderRunewords);
 	} else
-		log_msg("active_LadderRunewords\t= %u\n\n", active_LadderRunewords);
+		log_msg("active_LadderRunewords\t\t\t= %u\n\n", active_LadderRunewords);
 }
-
-
 
 void loadParameters()
 {
@@ -662,16 +594,15 @@ void loadParameters()
 			init_General(iniFile, iniFixedFile, iniDefaultFile, buffer, BUFSIZE);
 			init_Windowed(iniFile, iniFixedFile, iniDefaultFile, buffer, BUFSIZE);
 			init_ActiveLanguage(iniFile, iniFixedFile, iniDefaultFile, buffer,BUFSIZE);
-			init_SavePath(iniFile, iniFixedFile, iniDefaultFile, buffer, BUFSIZE);
 			init_VersionText(iniFile, iniFixedFile, iniDefaultFile, buffer, BUFSIZE);
 			init_Stash(iniFile, iniFixedFile, iniDefaultFile, buffer, BUFSIZE);
 			init_StatsPoints(iniFile, iniFixedFile, iniDefaultFile, buffer, BUFSIZE);
 			init_NewInterfaces(iniFile, iniFixedFile, iniDefaultFile, buffer, BUFSIZE);
 			init_ExtraOptions(iniFile, iniFixedFile, iniDefaultFile, buffer, BUFSIZE);
 		}
-		log_msg("Reading parameters end.\n\n\n");
+		log_msg("Reading parameters end.\n\n");
 	} else {
-		log_msg("\nCan't open parameters files: Default values used.\n\n\n");
+		log_msg("\nCan't open parameters files: Default values used.\n\n");
 		active_plugin = false;
 	}
 
@@ -681,7 +612,6 @@ void loadParameters()
 		iniFixedFile->close();
 	if (iniDefaultFile)
 		iniDefaultFile->close();
-
 
 	delete iniFile;
 	delete iniDefaultFile;

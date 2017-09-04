@@ -19,8 +19,6 @@
 #include <map>
 #include "../Error.h"
 
-using Versions = VersionUtility::Versions;
-
 const char* UnknownVersion = "UNKNOWN";
 
 const char* VersionUtility::GetVersionAsString(const int version)
@@ -122,7 +120,7 @@ VersionUtility::Versions VersionUtility::GetVersion(const LPCVOID pVersionResour
 	return Versions::UNKNOWN;
 }
 
-Versions VersionUtility::GetVersion(const char* gameExeName)
+VersionUtility::Versions VersionUtility::GetVersion(const char* gameExeName)
 {
 	DWORD len = GetFileVersionInfoSize(gameExeName, NULL);
 	if (len == 0)
@@ -136,7 +134,7 @@ Versions VersionUtility::GetVersion(const char* gameExeName)
 	return version;
 }
 
-Versions VersionUtility::GetVersion(const HMODULE hModule)
+VersionUtility::Versions VersionUtility::GetVersion(const HMODULE hModule)
 {
 	HRSRC hResInfo = FindResource(hModule, MAKEINTRESOURCE(VS_VERSION_INFO), RT_VERSION);
 	if (!hResInfo) return Versions::UNKNOWN;
