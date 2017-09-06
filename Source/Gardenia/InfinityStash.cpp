@@ -678,7 +678,7 @@ void selectNextIndex2Stash(Unit* ptChar)
 Stash* curStash2;
 DWORD currentSawStash2;
 
-Unit* STDCALL getNextItem(Unit* ptChar, Unit* ptItem)
+Unit* __stdcall getNextItem(Unit* ptChar, Unit* ptItem)
 {
 	Unit* item = D2UnitGetNextItem(ptItem);
 	if (item) return item;
@@ -706,7 +706,7 @@ Unit* STDCALL getNextItem(Unit* ptChar, Unit* ptItem)
 	return getNextItem(ptChar,item);
 }
 
-Unit* STDCALL initGetNextItem(Unit* ptChar, Unit* ptItem)
+Unit* __stdcall initGetNextItem(Unit* ptChar, Unit* ptItem)
 {
 	if (ptChar->nUnitType != UNIT_PLAYER) return NULL;
 	if (!PCPY) return NULL;
@@ -735,7 +735,7 @@ FCT_ASM ( caller_getNextItem )
 }}
 
 
-DWORD STDCALL carry1Limit(Unit* ptChar, Unit* ptItemParam, DWORD itemNum, BYTE page)
+DWORD __stdcall carry1Limit(Unit* ptChar, Unit* ptItemParam, DWORD itemNum, BYTE page)
 {
 	if (!ptChar) return 0;
 	Unit* ptItem = ptItemParam ? ptItemParam : D2GameGetObject(PCGame, UNIT_ITEM, itemNum);

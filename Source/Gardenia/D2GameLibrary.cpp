@@ -17,6 +17,12 @@
 
 #include "D2GameLibrary.h"
 
+// These static variables need to be here so that we can call
+// the address of the offset (that we retrieved from inside of our
+// instanced version of this class) in the static __declspec
+// (naked) functions.
+D2GameLibrary::TD2SaveGame D2GameLibrary::VD2SaveGame;
+
 D2GameLibrary::D2GameLibrary(int gameVersion) : Library()
 {
 	Name = "D2Game.dll";
@@ -35,11 +41,23 @@ void D2GameLibrary::SetFunctions()
 	D2TestPositionInRoom = (TD2TestPositionInRoom)GetOffsetByAddition(0, 0, 0x22070, 0x1090, 0x1DF0, 0x11F0, 0x1280, 0x1340);
 	D2LoadInventory = (TD2LoadInventory)GetOffsetByAddition(0x4F100, 0x4F500, 0x5B8A0, 0xB9D70, 0x25D50, 0x44950, 0x54810, 0x3A4C0);
 	D2GameGetObject = (TD2GameGetObject)GetOffsetByAddition(0x7BAE0, 0x7BFD0, 0x8BB00, 0x97620, 0xBEF80, 0x93650, 0xE03A0, 0x6DC40);
+
 	D2SaveGame = (TD2SaveGame)GetOffsetByAddition(0, 0, 0x89C0, 0xE2390, 0xE66D0, 0xA8090, 0x2C830, 0xBE660);
+	VD2SaveGame = D2SaveGame;
 
 	// Until 1.10
 	D2GetClient = (TD2GetClient)GetOffsetByAddition(0x7C2C0, 0x7C7B0, 0x8C2E0, 0, 0, 0, 0, 0);
 
 	// Variables
 	ptClientTable = (NetClient**)GetOffsetByAddition(0xF2A80, 0xF2918, 0x113FB8, 0x111718, 0x1115E0, 0x1105E0, 0x1107B8, 0x1105E0);
+}
+
+__declspec (naked) void D2GameLibrary::D2SaveGame_1XX()
+{
+	__asm {
+		POP EAX
+		POP ECX
+		PUSH EAX
+		JMP VD2SaveGame
+	};
 }

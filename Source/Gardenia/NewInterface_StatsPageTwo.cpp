@@ -147,7 +147,7 @@ void manageStatLine(Unit* ptChar, statsInterfaceBIN* statLine, int currentPage, 
 	printStat(ptChar, statLine->statsID, RX(statLine->x), RY(statLine->y), statLine->color, lpText);
 }
 
-void STDCALL printNewStatsPageTwo(int currentPage)
+void __stdcall printNewStatsPageTwo(int currentPage)
 {
 	if (!D2isLODGame()) return D2PrintStatsPage();
 
@@ -252,7 +252,7 @@ void STDCALL printNewStatsPageTwo(int currentPage)
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-DWORD STDCALL mouseNewStatsPageTwoLeftDown(sWinMessage* msg)
+DWORD __stdcall mouseNewStatsPageTwoLeftDown(sWinMessage* msg)
 {
 	if (!D2isLODGame()) return -1;
 
@@ -284,7 +284,7 @@ DWORD STDCALL mouseNewStatsPageTwoLeftDown(sWinMessage* msg)
 }
 
 
-DWORD STDCALL mouseNewStatsPageTwoLeftUp(sWinMessage* msg)
+DWORD __stdcall mouseNewStatsPageTwoLeftUp(sWinMessage* msg)
 {
 	if (!D2isLODGame()) return -1;
 

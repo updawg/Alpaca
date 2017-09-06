@@ -25,10 +25,11 @@ int renameIndex = 0;
 char renameString[16];
 DWORD PageSwap;
 
-int STDCALL handleServerUpdate(Unit* ptChar, WORD param)
+int __stdcall handleServerUpdate(Unit* ptChar, WORD param)
 {
 	int type = param & 0xFF;
 	DWORD arg = (param & 0xFF00) >> 8;
+	active_logFile = 1;
 	log_msg("Received custom message: type=%i, arg=%i\n", type, arg);
 	switch(type)
 	{

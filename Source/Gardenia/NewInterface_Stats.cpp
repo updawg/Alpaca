@@ -151,7 +151,7 @@ void print2Lines(WORD id, LPWSTR lpText, DWORD x, DWORD l, DWORD y)
 
 
 #define BUFSIZE 0x80
-void STDCALL printNewStatsPage()
+void __stdcall printNewStatsPage()
 {
 	if (!D2isLODGame() || !D2GetResolution()) return D2PrintStatsPage();
 	
@@ -597,7 +597,7 @@ if (Game->Version <= VersionUtility::Versions::V110)
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-DWORD STDCALL mouseNewStatsPageLeftDown(sWinMessage* msg)
+DWORD __stdcall mouseNewStatsPageLeftDown(sWinMessage* msg)
 {
 	if (!D2isLODGame() || !D2GetResolution()) return -1;
 
@@ -669,7 +669,7 @@ void sendAssignStats(DWORD code, DWORD nbStatPointsRemaining)
 	}
 }
 
-DWORD STDCALL mouseNewStatsPageLeftUp(sWinMessage* msg)
+DWORD __stdcall mouseNewStatsPageLeftUp(sWinMessage* msg)
 {
 	if (!D2isLODGame() || !D2GetResolution()) return -1;
 

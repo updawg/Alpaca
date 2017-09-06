@@ -20,7 +20,7 @@
 #include "sharedSaveFile.h"
 #include "common.h"
 
-DWORD STDCALL LoadSPCustomData(Unit* ptChar)
+DWORD __stdcall LoadSPCustomData(Unit* ptChar)
 {
 	DWORD size = 0;
 	BYTE* data;
@@ -183,7 +183,7 @@ static BYTE*	dataExtended;
 static DWORD	sizeShared;
 static BYTE*	dataShared;
 
-void FASTCALL SendSaveFiles (char* ptPath, DWORD maxsize, char* name)
+void __fastcall SendSaveFiles (char* ptPath, DWORD maxsize, char* name)
 {
 //	DWORD size;
 //	BYTE* data;
@@ -210,7 +210,7 @@ void FASTCALL SendSaveFiles (char* ptPath, DWORD maxsize, char* name)
 
 
 
-DWORD STDCALL ReceiveSaveFiles (DWORD clientID, t_rcvMsg* msg)
+DWORD __stdcall ReceiveSaveFiles (DWORD clientID, t_rcvMsg* msg)
 {
 	if( (msg->packID != customPackID) || !msg->isCustom) return msg->packID;
 
@@ -287,9 +287,9 @@ DWORD STDCALL ReceiveSaveFiles (DWORD clientID, t_rcvMsg* msg)
 }
 
 /*
-typedef int (STDCALL * t_fct_recv)(SOCKET s, char *buf, int len, int flags);
+typedef int (__stdcall * t_fct_recv)(SOCKET s, char *buf, int len, int flags);
 t_fct_recv fct_recv;
-int STDCALL ReceiveSaveFiles_9(DWORD clientID, SOCKET s, char *buf, int len, int flags)
+int __stdcall ReceiveSaveFiles_9(DWORD clientID, SOCKET s, char *buf, int len, int flags)
 {
 	t_rcvMsg* msg = (t_rcvMsg*) buf;
 	int nb = fct_recv(s,buf,len,flags);
@@ -300,7 +300,7 @@ int STDCALL ReceiveSaveFiles_9(DWORD clientID, SOCKET s, char *buf, int len, int
 	return 7;
 }*/
 
-DWORD STDCALL LoadMPCustomData(Unit* ptChar)
+DWORD __stdcall LoadMPCustomData(Unit* ptChar)
 {
 	log_msg("Start LoadMPCustomData\n");
 

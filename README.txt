@@ -16,8 +16,7 @@ Gardenia IS compatible with Bliss Version Switcher. So if you want to have separ
 while you are time traveling, you can. Just point Bliss Version Switcher to use "Gardenia.exe"
 rather than "Game.exe". Bliss Version Switcher will automatically point the save directory
 to the desired version of D2 you want to play (and Gardenia saves the stashes with your
-characters as well). If using the version switcher, do not use the "Active Save Path Change"
-feature in Gardenia.
+characters as well).
 
 Bliss Version Switcher URL:
 https://github.com/fearedbliss/Bliss-Version-Switcher
@@ -36,7 +35,6 @@ Each features can be turn on/off via Gardenia.ini (see "COMMENTS ON THE CONFIGUR
 - Enabled the ladder only runewords out of realms.
 - Display item level in its popup.
 - Increase the stash to 10x10 squares.
-- Change the save path directory.
 - Always display Mana and Life values above the globes.
 - Display the stats current value (without magical bonus) like Magic/gold find or maximum resistances.
 - Can launch game in windowed mode with some options (lock mouse/resize/on top/noborder).
@@ -75,3 +73,11 @@ Removed
 - Can open Cow Level Portal even when player have kill the Cow King in that difficulty.
 - Always regenerate maps in SinglePlayer like in MultiPlayer.
 - Removed ability to change how much stat/skill points one receives per level
+- Change the save path directory.
+
+
+Other TODO
+=====
+- Make separate hardcore stashes non changable.
+- Check to see why /page4 no longer works.
+- Remove /dml alias, just keep /dlm.

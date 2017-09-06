@@ -19,6 +19,6 @@
 
 #include "common.h"
 
-void STDCALL printRunewordsPage();
-DWORD STDCALL mouseRunewordsPageLeftDown(sWinMessage* msg);
-DWORD STDCALL mouseRunewordsPageLeftUp(sWinMessage* msg);
+void __stdcall printRunewordsPage();
+DWORD __stdcall mouseRunewordsPageLeftDown(sWinMessage* msg);
+DWORD __stdcall mouseRunewordsPageLeftUp(sWinMessage* msg);

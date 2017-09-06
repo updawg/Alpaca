@@ -61,8 +61,11 @@ const char * CMD_LISTCUBEFORMULA="/listcube";
 
 void savePlayers(Unit* ptChar)
 {
+	// 1.09-1.10 offsets aren't implemented.
 	if (active_savegame)
+	{
 		D2SaveGame(PCGame);
+	}
 }
 
 void maxGold(Unit* ptChar)
@@ -190,7 +193,7 @@ bool renameCharacter(Unit* ptChar, const char* newName)
 }
 /****************************************************************************************************/
 
-int STDCALL commands (char* ptText)
+int __stdcall commands (char* ptText)
 {
 	log_msg("Command : %s\n", ptText);
 	Unit* ptChar = D2GetClientPlayer();

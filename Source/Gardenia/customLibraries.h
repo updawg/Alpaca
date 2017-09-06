@@ -19,9 +19,9 @@
 
 #include "common.h"
 
-typedef int (STDCALL *TsaveSaveFile) (Unit* ptChar, BYTE** data, DWORD* maxSize, DWORD* curSize);
-typedef int (STDCALL *TloadSaveFile) (Unit* ptChar, BYTE* data, DWORD maxSize, DWORD* curSize);
-typedef int (STDCALL *TinitSaveFile) (BYTE** data, DWORD* maxSize, DWORD* curSize);
+typedef int (__stdcall *TsaveSaveFile) (Unit* ptChar, BYTE** data, DWORD* maxSize, DWORD* curSize);
+typedef int (__stdcall *TloadSaveFile) (Unit* ptChar, BYTE* data, DWORD maxSize, DWORD* curSize);
+typedef int (__stdcall *TinitSaveFile) (BYTE** data, DWORD* maxSize, DWORD* curSize);
 
 class TCustomDll
 {

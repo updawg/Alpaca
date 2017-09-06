@@ -28,7 +28,7 @@ void* newStatsInterfaceImages = NULL;
 void* statsBackgroundImages = NULL;
 void* sharedGoldBtnsImages = NULL;
 
-DWORD STDCALL isModFile (char* filename)
+DWORD __stdcall isModFile (char* filename)
 {
 	if (strstr(filename, modDataDirectory) )
 	{
@@ -121,7 +121,7 @@ void loadImagesFile(void** images, const char* name)
 	}
 }
 
-void STDCALL loadCustomImages()
+void __stdcall loadCustomImages()
 {
 	if ( active_multiPageStash || active_newInterfaces) loadImagesFile(&stashBtnsImages, "StashBtns");
 	if ( active_sharedGold)		 loadImagesFile(&sharedGoldBtnsImages, "SharedGoldBtns");
@@ -131,7 +131,7 @@ void STDCALL loadCustomImages()
 
 #define freeImagesFile(I) if(I) {D2FreeImage(I);I=NULL;}
 
-void STDCALL freeCustomImages()
+void __stdcall freeCustomImages()
 {
 	freeImagesFile(stashBtnsImages);
 	freeImagesFile(sharedGoldBtnsImages);
@@ -184,12 +184,12 @@ void freeStatsInterfaceDesc();
 
 
 
-void FASTCALL loadTxtFiles(DWORD mempool)
+void __fastcall loadTxtFiles(DWORD mempool)
 {
 	loadStatsInterfaceDesc(mempool);
 }
 
-void FASTCALL freeTxtFiles()
+void __fastcall freeTxtFiles()
 {
 	freeStatsInterfaceDesc();
 }

@@ -62,7 +62,7 @@ int GetCurrentPage()
 }
 
 
-void STDCALL printCustomPage()
+void __stdcall printCustomPage()
 {
 	if(onRealm) {D2PrintStatsPage();return;}
 	if ( (selectedPage > 0) && (selectedPage<=lastPage) )
@@ -75,7 +75,7 @@ void STDCALL printCustomPage()
 		D2PrintStatsPage();
 }
 
-DWORD STDCALL mouseCustomPageLeftDown(sWinMessage* msg)
+DWORD __stdcall mouseCustomPageLeftDown(sWinMessage* msg)
 {
 	if(onRealm) return -1;
 	if ( (selectedPage > 0) && (selectedPage<=lastPage) )
@@ -88,7 +88,7 @@ DWORD STDCALL mouseCustomPageLeftDown(sWinMessage* msg)
 		return -1;
 }
 
-DWORD STDCALL mouseCustomPageLeftUp(sWinMessage* msg)
+DWORD __stdcall mouseCustomPageLeftUp(sWinMessage* msg)
 {
 	if(onRealm) return -1;
 	if ( (selectedPage > 0) && (selectedPage <= lastPage) )

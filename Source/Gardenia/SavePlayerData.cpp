@@ -20,7 +20,7 @@
 #include "sharedSaveFile.h"
 #include "common.h"
 
-void STDCALL SaveSPPlayerCustomData(Unit* ptChar)
+void __stdcall SaveSPPlayerCustomData(Unit* ptChar)
 {
 	if (!D2isLODGame()) return;//D2Game but in SP so np
 
@@ -147,7 +147,7 @@ void sendDataToSave(DWORD clientID, BYTE* data, DWORD size, bool isShared)
 	log_msg("\n");
 }*/
 
-void STDCALL SendSaveFilesToSave( Unit* ptChar )
+void __stdcall SendSaveFilesToSave( Unit* ptChar )
 {
 //	if (!D2isLODGame()) return;
 	log_msg("\n--- Start SendSaveFilesToSave ---\n");
@@ -213,7 +213,7 @@ void STDCALL SendSaveFilesToSave( Unit* ptChar )
 }
 
 
-DWORD STDCALL ManageNextPacketToSend(NetClient* ptClient)
+DWORD __stdcall ManageNextPacketToSend(NetClient* ptClient)
 {
 	log_msg("ManageNextPacketToSend: ");
 	s_dataToSend* dataToSend = ptDataToSend;
@@ -283,7 +283,7 @@ DWORD STDCALL ManageNextPacketToSend(NetClient* ptClient)
 }
 
 
-DWORD STDCALL ReceiveSaveFilesToSave(t_rcvMsg* msg)
+DWORD __stdcall ReceiveSaveFilesToSave(t_rcvMsg* msg)
 {
 	if( (msg->packID != customPackID) || !msg->isCustom) return 0;
 
@@ -337,7 +337,7 @@ DWORD STDCALL ReceiveSaveFilesToSave(t_rcvMsg* msg)
 }
 
 
-void STDCALL SaveMPPlayerCustomData(BYTE* dataD2Savefile )
+void __stdcall SaveMPPlayerCustomData(BYTE* dataD2Savefile )
 {
 	log_msg("Start SaveMPPlayerCustomData.\n");
 	Unit* ptChar = D2GetClientPlayer();

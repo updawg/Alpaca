@@ -98,7 +98,7 @@ DWORD	getYTakeGoldBtn()		{return RY(posYTakeGoldBtn<0 ? 0x1A8 : posYTakeGoldBtn)
 #define isOnButtonPutGold(x,y) isOnRect(x, y, getXPutGoldBtn(), getYPutGoldBtn(), getLPutGoldBtn(), getHPutGoldBtn())
 #define isOnButtonTakeGold(x,y) isOnRect(x, y, getXTakeGoldBtn(), getYTakeGoldBtn(), getLTakeGoldBtn(), getHTakeGoldBtn())
 
-void* STDCALL printBtns()
+void* __stdcall printBtns()
 {
 	if (onRealm || !D2isLODGame()) return D2LoadBuySelBtn();
 
@@ -176,7 +176,7 @@ void* STDCALL printBtns()
 }
 
 
-DWORD STDCALL manageBtnDown(sWinMessage* msg)
+DWORD __stdcall manageBtnDown(sWinMessage* msg)
 {
 	if (onRealm || !D2isLODGame()) return 0;
 
@@ -202,7 +202,7 @@ DWORD STDCALL manageBtnDown(sWinMessage* msg)
 }
 
 	
-DWORD STDCALL manageBtnUp(sWinMessage* msg)
+DWORD __stdcall manageBtnUp(sWinMessage* msg)
 {
 	if (onRealm || !D2isLODGame()) return 0;
 
@@ -263,7 +263,7 @@ DWORD STDCALL manageBtnUp(sWinMessage* msg)
 	return 1;
 }
 
-void FASTCALL printPageNumber(LPWSTR maxGoldText, DWORD x, DWORD y, DWORD color, DWORD bfalse)
+void __fastcall printPageNumber(LPWSTR maxGoldText, DWORD x, DWORD y, DWORD color, DWORD bfalse)
 {
 	if (onRealm || !D2isLODGame() )
 	{
@@ -308,7 +308,7 @@ void FASTCALL printPageNumber(LPWSTR maxGoldText, DWORD x, DWORD y, DWORD color,
 
 static Stash* curStash=NULL;
 static DWORD currentSawStash=0;
-Unit* STDCALL getNextItemForSet(Unit* ptItem)
+Unit* __stdcall getNextItemForSet(Unit* ptItem)
 {
 	Unit* item = ptItem?D2UnitGetNextItem(ptItem):NULL;
 	if (item) return item;
@@ -337,7 +337,7 @@ Unit* STDCALL getNextItemForSet(Unit* ptItem)
 	return getNextItemForSet(item);
 }
 
-Unit* STDCALL initGetNextItemForSet(Inventory* ptInventory)
+Unit* __stdcall initGetNextItemForSet(Inventory* ptInventory)
 {
 	Unit* ptChar = D2GetClientPlayer();
 	if (ptChar->nUnitType != UNIT_PLAYER) return NULL;

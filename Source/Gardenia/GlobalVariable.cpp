@@ -23,7 +23,7 @@ bool onRealm=false;
 bool needToInit=false;
 int previouslyOnRealm = -1;
 
-void STDCALL BtnPress()
+void __stdcall BtnPress()
 {
 	needToInit = 1;
 	d2_assert(active_bigStash_tested && onRealm && (previouslyOnRealm==0), "Need to restart after play an open game with the Big Stash",__FILE__,__LINE__);

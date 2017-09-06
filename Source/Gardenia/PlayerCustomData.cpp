@@ -58,7 +58,7 @@ Stash* getStashFromItem(Unit* ptChar, Unit* ptItem)
 }
 
 
-Unit* FASTCALL updateItem(GameStruct* ptGame, DWORD type, DWORD itemNum, Unit* ptChar)
+Unit* __fastcall updateItem(GameStruct* ptGame, DWORD type, DWORD itemNum, Unit* ptChar)
 {
 	Unit* ptItem = D2GameGetObject(ptGame, type, itemNum);
 	if (ptGame->isLODGame && (D2ItemGetPage(ptItem) == 4))
@@ -71,7 +71,7 @@ Unit* FASTCALL updateItem(GameStruct* ptGame, DWORD type, DWORD itemNum, Unit* p
 }
 
 
-void STDCALL updateClientPlayerOnLoading(Unit* ptChar)
+void __stdcall updateClientPlayerOnLoading(Unit* ptChar)
 {
 	log_msg("--- Start updateClientPlayerOnLoading ---\n");
 	if (PCGame->isLODGame)
@@ -86,7 +86,7 @@ void STDCALL updateClientPlayerOnLoading(Unit* ptChar)
 
 /**************************** INIT CUSTOM DATA ****************************/
 
-PlayerData* FASTCALL init_PlayerCustomData(DWORD p1, DWORD size, LPCSTR file, DWORD line, DWORD p5)
+PlayerData* __fastcall init_PlayerCustomData(DWORD p1, DWORD size, LPCSTR file, DWORD line, DWORD p5)
 {
 	log_msg("init_PlayerCustomData\n");
 	PlayerData* playerData = (PlayerData*)D2AllocMem(p1,size+sizeof(PYPlayerData),file,line,p5);
@@ -111,7 +111,7 @@ void freeStash(Stash* ptStash)
 }
 
 
-void FASTCALL free_PlayerCustomData(DWORD p1, PlayerData* playerData, LPCSTR file, DWORD line, DWORD p5)
+void __fastcall free_PlayerCustomData(DWORD p1, PlayerData* playerData, LPCSTR file, DWORD line, DWORD p5)
 {
 	log_msg("free_PlayerCustomData\n");
 	PYPlayerData* ptPYPlayerData = (PYPlayerData*)((DWORD)playerData + shifting.ptPYPlayerData);
@@ -127,7 +127,7 @@ void FASTCALL free_PlayerCustomData(DWORD p1, PlayerData* playerData, LPCSTR fil
 	D2FreeMem(p1,playerData,file,line,p5);
 }
 
-Unit* STDCALL getNextItemToFree(Unit* ptChar, Unit* ptItem)
+Unit* __stdcall getNextItemToFree(Unit* ptChar, Unit* ptItem)
 {
 	Unit* item = D2UnitGetNextItem(ptItem);
 	if (item) return item;
@@ -166,7 +166,7 @@ Unit* STDCALL getNextItemToFree(Unit* ptChar, Unit* ptItem)
 
 /************************ INSTALL PLAYER CUSTOM DATA ****************************/
 
-void FASTCALL updateItem_111(Unit* ptItem, Unit* ptChar)
+void __fastcall updateItem_111(Unit* ptItem, Unit* ptChar)
 {
 	if (PCGame->isLODGame && (D2ItemGetPage(ptItem) == 4))
 	{

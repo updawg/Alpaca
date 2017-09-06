@@ -44,7 +44,7 @@ static struct
 #define	getHNextPageBtn()		32
 #define isOnNextPageBtn(x,y)	isOnRect(x, y, getXNextPageBtn(), getYNextPageBtn(), getLNextPageBtn(), getHNextPageBtn())
 
-void STDCALL printStatsPageBtns()
+void __stdcall printStatsPageBtns()
 {
 	if (!active_newInterfaces || !D2isLODGame() ) return;
 
@@ -84,7 +84,7 @@ void STDCALL printStatsPageBtns()
 	}
 }
 
-Unit* STDCALL statsPageMouseDown(sWinMessage* msg)
+Unit* __stdcall statsPageMouseDown(sWinMessage* msg)
 {
 	Unit* ptChar = D2GetClientPlayer();
 
@@ -110,7 +110,7 @@ Unit* STDCALL statsPageMouseDown(sWinMessage* msg)
 }
 
 
-Unit* STDCALL statsPageMouseUp(sWinMessage* msg)
+Unit* __stdcall statsPageMouseUp(sWinMessage* msg)
 {
 	Unit* ptChar = D2GetClientPlayer();
 

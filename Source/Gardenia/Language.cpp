@@ -28,7 +28,7 @@ t_availableLanguages availableLanguages;
 
 DWORD* ptCurrentLanguage;
 
-DWORD STDCALL languageManagement ()
+DWORD __stdcall languageManagement ()
 {
 	if (active_ChangeLanguage) *ptCurrentLanguage = selectedLanguage;
 	if (active_LanguageManagement)

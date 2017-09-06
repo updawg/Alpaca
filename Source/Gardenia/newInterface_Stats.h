@@ -19,6 +19,6 @@
 
 #include "common.h"
 
-void STDCALL printNewStatsPage();
-DWORD STDCALL mouseNewStatsPageLeftDown(sWinMessage* msg);
-DWORD STDCALL mouseNewStatsPageLeftUp(sWinMessage* msg);
+void __stdcall printNewStatsPage();
+DWORD __stdcall mouseNewStatsPageLeftDown(sWinMessage* msg);
+DWORD __stdcall mouseNewStatsPageLeftUp(sWinMessage* msg);

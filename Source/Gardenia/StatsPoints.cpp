@@ -26,7 +26,7 @@ DWORD limitValueToShiftClick=5;
 
 //////////////////////////////////
 
-void STDCALL printDisabledStatsBtn(WORD statID, sDrawImageInfo* data, DWORD x, DWORD y, DWORD p4, DWORD p5, DWORD p6)
+void __stdcall printDisabledStatsBtn(WORD statID, sDrawImageInfo* data, DWORD x, DWORD y, DWORD p4, DWORD p5, DWORD p6)
 {
 	if ( onRealm || !D2isLODGame())
 	{
@@ -91,7 +91,7 @@ FCT_ASM ( caller_setValue )
 	JMP D2SendToServer3
 }}
 
-DWORD STDCALL pushDown (DWORD num)
+DWORD __stdcall pushDown (DWORD num)
 {
 	Unit* ptChar = D2GetClientPlayer();
 

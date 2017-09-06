@@ -29,7 +29,7 @@ int active_LadderRunewords = false;
 
 /****************************************************************************************************/
 
-void STDCALL displayItemlevel(LPWSTR popup, Unit* ptItem)
+void __stdcall displayItemlevel(LPWSTR popup, Unit* ptItem)
 {
 	if (onRealm && (selectModParam==MOD_NO)) return;
 	WCHAR text[0x50];
@@ -421,7 +421,7 @@ void Install_EnabledTXTFilesWithMSExcel()
 
 /****************************************************************************************************/
 
-void STDCALL printDisplayBaseStatsValue(WORD statID, sDrawImageInfo* data, DWORD x, DWORD y, DWORD p4, DWORD p5, DWORD p6)
+void __stdcall printDisplayBaseStatsValue(WORD statID, sDrawImageInfo* data, DWORD x, DWORD y, DWORD p4, DWORD p5, DWORD p6)
 {
 	if ( onRealm || !D2isLODGame())
 	{
@@ -489,7 +489,7 @@ void Install_DisplayBaseStatsValue()
 
 /****************************************************************************************************/
 
-RunesBIN* STDCALL compileRunesTxt(DWORD unused, const char* filename, BINField* ptFields, DWORD* ptRecordCount, DWORD recordLength)
+RunesBIN* __stdcall compileRunesTxt(DWORD unused, const char* filename, BINField* ptFields, DWORD* ptRecordCount, DWORD recordLength)
 {
 	RunesBIN* ptRunesBin = (RunesBIN*)D2CompileTxtFile(unused, filename, ptFields, ptRecordCount, recordLength);
 	for (DWORD i=0; i < *ptRecordCount; i++)

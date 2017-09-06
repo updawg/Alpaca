@@ -51,6 +51,10 @@ public:
 
 	// Variables
 	NetClient** ptClientTable;
+	 
+	// _declspec (naked) functions (Our custom/wrapper function)
+	static void D2SaveGame_1XX();
+	static TD2SaveGame VD2SaveGame;
 private:
 	void SetFunctions();
 };

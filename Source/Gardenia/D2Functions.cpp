@@ -206,7 +206,6 @@ D2GameLibrary::TD2GameGetObject				 V2GameGetObject;
 D2GameLibrary::TD2TestPositionInRoom		 V2TestPositionInRoom;
 D2GameLibrary::TD2SendPacket				 V2SendPacket;
 D2GameLibrary::TD2LoadInventory				 V2LoadInventory;
-D2GameLibrary::TD2SaveGame					 V2SaveGame;
 
 WORD (*getDescStrPos) (DWORD statID);
 
@@ -275,7 +274,7 @@ FCT_ASM ( D2GetItemTypesBIN_9 )
 	RETN
 }}
 
-DWORD FASTCALL D2PrintStat_9 (Unit* ptItem, Stats* ptStats, DWORD statID, DWORD statIndex, DWORD statValue, LPWSTR lpText)
+DWORD __fastcall D2PrintStat_9 (Unit* ptItem, Stats* ptStats, DWORD statID, DWORD statIndex, DWORD statValue, LPWSTR lpText)
 {
 	DWORD curDesc = getStatDescIDFrom(statID);
 	if (curDesc < *ptNbStatDesc)
@@ -299,7 +298,7 @@ WORD getDescStrPos_10 (DWORD statID)
 
 const char* S_compileTxtFile = "compileTxtFile";
 const char* S_errorReadTxtFile = "pbData";
-__declspec(naked) void* STDCALL compileTxtFile_9(DWORD unused, const char* filename, BINField* ptFields, DWORD* ptRecordCount, DWORD recordLength)
+__declspec(naked) void* __stdcall compileTxtFile_9(DWORD unused, const char* filename, BINField* ptFields, DWORD* ptRecordCount, DWORD recordLength)
 {_asm{
 	SUB ESP,0x210
 //	MOV EAX,DWORD PTR DS:[1BEA28C]
@@ -338,7 +337,7 @@ continue_compileTxtFile:
 	JMP ECX
 }}
 
-__declspec(naked) void* STDCALL compileTxtFile_10(DWORD unused, const char* filename, BINField* ptFields, DWORD* ptRecordCount, DWORD recordLength)
+__declspec(naked) void* __stdcall compileTxtFile_10(DWORD unused, const char* filename, BINField* ptFields, DWORD* ptRecordCount, DWORD recordLength)
 {_asm{
 	SUB ESP,0x210
 //	MOV EAX,DWORD PTR DS:[1BEA28C]
@@ -377,7 +376,7 @@ continue_compileTxtFile:
 	JMP ECX
 }}
 
-__declspec(naked) void* STDCALL compileTxtFile_111(DWORD unused, const char* filename, BINField* ptFields, DWORD* ptRecordCount, DWORD recordLength)
+__declspec(naked) void* __stdcall compileTxtFile_111(DWORD unused, const char* filename, BINField* ptFields, DWORD* ptRecordCount, DWORD recordLength)
 {_asm{
 	SUB ESP,0x20C
 //	MOV EAX,DWORD PTR DS:[6FDF1464]
@@ -415,12 +414,12 @@ continue_compileTxtFile:
 	JMP ECX
 }}
 
-DWORD FASTCALL	D2isLODGame_111(){return IsLodGame;}
-BYTE  FASTCALL	D2GetDifficultyLevel_111(){return DifficultyLevel;}
-DWORD STDCALL	D2GetMouseX_111(){return MouseX;}
-DWORD STDCALL	D2GetMouseY_111(){return MouseY;}
-Unit* STDCALL	D2GetClientPlayer_111(){return ptClientChar;}
-Unit* STDCALL	D2GetRealItem_111(Unit* ptItem){return ptItem;}
+DWORD __fastcall	D2isLODGame_111(){return IsLodGame;}
+BYTE  __fastcall	D2GetDifficultyLevel_111(){return DifficultyLevel;}
+DWORD __stdcall	D2GetMouseX_111(){return MouseX;}
+DWORD __stdcall	D2GetMouseY_111(){return MouseY;}
+Unit* __stdcall	D2GetClientPlayer_111(){return ptClientChar;}
+Unit* __stdcall	D2GetRealItem_111(Unit* ptItem){return ptItem;}
 
 FCT_ASM ( D2SendMsgToAll_111 )
 	PUSH ESI
@@ -589,13 +588,6 @@ FCT_ASM ( D2SendToServer_1XX )
 	PUSH 0
 	CALL V2SendToServer
 	RETN 0xC
-}}
-
-FCT_ASM ( D2SaveGame_1XX )
-	POP EAX
-	POP ECX
-	PUSH EAX
-	JMP V2SaveGame
 }}
 
 void initD2functions()
@@ -767,6 +759,8 @@ void initD2functions()
 	}
 
 	//////////////// MISC FCT ////////////////
+	// Basically all these functions wrap around the original functions we mapped in order to
+	// extend their functionality.
 	getDescStrPos = Game->Version >= VersionUtility::Versions::V110  ? getDescStrPos_10 : getDescStrPos_9;
 	compileTxtFile = Game->Version >= VersionUtility::Versions::V111 ? compileTxtFile_111 : Game->Version == VersionUtility::Versions::V110 ? compileTxtFile_10 : compileTxtFile_9;
 
@@ -788,7 +782,6 @@ void initD2functions()
 	V2GameGetObject = D2GameGetObject;
 	V2TestPositionInRoom = D2TestPositionInRoom;
 	V2GetItemTypesBIN = D2GetItemTypesBIN;
-	V2SaveGame = D2SaveGame;
 
 	//////////////// REDIRECT ON CUSTOM FUNCTIONS ////////////////
 
@@ -821,7 +814,11 @@ void initD2functions()
 	else
 	{
 		D2SendToServer = (D2NetLibrary::TD2SendToServer) D2SendToServer_1XX;
-		D2SaveGame = (D2GameLibrary::TD2SaveGame) D2SaveGame_1XX;
+
+		// D2SaveGame = The variable pointer declared in this file.
+		// D2Game->D2SaveGame = The original variable pointer in our class.
+		// D2GameLibrary::VD2SaveGame = The original static variable pointer in our class (basically set to D2Game->D2SaveGame)
+		D2SaveGame = (D2GameLibrary::TD2SaveGame)D2GameLibrary::D2SaveGame_1XX;
 	}
 
 	if (Game->Version <= VersionUtility::Versions::V109d)
@@ -832,15 +829,7 @@ void initD2functions()
 		D2GetCharStatsBIN =				(D2CommonLibrary::TD2GetCharStatsBIN) D2GetCharStatsBIN_9;
 		D2GetItemStatCostBIN =			(D2CommonLibrary::TD2GetItemStatCostBIN) D2GetItemStatCostBIN_9;
 		D2GetItemTypesBIN =				(D2CommonLibrary::TD2GetItemTypesBIN) D2GetItemTypesBIN_9;
-	}
-
-	if (Game->Version <= VersionUtility::Versions::V109d)
-	{
 		D2PrintStat = (D2ClientLibrary::TD2PrintStat)D2PrintStat_9;
-	}
-
-	if (Game->Version <= VersionUtility::Versions::V109d)
-	{
 		D2SetSkillBaseLevelOnClient = (D2GameLibrary::TD2SetSkillBaseLevelOnClient)D2SetSkillBaseLevelOnClient_9;
 	}
 

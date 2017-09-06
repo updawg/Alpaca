@@ -187,7 +187,6 @@ extern "C" __declspec(dllexport) void* __stdcall Init(LPSTR IniName)
 	}
 
 	initD2functions();
-
 	loadParameters();
 
 	if (!active_plugin)	return NULL;

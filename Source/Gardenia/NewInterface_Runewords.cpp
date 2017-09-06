@@ -131,7 +131,7 @@ void printRuneword(RunesBIN* runesData, DWORD pos)
 
 #define BUFSIZE 0x80
 //6FB21FAA
-void STDCALL printRunewordsPage()
+void __stdcall printRunewordsPage()
 {
 	if (!D2isLODGame() || !D2GetResolution()) return D2PrintStatsPage();
 	
@@ -216,7 +216,7 @@ void STDCALL printRunewordsPage()
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-DWORD STDCALL mouseRunewordsPageLeftDown(sWinMessage* msg)
+DWORD __stdcall mouseRunewordsPageLeftDown(sWinMessage* msg)
 {
 	if (!D2isLODGame() || !D2GetResolution()) return -1;
 
@@ -252,7 +252,7 @@ DWORD STDCALL mouseRunewordsPageLeftDown(sWinMessage* msg)
 }
 
 
-DWORD STDCALL mouseRunewordsPageLeftUp(sWinMessage* msg)
+DWORD __stdcall mouseRunewordsPageLeftUp(sWinMessage* msg)
 {
 	if (!D2isLODGame() || !D2GetResolution()) return -1;
 

@@ -17,16 +17,7 @@
 
 #pragma once
 
-#include "D2CommonLibrary.h"
-#include "D2ClientLibrary.h"
-#include "D2GameLibrary.h"
-#include "D2NetLibrary.h"
-#include "FogLibrary.h"
-#include "D2LangLibrary.h"
-#include "StormLibrary.h"
-#include "D2gfxLibrary.h"
-#include "D2WinLibrary.h"
-#include "D2CMPLibrary.h"
+#include "Utilities\LibraryUtility.h"
 
 // Conversion to 1.09
 struct s_shifting {
@@ -41,8 +32,6 @@ struct s_shifting {
 };
 extern s_shifting shifting;
 
-#define FASTCALL __fastcall
-#define STDCALL		__stdcall
 #define FCT_ASM(N) __declspec(naked) void N() {__asm{
 #define RANDOM(V) ((int)(rand()/(RAND_MAX+1.0)*(V)))
 
@@ -235,7 +224,7 @@ extern DataTables* SgptDataTables;
 extern D2CommonLibrary::TD2AddPlayerStat V2AddPlayerStat;
 
 extern WORD (*getDescStrPos)	(DWORD statID);
-extern void* (STDCALL *compileTxtFile)(DWORD unused, const char* filename, BINField* ptFields, DWORD* ptRecordCount, DWORD recordLength);
+extern void* (__stdcall *compileTxtFile)(DWORD unused, const char* filename, BINField* ptFields, DWORD* ptRecordCount, DWORD recordLength);
 void setImage(sDrawImageInfo* data, void* image);
 void setFrame(sDrawImageInfo* data, DWORD frame);
 void __inline fillRect(DWORD x, DWORD y, DWORD Width, DWORD Height, DWORD color, DWORD transTbl){D2FillArea(x,y,x+Width,y+Height,color,transTbl);};
