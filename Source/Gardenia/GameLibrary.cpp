@@ -29,3 +29,8 @@ void GameLibrary::SetFunctions()
 {
 
 }
+
+bool GameLibrary::IsSupported()
+{
+	return Version == VersionUtility::Versions::V109b || Version == VersionUtility::Versions::V113d;
+}

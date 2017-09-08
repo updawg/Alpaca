@@ -179,7 +179,7 @@ extern "C" __declspec(dllexport) void* __stdcall Init(LPSTR IniName)
 	Fog = lu->Fog;
 	Storm = lu->Storm;
 
-	if (!VersionUtility::IsSupported(Game->Version))
+	if (!Game->IsSupported())
 	{
 		log_box("Gardenia isn't compatible with this version : %s", VersionUtility::GetVersionAsString(Game->Version));
 		Release();

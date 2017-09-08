@@ -195,20 +195,12 @@ FCT_ASM ( caller_updateItemB_111 )
 	JMP EAX
 }}
 
-FCT_ASM ( caller_updateItem )
-	PUSH EBP
-	PUSH DWORD PTR SS:[ESP+0x8]
-	CALL updateItem
-	RETN 4
-}}
-
 FCT_ASM ( caller_updateItem_9 )
 	PUSH EBX
 	PUSH DWORD PTR SS:[ESP+0x8]
 	CALL updateItem
 	RETN 4
 }}
-
 
 FCT_ASM ( caller_updateClientPlayerOnLoading )
 	PUSH DWORD PTR SS:[ESP+0x14]
@@ -228,13 +220,6 @@ FCT_ASM ( callerServer_getNextItemToFree_111 )
 	RETN 4
 }}
 
-FCT_ASM ( callerServer_getNextItemToFree )
-	PUSH DWORD PTR SS:[ESP+4]
-	PUSH DWORD PTR SS:[ESP+0x28]
-	CALL getNextItemToFree
-	RETN 4
-}}
-
 FCT_ASM ( callerServer_getNextItemToFree_9 )
 	PUSH DWORD PTR SS:[ESP+4]
 	PUSH DWORD PTR SS:[ESP+0x1C]
@@ -242,17 +227,9 @@ FCT_ASM ( callerServer_getNextItemToFree_9 )
 	RETN 4
 }}
 
-
 FCT_ASM ( callerClient_getNextItemToFree_111 )
 	PUSH DWORD PTR SS:[ESP+4]
 	PUSH EBX
-	CALL getNextItemToFree
-	RETN 4
-}}
-
-FCT_ASM ( callerClient_getNextItemToFree )
-	PUSH DWORD PTR SS:[ESP+4]
-	PUSH DWORD PTR SS:[ESP+0x24]
 	CALL getNextItemToFree
 	RETN 4
 }}
@@ -264,7 +241,6 @@ FCT_ASM ( callerClient_getNextItemToFree_9 )
 	RETN 4
 }}
 
-// [Patch]
 void Install_PlayerCustomData()
 {
 	static int isInstalled = false;
@@ -274,70 +250,70 @@ void Install_PlayerCustomData()
 	Install_LoadPlayerData();
 	Install_UpdateClient();
 
-	log_msg("Patch D2Game & D2Client & D2Common for Player's custom data. (PlayerCustomData)\n");
+	log_msg("[Patch] D2Game & D2Client & D2Common for Player's custom data. (PlayerCustomData)\n");
 
 	// Initialize custom data.
-	mem_seek(D2Common->GetOffsetByAddition(0x70462, 0x70562, 0x80382, 0x4ED5E, 0x5BFCE, 0x585EE, 0x309BE, 0x170DE));
+	mem_seek(D2Common->GetOffsetByAddition(0x70462, 0x170DE));
 	MEMJ_REF4(Fog->D2AllocMem, init_PlayerCustomData);
 
-	if (Game->Version >= VersionUtility::Versions::V111 )
+	if (Game->Version == VersionUtility::Versions::V113d)
 	{
 		// update item
-		mem_seek(D2Game->GetOffsetByAddition(0x10933, 0x10C03, 0x1100D, 0x8BC71, 0xC3C51, 0x5F2A1, 0x9BB91, 0x75C81));
+		mem_seek(D2Game->GetOffsetByAddition(0x10933, 0x75C81));
 		memt_byte(0x8B, 0xE8);
 		MEMT_REF4(0x52182454, caller_updateItem_111);
 
-		mem_seek(D2Game->GetOffsetByAddition(0x1097B, 0x10C4B, 0x11058, 0x8BCD1, 0xC3CB1, 0x5F301, 0x9BBF1, 0x75CE1));
+		mem_seek(D2Game->GetOffsetByAddition(0x1097B, 0x75CE1));
 		memt_byte(0x8B, 0xE8);
 		MEMT_REF4(0x52182454, caller_updateItemB_111);
 	}
 	else
 	{
 		// update item
-		mem_seek(D2Game->GetOffsetByAddition(0x10933, 0x10C03, 0x1100D, 0x8BC71, 0xC3C51, 0x5F2A1, 0, 0));
-		MEMC_REF4(D2Game->D2GameGetObject, Game->Version == VersionUtility::Versions::V110? caller_updateItem: caller_updateItem_9);
+		mem_seek(D2Game->GetOffsetByAddition(0x10933, 0));
+		MEMC_REF4(D2Game->D2GameGetObject, caller_updateItem_9);
 
-		mem_seek(D2Game->GetOffsetByAddition(0x1097B, 0x10C4B, 0x11058, 0x8BCD1, 0xC3CB1, 0x5F301, 0, 0));
-		MEMC_REF4(D2Game->D2GameGetObject, Game->Version == VersionUtility::Versions::V110? caller_updateItem: caller_updateItem_9);
+		mem_seek(D2Game->GetOffsetByAddition(0x1097B, 0));
+		MEMC_REF4(D2Game->D2GameGetObject, caller_updateItem_9);
 	}
 
 	// Update client on loading
-	mem_seek(D2Game->GetOffsetByAddition(0x23EB, 0x2426, 0x25D4, 0x53482, 0xC6A32, 0xED502, 0x4BF12, 0xE7548));
+	mem_seek(D2Game->GetOffsetByAddition(0x23EB, 0xE7548));
 	memt_byte(0x5F, 0xE8);
 	MEMT_REF4(0xC0335D5E, caller_updateClientPlayerOnLoading);
 
 	// Free custom data.
-	mem_seek(D2Common->GetOffsetByAddition(0x7055C, 0x7065C, 0x80483, 0x4F82D, 0x5C9CD, 0x5856D, 0x3093D, 0x1705D));
+	mem_seek(D2Common->GetOffsetByAddition(0x7055C, 0x1705D));
 	MEMJ_REF4(Fog->D2FreeMem, free_PlayerCustomData);
 
 	// Free item in Stash (Server-side)
-	mem_seek(D2Game->GetOffsetByAddition(0x7D12B, 0x7D62B, 0x8D5A4, 0x99112, 0xBFDB2, 0x94242, 0xE1162, 0x6F7C2));
-	MEMJ_REF4(D2Common->D2UnitGetNextItem, Game->Version >= VersionUtility::Versions::V111 ? callerServer_getNextItemToFree_111 : Game->Version == VersionUtility::Versions::V110 ? callerServer_getNextItemToFree : callerServer_getNextItemToFree_9);
+	mem_seek(D2Game->GetOffsetByAddition(0x7D12B, 0x6F7C2));
+	MEMJ_REF4(D2Common->D2UnitGetNextItem, Game->Version == VersionUtility::Versions::V113d ? callerServer_getNextItemToFree_111 : callerServer_getNextItemToFree_9);
 
 	// Free item in Stash (Client-side)
-	mem_seek(D2Client->GetOffsetByAddition(0x8EF8F, 0x8E30F, 0x89B32, 0x26404, 0x4C264, 0x1F2D4, 0xA5C94, 0x621E4));
-	MEMJ_REF4(D2Common->D2UnitGetNextItem, Game->Version >= VersionUtility::Versions::V111 ? callerClient_getNextItemToFree_111 : Game->Version == VersionUtility::Versions::V110 ? callerClient_getNextItemToFree : callerClient_getNextItemToFree_9);
+	mem_seek(D2Client->GetOffsetByAddition(0x8EF8F, 0x621E4));
+	MEMJ_REF4(D2Common->D2UnitGetNextItem, Game->Version == VersionUtility::Versions::V113d ? callerClient_getNextItemToFree_111 : callerClient_getNextItemToFree_9);
 
-	if (Game->Version >= VersionUtility::Versions::V110)
+	if (Game->Version == VersionUtility::Versions::V113d)
 	{
 		// Test if it's already removed from inventory
-		mem_seek(D2Common->GetOffsetByAddition(0, 0, 0x4E689, 0x26E33, 0x42133, 0x6AE93, 0x21B23, 0x3B393));
+		mem_seek(D2Common->GetOffsetByAddition(0, 0x3B393));
 		memt_byte(0x0D, 0x07);
 	}
 	else
 	{
-		mem_seek(D2Game->GetOffsetByAddition(0x7D176, 0x7D676, 0, 0, 0, 0, 0, 0));
+		mem_seek(D2Game->GetOffsetByAddition(0x7D176, 0));
 		memt_byte(0x74, 0x90);
 		memt_byte(0x35, 0x90);
 
-		mem_seek(D2Client->GetOffsetByAddition(0x8F0CA, 0x8E44A, 0, 0, 0, 0, 0, 0));
+		mem_seek(D2Client->GetOffsetByAddition(0x8F0CA, 0));
 		memt_byte(0x0F, 0x90);
 		memt_byte(0x84, 0x90);
-		memt_dword(0x000000BF , 0x90909090);
+		memt_dword(0xBF, 0x90909090);
 
-		mem_seek(D2Client->GetOffsetByAddition(0x8F13C, 0x8E4BC, 0, 0, 0, 0, 0, 0));
-		memt_byte(0x74 , 0x90);
-		memt_byte(0x6F , 0x90);
+		mem_seek(D2Client->GetOffsetByAddition(0x8F13C, 0));
+		memt_byte(0x74, 0x90);
+		memt_byte(0x6F, 0x90);
 	}
 
 	log_msg("\n");

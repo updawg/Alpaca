@@ -373,22 +373,6 @@ JMP_LoadMPlayerCustomData:
 	RETN
 }}
 
-
-FCT_ASM ( caller_LoadMPPlayerCustomData )
-	PUSH DWORD PTR SS:[EDI]
-	CALL LoadMPCustomData
-	TEST EAX,EAX
-	JNZ JMP_LoadMPlayerCustomData
-	CMP DWORD PTR DS:[EDI],0
-	JNZ Continue_LoadMP
-	ADD DWORD PTR SS:[ESP],0x46
-Continue_LoadMP:
-	RETN
-JMP_LoadMPlayerCustomData:
-	SUB DWORD PTR SS:[ESP],0xD
-	RETN
-}}
-
 FCT_ASM ( caller_LoadMPPlayerCustomData_9 )
 	PUSH DWORD PTR SS:[EDI]
 	CALL LoadMPCustomData
@@ -403,7 +387,6 @@ JMP_LoadMPlayerCustomData:
 	SUB DWORD PTR SS:[ESP],0x13
 	RETN
 }}
-
 
 FCT_ASM ( caller_SendSaveFiles_111 )
 	POP EAX
@@ -461,45 +444,32 @@ go_to_default:
 	RETN
 }}
 
-FCT_ASM ( caller_BugFix109d )
-	MOV EAX,DWORD PTR DS:[ESI+0xAB0]
-	TEST EAX,EAX
-	JE go_to_default
-	MOV EAX,DWORD PTR SS:[ESP+0x20]
-	MOV DWORD PTR SS:[ESP+0x24],EAX
-	RETN
-go_to_default:
-	SUB DWORD PTR SS:[ESP],0x4B
-	RETN
-}}
-
-// [Patch]
 void Install_LoadPlayerData()
 {
 	static int isInstalled = false;
 	if (isInstalled || !active_PlayerCustomData) return;
 
-	log_msg("Patch D2Game & D2Client for load Player's custom data. (LoadPlayerData)\n");
+	log_msg("[Patch] D2Game & D2Client for load Player's custom data. (LoadPlayerData)\n");
 
 	// Load SP player custom data.
-	mem_seek(D2Game->GetOffsetByAddition(0x5046F, 0x5086F, 0x5CB0F, 0xBB8ED, 0x278CD, 0x465BD, 0x5638D, 0x3BCCD));
+	mem_seek(D2Game->GetOffsetByAddition(0x5046F, 0x3BCCD));
 	memt_byte(0x8B, 0xE8);
 	MEMT_REF4(0x75F685F0 , caller_LoadSPPlayerCustomData);
 	memt_byte(0x16, 0x90);
 
 	// Load MP player custom data.
-	mem_seek(D2Game->GetOffsetByAddition(0x50790, 0x50B90, 0x5CC66, 0xBB777, 0x27757, 0x46447, 0x56217, 0x3BB57));
+	mem_seek(D2Game->GetOffsetByAddition(0x50790, 0x3BB57));
 	memt_byte(0x83, 0xE8);
-	MEMT_REF4(Game->Version >= VersionUtility::Versions::V111 ? 0x2174003B : Game->Version == VersionUtility::Versions::V110 ? 0x4674003F : 0x1D74003F, Game->Version >= VersionUtility::Versions::V111 ? caller_LoadMPPlayerCustomData_111 : Game->Version == VersionUtility::Versions::V110 ? caller_LoadMPPlayerCustomData: caller_LoadMPPlayerCustomData_9);
+	MEMT_REF4(Game->Version == VersionUtility::Versions::V113d ? 0x2174003B : 0x1D74003F, Game->Version == VersionUtility::Versions::V113d ? caller_LoadMPPlayerCustomData_111 : caller_LoadMPPlayerCustomData_9);
 
 	// Send save files to Server.
-	mem_seek(D2Client->GetOffsetByAddition(0xCF42, 0xCF32, 0xD5A2, 0x733FC, 0x5DFDC, 0x7933C, 0x1457C, 0xB638C));
-	MEMJ_REF4(Fog->D2FogGetSavePath, Game->Version >= VersionUtility::Versions::V111 ? caller_SendSaveFiles_111 : caller_SendSaveFiles);
+	mem_seek(D2Client->GetOffsetByAddition(0xCF42, 0xB638C));
+	MEMJ_REF4(Fog->D2FogGetSavePath, Game->Version == VersionUtility::Versions::V113d ? caller_SendSaveFiles_111 : caller_SendSaveFiles);
 
 	// Receive save files from client.
-	mem_seek(D2Game->GetOffsetByAddition(0x183A, 0x183A, 0x191A, 0x376E9, 0x703D9, 0x624D9, 0xCAF39, 0xD53E9));
+	mem_seek(D2Game->GetOffsetByAddition(0x183A, 0xD53E9));
 	memt_byte(0x8B, 0xE8);
-	if (Game->Version >= VersionUtility::Versions::V111 ) {
+	if (Game->Version == VersionUtility::Versions::V113d) {
 		MEMT_REF4(0xB60F005D, caller_ReceiveSaveFiles_111);
 		memt_byte(0x45, 0x90);
 		memt_byte(0x04, 0x90);
@@ -509,23 +479,19 @@ void Install_LoadPlayerData()
 		MEMT_REF4(0x04468A3E, caller_ReceiveSaveFiles);
 	}
 
-	if (Game->Version <= VersionUtility::Versions::V109d )
+	if (Game->Version == VersionUtility::Versions::V109b)
 	{
-		mem_seek(Fog->GetOffsetByAddition(0x47DE, 0x45AE, 0, 0, 0, 0, 0, 0));
+		mem_seek(Fog->GetOffsetByAddition(0x47DE, 0));
 		memt_byte(0x8B, 0xE8);
-		MEMT_REF4(0x891C2444, Game->Version == VersionUtility::Versions::V109b ? caller_BugFix109b : caller_BugFix109d);
+		MEMT_REF4(0x891C2444, caller_BugFix109b);
 		memt_byte(0x44 ,0x90);
 		memt_byte(0x24 ,0x90);
 		memt_byte(0x20 ,0x90);
 	}
 
-	if (Game->Version == VersionUtility::Versions::V109b || Game->Version == VersionUtility::Versions::V109d)
+	if (Game->Version == VersionUtility::Versions::V109b)
 	{
 		customPackID -= 3;
-	}
-	else if (Game->Version == VersionUtility::Versions::V110)
-	{
-		customPackID--;
 	}
 
 	log_msg("\n");

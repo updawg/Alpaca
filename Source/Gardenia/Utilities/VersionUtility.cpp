@@ -53,31 +53,6 @@ const char* VersionUtility::GetVersionAsString(const int version)
 	 return UnknownVersion;
 }
 
-const bool VersionUtility::IsSupported(const int version)
-{
-	static std::map<int, std::string> supportedVersions =
-	{
-		{ 11, "1.13d" },
-		{ 10, "1.13c" },
-		{ 9, "1.12" },
-		{ 8, "1.11b" },
-		{ 7, "1.11" },
-		{ 6, "1.10" },
-		{ 5, "1.09d" },
-		{ 4, "1.09b" },
-		{ 3, "1.09" }
-	};
-
-	std::map<int, std::string>::iterator iter = supportedVersions.find(version);
-
-	if (iter != supportedVersions.end())
-	{
-		return true;
-	}
-
-	return false;
-}
-
 const bool VersionUtility::IsEqualOrGreaterThan114(const int version)
 {
 	return version >= VersionUtility::Versions::V114a;

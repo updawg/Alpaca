@@ -337,45 +337,6 @@ continue_compileTxtFile:
 	JMP ECX
 }}
 
-__declspec(naked) void* __stdcall compileTxtFile_10(DWORD unused, const char* filename, BINField* ptFields, DWORD* ptRecordCount, DWORD recordLength)
-{_asm{
-	SUB ESP,0x210
-//	MOV EAX,DWORD PTR DS:[1BEA28C]
-	PUSH EBX
-	PUSH EBP
-	MOV EBP,DWORD PTR SS:[ESP+0x220]
-	PUSH ESI
-	PUSH EDI
-	MOV DWORD PTR SS:[ESP+0x10],0
-
-	MOV EBX,wsprintf
-	PUSH EBP
-	LEA EAX,DWORD PTR SS:[ESP+0x20]
-	PUSH EAX
-	CALL EBX
-	ADD ESP,8
-
-	LEA EDX,DWORD PTR SS:[ESP+0x10]
-	PUSH 0
-	PUSH S_compileTxtFile
-	PUSH EDX
-	MOV ECX,DWORD PTR SS:[ESP+0x230]
-	LEA EDX,DWORD PTR SS:[ESP+0x28]
-	CALL D2ReadFile
-	TEST EAX,EAX
-	JNZ continue_compileTxtFile
-	PUSH 0
-	PUSH S_compileTxtFile
-	PUSH S_errorReadTxtFile
-	CALL D2FogAssertOld
-	PUSH -1
-	CALL exit
-continue_compileTxtFile:
-	MOV ECX,D2CompileTxtFile
-	ADD ECX,0x2ED
-	JMP ECX
-}}
-
 __declspec(naked) void* __stdcall compileTxtFile_111(DWORD unused, const char* filename, BINField* ptFields, DWORD* ptRecordCount, DWORD recordLength)
 {_asm{
 	SUB ESP,0x20C
@@ -749,9 +710,9 @@ void initD2functions()
 	// D2CMP
 	D2CMP10014 = D2CMP->D2CMP10014;
 
-	SgptDataTables = *(DataTables**)D2Common->GetOffsetByAddition(0, 0, 0x96A20, 0x9B74C, 0x9EE8C, 0x9B500, 0x99E1C, 0xA33F0);
+	SgptDataTables = *(DataTables**)D2Common->GetOffsetByAddition(0, 0xA33F0);
 
-	if (Game->Version < VersionUtility::Versions::V110)
+	if (Game->Version == VersionUtility::Versions::V109b)
 	{
 		D2Common10581 = D2Common->D2Common10581;
 		D2Common10598 = D2Common->D2Common10598;
@@ -759,10 +720,9 @@ void initD2functions()
 	}
 
 	//////////////// MISC FCT ////////////////
-	// Basically all these functions wrap around the original functions we mapped in order to
-	// extend their functionality.
-	getDescStrPos = Game->Version >= VersionUtility::Versions::V110  ? getDescStrPos_10 : getDescStrPos_9;
-	compileTxtFile = Game->Version >= VersionUtility::Versions::V111 ? compileTxtFile_111 : Game->Version == VersionUtility::Versions::V110 ? compileTxtFile_10 : compileTxtFile_9;
+	// Basically all these functions wrap around the original functions we mapped in order to extend their functionality.
+	getDescStrPos = Game->Version == VersionUtility::Versions::V113d ? getDescStrPos_10 : getDescStrPos_9;
+	compileTxtFile = Game->Version == VersionUtility::Versions::V113d ? compileTxtFile_111 : compileTxtFile_9;
 
 	V2AddPlayerStat = D2AddPlayerStat;
 	V2GetPlayerStat = D2GetPlayerStat;
@@ -785,7 +745,7 @@ void initD2functions()
 
 	//////////////// REDIRECT ON CUSTOM FUNCTIONS ////////////////
 
-	if (Game->Version >= VersionUtility::Versions::V111)
+	if (Game->Version == VersionUtility::Versions::V113d)
 	{
 		D2SendMsgToAll = (D2ClientLibrary::TD2SendMsgToAll) D2SendMsgToAll_111;
 		D2SetColorPopup = (D2ClientLibrary::TD2SetColorPopup) D2SetColorPopup_111;
@@ -821,7 +781,7 @@ void initD2functions()
 		D2SaveGame = (D2GameLibrary::TD2SaveGame)D2GameLibrary::D2SaveGame_1XX;
 	}
 
-	if (Game->Version <= VersionUtility::Versions::V109d)
+	if (Game->Version == VersionUtility::Versions::V109b)
 	{
 		D2AddPlayerStat =				(D2CommonLibrary::TD2AddPlayerStat) D2AddPlayerStat_9;
 		D2GetPlayerStat =				(D2CommonLibrary::TD2GetPlayerStat) D2GetPlayerStat_9;
@@ -829,8 +789,8 @@ void initD2functions()
 		D2GetCharStatsBIN =				(D2CommonLibrary::TD2GetCharStatsBIN) D2GetCharStatsBIN_9;
 		D2GetItemStatCostBIN =			(D2CommonLibrary::TD2GetItemStatCostBIN) D2GetItemStatCostBIN_9;
 		D2GetItemTypesBIN =				(D2CommonLibrary::TD2GetItemTypesBIN) D2GetItemTypesBIN_9;
-		D2PrintStat = (D2ClientLibrary::TD2PrintStat)D2PrintStat_9;
-		D2SetSkillBaseLevelOnClient = (D2GameLibrary::TD2SetSkillBaseLevelOnClient)D2SetSkillBaseLevelOnClient_9;
+		D2PrintStat =					(D2ClientLibrary::TD2PrintStat)D2PrintStat_9;
+		D2SetSkillBaseLevelOnClient =   (D2GameLibrary::TD2SetSkillBaseLevelOnClient)D2SetSkillBaseLevelOnClient_9;
 	}
 
 	//////////////// STRUCTURE MANAGEMENT ////////////////

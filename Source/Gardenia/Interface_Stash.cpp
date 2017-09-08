@@ -441,7 +441,6 @@ FCT_ASM ( initBtnsStates )
 	RETN
 }}
 
-// [Patch]
 void Install_InterfaceStash()
 {
 	static int isInstalled = false;
@@ -450,36 +449,36 @@ void Install_InterfaceStash()
 	Install_UpdateServer();
 	Install_PlugYImagesFiles();
 
-	log_msg("Patch D2Client for stash interface. (InterfaceStash)\n");
+	log_msg("[Patch] D2Client for stash interface. (InterfaceStash)\n");
 
 	// Print button images
-	mem_seek(D2Client->GetOffsetByAddition(0x39060, 0x39060, 0x3F399, 0xB1006, 0x7DF86, 0xB3656, 0x99A56, 0x9DE26));
+	mem_seek(D2Client->GetOffsetByAddition(0x39060, 0x9DE26));
 	MEMC_REF4(D2Client->D2LoadBuySelBtn, printBtns);
 
 	// print page number
-	mem_seek(D2Client->GetOffsetByAddition(0x3903C, 0x3903C, 0x3F375, 0xB0FE3, 0x7DF63, 0xB3633, 0x99A33, 0x9DE03));
+	mem_seek(D2Client->GetOffsetByAddition(0x3903C, 0x9DE03));
 	MEMJ_REF4(D2Win->D2PrintString, printPageNumber);
 
 	// Manage mouse down (Play sound)
-	mem_seek(D2Client->GetOffsetByAddition(0x45091, 0x45091, 0x4BBA1, 0xB4666, 0x7FDD6, 0xB54A6, 0x9B8A6, 0x9FC76));
-	MEMC_REF4(Game->Version >= VersionUtility::Versions::V111 ? (DWORD)D2ClickOnStashButton : (DWORD)D2isLODGame, Game->Version >= VersionUtility::Versions::V111 ? caller_manageBtnDown_111 : caller_manageBtnDown);
+	mem_seek(D2Client->GetOffsetByAddition(0x45091, 0x9FC76));
+	MEMC_REF4(Game->Version == VersionUtility::Versions::V113d ? (DWORD)D2ClickOnStashButton : (DWORD)D2isLODGame, Game->Version == VersionUtility::Versions::V113d ? caller_manageBtnDown_111 : caller_manageBtnDown);
 
 	// Manage mouse up
-	mem_seek(D2Client->GetOffsetByAddition(0x455F9, 0x455F9, 0x4C0F9, 0xB57B9, 0x7FC09, 0xB52D9, 0x9B6D9, 0x9FAA9));
-	MEMC_REF4(Game->Version >= VersionUtility::Versions::V111 ? (DWORD)D2ClickOnStashButton : (DWORD)D2isLODGame, Game->Version >= VersionUtility::Versions::V111 ? caller_manageBtnUp_111 : caller_manageBtnUp);
+	mem_seek(D2Client->GetOffsetByAddition(0x455F9, 0x9FAA9));
+	MEMC_REF4(Game->Version == VersionUtility::Versions::V113d ? (DWORD)D2ClickOnStashButton : (DWORD)D2isLODGame, Game->Version == VersionUtility::Versions::V113d ? caller_manageBtnUp_111 : caller_manageBtnUp);
 
 	// init state of button on open stash page
-	mem_seek(D2Client->GetOffsetByAddition(0x45B3A, 0x45B3A, 0x4C63A, 0xA645A, 0x749DA, 0xA9D9A, 0x8CC3A, 0x9441A));
+	mem_seek(D2Client->GetOffsetByAddition(0x45B3A, 0x9441A));
 	memt_byte(0x81, 0xE9);
-	MEMT_REF4(0x000104C4, initBtnsStates);
-	memt_byte(0x00, 0x90);
+	MEMT_REF4(0x104C4, initBtnsStates);
+	memt_byte(0, 0x90);
 
 	// init the search of print in green the item set name we have in stash
-	mem_seek(D2Client->GetOffsetByAddition(0x3F098, 0x3F098, 0x45997, 0xA71F4, 0x71F64, 0xA7314, 0x8D434, 0x91A24));
+	mem_seek(D2Client->GetOffsetByAddition(0x3F098, 0x91A24));
 	MEMJ_REF4(D2Common->D2InventoryGetFirstItem, initGetNextItemForSet);
 
 	// Get next item for print in green the item set name we have in stash
-	mem_seek(D2Client->GetOffsetByAddition(0x3F0FA, 0x3F0FA, 0x45A1C, 0xA728B, 0x71FFB, 0xA73AB, 0x8D4CB, 0x91ABB));
+	mem_seek(D2Client->GetOffsetByAddition(0x3F0FA, 0x91ABB));
 	MEMJ_REF4(D2Common->D2UnitGetNextItem, getNextItemForSet);
 
 	log_msg("\n");

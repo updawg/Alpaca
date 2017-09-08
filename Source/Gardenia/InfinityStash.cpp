@@ -816,26 +816,6 @@ end_carry1Limit:
 	RETN 8
 }}
 
-FCT_ASM ( caller_carry1LimitSwap_111 )
-	PUSH EAX
-	PUSH EBP
-	PUSH 0
-	PUSH DWORD PTR SS:[ESP+0x24]//ptChar
-	CALL carry1Limit
-	TEST EAX,EAX
-	JNZ	end_carry1Limit
-	JMP D2ItemGetPage
-end_carry1Limit:
-	ADD ESP,8
-	XOR EAX,EAX
-	POP EDI
-	POP EBP
-	POP ESI
-	POP EBX
-	POP ECX
-	RETN 8
-}}
-
 FCT_ASM ( caller_carry1LimitSwap )
 	PUSH EAX
 	PUSH DWORD PTR SS:[ESP+0x20]
@@ -856,23 +836,6 @@ end_carry1Limit:
 	RETN 8
 }}
 
-/*
-FCT_ASM ( caller_carry1LimitWhenDrop )
-	PUSH EAX
-	PUSH 0
-	PUSH ESI//ptItem
-	PUSH EDI//ptChar
-	CALL carry1Limit
-	TEST EAX,EAX
-	POP EAX
-	JE END_carry1LimitWhenDrop
-	MOV EDX,0x806
-	RETN
-END_carry1LimitWhenDrop:
-	ADD DWORD PTR SS:[ESP],0x1F
-	RETN
-}}*/
-
 FCT_ASM ( caller_carry1LimitWhenDrop_111 )
 	PUSH 0
 	PUSH 0
@@ -886,20 +849,6 @@ end_carry1Limit:
 	XOR EAX,EAX
 	RETN 0x1C
 }}
-/*
-FCT_ASM ( caller_carry1LimitWhenDrop )
-	PUSH 0
-	PUSH 0
-	PUSH DWORD PTR SS:[ESP+0x10] //ptItem
-	PUSH EDI //ptChar
-	CALL carry1Limit
-	JNZ	end_carry1Limit
-	JMP D2CanPutItemInInv
-end_carry1Limit:
-	XOR EAX,EAX
-	RETN 0x1C
-}}*/
-
 
 FCT_ASM ( caller_carry1LimitWhenDrop )
 	PUSH EAX
@@ -944,7 +893,6 @@ continue_carry1OutOfStash:
 	RETN
 }}
 
-// [Patch]
 void Install_MultiPageStash()
 {
 	static int isInstalled = false;
@@ -953,39 +901,39 @@ void Install_MultiPageStash()
 	Install_PlayerCustomData();
 	Install_InterfaceStash();
 
-	changeToSelectedStash = Game->Version >= VersionUtility::Versions::V110 ? changeToSelectedStash_10 : changeToSelectedStash_9;
+	changeToSelectedStash = Game->Version == VersionUtility::Versions::V113d ? changeToSelectedStash_10 : changeToSelectedStash_9;
 
-	if (Game->Version >= VersionUtility::Versions::V110 )
+	if (Game->Version == VersionUtility::Versions::V113d)
 	{
-		log_msg("Patch D2Game for carry1 unique item. (MultiPageStash)\n");
+		log_msg("[Patch] D2Game for carry1 unique item. (MultiPageStash)\n");
 
 		// Cannot put 2 items carry1 in inventory
-		mem_seek(D2Game->GetOffsetByAddition(0, 0, 0x55050, 0x57CA3, 0x2FE63, 0x99B03, 0xCF1E3, 0x6B013));
-		MEMJ_REF4(D2Common->D2ItemSetPage, Game->Version >= VersionUtility::Versions::V111 ? caller_carry1Limit_111 : caller_carry1Limit);
+		mem_seek(D2Game->GetOffsetByAddition(0, 0x6B013));
+		MEMJ_REF4(D2Common->D2ItemSetPage, Game->Version == VersionUtility::Versions::V113d ? caller_carry1Limit_111 : caller_carry1Limit);
 
 		// Cannot put 2 items carry1 in inventory by swapping
-		mem_seek(D2Game->GetOffsetByAddition(0, 0, 0x558D9, 0x58968, 0x310E8, 0x9B6E8, 0xD10C8, 0x6BC78));
-		MEMJ_REF4(D2Common->D2ItemGetPage , Game->Version >= VersionUtility::Versions::V112 ? caller_carry1LimitSwap_112 : Game->Version >= VersionUtility::Versions::V111 ? caller_carry1LimitSwap_111 : caller_carry1LimitSwap);
+		mem_seek(D2Game->GetOffsetByAddition(0, 0x6BC78));
+		MEMJ_REF4(D2Common->D2ItemGetPage , Game->Version == VersionUtility::Versions::V113d ? caller_carry1LimitSwap_112 : caller_carry1LimitSwap);
 
-		if (Game->Version >= VersionUtility::Versions::V111 )
+		if (Game->Version == VersionUtility::Versions::V113d )
 		{
 			// Cannot put 2 items carry1 in inventory when drop cube
-			mem_seek(D2Game->GetOffsetByAddition(0, 0, 0, 0x3D935, 0x49FD5, 0x17AD5, 0xD7B75, 0xB7B15));
-			MEMJ_REF4(D2Common->D2CanPutItemInInv , caller_carry1LimitWhenDrop_111);
+			mem_seek(D2Game->GetOffsetByAddition(0, 0xB7B15));
+			MEMJ_REF4(D2Common->D2CanPutItemInInv, caller_carry1LimitWhenDrop_111);
 		}
 		else
 		{
 			// Cannot put 2 items carry1 in inventory when drop cube
-			mem_seek(D2Game->GetOffsetByAddition(0, 0, 0x14341, 0, 0, 0, 0, 0));
+			mem_seek(D2Game->GetOffsetByAddition(0, 0));
 			memt_byte(0xBA, 0xE8);
 			MEMT_REF4(0x806, caller_carry1LimitWhenDrop);
 		}
 
-		// Verif only carry1 out of stash page when pick up an item
-		mem_seek(D2Game->GetOffsetByAddition(0, 0, 0x1299E, 0x38E3B, 0x43F0B, 0x1209B, 0xD211B, 0xB301B));
+		// Verify only carry1 out of stash page when pick up an item
+		mem_seek(D2Game->GetOffsetByAddition(0, 0xB301B));
 		memt_byte(0x8B, 0xE8);
-		MEMT_REF4(Game->Version >= VersionUtility::Versions::V111 ? 0x850C2474 : 0x85102444, Game->Version >= VersionUtility::Versions::V111 ? caller_carry1OutOfStash_111 : caller_carry1OutOfStash);
-		memt_byte(Game->Version >= VersionUtility::Versions::V111 ? 0xF6 : 0xC0, 0x90);
+		MEMT_REF4(Game->Version == VersionUtility::Versions::V113d ? 0x850C2474 : 0x85102444, Game->Version == VersionUtility::Versions::V113d ? caller_carry1OutOfStash_111 : caller_carry1OutOfStash);
+		memt_byte(Game->Version == VersionUtility::Versions::V113d ? 0xF6 : 0xC0, 0x90);
 
 		log_msg("\n");
 	}

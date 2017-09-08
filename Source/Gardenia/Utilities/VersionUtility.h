@@ -42,7 +42,6 @@ public:
 		V114d
 	};
 
-	static const bool VersionUtility::IsSupported(const int version);
 	static const char* GetVersionAsString(const int version);
 	static const bool VersionUtility::IsEqualOrGreaterThan114(const int version);
 

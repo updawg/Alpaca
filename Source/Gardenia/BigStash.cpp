@@ -75,7 +75,6 @@ normalTradeStash:
 	JMP EAX
 }}
 
-
 void Install_BigStash()
 {
 	static int isInstalled = false;
@@ -83,14 +82,14 @@ void Install_BigStash()
 
 	Install_PlugYFiles();
 
-	log_msg("Patch D2Common & D2Client for make 10x10 squares in the stash. (BigStash)\n");
+	log_msg("[Patch] D2Common & D2Client for make 10x10 squares in the stash. (BigStash)\n");
 
 	// Modification of stash grid
-	mem_seek(D2Common->GetOffsetByAddition(0xC9F3, 0xCA03, 0x14ED3, 0x5FCB5, 0x2A505, 0x1BDB5, 0x82CA5, 0x6CC25));
+	mem_seek(D2Common->GetOffsetByAddition(0xC9F3, 0x6CC25));
 	MEMC_REF4(D2CompileTxtFile, caller_modifStashGrid);
 
 	// Modification of stash background
-	mem_seek(D2Client->GetOffsetByAddition(0x45B1C, 0x45B1C, 0x4C61C, 0xA643C, 0x749BC, 0xA9D7C, 0x8CC1C, 0x943FC));
+	mem_seek(D2Client->GetOffsetByAddition(0x45B1C, 0x943FC));
 	memt_byte(0x68, 0xE8);
 	MEMT_REF4(0x00000104, caller_changeTradeStash);
 

@@ -24,6 +24,7 @@ class GameLibrary : public Library
 {
 public:
 	GameLibrary();
+	bool IsSupported();
 private:
 	void SetFunctions();
 };

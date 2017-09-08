@@ -61,9 +61,9 @@ DWORD Library::LoadDiabloLibrary()
 }
 
 // Return the offset for this specific version of Diablo II.
-DWORD Library::GetOffsetForVersion(DWORD V109, DWORD V109D, DWORD V110, DWORD V111, DWORD V111B, DWORD V112, DWORD V113C, DWORD V113D)
+DWORD Library::GetOffsetForVersion(DWORD V109B, DWORD V113D)
 {
-	return GetOffsetForVersion(CreateOffsets(V109, V109D, V110, V111, V111B, V112, V113C, V113D));
+	return GetOffsetForVersion(CreateOffsets(V109B, V113D));
 }
 
 DWORD Library::GetOffsetForVersion(const VersionOffsets& offsets)
@@ -81,29 +81,23 @@ DWORD Library::GetOffsetForVersion(const VersionOffsets& offsets)
 	
 	//log_msg("Falling back to 1.09A even though game version is: %s\n", VersionUtility::GetVersionAsString(Version));
 	// Existing behavior is to return 1.09 (lowest offset/version that we have)
-	return offsets.find(VersionUtility::Versions::V109)->second;
+	return offsets.find(VersionUtility::Versions::V109b)->second;
 }
 
-VersionOffsets Library::CreateOffsets(DWORD V109, DWORD V109D, DWORD V110, DWORD V111, DWORD V111B, DWORD V112, DWORD V113C, DWORD V113D)
+VersionOffsets Library::CreateOffsets(DWORD V109B, DWORD V113D)
 {
 	VersionOffsets indexes =
 	{
-		{ VersionUtility::Versions::V113d, V113D },
-		{ VersionUtility::Versions::V113c, V113C },
-		{ VersionUtility::Versions::V112, V112 },
-		{ VersionUtility::Versions::V111b, V111B },
-		{ VersionUtility::Versions::V111, V111 },
-		{ VersionUtility::Versions::V110, V110 },
-		{ VersionUtility::Versions::V109d, V109D },
-		{ VersionUtility::Versions::V109, V109 },
+		{ VersionUtility::Versions::V109b, V109B },
+		{ VersionUtility::Versions::V113d, V113D }	
 	};
 
 	return indexes;
 }
 
-DWORD Library::GetOffsetByProc(DWORD V109, DWORD V109D, DWORD V110, DWORD V111, DWORD V111B, DWORD V112, DWORD V113C, DWORD V113D)
+DWORD Library::GetOffsetByProc(DWORD V109B, DWORD V113D)
 {
-	return GetOffsetByProc(CreateOffsets(V109, V109D, V110, V111, V111B, V112, V113C, V113D));
+	return GetOffsetByProc(CreateOffsets(V109B, V113D));
 }
 
 DWORD Library::GetOffsetByProc(const VersionOffsets moduleOffsets)
@@ -112,9 +106,9 @@ DWORD Library::GetOffsetByProc(const VersionOffsets moduleOffsets)
 	return GetFunctionAddress((LPCSTR)proposedOffset);
 }
 
-DWORD Library::GetOffsetByAddition(DWORD V109, DWORD V109D, DWORD V110, DWORD V111, DWORD V111B, DWORD V112, DWORD V113C, DWORD V113D)
+DWORD Library::GetOffsetByAddition(DWORD V109B, DWORD V113D)
 {
-	return GetOffsetByAddition(CreateOffsets(V109, V109D, V110, V111, V111B, V112, V113C, V113D));
+	return GetOffsetByAddition(CreateOffsets(V109B, V113D));
 }
 
 DWORD Library::GetOffsetByAddition(const VersionOffsets moduleOffsets)

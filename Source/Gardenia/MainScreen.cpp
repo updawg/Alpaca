@@ -51,16 +51,15 @@ FCT_ASM ( caller_printPlugYVersion )
 	JMP ESI
 }}
 
-// [Patch]
 void Install_PrintPlugYVersion()
 {
 	static int isInstalled = false;
 	if (isInstalled) return;
 
-	log_msg("Patch D2Launch to print PlugY version. (PrintPlugYVersion)\n");
+	log_msg("[Patch] D2Launch to print PlugY version. (PrintPlugYVersion)\n");
 
 	// Print PlugY version.
-	mem_seek(D2Launch->GetOffsetByAddition(0x7F5D, 0x7F7D, 0x9639, 0x117C7, 0x178A7, 0x16AF7, 0x18061, 0x10A11));
+	mem_seek(D2Launch->GetOffsetByAddition(0x7F5D, 0x10A11));
 	MEMJ_REF4(D2Win->D2CreateTextBox, caller_printPlugYVersion);
 
 	log_msg("\n");
@@ -83,25 +82,24 @@ FCT_ASM ( caller_VersionChange_10 )
 	RETN
 }}
 
-// [Patch]
 void Install_VersionChange()// BUG WITH 2MOD if D2Mod started before PlugY ????
 {
 	static int isInstalled = false;
 	if (isInstalled) return;
 
-	log_msg("Patch D2Launch to print Mod version. (VersionChange)\n");
+	log_msg("[Patch] D2Launch to print Mod version. (VersionChange)\n");
 
 	// Print LoD/Mod version.
-	if (Game->Version >= VersionUtility::Versions::V110)
+	if (Game->Version == VersionUtility::Versions::V113d)
 	{
-		mem_seek(D2Launch->GetOffsetByAddition(0, 0, 0x9723, 0x1189B, 0x1797B, 0x16BCB, 0x18134, 0x10AE4));
+		mem_seek(D2Launch->GetOffsetByAddition(0, 0x10AE4));
 		memt_byte(0x8D, 0xE8);
 		MEMT_REF4(0x8B102454, caller_VersionChange_10);
 		memt_byte(0xCF, 0x90);
 	}
 	else
 	{
-		mem_seek(D2Launch->GetOffsetByAddition(0x801B, 0x803B, 0x972A, 0x118A2, 0x17982, 0x16BD2, 0x1813B, 0x10AEB));
+		mem_seek(D2Launch->GetOffsetByAddition(0x801B, 0x10AEB));
 		MEMJ_REF4(D2Win->D2PrintLineOnTextBox, versionChange);
 	}
 	log_msg("\n");

@@ -66,68 +66,36 @@ FCT_ASM ( caller_SinglePlayerBtnPress )
 	RETN
 }}
 
-
-FCT_ASM ( caller_fixClientRemovingBug )
-	TEST ECX,ECX
-	JE notFound
-	CMP DWORD PTR DS:[ECX],EBP
-	JE found
-next:
-	MOV EAX,ECX
-	MOV ECX,DWORD PTR DS:[EAX+0x4A8]
-	TEST ECX,ECX
-	JE notFound
-	CMP DWORD PTR DS:[ECX],EBP
-	JNZ next
-found:
-	ADD DWORD PTR SS:[ESP],0xB
-	RETN
-notFound:
-	ADD DWORD PTR SS:[ESP],0x1D
-	RETN
-}}
-
-// [Patch]
 void Install_VariableOnRealm()
 {
 	static int isInstalled = false;
 	if (isInstalled) return;
 
-	log_msg("Patch D2Launch for disabling online buttons. (VariableonRealm)\n");
+	log_msg("[Patch] D2Launch for disabling online buttons. (VariableonRealm)\n");
 
 	// click on Battle.net button
-	mem_seek(D2Launch->GetOffsetByAddition(0x8195, 0x81A5, 0x9915, 0x129E5, 0x18AA5, 0x17D15, 0x19295, 0x11C65));
+	mem_seek(D2Launch->GetOffsetByAddition(0x8195, 0x11C65));
 	memt_byte(0x81, 0xE8);
-	MEMT_REF4(0x000400EC, caller_BnetBtnPress);
+	MEMT_REF4(0x400EC, caller_BnetBtnPress);
 	memt_byte(0, 0x90);
 
 	// click on TCP/IP button
-	mem_seek(D2Launch->GetOffsetByAddition(0x87B9, 0x87C9, 0x9F99, 0x11329, 0x17409, 0x16659, 0x17B8E, 0x1053E));
-	if (Game->Version == VersionUtility::Versions::V109b || Game->Version == VersionUtility::Versions::V109d || Game->Version == VersionUtility::Versions::V110)
-	{
-		memt_byte(0xBD, 0xE8);
-		MEMT_REF4(1, caller_TCPIPBtnPress);
-	}
-	else
+	mem_seek(D2Launch->GetOffsetByAddition(0x87B9, 0x1053E));
+	if (Game->Version == VersionUtility::Versions::V113d)
 	{
 		memt_byte(0xBE, 0xE8);
 		MEMT_REF4(0x40, caller_TCPIPBtnPress111);
 	}
+	else
+	{
+		memt_byte(0xBD, 0xE8);
+		MEMT_REF4(1, caller_TCPIPBtnPress);
+	}
 
 	// click on SinglePlayer button
-	mem_seek(D2Launch->GetOffsetByAddition(0xD1F6, 0xD1E6, 0xEC16, 0xB726, 0x117E6, 0x10A56, 0x11F36, 0xA906));
+	mem_seek(D2Launch->GetOffsetByAddition(0xD1F6, 0xA906));
 	memt_byte(0xBA, 0xE8);
 	MEMT_REF4(0x400, caller_SinglePlayerBtnPress);
-
-	if (Game->Version == VersionUtility::Versions::V110)
-	{
-		log_msg("\nPatch D2Game for fixing ptClient removing bug. (VariableonRealm)\n");
-		//Bug crash ptClient search fix (for Megalixir Mod).
-		mem_seek(D2Game->GetOffsetByAddition(0, 0, 0x2B97, 0, 0, 0, 0, 0));
-		memt_byte(0x39, 0xE8);
-		MEMT_REF4(0x8B0C7429, caller_fixClientRemovingBug);
-		memt_byte(0xC1, 0x90);
-	}
 
 	log_msg("\n");
 

@@ -61,20 +61,12 @@ FCT_ASM ( caller_SaveSPPlayerCustomData_111 )
 	RETN
 }}
 
-FCT_ASM ( caller_SaveSPPlayerCustomData )
-	CALL D2FogGetSavePath
-	PUSH EDI
-	CALL SaveSPPlayerCustomData
-	RETN
-}}
-
 FCT_ASM ( caller_SaveSPPlayerCustomData_9 )
 	CALL D2FogGetSavePath
 	PUSH ESI
 	CALL SaveSPPlayerCustomData
 	RETN
 }}
-
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -366,34 +358,6 @@ void __stdcall SaveMPPlayerCustomData(BYTE* dataD2Savefile )
 	log_msg("--- End SaveMPPlayerCustomData. ---\n\n");
 }
 
-
-
-
-
-/*
-FCT_ASM ( caller_SendSaveFilesToSave_9 )
-	POP ECX
-	PUSH EAX
-	PUSH ECX
-	PUSH EBX
-	CALL SendSaveFilesToSave
-	MOV EDX,EBX
-	MOV ECX,EDI
-	RETN
-}}
-
-FCT_ASM ( caller_SendSaveFilesToSave )
-	POP ECX
-	PUSH EAX
-	PUSH ECX
-	PUSH EBX
-	CALL SendSaveFilesToSave
-	MOV EDX,EBX
-	MOV ECX,EBP
-	RETN
-}}
-*/
-
 FCT_ASM( caller_ManageNextPacketToSend )
 	PUSH ESI
 	CALL ManageNextPacketToSend
@@ -419,22 +383,6 @@ end_caller_ManageNextPacketToSend_9:
 	MOV EAX,DWORD PTR DS:[ESI+0x150]
 	RETN
 }}
-
-FCT_ASM( caller_ManageNextPacketToSend_9d )
-	PUSH ESI
-	CALL ManageNextPacketToSend
-	TEST EAX,EAX
-	JNZ end_caller_ManageNextPacketToSend_9d
-	MOV DWORD PTR DS:[ESI+0x170],5
-	POP ESI
-	POP ESI
-	RETN
-end_caller_ManageNextPacketToSend_9d:
-	MOV EAX,DWORD PTR DS:[ESI+0x174]
-	RETN
-}}
-
-
 
 FCT_ASM( caller_SendSaveFilesToSave_111 )
 	PUSH DWORD PTR SS:[ESP+0x2014]
@@ -518,63 +466,62 @@ FCT_ASM ( caller_SaveMPPlayerCustomData )
 	RETN
 }}
 
-// [Patch]
 void Install_SavePlayerData()
 {
 	static int isInstalled = false;
 	if (isInstalled || !active_PlayerCustomData) return;
 
-	log_msg("Patch D2Game & D2Client for save Player's custom data. (SavePlayerData)\n");
+	log_msg("[Patch] D2Game & D2Client for save Player's custom data. (SavePlayerData)\n");
 
 	//Save single player custom data.
-	mem_seek(D2Game->GetOffsetByAddition(0x4DF04, 0x4E304, 0x5A624, 0xB9365, 0x25475, 0x44165, 0x53F35, 0x39835));
-	MEMJ_REF4(Fog->D2FogGetSavePath, Game->Version >= VersionUtility::Versions::V111 ? caller_SaveSPPlayerCustomData_111 : Game->Version != VersionUtility::Versions::V109b ? caller_SaveSPPlayerCustomData : caller_SaveSPPlayerCustomData_9);
+	mem_seek(D2Game->GetOffsetByAddition(0x4DF04, 0x39835));
+	MEMJ_REF4(Fog->D2FogGetSavePath, Game->Version == VersionUtility::Versions::V113d ? caller_SaveSPPlayerCustomData_111 : caller_SaveSPPlayerCustomData_9);
 
 	//Send SaveFiles
-	mem_seek(D2Game->GetOffsetByAddition(0x4DFFA, 0x4E3FA, 0x5A720, 0xB92DB, 0x253EB, 0x440DB, 0x53EAB, 0x397AB));
+	mem_seek(D2Game->GetOffsetByAddition(0x4DFFA, 0x397AB));
 	memt_byte(0x8B, 0x90);
-	memt_byte(Game->Version >= VersionUtility::Versions::V111 ? 0x44 : Game->Version != VersionUtility::Versions::V109b ? 0x7C : 0x74 ,0xE8);
-	MEMT_REF4(Game->Version >= VersionUtility::Versions::V111 ? 0xC0850424 : Game->Version != VersionUtility::Versions::V109b ? 0xFF851024 : 0xF6851024, Game->Version >= VersionUtility::Versions::V111 ? caller_SendSaveFilesToSave_111 : Game->Version != VersionUtility::Versions::V109b ? caller_SendSaveFilesToSave : caller_SendSaveFilesToSave_9);
+	memt_byte(Game->Version == VersionUtility::Versions::V113d ? 0x44 : 0x74, 0xE8);
+	MEMT_REF4(Game->Version == VersionUtility::Versions::V113d ? 0xC0850424 : 0xF6851024, Game->Version == VersionUtility::Versions::V113d ? caller_SendSaveFilesToSave_111 : caller_SendSaveFilesToSave_9);
 
-	mem_seek(D2Game->GetOffsetByAddition(0x7993, 0x7A13, 0x7BBB, 0xE2943, 0xE6D83, 0xA89D3, 0x2D173, 0xBEDD3));
+	mem_seek(D2Game->GetOffsetByAddition(0x7993, 0xBEDD3));
 	memt_byte(0x8B, 0x90);
-	memt_byte(Game->Version >= VersionUtility::Versions::V110 ? 0x8E : 0x86, 0xE8);
-	MEMT_REF4(Game->Version >= VersionUtility::Versions::V110 ? 0x0000017C : Game->Version == VersionUtility::Versions::V109d ? 0x0000174 : 0x00000150, Game->Version >= VersionUtility::Versions::V110 ? caller_ManageNextPacketToSend : Game->Version == VersionUtility::Versions::V109d ? caller_ManageNextPacketToSend_9d : caller_ManageNextPacketToSend_9);
+	memt_byte(Game->Version == VersionUtility::Versions::V113d ? 0x8E : 0x86, 0xE8);
+	MEMT_REF4(Game->Version == VersionUtility::Versions::V113d ? 0x17C : 0x150, Game->Version == VersionUtility::Versions::V113d ? caller_ManageNextPacketToSend : caller_ManageNextPacketToSend_9);
 
-	if (Game->Version >= VersionUtility::Versions::V111)
+	if (Game->Version == VersionUtility::Versions::V113d)
 	{
 		//Received SaveFiles
-		mem_seek(D2Client->GetOffsetByAddition(0x116F0, 0x116E0, 0x11CB0, 0x89246, 0x32076, 0x7BCD6, 0x43946, 0x448E6));
-		memt_byte(0x0F ,0xE8);
+		mem_seek(D2Client->GetOffsetByAddition(0x116F0, 0x448E6));
+		memt_byte(0x0F, 0xE8);
 		MEMT_REF4(0x0C2444B6, caller_ReceivedSaveFilesToSave_111);
 
 		// Save multiplayer player custom data.
-		mem_seek(D2Client->GetOffsetByAddition(0x117FC, 0x117EC, 0x11DBC, 0x99AE2, 0xBD7F2, 0x64A22, 0xAC572, 0x829C2));
-		memt_byte(0x81 ,0xE8);
+		mem_seek(D2Client->GetOffsetByAddition(0x117FC, 0x829C2));
+		memt_byte(0x81, 0xE8);
 		MEMT_REF4(0x55AA55F9, caller_SaveMPPlayerCustomData_111);
-		memt_byte(0xAA ,0x90); // CALL // TODO: Comment says CALL, but byte is a NOP.. bug?
+		memt_byte(0xAA, 0x90); // CALL // TODO: Comment says CALL, but byte is a NOP.. bug?
 	}
 	else
 	{
 		// Received SaveFiles
-		mem_seek(D2Client->GetOffsetByAddition(0x116F0, 0x116E0, 0x11CB0, 0x89246, 0x32076, 0x7BCD6, 0, 0));
-		memt_byte(0x81 ,0x90);
-		memt_byte(0xEC ,0xE8);
-		MEMT_REF4(0x000005F4, caller_ReceivedSaveFilesToSave);
+		mem_seek(D2Client->GetOffsetByAddition(0x116F0, 0));
+		memt_byte(0x81, 0x90);
+		memt_byte(0xEC, 0xE8);
+		MEMT_REF4(0x5F4, caller_ReceivedSaveFilesToSave);
 
 		// Save multiplayer player custom data.
-		mem_seek(D2Client->GetOffsetByAddition(0x117FC, 0x117EC, 0x11DBC, 0x99AE2, 0xBD7F2, 0x64A22, 0, 0));
-		memt_byte(0x8B ,0xE8);
+		mem_seek(D2Client->GetOffsetByAddition(0x117FC, 0));
+		memt_byte(0x8B, 0xE8);
 		MEMT_REF4(0x04518B01, caller_SaveMPPlayerCustomData);
 	}
 
-	if (Game->Version == VersionUtility::Versions::V109b || Game->Version == VersionUtility::Versions::V109d)
-	{
-		customPackID = 0xAB;
-	}
-	else if (Game->Version >= VersionUtility::Versions::V111)
+	if (Game->Version == VersionUtility::Versions::V113d)
 	{
 		customPackID++;
+	}
+	else
+	{
+		customPackID = 0xAB;
 	}
 
 	log_msg("\n");

@@ -129,25 +129,19 @@ END_RCM:
 	RETN 8
 }}
 
-// [Patch]
 void Install_UpdateServer()
 {
 	static int isInstalled = false;
 	if (isInstalled) return;
 
-	log_msg("Patch D2Game for received button click message. (UpdateServer)\n");
+	log_msg("[Patch] D2Game for received button click message. (UpdateServer)\n");
 
 	// manage button click message from Client.
-	mem_seek(D2Game->GetOffsetByAddition(0x4A702, 0x4AAC2, 0x56EA2, 0x54AE3, 0x2C773, 0x975C3, 0xCC983, 0x676C3));
-	if (Game->Version >= VersionUtility::Versions::V111) {
+	mem_seek(D2Game->GetOffsetByAddition(0x4A702, 0x676C3));
+	if (Game->Version == VersionUtility::Versions::V113d) {
 		memt_byte(0xC1, 0x57);
 		memt_byte(0xEE, 0xE8);
 		MEMT_REF4(0xF88B5708, caller_handleServerUpdate);
-	}
-	else if (Game->Version == VersionUtility::Versions::V110)
-	{
-		memt_byte(0xC1, 0xE8);
-		MEMT_REF4(0xF88B08EE, caller_handleServerUpdate);
 	}
 	else
 	{

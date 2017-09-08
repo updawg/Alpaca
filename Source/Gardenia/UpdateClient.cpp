@@ -93,17 +93,16 @@ FCT_ASM ( caller_handleClientUpdate )
 	RETN
 }}
 
-// [Patch]
 void Install_UpdateClient()
 {
 	static int isInstalled = false;
 	if (isInstalled) return;
 	
-	log_msg("Patch D2Client for received Item packet. (UpdateClient)\n");
+	log_msg("[Patch] D2Client for received item packet. (UpdateClient)\n");
 
 	// execute if it's our packet else continue
-	mem_seek(D2Client->GetOffsetByAddition(0x14236, 0x14226, 0x145B6, 0x9C6B6, 0xBFE86, 0x66E06, 0xAE896, 0x84D96));
-	MEMT_REF4(Game->Version >= VersionUtility::Versions::V111  ? 0xCF : 0xD6, Game->Version >= VersionUtility::Versions::V111 ? caller_handleClientUpdate_111 : caller_handleClientUpdate);
+	mem_seek(D2Client->GetOffsetByAddition(0x14236, 0x84D96));
+	MEMT_REF4(Game->Version == VersionUtility::Versions::V113d ? 0xCF : 0xD6, Game->Version == VersionUtility::Versions::V113d ? caller_handleClientUpdate_111 : caller_handleClientUpdate);
 
 	log_msg("\n");
 

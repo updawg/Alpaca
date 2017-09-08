@@ -1,7 +1,8 @@
 Gardenia is a fork of PlugY 11.02 by Yohann Nicolas that removes all
 of the components that are not allowed in the Diablo II IncGamers SPF
-forum and leaves the basics, primarily unlimited stash. This is compatible
-between 1.09b to 1.13d.
+forum and leaves the basics, primarily unlimited stash. 
+
+This is compatible only with 1.09b and 1.13d.
 
 Internally, I'm slowly trying to improve the design of the application by
 using OOP best practices and removing the massive usage of the preprocessor.
@@ -81,3 +82,4 @@ Other TODO
 - Make separate hardcore stashes non changable.
 - Check to see why /page4 no longer works.
 - Remove /dml alias, just keep /dlm.
+- d2mod support can be removed since d2mod only supports 1.10 and we dont support 1.10 in this mod
