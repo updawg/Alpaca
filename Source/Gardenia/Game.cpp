@@ -15,17 +15,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#include "D2CMPLibrary.h"
+#include "Game.h"
 
-D2CMPLibrary::D2CMPLibrary(int gameVersion) : Library()
+void Game::Init()
 {
-	Name = "D2CMP.dll";
-	Version = gameVersion;
-	Offset = LoadDiabloLibrary();
-	SetFunctions();
+	Name = "Game.exe";
+	Offset = (DWORD)GetModuleHandle(NULL);
+	VersionUtility::SetVersion(VersionUtility::GetVersion(Name));
+	log_msg("Game.exe loaded at:\t%08X (%s)\n", Offset, VersionUtility::GetVersionAsString());
 }
 
-void D2CMPLibrary::SetFunctions()
+void Game::SetFunctions()
 {
-	D2CMP10014 = (TD2CMP10014)GetOffsetByProc(0x2730, 0x2724);
+
 }

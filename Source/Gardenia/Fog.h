@@ -19,10 +19,10 @@
 
 #include "Library.h"
 
-class FogLibrary : public Library
+class Fog : public Library<Fog>
 {
 public:
-	FogLibrary(int gameVersion);
+	static void Init();
 
 	typedef void(__stdcall *TD2FogAssertOld) (const char* ptMessage, DWORD eip, DWORD line);
 	typedef void(__fastcall *TD2FogAssert) (const char* ptMessage, DWORD eip, DWORD line);
@@ -39,20 +39,20 @@ public:
 	typedef void(__stdcall *TD2Fog10212) (DWORD unknow);
 	typedef int(__stdcall *TD2GetInstructionPointer) ();
 
-	TD2FogAssertOld D2FogAssertOld;
-	TD2FogAssert D2FogAssert;
-	TD2FogMemAlloc D2FogMemAlloc;
-	TD2FogMemDeAlloc D2FogMemDeAlloc;
-	TD2AllocMem D2AllocMem;
-	TD2FreeMem D2FreeMem;
-	TD2MPQOpenFile D2MPQOpenFile;
-	TD2MPQCloseFile D2MPQCloseFile;
-	TD2MPQReadFile D2MPQReadFile;
-	TD2MPQGetSizeFile D2MPQGetSizeFile;
-	TD2FogGetSavePath D2FogGetSavePath;
-	TD2FogGetInstallPath D2FogGetInstallPath;
-	TD2Fog10212 D2Fog10212;
-	TD2GetInstructionPointer D2GetInstructionPointer;
+	static TD2FogAssertOld D2FogAssertOld;
+	static TD2FogAssert D2FogAssert;
+	static TD2FogMemAlloc D2FogMemAlloc;
+	static TD2FogMemDeAlloc D2FogMemDeAlloc;
+	static TD2AllocMem D2AllocMem;
+	static TD2FreeMem D2FreeMem;
+	static TD2MPQOpenFile D2MPQOpenFile;
+	static TD2MPQCloseFile D2MPQCloseFile;
+	static TD2MPQReadFile D2MPQReadFile;
+	static TD2MPQGetSizeFile D2MPQGetSizeFile;
+	static TD2FogGetSavePath D2FogGetSavePath;
+	static TD2FogGetInstallPath D2FogGetInstallPath;
+	static TD2Fog10212 D2Fog10212;
+	static TD2GetInstructionPointer D2GetInstructionPointer;
 private:
-	void SetFunctions();
+	static void SetFunctions();
 };

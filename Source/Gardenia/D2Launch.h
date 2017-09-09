@@ -19,16 +19,10 @@
 
 #include "Library.h"
 
-class D2NetLibrary : public Library
+class D2Launch : public Library<D2Launch>
 {
 public:
-	D2NetLibrary(int gameVersion);
-
-	typedef DWORD(__stdcall *TD2SendToServer) (DWORD size, DWORD one, void* data);
-	typedef DWORD(__stdcall *TD2SendToClient) (DWORD zero, DWORD clientID, void* data, DWORD size);
-
-	TD2SendToServer D2SendToServer;
-	TD2SendToClient D2SendToClient;
+	static void Init();
 private:
-	void SetFunctions();
+	static void SetFunctions();
 };

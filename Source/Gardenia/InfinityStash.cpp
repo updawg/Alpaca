@@ -901,39 +901,39 @@ void Install_MultiPageStash()
 	Install_PlayerCustomData();
 	Install_InterfaceStash();
 
-	changeToSelectedStash = Game->Version == VersionUtility::Versions::V113d ? changeToSelectedStash_10 : changeToSelectedStash_9;
+	changeToSelectedStash = VersionUtility::Is113D() ? changeToSelectedStash_10 : changeToSelectedStash_9;
 
-	if (Game->Version == VersionUtility::Versions::V113d)
+	if (VersionUtility::Is113D())
 	{
 		log_msg("[Patch] D2Game for carry1 unique item. (MultiPageStash)\n");
 
 		// Cannot put 2 items carry1 in inventory
-		mem_seek(D2Game->GetOffsetByAddition(0, 0x6B013));
-		MEMJ_REF4(D2Common->D2ItemSetPage, Game->Version == VersionUtility::Versions::V113d ? caller_carry1Limit_111 : caller_carry1Limit);
+		mem_seek(D2Game::GetOffsetByAddition(0, 0x6B013));
+		MEMJ_REF4(D2Common::D2ItemSetPage, VersionUtility::Is113D() ? caller_carry1Limit_111 : caller_carry1Limit);
 
 		// Cannot put 2 items carry1 in inventory by swapping
-		mem_seek(D2Game->GetOffsetByAddition(0, 0x6BC78));
-		MEMJ_REF4(D2Common->D2ItemGetPage , Game->Version == VersionUtility::Versions::V113d ? caller_carry1LimitSwap_112 : caller_carry1LimitSwap);
+		mem_seek(D2Game::GetOffsetByAddition(0, 0x6BC78));
+		MEMJ_REF4(D2Common::D2ItemGetPage , VersionUtility::Is113D() ? caller_carry1LimitSwap_112 : caller_carry1LimitSwap);
 
-		if (Game->Version == VersionUtility::Versions::V113d )
+		if (VersionUtility::Is113D() )
 		{
 			// Cannot put 2 items carry1 in inventory when drop cube
-			mem_seek(D2Game->GetOffsetByAddition(0, 0xB7B15));
-			MEMJ_REF4(D2Common->D2CanPutItemInInv, caller_carry1LimitWhenDrop_111);
+			mem_seek(D2Game::GetOffsetByAddition(0, 0xB7B15));
+			MEMJ_REF4(D2Common::D2CanPutItemInInv, caller_carry1LimitWhenDrop_111);
 		}
 		else
 		{
 			// Cannot put 2 items carry1 in inventory when drop cube
-			mem_seek(D2Game->GetOffsetByAddition(0, 0));
+			mem_seek(D2Game::GetOffsetByAddition(0, 0));
 			memt_byte(0xBA, 0xE8);
 			MEMT_REF4(0x806, caller_carry1LimitWhenDrop);
 		}
 
 		// Verify only carry1 out of stash page when pick up an item
-		mem_seek(D2Game->GetOffsetByAddition(0, 0xB301B));
+		mem_seek(D2Game::GetOffsetByAddition(0, 0xB301B));
 		memt_byte(0x8B, 0xE8);
-		MEMT_REF4(Game->Version == VersionUtility::Versions::V113d ? 0x850C2474 : 0x85102444, Game->Version == VersionUtility::Versions::V113d ? caller_carry1OutOfStash_111 : caller_carry1OutOfStash);
-		memt_byte(Game->Version == VersionUtility::Versions::V113d ? 0xF6 : 0xC0, 0x90);
+		MEMT_REF4(VersionUtility::Is113D() ? 0x850C2474 : 0x85102444, VersionUtility::Is113D() ? caller_carry1OutOfStash_111 : caller_carry1OutOfStash);
+		memt_byte(VersionUtility::Is113D() ? 0xF6 : 0xC0, 0x90);
 
 		log_msg("\n");
 	}

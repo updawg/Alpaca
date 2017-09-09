@@ -15,22 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include "D2Launch.h"
 
-#include "Library.h"
-
-class StormLibrary : public Library
+void D2Launch::Init()
 {
-public:
-	StormLibrary(int gameVersion);
+	Name = "D2Launch.dll";
+	Offset = LoadDiabloLibrary();
+	SetFunctions();
+}
 
-	typedef DWORD(__stdcall *TD2StormMPQOpenFile) (DWORD zero, LPCSTR fileName, DWORD dwSearchScope, void** buffer);
-	typedef void(__stdcall *TD2Storm503) (DWORD, DWORD, DWORD);
-	typedef void(__stdcall *TD2FreeWinMessage) (sWinMessage* msg);
-
-	TD2StormMPQOpenFile D2StormMPQOpenFile;
-	TD2Storm503 D2Storm503;
-	TD2FreeWinMessage D2FreeWinMessage;
-private:
-	void SetFunctions();
-};
+void D2Launch::SetFunctions()
+{
+	
+}

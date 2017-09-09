@@ -15,78 +15,85 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#include "LibraryUtility.h"
+#include "LibraryLoader.h"
 
-LibraryUtility::LibraryUtility()
+void LibraryLoader::Init()
 {
 	log_msg("***** Get D2 Modules address and version *****\n\n");
 
 	// We need to load the game now so that we have the game version for the rest of the Dlls.
-	Game = new GameLibrary();
-
-	if (VersionUtility::IsEqualOrGreaterThan114(Game->Version))
+	Game::Init();
+	
+	if (VersionUtility::Is114D())
 	{
 		log_msg("1.14d support is not implemented.\n");
 		//exit(-1);
 	}
 	else
 	{
-		D2Client = new D2ClientLibrary(Game->Version);
-		D2CMP = new D2CMPLibrary(Game->Version);
-		D2Common = new D2CommonLibrary(Game->Version);
-		D2Game = new D2GameLibrary(Game->Version);
-		D2gfx = new D2gfxLibrary(Game->Version);
-		D2Lang = new D2LangLibrary(Game->Version);
-		D2Launch = new D2LaunchLibrary(Game->Version);
-		D2Net = new D2NetLibrary(Game->Version);
-		D2Win = new D2WinLibrary(Game->Version);
-		Fog = new FogLibrary(Game->Version);
-		Storm = new StormLibrary(Game->Version);
+		// Initialize static class variables
+		D2Client::Init();
+		D2CMP::Init();
+		D2Common::Init();
+		D2Game::Init();
+		D2gfx::Init();
+		D2Lang::Init();
+		D2Launch::Init();
+		D2Net::Init();
+		D2Win::Init();
+		Fog::Init();
+		Storm::Init();
 	}
 	log_msg("\n");
 }
 
-void LibraryUtility::HookLibraries()
+void LibraryLoader::HookLibraries()
 {
 	log_msg("***** Unprotect Libraries *****\n");
 
-	if (VersionUtility::IsEqualOrGreaterThan114(Game->Version))
+	if (VersionUtility::Is114D())
 	{
 		log_msg("Hooking 1.14 libraries");
 	}
 	else
 	{
-		D2Client->HookLibrary();
-		D2Common->HookLibrary();
-		D2Game->HookLibrary();
-		D2gfx->HookLibrary();
-		D2Lang->HookLibrary();
-		D2Launch->HookLibrary();
-		Fog->HookLibrary();
-		Storm->HookLibrary();
+		D2Client::HookLibrary();
+		//D2CMP::HookLibrary();
+		D2Common::HookLibrary();
+		D2Game::HookLibrary();
+		D2gfx::HookLibrary();
+		D2Lang::HookLibrary();
+		D2Launch::HookLibrary();
+		//D2Net::HookLibrary();
+		//D2Win::HookLibrary();
+		Fog::HookLibrary();
+		Storm::HookLibrary();
 	}
 
 	log_msg("\n");
 }
 
-void LibraryUtility::UnhookLibraries()
+void LibraryLoader::UnhookLibraries()
 {
 	log_msg("***** Reprotect Libraries *****\n");
 
-	if (VersionUtility::IsEqualOrGreaterThan114(Game->Version))
+	if (VersionUtility::Is114D())
 	{
 		log_msg("Unhooking 1.14 libraries");
 	}
 	else
 	{
-		D2Client->UnhookLibrary();
-		D2Common->UnhookLibrary();
-		D2Game->UnhookLibrary();
-		D2gfx->UnhookLibrary();
-		D2Lang->UnhookLibrary();
-		D2Launch->UnhookLibrary();
-		Fog->UnhookLibrary();
-		Storm->UnhookLibrary();
+		D2Client::UnhookLibrary();
+		//D2CMP::UnhookLibrary();
+		D2Common::UnhookLibrary();
+		D2Game::UnhookLibrary();
+		D2gfx::UnhookLibrary();
+		D2Lang::UnhookLibrary();
+		D2Launch::UnhookLibrary();
+		//D2Net::UnhookLibrary();
+		//D2Win::UnhookLibrary();
+		Fog::UnhookLibrary();
+		Storm::UnhookLibrary();
 	}
 
 	log_msg("\n");

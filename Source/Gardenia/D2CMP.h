@@ -17,14 +17,16 @@
 
 #pragma once
 
-#include <windows.h>
 #include "Library.h"
 
-class GameLibrary : public Library
+class D2CMP : public Library<D2CMP>
 {
 public:
-	GameLibrary();
-	bool IsSupported();
+	static void Init();
+
+	typedef DWORD(__stdcall *TD2CMP10014) (void* image);
+
+	static TD2CMP10014 D2CMP10014;
 private:
-	void SetFunctions();
+	static void SetFunctions();
 };

@@ -52,7 +52,7 @@ enum D2Color
 //	WIERD_YELLOW=0x14
 };
 
-enum D2Lang
+enum Lang
 {
 	LNG_ENG=0,// English
 	LNG_ESP,// Spanish
@@ -68,7 +68,6 @@ enum D2Lang
 	LNG_RUS,// Russian
 	LNG_DEF,// Default : English
 };
-
 
 enum D2GameTypeMode
 {

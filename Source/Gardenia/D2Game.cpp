@@ -15,23 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#include "D2GameLibrary.h"
+#include "D2Game.h"
 
-// These static variables need to be here so that we can call
-// the address of the offset (that we retrieved from inside of our
-// instanced version of this class) in the static __declspec
-// (naked) functions.
-D2GameLibrary::TD2SaveGame D2GameLibrary::VD2SaveGame;
-
-D2GameLibrary::D2GameLibrary(int gameVersion) : Library()
+void D2Game::Init()
 {
 	Name = "D2Game.dll";
-	Version = gameVersion;
 	Offset = LoadDiabloLibrary();
 	SetFunctions();
 }
 
-void D2GameLibrary::SetFunctions()
+void D2Game::SetFunctions()
 {
 	D2SetNbPlayers = (TD2SetNbPlayers)GetOffsetByProc(10059, 10002);
 	D2SendPacket = (TD2SendPacket)GetOffsetByAddition(0xC380, 0xDB780);
@@ -42,17 +35,16 @@ void D2GameLibrary::SetFunctions()
 	D2LoadInventory = (TD2LoadInventory)GetOffsetByAddition(0x4F100, 0x3A4C0);
 	D2GameGetObject = (TD2GameGetObject)GetOffsetByAddition(0x7BAE0, 0x6DC40);
 
-	D2SaveGame = (TD2SaveGame)GetOffsetByAddition(0, 0xBE660);
-	VD2SaveGame = D2SaveGame;
-
 	// Until 1.10
 	D2GetClient = (TD2GetClient)GetOffsetByAddition(0x7C2C0, 0);
 
-	// Variables
+	D2SaveGame = (TD2SaveGame)GetOffsetByAddition(0, 0xBE660);
+	VD2SaveGame = D2SaveGame;
+
 	ptClientTable = (NetClient**)GetOffsetByAddition(0xF2A80, 0x1105E0);
 }
 
-__declspec (naked) void D2GameLibrary::D2SaveGame_1XX()
+__declspec (naked) void D2Game::D2SaveGame_1XX()
 {
 	__asm {
 		POP EAX
@@ -61,3 +53,22 @@ __declspec (naked) void D2GameLibrary::D2SaveGame_1XX()
 		JMP VD2SaveGame
 	};
 }
+
+D2Game::TD2SetNbPlayers D2Game::D2SetNbPlayers;
+D2Game::TD2SendPacket D2Game::D2SendPacket;
+D2Game::TD2SetSkillBaseLevelOnClient D2Game::D2SetSkillBaseLevelOnClient;
+D2Game::TD2LinkPortal D2Game::D2LinkPortal;
+D2Game::TD2VerifIfNotCarry1 D2Game::D2VerifIfNotCarry1;
+D2Game::TD2TestPositionInRoom D2Game::D2TestPositionInRoom;
+D2Game::TD2LoadInventory D2Game::D2LoadInventory;
+D2Game::TD2GameGetObject D2Game::D2GameGetObject;
+D2Game::TD2SaveGame D2Game::D2SaveGame;
+
+D2Game::TD2GetClient D2Game::D2GetClient;
+NetClient** D2Game::ptClientTable;
+
+// These static variables need to be here so that we can call
+// the address of the offset (that we retrieved from inside of our
+// instanced version of this class) in the static __declspec
+// (naked) functions.
+D2Game::TD2SaveGame D2Game::VD2SaveGame;

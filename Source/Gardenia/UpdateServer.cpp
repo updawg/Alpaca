@@ -29,7 +29,6 @@ int __stdcall handleServerUpdate(Unit* ptChar, WORD param)
 {
 	int type = param & 0xFF;
 	DWORD arg = (param & 0xFF00) >> 8;
-	active_logFile = 1;
 	log_msg("Received custom message: type=%i, arg=%i\n", type, arg);
 	switch(type)
 	{
@@ -137,8 +136,8 @@ void Install_UpdateServer()
 	log_msg("[Patch] D2Game for received button click message. (UpdateServer)\n");
 
 	// manage button click message from Client.
-	mem_seek(D2Game->GetOffsetByAddition(0x4A702, 0x676C3));
-	if (Game->Version == VersionUtility::Versions::V113d) {
+	mem_seek(D2Game::GetOffsetByAddition(0x4A702, 0x676C3));
+	if (VersionUtility::Is113D()) {
 		memt_byte(0xC1, 0x57);
 		memt_byte(0xEE, 0xE8);
 		MEMT_REF4(0xF88B5708, caller_handleServerUpdate);

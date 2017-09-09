@@ -15,19 +15,24 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#include "D2gfxLibrary.h"
+#pragma once
 
-D2gfxLibrary::D2gfxLibrary(int gameVersion) : Library()
-{
-	Name = "D2gfx.dll";
-	Version = gameVersion;
-	Offset = LoadDiabloLibrary();
-	SetFunctions();
-}
+#include "Library.h"
 
-void D2gfxLibrary::SetFunctions()
+class D2Lang : public Library<D2Lang>
 {
-	D2GetResolution = (TD2GetResolution)GetOffsetByProc(10005, 10012);
-	D2FillArea = (TD2FillArea)GetOffsetByProc(10055, 10028);
-	D2PrintImage = (TD2PrintImage)GetOffsetByProc(10072, 10042);
-}
+public:
+	static void Init();
+
+	typedef LPWSTR(__fastcall *TD2GetStringFromString) (const char* ptString);
+	typedef LPWSTR(__fastcall *TD2GetStringFromIndex) (WORD dwIndexNum);
+	typedef DWORD(__stdcall *TD2GetLang) ();
+	typedef DWORD(__stdcall *TD2PrintBigNumber) (LPWSTR ptBuf, DWORD number, DWORD size);
+
+	static TD2GetStringFromString D2GetStringFromString;
+	static TD2GetStringFromIndex D2GetStringFromIndex;
+	static TD2GetLang D2GetLang;
+	static TD2PrintBigNumber D2PrintBigNumber;
+private:
+	static void SetFunctions();
+};

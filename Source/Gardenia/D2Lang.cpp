@@ -15,18 +15,24 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include "D2Lang.h"
 
-#include "Library.h"
-
-class D2CMPLibrary : public Library
+void D2Lang::Init()
 {
-public:
-	D2CMPLibrary(int gameVersion);
+	Name = "D2Lang.dll";
+	Offset = LoadDiabloLibrary();
+	SetFunctions();
+}
 
-	typedef DWORD(__stdcall *TD2CMP10014) (void* image);
+void D2Lang::SetFunctions()
+{
+	D2GetStringFromString = (TD2GetStringFromString)GetOffsetByProc(10003, 10011);
+	D2GetStringFromIndex = (TD2GetStringFromIndex)GetOffsetByProc(10004, 10004);
+	D2GetLang = (TD2GetLang)GetOffsetByProc(10007, 10001);
+	D2PrintBigNumber = (TD2PrintBigNumber)GetOffsetByProc(10010, 0);
+}
 
-	TD2CMP10014 D2CMP10014;
-private:
-	void SetFunctions();
-};
+D2Lang::TD2GetStringFromString D2Lang::D2GetStringFromString;
+D2Lang::TD2GetStringFromIndex D2Lang::D2GetStringFromIndex;
+D2Lang::TD2GetLang D2Lang::D2GetLang;
+D2Lang::TD2PrintBigNumber D2Lang::D2PrintBigNumber;

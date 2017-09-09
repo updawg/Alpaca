@@ -15,17 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#include "FogLibrary.h"
+#include "Fog.h"
 
-FogLibrary::FogLibrary(int gameVersion) : Library()
+void Fog::Init()
 {
 	Name = "Fog.dll";
-	Version = gameVersion;
 	Offset = LoadDiabloLibrary();
 	SetFunctions();
 }
 
-void FogLibrary::SetFunctions()
+void Fog::SetFunctions()
 {
 	D2FogAssertOld = (TD2FogAssertOld)GetOffsetByProc(10023, 0);
 	D2FogAssert = (TD2FogAssert)GetOffsetByProc(0, 10024);
@@ -42,3 +41,18 @@ void FogLibrary::SetFunctions()
 	D2Fog10212 = (TD2Fog10212)GetOffsetByProc(10212, 10212);
 	D2GetInstructionPointer = (TD2GetInstructionPointer)GetOffsetByProc(0, 10265);
 }
+
+Fog::TD2FogAssertOld Fog::D2FogAssertOld;
+Fog::TD2FogAssert Fog::D2FogAssert;
+Fog::TD2FogMemAlloc Fog::D2FogMemAlloc;
+Fog::TD2FogMemDeAlloc Fog::D2FogMemDeAlloc;
+Fog::TD2AllocMem Fog::D2AllocMem;
+Fog::TD2FreeMem Fog::D2FreeMem;
+Fog::TD2MPQOpenFile Fog::D2MPQOpenFile;
+Fog::TD2MPQCloseFile Fog::D2MPQCloseFile;
+Fog::TD2MPQReadFile Fog::D2MPQReadFile;
+Fog::TD2MPQGetSizeFile Fog::D2MPQGetSizeFile;
+Fog::TD2FogGetSavePath Fog::D2FogGetSavePath;
+Fog::TD2FogGetInstallPath Fog::D2FogGetInstallPath;
+Fog::TD2Fog10212 Fog::D2Fog10212;
+Fog::TD2GetInstructionPointer Fog::D2GetInstructionPointer;

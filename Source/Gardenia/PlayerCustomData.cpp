@@ -253,65 +253,65 @@ void Install_PlayerCustomData()
 	log_msg("[Patch] D2Game & D2Client & D2Common for Player's custom data. (PlayerCustomData)\n");
 
 	// Initialize custom data.
-	mem_seek(D2Common->GetOffsetByAddition(0x70462, 0x170DE));
-	MEMJ_REF4(Fog->D2AllocMem, init_PlayerCustomData);
+	mem_seek(D2Common::GetOffsetByAddition(0x70462, 0x170DE));
+	MEMJ_REF4(Fog::D2AllocMem, init_PlayerCustomData);
 
-	if (Game->Version == VersionUtility::Versions::V113d)
+	if (VersionUtility::Is113D())
 	{
 		// update item
-		mem_seek(D2Game->GetOffsetByAddition(0x10933, 0x75C81));
+		mem_seek(D2Game::GetOffsetByAddition(0x10933, 0x75C81));
 		memt_byte(0x8B, 0xE8);
 		MEMT_REF4(0x52182454, caller_updateItem_111);
 
-		mem_seek(D2Game->GetOffsetByAddition(0x1097B, 0x75CE1));
+		mem_seek(D2Game::GetOffsetByAddition(0x1097B, 0x75CE1));
 		memt_byte(0x8B, 0xE8);
 		MEMT_REF4(0x52182454, caller_updateItemB_111);
 	}
 	else
 	{
 		// update item
-		mem_seek(D2Game->GetOffsetByAddition(0x10933, 0));
-		MEMC_REF4(D2Game->D2GameGetObject, caller_updateItem_9);
+		mem_seek(D2Game::GetOffsetByAddition(0x10933, 0));
+		MEMC_REF4(D2Game::D2GameGetObject, caller_updateItem_9);
 
-		mem_seek(D2Game->GetOffsetByAddition(0x1097B, 0));
-		MEMC_REF4(D2Game->D2GameGetObject, caller_updateItem_9);
+		mem_seek(D2Game::GetOffsetByAddition(0x1097B, 0));
+		MEMC_REF4(D2Game::D2GameGetObject, caller_updateItem_9);
 	}
 
 	// Update client on loading
-	mem_seek(D2Game->GetOffsetByAddition(0x23EB, 0xE7548));
+	mem_seek(D2Game::GetOffsetByAddition(0x23EB, 0xE7548));
 	memt_byte(0x5F, 0xE8);
 	MEMT_REF4(0xC0335D5E, caller_updateClientPlayerOnLoading);
 
 	// Free custom data.
-	mem_seek(D2Common->GetOffsetByAddition(0x7055C, 0x1705D));
-	MEMJ_REF4(Fog->D2FreeMem, free_PlayerCustomData);
+	mem_seek(D2Common::GetOffsetByAddition(0x7055C, 0x1705D));
+	MEMJ_REF4(Fog::D2FreeMem, free_PlayerCustomData);
 
 	// Free item in Stash (Server-side)
-	mem_seek(D2Game->GetOffsetByAddition(0x7D12B, 0x6F7C2));
-	MEMJ_REF4(D2Common->D2UnitGetNextItem, Game->Version == VersionUtility::Versions::V113d ? callerServer_getNextItemToFree_111 : callerServer_getNextItemToFree_9);
+	mem_seek(D2Game::GetOffsetByAddition(0x7D12B, 0x6F7C2));
+	MEMJ_REF4(D2Common::D2UnitGetNextItem, VersionUtility::Is113D() ? callerServer_getNextItemToFree_111 : callerServer_getNextItemToFree_9);
 
 	// Free item in Stash (Client-side)
-	mem_seek(D2Client->GetOffsetByAddition(0x8EF8F, 0x621E4));
-	MEMJ_REF4(D2Common->D2UnitGetNextItem, Game->Version == VersionUtility::Versions::V113d ? callerClient_getNextItemToFree_111 : callerClient_getNextItemToFree_9);
+	mem_seek(D2Client::GetOffsetByAddition(0x8EF8F, 0x621E4));
+	MEMJ_REF4(D2Common::D2UnitGetNextItem, VersionUtility::Is113D() ? callerClient_getNextItemToFree_111 : callerClient_getNextItemToFree_9);
 
-	if (Game->Version == VersionUtility::Versions::V113d)
+	if (VersionUtility::Is113D())
 	{
 		// Test if it's already removed from inventory
-		mem_seek(D2Common->GetOffsetByAddition(0, 0x3B393));
+		mem_seek(D2Common::GetOffsetByAddition(0, 0x3B393));
 		memt_byte(0x0D, 0x07);
 	}
 	else
 	{
-		mem_seek(D2Game->GetOffsetByAddition(0x7D176, 0));
+		mem_seek(D2Game::GetOffsetByAddition(0x7D176, 0));
 		memt_byte(0x74, 0x90);
 		memt_byte(0x35, 0x90);
 
-		mem_seek(D2Client->GetOffsetByAddition(0x8F0CA, 0));
+		mem_seek(D2Client::GetOffsetByAddition(0x8F0CA, 0));
 		memt_byte(0x0F, 0x90);
 		memt_byte(0x84, 0x90);
 		memt_dword(0xBF, 0x90909090);
 
-		mem_seek(D2Client->GetOffsetByAddition(0x8F13C, 0));
+		mem_seek(D2Client::GetOffsetByAddition(0x8F13C, 0));
 		memt_byte(0x74, 0x90);
 		memt_byte(0x6F, 0x90);
 	}

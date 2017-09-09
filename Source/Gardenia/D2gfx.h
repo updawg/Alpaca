@@ -15,22 +15,22 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#include "GameLibrary.h"
+#pragma once
 
-GameLibrary::GameLibrary() : Library()
+#include "Library.h"
+
+class D2gfx : public Library<D2gfx>
 {
-	Name = "Game.exe";
-	Offset = (DWORD)GetModuleHandle(NULL);
-	Version = VersionUtility::GetVersion(Name);
-	log_msg("Game.exe loaded at:\t%08X (%s)\n", Offset, VersionUtility::GetVersionAsString(Version));
-}
+public:
+	static void Init();
 
-void GameLibrary::SetFunctions()
-{
+	typedef DWORD(__stdcall *TD2GetResolution) ();
+	typedef void(__stdcall *TD2FillArea) (DWORD x1, DWORD y1, DWORD x2, DWORD y2, DWORD color, DWORD transTbl);
+	typedef void(__stdcall *TD2PrintImage) (sDrawImageInfo* data, DWORD x, DWORD y, DWORD p4, DWORD p5, DWORD p6);
 
-}
-
-bool GameLibrary::IsSupported()
-{
-	return Version == VersionUtility::Versions::V109b || Version == VersionUtility::Versions::V113d;
-}
+	static TD2GetResolution D2GetResolution;
+	static TD2FillArea D2FillArea;
+	static TD2PrintImage D2PrintImage;
+private:
+	static void SetFunctions();
+};

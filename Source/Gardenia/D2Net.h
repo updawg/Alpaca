@@ -15,17 +15,20 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#include "D2LaunchLibrary.h"
+#pragma once
 
-D2LaunchLibrary::D2LaunchLibrary(int gameVersion) : Library()
-{
-	Name = "D2Launch.dll";
-	Version = gameVersion;
-	Offset = LoadDiabloLibrary();
-	SetFunctions();
-}
+#include "Library.h"
 
-void D2LaunchLibrary::SetFunctions()
+class D2Net : public Library<D2Net>
 {
-	
-}
+public:
+	static void Init();
+
+	typedef DWORD(__stdcall *TD2SendToServer) (DWORD size, DWORD one, void* data);
+	typedef DWORD(__stdcall *TD2SendToClient) (DWORD zero, DWORD clientID, void* data, DWORD size);
+
+	static TD2SendToServer D2SendToServer;
+	static TD2SendToClient D2SendToClient;
+private:
+	static void SetFunctions();
+};

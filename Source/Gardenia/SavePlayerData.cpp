@@ -474,29 +474,29 @@ void Install_SavePlayerData()
 	log_msg("[Patch] D2Game & D2Client for save Player's custom data. (SavePlayerData)\n");
 
 	//Save single player custom data.
-	mem_seek(D2Game->GetOffsetByAddition(0x4DF04, 0x39835));
-	MEMJ_REF4(Fog->D2FogGetSavePath, Game->Version == VersionUtility::Versions::V113d ? caller_SaveSPPlayerCustomData_111 : caller_SaveSPPlayerCustomData_9);
+	mem_seek(D2Game::GetOffsetByAddition(0x4DF04, 0x39835));
+	MEMJ_REF4(Fog::D2FogGetSavePath, VersionUtility::Is113D() ? caller_SaveSPPlayerCustomData_111 : caller_SaveSPPlayerCustomData_9);
 
 	//Send SaveFiles
-	mem_seek(D2Game->GetOffsetByAddition(0x4DFFA, 0x397AB));
+	mem_seek(D2Game::GetOffsetByAddition(0x4DFFA, 0x397AB));
 	memt_byte(0x8B, 0x90);
-	memt_byte(Game->Version == VersionUtility::Versions::V113d ? 0x44 : 0x74, 0xE8);
-	MEMT_REF4(Game->Version == VersionUtility::Versions::V113d ? 0xC0850424 : 0xF6851024, Game->Version == VersionUtility::Versions::V113d ? caller_SendSaveFilesToSave_111 : caller_SendSaveFilesToSave_9);
+	memt_byte(VersionUtility::Is113D() ? 0x44 : 0x74, 0xE8);
+	MEMT_REF4(VersionUtility::Is113D() ? 0xC0850424 : 0xF6851024, VersionUtility::Is113D() ? caller_SendSaveFilesToSave_111 : caller_SendSaveFilesToSave_9);
 
-	mem_seek(D2Game->GetOffsetByAddition(0x7993, 0xBEDD3));
+	mem_seek(D2Game::GetOffsetByAddition(0x7993, 0xBEDD3));
 	memt_byte(0x8B, 0x90);
-	memt_byte(Game->Version == VersionUtility::Versions::V113d ? 0x8E : 0x86, 0xE8);
-	MEMT_REF4(Game->Version == VersionUtility::Versions::V113d ? 0x17C : 0x150, Game->Version == VersionUtility::Versions::V113d ? caller_ManageNextPacketToSend : caller_ManageNextPacketToSend_9);
+	memt_byte(VersionUtility::Is113D() ? 0x8E : 0x86, 0xE8);
+	MEMT_REF4(VersionUtility::Is113D() ? 0x17C : 0x150, VersionUtility::Is113D() ? caller_ManageNextPacketToSend : caller_ManageNextPacketToSend_9);
 
-	if (Game->Version == VersionUtility::Versions::V113d)
+	if (VersionUtility::Is113D())
 	{
 		//Received SaveFiles
-		mem_seek(D2Client->GetOffsetByAddition(0x116F0, 0x448E6));
+		mem_seek(D2Client::GetOffsetByAddition(0x116F0, 0x448E6));
 		memt_byte(0x0F, 0xE8);
 		MEMT_REF4(0x0C2444B6, caller_ReceivedSaveFilesToSave_111);
 
 		// Save multiplayer player custom data.
-		mem_seek(D2Client->GetOffsetByAddition(0x117FC, 0x829C2));
+		mem_seek(D2Client::GetOffsetByAddition(0x117FC, 0x829C2));
 		memt_byte(0x81, 0xE8);
 		MEMT_REF4(0x55AA55F9, caller_SaveMPPlayerCustomData_111);
 		memt_byte(0xAA, 0x90); // CALL // TODO: Comment says CALL, but byte is a NOP.. bug?
@@ -504,18 +504,18 @@ void Install_SavePlayerData()
 	else
 	{
 		// Received SaveFiles
-		mem_seek(D2Client->GetOffsetByAddition(0x116F0, 0));
+		mem_seek(D2Client::GetOffsetByAddition(0x116F0, 0));
 		memt_byte(0x81, 0x90);
 		memt_byte(0xEC, 0xE8);
 		MEMT_REF4(0x5F4, caller_ReceivedSaveFilesToSave);
 
 		// Save multiplayer player custom data.
-		mem_seek(D2Client->GetOffsetByAddition(0x117FC, 0));
+		mem_seek(D2Client::GetOffsetByAddition(0x117FC, 0));
 		memt_byte(0x8B, 0xE8);
 		MEMT_REF4(0x04518B01, caller_SaveMPPlayerCustomData);
 	}
 
-	if (Game->Version == VersionUtility::Versions::V113d)
+	if (VersionUtility::Is113D())
 	{
 		customPackID++;
 	}

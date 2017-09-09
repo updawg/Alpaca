@@ -101,8 +101,8 @@ void Install_UpdateClient()
 	log_msg("[Patch] D2Client for received item packet. (UpdateClient)\n");
 
 	// execute if it's our packet else continue
-	mem_seek(D2Client->GetOffsetByAddition(0x14236, 0x84D96));
-	MEMT_REF4(Game->Version == VersionUtility::Versions::V113d ? 0xCF : 0xD6, Game->Version == VersionUtility::Versions::V113d ? caller_handleClientUpdate_111 : caller_handleClientUpdate);
+	mem_seek(D2Client::GetOffsetByAddition(0x14236, 0x84D96));
+	MEMT_REF4(VersionUtility::Is113D() ? 0xCF : 0xD6, VersionUtility::Is113D() ? caller_handleClientUpdate_111 : caller_handleClientUpdate);
 
 	log_msg("\n");
 

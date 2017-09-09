@@ -19,13 +19,12 @@
 
 #include "Library.h"
 
-class D2ClientLibrary : public Library
+class D2Client : public Library<D2Client>
 {
 public:
-	D2ClientLibrary(int gameVersion);
+	static void Init();
 
-	// Types
-	typedef void* (__fastcall *TD2LoadImage) (const char* filename, DWORD filetype);
+    typedef void* (__fastcall *TD2LoadImage) (const char* filename, DWORD filetype);
 	typedef void(__fastcall *TD2FreeImage) (void* image);
 	typedef void(__fastcall *TD2SendMsgToAll) (BYTE* data);
 	typedef DWORD(__stdcall *TD2GetLastMonsterIDFight) ();
@@ -38,19 +37,6 @@ public:
 	typedef void(__fastcall *TD2ClickOnStashButton) (DWORD x, DWORD y);
 	typedef void* (__stdcall *TD2LoadBuySelBtn) ();
 
-	TD2LoadImage D2LoadImage;
-	TD2FreeImage D2FreeImage;
-	TD2SendMsgToAll D2SendMsgToAll;
-	TD2GetLastMonsterIDFight D2GetLastMonsterIDFight;
-	TD2PrintStatsPage D2PrintStatsPage;
-	TD2PrintStat D2PrintStat;
-	TD2SetColorPopup D2SetColorPopup;
-	TD2PlaySound D2PlaySound;
-	TD2SendToServerXX D2SendToServerXX;
-	TD2TogglePage D2TogglePage;
-	TD2ClickOnStashButton D2ClickOnStashButton;
-	TD2LoadBuySelBtn D2LoadBuySelBtn;
-
 	// Until 1.10
 	typedef DWORD(__fastcall *TD2isLODGame) ();
 	typedef BYTE(__fastcall *TD2GetDifficultyLevel) ();
@@ -60,26 +46,42 @@ public:
 	typedef void(__fastcall *TD2CleanStatMouseUp) ();
 	typedef void(__fastcall *TD2SendToServer3) (BYTE type, WORD p);
 
-	TD2isLODGame D2isLODGame;
-	TD2GetDifficultyLevel D2GetDifficultyLevel;
-	TD2GetMouseX D2GetMouseX;
-	TD2GetMouseY D2GetMouseY;
-	TD2GetClientPlayer D2GetClientPlayer;
-	TD2CleanStatMouseUp D2CleanStatMouseUp;
-	TD2SendToServer3 D2SendToServer3;
+	static TD2LoadImage D2LoadImage;
+	static TD2FreeImage D2FreeImage;
+	static TD2SendMsgToAll D2SendMsgToAll;
+	static TD2GetLastMonsterIDFight D2GetLastMonsterIDFight;
+	static TD2PrintStatsPage D2PrintStatsPage;
+	static TD2PrintStat D2PrintStat;
+	static TD2SetColorPopup D2SetColorPopup;
+	static TD2PlaySound D2PlaySound;
+	static TD2SendToServerXX D2SendToServerXX;
+	static TD2TogglePage D2TogglePage;
+	static TD2ClickOnStashButton D2ClickOnStashButton;
+	static TD2LoadBuySelBtn D2LoadBuySelBtn;
+
+	static TD2isLODGame D2isLODGame;
+	static TD2GetDifficultyLevel D2GetDifficultyLevel;
+	static TD2GetMouseX D2GetMouseX;
+	static TD2GetMouseY D2GetMouseY;
+	static TD2GetClientPlayer D2GetClientPlayer;
+	static TD2CleanStatMouseUp D2CleanStatMouseUp;
+	static TD2SendToServer3 D2SendToServer3;
+
+	static DWORD ResolutionX();
+	static DWORD ResolutionY();
 
 	// Variables
-	DWORD* ptResolutionY;
-	DWORD* ptResolutionX;
-	DWORD* ptNegWindowStartY;
-	DWORD* ptWindowStartX;
-	DWORD* ptIsLodGame;
-	BYTE* ptDifficultyLevel;
-	DWORD* ptMouseY;
-	DWORD* ptMouseX;
-	Unit** ptptClientChar;
-	DWORD* ptNbStatDesc;
-	DWORD* ptStatDescTable;
+	static DWORD* ptResolutionY;
+	static DWORD* ptResolutionX;
+	static DWORD* ptNegWindowStartY;
+	static DWORD* ptWindowStartX;
+	static DWORD* ptIsLodGame;
+	static BYTE* ptDifficultyLevel;
+	static DWORD* ptMouseY;
+	static DWORD* ptMouseX;
+	static Unit** ptptClientChar;
+	static DWORD* ptNbStatDesc;
+	static DWORD* ptStatDescTable;
 
 	// C++ ISO Standards prohibit using a pointer-to-member address as a way to access the function in the instance.
 	// There are workarounds available (static functions being one (They are essentially the same as non-member functions)
@@ -92,9 +94,10 @@ public:
 	static DWORD* StatMouse4;
 
 	static void __fastcall D2CleanStatMouseUp_111();
+
 private:
-	void SetFunctions();
+	static void SetFunctions();
 
 	// Redirected Functions
-	TD2CleanStatMouseUp GetD2CleanStatMouseUp();
+	static TD2CleanStatMouseUp GetD2CleanStatMouseUp();
 };

@@ -17,20 +17,20 @@
 
 #pragma once
 
-#include <windows.h>
+#include "Library.h"
 
-#include "Utilities\LibraryUtility.h"
-#include "Utilities\VersionUtility.h"
+class Storm : public Library<Storm>
+{
+public:
+	static void Init();
 
-extern GameLibrary* Game;
-extern D2ClientLibrary* D2Client;
-extern D2CMPLibrary* D2CMP;
-extern D2CommonLibrary* D2Common;
-extern D2GameLibrary* D2Game;
-extern D2gfxLibrary* D2gfx;
-extern D2LangLibrary* D2Lang;
-extern D2LaunchLibrary* D2Launch;
-extern D2NetLibrary* D2Net;
-extern D2WinLibrary* D2Win;
-extern FogLibrary* Fog;
-extern StormLibrary* Storm;
+	typedef DWORD(__stdcall *TD2StormMPQOpenFile) (DWORD zero, LPCSTR fileName, DWORD dwSearchScope, void** buffer);
+	typedef void(__stdcall *TD2Storm503) (DWORD, DWORD, DWORD);
+	typedef void(__stdcall *TD2FreeWinMessage) (sWinMessage* msg);
+
+	static TD2StormMPQOpenFile D2StormMPQOpenFile;
+	static TD2Storm503 D2Storm503;
+	static TD2FreeWinMessage D2FreeWinMessage;
+private:
+	static void SetFunctions();
+};

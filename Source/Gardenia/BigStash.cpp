@@ -85,11 +85,11 @@ void Install_BigStash()
 	log_msg("[Patch] D2Common & D2Client for make 10x10 squares in the stash. (BigStash)\n");
 
 	// Modification of stash grid
-	mem_seek(D2Common->GetOffsetByAddition(0xC9F3, 0x6CC25));
+	mem_seek(D2Common::GetOffsetByAddition(0xC9F3, 0x6CC25));
 	MEMC_REF4(D2CompileTxtFile, caller_modifStashGrid);
 
 	// Modification of stash background
-	mem_seek(D2Client->GetOffsetByAddition(0x45B1C, 0x943FC));
+	mem_seek(D2Client::GetOffsetByAddition(0x45B1C, 0x943FC));
 	memt_byte(0x68, 0xE8);
 	MEMT_REF4(0x00000104, caller_changeTradeStash);
 

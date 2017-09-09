@@ -28,45 +28,29 @@
 #include "customLibraries.h"
 #include "common.h"				// Includes "d2wrapper.h"
 
-// Make this global so people can use it.
-LibraryUtility* lu;
-GameLibrary* Game;
-D2ClientLibrary* D2Client;
-D2CMPLibrary* D2CMP;
-D2CommonLibrary* D2Common;
-D2GameLibrary* D2Game;
-D2gfxLibrary* D2gfx;
-D2LangLibrary* D2Lang;
-D2LaunchLibrary* D2Launch;
-D2NetLibrary* D2Net;
-D2WinLibrary* D2Win;
-FogLibrary* Fog;
-StormLibrary* Storm;
-
 void freeLibrary(DWORD library)
 {
-	if (library && library != Game->Offset)
+	if (library && library != Game::Offset)
 		FreeLibrary((HMODULE)library);
 }
 
 void freeD2Libraries()
 {
-	if (Game->Version >= VersionUtility::Versions::V114a)
-		return;
+	if (VersionUtility::Is114D()) return;
 
 	log_msg("***** Free Libraries *****\n");
 
-	freeLibrary(D2Client->Offset);
-	freeLibrary(D2CMP->Offset);
-	freeLibrary(D2Common->Offset);
-	freeLibrary(D2Game->Offset);
-	freeLibrary(D2gfx->Offset);
-	freeLibrary(D2Lang->Offset);
-	freeLibrary(D2Launch->Offset);
-	freeLibrary(D2Net->Offset);
-	freeLibrary(D2Win->Offset);
-	freeLibrary(Fog->Offset);
-	freeLibrary(Storm->Offset);
+	freeLibrary(D2Client::Offset);
+	freeLibrary(D2CMP::Offset);
+	freeLibrary(D2Common::Offset);
+	freeLibrary(D2Game::Offset);
+	freeLibrary(D2gfx::Offset);
+	freeLibrary(D2Lang::Offset);
+	freeLibrary(D2Launch::Offset);
+	freeLibrary(D2Net::Offset);
+	freeLibrary(D2Win::Offset);
+	freeLibrary(Fog::Offset);
+	freeLibrary(Storm::Offset);
 
 	log_msg("\n\n");
 }
@@ -163,25 +147,11 @@ extern "C" __declspec(dllexport) void* __stdcall Init(LPSTR IniName)
 	isInstalled=true;
 
 	// Initialize/Load Libraries
-	lu = new LibraryUtility();
+	LibraryLoader::Init();
 
-	// Expose libraries so its easier to reference.
-	Game = lu->Game;
-	D2Client = lu->D2Client;
-	D2CMP = lu->D2CMP;
-	D2Common = lu->D2Common;
-	D2Game = lu->D2Game;
-	D2gfx = lu->D2gfx;
-	D2Lang = lu->D2Lang;
-	D2Launch = lu->D2Launch;
-	D2Net = lu->D2Net;
-	D2Win = lu->D2Win;
-	Fog = lu->Fog;
-	Storm = lu->Storm;
-
-	if (!Game->IsSupported())
+	if (!VersionUtility::IsSupported())
 	{
-		log_box("Gardenia isn't compatible with this version : %s", VersionUtility::GetVersionAsString(Game->Version));
+		log_box("Gardenia isn't compatible with this version : %s\n", VersionUtility::GetVersionAsString());
 		Release();
 		exit(0);
 	}
@@ -193,17 +163,17 @@ extern "C" __declspec(dllexport) void* __stdcall Init(LPSTR IniName)
 
 	loadCustomLibraries();
 
-	lu->HookLibraries();
+	LibraryLoader::HookLibraries();
 	Install_Functions();
-	lu->UnhookLibraries();
+	LibraryLoader::UnhookLibraries();
 
 	initCustomLibraries();
 
-	loadLocalizedStrings(D2Lang->D2GetLang());
+	loadLocalizedStrings(D2Lang::D2GetLang());
 
 	log_msg("***** ENTERING DIABLO II *****\n");
 
-	active_logFile = active_logFile - 1;
+	active_logFile = 0;
 
 	return NULL;
 }

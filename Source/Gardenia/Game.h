@@ -15,19 +15,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#include "StormLibrary.h"
+#pragma once
 
-StormLibrary::StormLibrary(int gameVersion) : Library()
-{
-	Name = "Storm.dll";
-	Version = gameVersion;
-	Offset = LoadDiabloLibrary();
-	SetFunctions();
-}
+#include <windows.h>
+#include "Library.h"
 
-void StormLibrary::SetFunctions()
+class Game : public Library<Game>
 {
-	D2StormMPQOpenFile = (TD2StormMPQOpenFile)GetOffsetByProc(268, 268);
-	D2Storm503 = (TD2Storm503)GetOffsetByProc(503, 503);
-	D2FreeWinMessage = (TD2FreeWinMessage)GetOffsetByProc(511, 511);
-}
+public:
+	static void Init();
+private:
+	static void SetFunctions();
+};

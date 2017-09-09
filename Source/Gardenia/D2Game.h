@@ -19,10 +19,10 @@
 
 #include "Library.h"
 
-class D2GameLibrary : public Library
+class D2Game : public Library<D2Game>
 {
 public:
-	D2GameLibrary(int gameVersion);
+	static void Init();
 
 	typedef void(__fastcall *TD2SetNbPlayers) (DWORD nbPlayers);
 	typedef DWORD(__fastcall *TD2SendPacket) (void* ptNetClient, LPVOID pData, DWORD size);
@@ -34,27 +34,25 @@ public:
 	typedef Unit* (__fastcall *TD2GameGetObject) (GameStruct* ptGame, DWORD type, DWORD itemNum);
 	typedef void(__stdcall *TD2SaveGame) (GameStruct* ptGame);
 
-	TD2SetNbPlayers D2SetNbPlayers;
-	TD2SendPacket D2SendPacket;
-	TD2SetSkillBaseLevelOnClient D2SetSkillBaseLevelOnClient;
-	TD2LinkPortal D2LinkPortal;
-	TD2VerifIfNotCarry1 D2VerifIfNotCarry1;
-	TD2TestPositionInRoom D2TestPositionInRoom;
-	TD2LoadInventory D2LoadInventory;
-	TD2GameGetObject D2GameGetObject;
-	TD2SaveGame D2SaveGame;
-
 	// Until 1.10
 	typedef NetClient* (__fastcall *TD2GetClient) (Unit* ptUnit, char* lpszErrFile, DWORD ErrLine);
 
-	TD2GetClient D2GetClient;
+	static TD2SetNbPlayers D2SetNbPlayers;
+	static TD2SendPacket D2SendPacket;
+	static TD2SetSkillBaseLevelOnClient D2SetSkillBaseLevelOnClient;
+	static TD2LinkPortal D2LinkPortal;
+	static TD2VerifIfNotCarry1 D2VerifIfNotCarry1;
+	static TD2TestPositionInRoom D2TestPositionInRoom;
+	static TD2LoadInventory D2LoadInventory;
+	static TD2GameGetObject D2GameGetObject;
+	static TD2SaveGame D2SaveGame;
 
-	// Variables
-	NetClient** ptClientTable;
+	static TD2GetClient D2GetClient;
+	static NetClient** ptClientTable;
 	 
 	// _declspec (naked) functions (Our custom/wrapper function)
 	static void D2SaveGame_1XX();
 	static TD2SaveGame VD2SaveGame;
 private:
-	void SetFunctions();
+	static void SetFunctions();
 };

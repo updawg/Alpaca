@@ -44,10 +44,10 @@ void Install_LanguageManagement()
 	
 	log_msg("[Patch] D2Lang for language management. (LanguageManagement)\n");
 
-	ptCurrentLanguage = *(DWORD**)((DWORD)D2Lang->D2GetLang + (Game->Version == VersionUtility::Versions::V113d ? 0x51 : 0x5C));
+	ptCurrentLanguage = *(DWORD**)((DWORD)D2Lang::D2GetLang + (VersionUtility::Is113D() ? 0x51 : 0x5C));
 
 	// Language management
-	mem_seek((DWORD)D2GetLang + (Game->Version == VersionUtility::Versions::V113d ? 0x3E : 0x49));
+	mem_seek((DWORD)D2GetLang + (VersionUtility::Is113D() ? 0x3E : 0x49));
 	memt_byte(0xA1, 0xE8);
 	MEMT_REF4(ptCurrentLanguage, languageManagement);
 

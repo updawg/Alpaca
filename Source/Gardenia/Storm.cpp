@@ -15,24 +15,22 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include "Storm.h"
 
-#include "Library.h"
-
-class D2LangLibrary : public Library
+void Storm::Init()
 {
-public:
-	D2LangLibrary(int gameVersion);
+	Name = "Storm.dll";
+	Offset = LoadDiabloLibrary();
+	SetFunctions();
+}
 
-	typedef LPWSTR(__fastcall *TD2GetStringFromString) (const char* ptString);
-	typedef LPWSTR(__fastcall *TD2GetStringFromIndex) (WORD dwIndexNum);
-	typedef DWORD(__stdcall *TD2GetLang) ();
-	typedef DWORD(__stdcall *TD2PrintBigNumber) (LPWSTR ptBuf, DWORD number, DWORD size);
+void Storm::SetFunctions()
+{
+	D2StormMPQOpenFile = (TD2StormMPQOpenFile)GetOffsetByProc(268, 268);
+	D2Storm503 = (TD2Storm503)GetOffsetByProc(503, 503);
+	D2FreeWinMessage = (TD2FreeWinMessage)GetOffsetByProc(511, 511);
+}
 
-	TD2GetStringFromString D2GetStringFromString;
-	TD2GetStringFromIndex D2GetStringFromIndex;
-	TD2GetLang D2GetLang;
-	TD2PrintBigNumber D2PrintBigNumber;
-private:
-	void SetFunctions();
-};
+Storm::TD2StormMPQOpenFile Storm::D2StormMPQOpenFile;
+Storm::TD2Storm503 Storm::D2Storm503;
+Storm::TD2FreeWinMessage Storm::D2FreeWinMessage;

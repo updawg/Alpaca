@@ -19,10 +19,10 @@
 
 #include "Library.h"
 
-class D2WinLibrary : public Library
+class D2Win : public Library<D2Win>
 {
 public:
-	D2WinLibrary(int gameVersion);
+	static void Init();
 
 	typedef void(__fastcall *TD2PrintLineOnTextBox) (void* screen, char* s, DWORD color);
 	typedef void(__fastcall *TD2PrintString) (LPWSTR s, DWORD x, DWORD y, DWORD color, DWORD bfalse);
@@ -33,14 +33,14 @@ public:
 	typedef DWORD(__fastcall *TD2PrintTextPopup) (LPWSTR s, DWORD x, DWORD y, DWORD uk, DWORD type, DWORD color);
 	typedef void* (__stdcall *TD2CreateTextBox) (DWORD* data);
 
-	TD2PrintLineOnTextBox D2PrintLineOnTextBox;
-	TD2PrintString D2PrintString;
-	TD2GetPixelLen D2GetPixelLen;
-	TD2SetFont D2SetFont;
-	TD2PrintPopup D2PrintPopup;
-	TD2GetPixelRect D2GetPixelRect;
-	TD2PrintTextPopup D2PrintTextPopup;
-	TD2CreateTextBox D2CreateTextBox;
+	static TD2PrintLineOnTextBox D2PrintLineOnTextBox;
+	static TD2PrintString D2PrintString;
+	static TD2GetPixelLen D2GetPixelLen;
+	static TD2SetFont D2SetFont;
+	static TD2PrintPopup D2PrintPopup;
+	static TD2GetPixelRect D2GetPixelRect;
+	static TD2PrintTextPopup D2PrintTextPopup;
+	static TD2CreateTextBox D2CreateTextBox;
 private:
-	void SetFunctions();
+	static void SetFunctions();
 };

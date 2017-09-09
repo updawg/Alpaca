@@ -168,10 +168,10 @@ void Install_StatsLimitShiftClick()
 	log_msg("[Patch] D2Client for limit the assigment of stat points when shift is used. (LimitShift)\n");
 
 	// Limit the assigment of stat points.
-	mem_seek(D2Client->GetOffsetByAddition(0x2ACD0, 0xC0695));
+	mem_seek(D2Client::GetOffsetByAddition(0x2ACD0, 0xC0695));
 	memt_byte(0xFF, 0x90);
 	memt_byte(0x15, 0xE8);
-	MEMD_REF4(GetKeyState, Game->Version == VersionUtility::Versions::V113d ? caller_LimitShift_111 : caller_LimitShift);
+	MEMD_REF4(GetKeyState, VersionUtility::Is113D() ? caller_LimitShift_111 : caller_LimitShift);
 
 	log_msg("\n");
 

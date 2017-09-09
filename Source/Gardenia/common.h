@@ -32,7 +32,10 @@
 #include "parameters.h"
 #include "playerCustomData.h" // include common.h
 #include "globalVariable.h" // include common.h
-#include "d2wrapper.h" // Includes the LibraryUtility.h
+
+#include "Utilities\LibraryLoader.h"
+#include "Utilities\VersionUtility.h"
+
 #include "d2functions.h"
 #include "LocalizedStrings.h"
 

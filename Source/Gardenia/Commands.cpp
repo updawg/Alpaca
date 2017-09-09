@@ -417,13 +417,13 @@ void Install_Commands()
 
 	log_msg("[Patch] D2Client for install commands. (Commands)\n");
 
-	active_listAllCubeFormula = Game->Version >= VersionUtility::Versions::V113d;
-	active_savegame = Game->Version >= VersionUtility::Versions::V113d;
+	active_listAllCubeFormula = VersionUtility::Is113D();
+	active_savegame = VersionUtility::Is113D();
 
 	// Run custom commmand
-	mem_seek(D2Client->GetOffsetByAddition(0x2C120, 0xB1FD6));
+	mem_seek(D2Client::GetOffsetByAddition(0x2C120, 0xB1FD6));
 	memt_byte(0x83, 0xE8); 
-	MEMT_REF4(0xC08508C4, Game->Version == VersionUtility::Versions::V113d ? caller_Commands_113d : caller_Commands);
+	MEMT_REF4(0xC08508C4, VersionUtility::Is113D() ? caller_Commands_113d : caller_Commands);
 
 	log_msg("\n");
 

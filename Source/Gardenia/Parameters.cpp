@@ -350,7 +350,7 @@ void init_VersionText(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefau
 		GET_PRIVATE_PROFILE_STRING(S_MAIN_SCREEN, S_versionText, versionText);
 		if (!buffer[0])
 		{
-			switch(Game->Version)
+			switch(VersionUtility::GetVersion())
 			{
 			case VersionUtility::Versions::V109b:
 			case VersionUtility::Versions::V109d:
@@ -359,7 +359,7 @@ void init_VersionText(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefau
 			case VersionUtility::Versions::V113d:
 			case VersionUtility::Versions::V114a:
 				strcpy(buffer, "v");
-				strcat(buffer, VersionUtility::GetVersionAsString(Game->Version));
+				strcat(buffer, VersionUtility::GetVersionAsString());
 				break;
 			default:
 				active_VersionTextChange=0;
@@ -524,7 +524,7 @@ void init_ExtraOptions(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefa
 {
 	GET_PRIVATE_PROFILE_STRING(S_EXTRA, S_nbPlayersCommandByDefault, "0");
 	nbPlayersCommandByDefault = atoi(buffer);
-	if (Game->Version == VersionUtility::Versions::V109 || Game->Version == VersionUtility::Versions::V109b)
+	if (VersionUtility::Is109B())
 		{if (nbPlayersCommandByDefault > 64) nbPlayersCommandByDefault=64;}
 	else if (nbPlayersCommandByDefault > 8) nbPlayersCommandByDefault=8;
 	log_msg("nbPlayersCommandByDefault\t\t= %d\n", nbPlayersCommandByDefault);
@@ -551,7 +551,7 @@ void init_ExtraOptions(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefa
 
 	GET_PRIVATE_PROFILE_STRING(S_EXTRA, S_active_LadderRunewords, "0");
 	active_LadderRunewords = atoi(buffer);
-	if (active_LadderRunewords && (Game->Version == VersionUtility::Versions::V109b || Game->Version == VersionUtility::Versions::V109d) ) {
+	if (active_LadderRunewords && (VersionUtility::Is109B())) {
 		active_LadderRunewords = 0;
 		log_msg("active_LadderRunewords\t\t\t= %d (Warning : Warning : this feature is only for LoD version 1.10 or higher, so it's automatically disabled)\n", active_LadderRunewords);
 	} else

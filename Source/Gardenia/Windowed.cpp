@@ -55,7 +55,7 @@ void lockMouseCursor(int width, int height)
 	ClipCursor(&rect);
 }
 
-void lockMouseCursor() { lockMouseCursor(ResolutionX, ResolutionY); }
+void lockMouseCursor() { lockMouseCursor(D2Client::ResolutionX(), D2Client::ResolutionY()); }
 
 void SetWindowedOptions()
 {

@@ -19,9 +19,25 @@
 #include <map>
 #include "../Error.h"
 
+int VersionUtility::GameVersion = 0;
 const char* UnknownVersion = "UNKNOWN";
 
-const char* VersionUtility::GetVersionAsString(const int version)
+void VersionUtility::SetVersion(const int gameVersion)
+{
+	GameVersion = gameVersion;
+}
+
+int VersionUtility::GetVersion()
+{
+	return GameVersion;
+}
+
+bool VersionUtility::IsSupported()
+{
+	return GameVersion == Versions::V109b || GameVersion == Versions::V113d;
+}
+
+const char* VersionUtility::GetVersionAsString()
 {
 	 static std::map<int, const char*> versions = 
 	 {
@@ -43,7 +59,7 @@ const char* VersionUtility::GetVersionAsString(const int version)
 		 {0, "1.00"}
 	 };
 
-	 std::map<int, const char*>::iterator iter = versions.find(version);
+	 std::map<int, const char*>::iterator iter = versions.find(GameVersion);
 
 	 if (iter != versions.end())
 	 {
@@ -53,9 +69,19 @@ const char* VersionUtility::GetVersionAsString(const int version)
 	 return UnknownVersion;
 }
 
-const bool VersionUtility::IsEqualOrGreaterThan114(const int version)
+const bool VersionUtility::Is109B()
 {
-	return version >= VersionUtility::Versions::V114a;
+	return GameVersion == VersionUtility::Versions::V109b;
+}
+
+const bool VersionUtility::Is113D()
+{
+	return GameVersion == VersionUtility::Versions::V113d;
+}
+
+const bool VersionUtility::Is114D()
+{
+	return GameVersion == VersionUtility::Versions::V114d;
 }
 
 VersionUtility::Versions VersionUtility::GetVersion(const LPCVOID pVersionResource)

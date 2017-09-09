@@ -102,14 +102,14 @@ void Install_DisplayItemLevel()
 	log_msg("[Patch] D2Client for display item popup. (DisplayPopup)\n");
 
 	// print the text in the final buffer
-	mem_seek(D2Client->GetOffsetByAddition(0x3D47C, 0x98590));
+	mem_seek(D2Client::GetOffsetByAddition(0x3D47C, 0x98590));
 	memt_byte(0x68, 0xE8);
-	MEMT_REF4(0x100, Game->Version == VersionUtility::Versions::V113d ? caller_displayItemlevel_113 : caller_displayItemlevel_9);
+	MEMT_REF4(0x100, VersionUtility::Is113D() ? caller_displayItemlevel_113 : caller_displayItemlevel_9);
 
 	// print the text in the final buffer (for set items)
-	mem_seek(D2Client->GetOffsetByAddition(0x3C452, 0x973B3));
+	mem_seek(D2Client::GetOffsetByAddition(0x3C452, 0x973B3));
 	memt_byte(0x68, 0xE8);
-	MEMT_REF4(0x100, Game->Version == VersionUtility::Versions::V113d ? caller_displayItemlevelSet_111 : caller_displayItemlevelSet_9);
+	MEMT_REF4(0x100, VersionUtility::Is113D() ? caller_displayItemlevelSet_111 : caller_displayItemlevelSet_9);
 
 	log_msg("\n");
 
@@ -162,15 +162,15 @@ void Install_SendPlayersCommand()
 
 	log_msg("[Patch] D2Client for init default number of players. (SendPlayersCommand)\n");
 
-	infoEnabledSendPlayersCommand = (DWORD*)D2Client->GetOffsetByAddition(0x111D60, 0x11D1DC);
-	if (Game->Version == VersionUtility::Versions::V113d)
+	infoEnabledSendPlayersCommand = (DWORD*)D2Client::GetOffsetByAddition(0x111D60, 0x11D1DC);
+	if (VersionUtility::Is113D())
 	{
-		msgNBPlayersString = (char*)D2Client->GetOffsetByAddition(0, 0xD470C);
+		msgNBPlayersString = (char*)D2Client::GetOffsetByAddition(0, 0xD470C);
 	}
 
 	// Set default number of players
-	mem_seek(D2Client->GetOffsetByAddition(0x8723B, 0x1D3F2));
-	MEMJ_REF4(D2gfx->D2GetResolution, caller_SendPlayersCommand);
+	mem_seek(D2Client::GetOffsetByAddition(0x8723B, 0x1D3F2));
+	MEMJ_REF4(D2gfx::D2GetResolution, caller_SendPlayersCommand);
 
 	log_msg("\n");
 
@@ -187,7 +187,7 @@ void Install_RunLODs()
 	log_msg("[Patch] D2gfx for launch any number of Diablo II game in the same computer. (Run Multiple Diablos)\n");
 
 	// execute if it's our packet else continue
-	mem_seek(D2gfx->GetOffsetByAddition(0x447C, 0xB6B0));
+	mem_seek(D2gfx::GetOffsetByAddition(0x447C, 0xB6B0));
 	memt_byte(0x74, 0xEB);
 
 	log_msg("\n");
@@ -214,19 +214,22 @@ cont:
 	JMP EAX
 }}
 
-FCT_ASM (caller_AlwaysDisplayLife_111)
-	CMP onRealm,0
-	JNZ normalDisplayLife
-	CMP active_AlwaysDisplayLifeMana,0
-	JE normalDisplayLife
-	POP EAX
-	ADD EAX,0x25
-	JMP EAX
-normalDisplayLife:
-	MOV EAX,ptResolutionY
-	MOV EAX,DWORD PTR DS:[EAX]
-	RETN
-}}
+__declspec (naked) void caller_AlwaysDisplayLife_111()
+{
+	__asm {
+		CMP onRealm,0
+		JNZ normalDisplayLife
+		CMP active_AlwaysDisplayLifeMana,0
+		JE normalDisplayLife
+		POP EAX
+		ADD EAX,0x25
+		JMP EAX
+	normalDisplayLife:
+		MOV EAX,ptResolutionY
+		MOV EAX,DWORD PTR DS:[EAX]
+		RETN
+	}
+}
 
 FCT_ASM (caller_AlwaysDisplayLife)
 	CMP onRealm,0
@@ -284,9 +287,9 @@ void Install_AlwaysDisplayLifeMana()
 
 	log_msg("[Patch] D2Client for always display life and mana. (AlwaysPrintLifeMana)\n");
 
-	if (Game->Version == VersionUtility::Versions::V113d)
+	if (VersionUtility::Is113D())
 	{
-		mem_seek(D2Client->GetOffsetByAddition(0, 0x6D6FA));
+		mem_seek(D2Client::GetOffsetByAddition(0, 0x6D6FA));
 		memt_byte(0x0F, 0x90);
 		memt_byte(0x8C, 0xE8);
 		MEMT_REF4(0xBC, caller_AlwaysDisplayLife_113);
@@ -294,21 +297,21 @@ void Install_AlwaysDisplayLifeMana()
 	else
 	{
 		// Always display life.
-		mem_seek(D2Client->GetOffsetByAddition(0x58B32, 0));
+		mem_seek(D2Client::GetOffsetByAddition(0x58B32, 0));
 		memt_byte(0xA1, 0xE8);
-		MEMT_REF4(ptResolutionY, Game->Version == VersionUtility::Versions::V113d ? caller_AlwaysDisplayLife_111 : caller_AlwaysDisplayLife);
+		MEMT_REF4(ptResolutionY, VersionUtility::Is113D() ? caller_AlwaysDisplayLife_111 : caller_AlwaysDisplayLife);
 	}
 
 	// Always display mana.
-	if (Game->Version == VersionUtility::Versions::V113d)
+	if (VersionUtility::Is113D())
 	{
-		mem_seek(D2Client->GetOffsetByAddition(0, 0x6D7BC));
+		mem_seek(D2Client::GetOffsetByAddition(0, 0x6D7BC));
 		memt_byte(0xA1, 0xE8);
 		MEMT_REF4(ptResolutionY, caller_AlwaysDisplayMana_113);
 	}
 	else
 	{
-		mem_seek(D2Client->GetOffsetByAddition(0x58C09, 0));
+		mem_seek(D2Client::GetOffsetByAddition(0x58C09, 0));
 		memt_byte(0xE9, 0xE8);
 		MEMT_REF4(0xC2, caller_AlwaysDisplayMana_9);
 	}
@@ -332,7 +335,7 @@ void Install_EnabledTXTFilesWithMSExcel()
 
 	log_msg("[Patch] D2Client for enabled the opening of files already opened by MS Excel. (EnabledTXTFilesWithMSExcel)\n");
 
-	mem_seek((DWORD)Storm->D2StormMPQOpenFile + (Game->Version == VersionUtility::Versions::V113d ? 0x12A : 0xFF));
+	mem_seek((DWORD)Storm::D2StormMPQOpenFile + (VersionUtility::Is113D() ? 0x12A : 0xFF));
 	memt_byte(0x01, 0x03);	//; |ShareMode = FILE_SHARE_READ|FILE_SHARE_WRITE					
 	//6FC1C969  |. 6A 01          PUSH 1        ; |ShareMode = FILE_SHARE_READ
 
@@ -393,15 +396,15 @@ void Install_DisplayBaseStatsValue()
 	log_msg("[Patch] D2Client for display base stats value. (DisplayBaseStatsValue)\n");
 
 	// Always print stat button images.
-	mem_seek(D2Client->GetOffsetByAddition(0x29B12, 0xBF955));
+	mem_seek(D2Client::GetOffsetByAddition(0x29B12, 0xBF955));
 	memt_byte(0x8B, 0xEB);
-	memt_byte(0x4C, (BYTE)D2Client->GetOffsetForVersion(0x12, 0x13));
+	memt_byte(0x4C, (BYTE)D2Client::GetOffsetForVersion(0x12, 0x13));
 	memt_byte(0x24, 0x90);
-	memt_byte((BYTE)D2Client->GetOffsetForVersion(0x20, 0x1C), 0x90);
+	memt_byte((BYTE)D2Client::GetOffsetForVersion(0x20, 0x1C), 0x90);
 
-	mem_seek(D2Client->GetOffsetByAddition(0x29B9D, 0xBF9DE));
+	mem_seek(D2Client::GetOffsetByAddition(0x29B9D, 0xBF9DE));
 
-	MEMJ_REF4(D2gfx->D2PrintImage, caller_displayBaseStatsValue);
+	MEMJ_REF4(D2gfx::D2PrintImage, caller_displayBaseStatsValue);
 
 	log_msg("\n");
 
@@ -422,12 +425,12 @@ void Install_LadderRunewords()
 {
 	static int isInstalled = false;
 	if (isInstalled) return;
-	if (Game->Version == VersionUtility::Versions::V109b) return;
+	if (VersionUtility::Is109B()) return;
 
 	log_msg("[Patch] D2Common for enabled the ladder only runewords. (LadderRunewords)\n");
 
-	mem_seek(D2Common->GetOffsetByAddition(0, 0x63782));
-	MEMC_REF4(D2Common->D2CompileTxtFile, compileRunesTxt);
+	mem_seek(D2Common::GetOffsetByAddition(0, 0x63782));
+	MEMC_REF4(D2Common::D2CompileTxtFile, compileRunesTxt);
 
 	log_msg("\n");
 

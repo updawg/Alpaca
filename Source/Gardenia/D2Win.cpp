@@ -15,17 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#include "D2WinLibrary.h"
+#include "D2Win.h"
 
-D2WinLibrary::D2WinLibrary(int gameVersion) : Library()
+void D2Win::Init()
 {
 	Name = "D2Win.dll";
-	Version = gameVersion;
 	Offset = LoadDiabloLibrary();
 	SetFunctions();
 }
 
-void D2WinLibrary::SetFunctions()
+void D2Win::SetFunctions()
 {
 	D2PrintLineOnTextBox = (TD2PrintLineOnTextBox)GetOffsetByProc(10046, 10051);
 	D2PrintString = (TD2PrintString)GetOffsetByProc(10117, 10076);
@@ -36,3 +35,12 @@ void D2WinLibrary::SetFunctions()
 	D2PrintTextPopup = (TD2PrintTextPopup)GetOffsetByProc(10132, 0);
 	D2CreateTextBox = (TD2CreateTextBox)GetOffsetByProc(10017, 10164);
 }
+
+D2Win::TD2PrintLineOnTextBox D2Win::D2PrintLineOnTextBox;
+D2Win::TD2PrintString D2Win::D2PrintString;
+D2Win::TD2GetPixelLen D2Win::D2GetPixelLen;
+D2Win::TD2SetFont D2Win::D2SetFont;
+D2Win::TD2PrintPopup D2Win::D2PrintPopup;
+D2Win::TD2GetPixelRect D2Win::D2GetPixelRect;
+D2Win::TD2PrintTextPopup D2Win::D2PrintTextPopup;
+D2Win::TD2CreateTextBox D2Win::D2CreateTextBox;

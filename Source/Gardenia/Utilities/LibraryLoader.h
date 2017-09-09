@@ -17,20 +17,29 @@
 
 #pragma once
 
-#include "Library.h"
+#include "../Error.h"
 
-class D2gfxLibrary : public Library
+#include "../Game.h"
+#include "../D2Client.h"
+#include "../D2CMP.h"
+#include "../D2Common.h"
+#include "../D2Game.h"
+#include "../D2gfx.h"
+#include "../D2Lang.h"
+#include "../D2Launch.h"
+#include "../D2Net.h"
+#include "../D2Win.h"
+#include "../Fog.h"
+#include "../Storm.h"
+
+// Used to load the libraries
+class LibraryLoader
 {
 public:
-	D2gfxLibrary(int gameVersion);
+	static void Init();
 
-	typedef DWORD(__stdcall *TD2GetResolution) ();
-	typedef void(__stdcall *TD2FillArea) (DWORD x1, DWORD y1, DWORD x2, DWORD y2, DWORD color, DWORD transTbl);
-	typedef void(__stdcall *TD2PrintImage) (sDrawImageInfo* data, DWORD x, DWORD y, DWORD p4, DWORD p5, DWORD p6);
-
-	TD2GetResolution D2GetResolution;
-	TD2FillArea D2FillArea;
-	TD2PrintImage D2PrintImage;
-private:
-	void SetFunctions();
+	// Change the protection scheme of a loaded
+	// DLL called libraryName in memory space at address addr+size to allow us to customize it.
+	static void HookLibraries();
+	static void UnhookLibraries();
 };

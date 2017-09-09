@@ -19,22 +19,21 @@
 
 #include "Library.h"
 
-class D2CommonLibrary : public Library
+class D2Common : public Library<D2Common>
 {
 public:
-	D2CommonLibrary(int gameVersion);
+	static void Init();
 
 	// Structure Management
-	DWORD ptPYPlayerDataOffset;
-	DWORD ptSpecificDataOffset;
-	DWORD ptGameOffset;
-	DWORD ptClientGameOffset;
-	DWORD ptInventoryOffset;
-	DWORD ptSkillsOffset;
-	DWORD ptImageOffset;
-	DWORD ptFrameOffset;
+	static DWORD ptPYPlayerDataOffset;
+	static DWORD ptSpecificDataOffset;
+	static DWORD ptGameOffset;
+	static DWORD ptClientGameOffset;
+	static DWORD ptInventoryOffset;
+	static DWORD ptSkillsOffset;
+	static DWORD ptImageOffset;
+	static DWORD ptFrameOffset;
 
-	// Types
 	typedef Unit* (__stdcall *TD2Common10242) (Inventory* ptInventory, Unit* ptItem, DWORD bIsClient);
 	typedef Unit* (__stdcall *TD2CanPutItemInInv) (Inventory* ptInventory, Unit* ptItem, DWORD p3, DWORD zero, Unit* ptUnit, const char* file, DWORD line);
 	typedef Unit* (__stdcall *TD2InvRemoveItem) (Inventory* ptInventory, Unit* ptItem);
@@ -89,68 +88,68 @@ public:
 	typedef void* (__fastcall *TD2ReadFile) (DWORD unused, char* filename, DWORD* size, const char*, DWORD);
 	typedef void(__stdcall *TD2LoadSuperuniques) (DWORD mempool);
 
-	TD2Common10242 D2Common10242;
-	TD2CanPutItemInInv D2CanPutItemInInv;
-	TD2InvRemoveItem D2InvRemoveItem;
-	TD2InvAddItem D2InvAddItem;
-	TD2Common10250 D2Common10250;
-	TD2Common10273 D2Common10273;
-	TD2InventoryGetFirstItem D2InventoryGetFirstItem;
-	TD2UnitGetNextItem D2UnitGetNextItem;
-	TD2GetRealItem D2GetRealItem;
-	TD2GetPosX D2GetPosX;
-	TD2GetPosY D2GetPosY;
-	TD2GetMaxGoldBank D2GetMaxGoldBank;
-	TD2InitPlayerData D2InitPlayerData;
-	TD2GetPlayerData D2GetPlayerData;
-	TD2GetDefence D2GetDefence;
-	TD2GetChanceToBlock D2GetChanceToBlock;
-	TD2GetMaxGold D2GetMaxGold;
-	TD2isInState D2isInState;
-	TD2AddPlayerStat D2AddPlayerStat;
-	TD2GetPlayerStat D2GetPlayerStat;
-	TD2GetPlayerBaseStat D2GetPlayerBaseStat;
-	TD2haveDefenceBonus D2haveDefenceBonus;
-	TD2haveFireResBonus D2haveFireResBonus;
-	TD2haveColdResBonus D2haveColdResBonus;
-	TD2haveLightResBonus D2haveLightResBonus;
-	TD2havePoisonResBonus D2havePoisonResBonus;
-	TD2haveDefenceMalus D2haveDefenceMalus;
-	TD2haveFireResMalus D2haveFireResMalus;
-	TD2haveColdResMalus D2haveColdResMalus;
-	TD2haveLightResMalus D2haveLightResMalus;
-	TD2havePoisonResMalus D2havePoisonResMalus;
-	TD2CompileTxtFile D2CompileTxtFile;
-	TD2GetItemsBIN D2GetItemsBIN;
-	TD2GetGemsBIN D2GetGemsBIN;
-	TD2GetCubeMainBIN D2GetCubeMainBIN;
-	TD2GetNbCubeMainBIN D2GetNbCubeMainBIN;
-	TD2GetNextLevelXP D2GetNextLevelXP;
-	TD2GetMaxLevel D2GetMaxLevel;
-	TD2GetDifficultyLevelsBIN D2GetDifficultyLevelsBIN;
-	TD2GetItemQuality D2GetItemQuality;
-	TD2GetItemLevel D2GetItemLevel;
-	TD2ItemGetPage D2ItemGetPage;
-	TD2ItemSetPage D2ItemSetPage;
-	TD2GetUniqueID D2GetUniqueID;
-	TD2SetAnim D2SetAnim;
-	TD2GetNbRunesBIN D2GetNbRunesBIN;
-	TD2GetRunesBIN D2GetRunesBIN;
-	TD2SaveItem D2SaveItem;
-	TD2GetCharStatsBIN D2GetCharStatsBIN;
-	TD2GetItemTypesBIN D2GetItemTypesBIN;
-	TD2GetItemStatCostBIN D2GetItemStatCostBIN;
-	TD2ReadFile D2ReadFile;
-	TD2LoadSuperuniques D2LoadSuperuniques;
+	static TD2Common10242 D2Common10242;
+	static TD2CanPutItemInInv D2CanPutItemInInv;
+	static TD2InvRemoveItem D2InvRemoveItem;
+	static TD2InvAddItem D2InvAddItem;
+	static TD2Common10250 D2Common10250;
+	static TD2Common10273 D2Common10273;
+	static TD2InventoryGetFirstItem D2InventoryGetFirstItem;
+	static TD2UnitGetNextItem D2UnitGetNextItem;
+	static TD2GetRealItem D2GetRealItem;
+	static TD2GetPosX D2GetPosX;
+	static TD2GetPosY D2GetPosY;
+	static TD2GetMaxGoldBank D2GetMaxGoldBank;
+	static TD2InitPlayerData D2InitPlayerData;
+	static TD2GetPlayerData D2GetPlayerData;
+	static TD2GetDefence D2GetDefence;
+	static TD2GetChanceToBlock D2GetChanceToBlock;
+	static TD2GetMaxGold D2GetMaxGold;
+	static TD2isInState D2isInState;
+	static TD2AddPlayerStat D2AddPlayerStat;
+	static TD2GetPlayerStat D2GetPlayerStat;
+	static TD2GetPlayerBaseStat D2GetPlayerBaseStat;
+	static TD2haveDefenceBonus D2haveDefenceBonus;
+	static TD2haveFireResBonus D2haveFireResBonus;
+	static TD2haveColdResBonus D2haveColdResBonus;
+	static TD2haveLightResBonus D2haveLightResBonus;
+	static TD2havePoisonResBonus D2havePoisonResBonus;
+	static TD2haveDefenceMalus D2haveDefenceMalus;
+	static TD2haveFireResMalus D2haveFireResMalus;
+	static TD2haveColdResMalus D2haveColdResMalus;
+	static TD2haveLightResMalus D2haveLightResMalus;
+	static TD2havePoisonResMalus D2havePoisonResMalus;
+	static TD2CompileTxtFile D2CompileTxtFile;
+	static TD2GetItemsBIN D2GetItemsBIN;
+	static TD2GetGemsBIN D2GetGemsBIN;
+	static TD2GetCubeMainBIN D2GetCubeMainBIN;
+	static TD2GetNbCubeMainBIN D2GetNbCubeMainBIN;
+	static TD2GetNextLevelXP D2GetNextLevelXP;
+	static TD2GetMaxLevel D2GetMaxLevel;
+	static TD2GetDifficultyLevelsBIN D2GetDifficultyLevelsBIN;
+	static TD2GetItemQuality D2GetItemQuality;
+	static TD2GetItemLevel D2GetItemLevel;
+	static TD2ItemGetPage D2ItemGetPage;
+	static TD2ItemSetPage D2ItemSetPage;
+	static TD2GetUniqueID D2GetUniqueID;
+	static TD2SetAnim D2SetAnim;
+	static TD2GetNbRunesBIN D2GetNbRunesBIN;
+	static TD2GetRunesBIN D2GetRunesBIN;
+	static TD2SaveItem D2SaveItem;
+	static TD2GetCharStatsBIN D2GetCharStatsBIN;
+	static TD2GetItemTypesBIN D2GetItemTypesBIN;
+	static TD2GetItemStatCostBIN D2GetItemStatCostBIN;
+	static TD2ReadFile D2ReadFile;
+	static TD2LoadSuperuniques D2LoadSuperuniques;
 
 	// Only 1.09
 	typedef CharStatsBIN* (__stdcall *TD2Common10581) (DWORD charID);
 	typedef ItemStatCostBIN* (__stdcall *TD2Common10598) (DWORD itemStatCostID);
 	typedef ItemTypesBIN* (__stdcall *TD2Common10673) (DWORD itemTypesID);
 
-	TD2Common10581 D2Common10581;
-	TD2Common10598 D2Common10598;
-	TD2Common10673 D2Common10673;
+	static TD2Common10581 D2Common10581;
+	static TD2Common10598 D2Common10598;
+	static TD2Common10673 D2Common10673;
 private:
-	void SetFunctions();
+	static void SetFunctions();
 };

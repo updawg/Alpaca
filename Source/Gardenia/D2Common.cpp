@@ -15,12 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#include "D2CommonLibrary.h"
+#include "D2Common.h"
 
-D2CommonLibrary::D2CommonLibrary(int gameVersion) : Library()
+void D2Common::Init()
 {
 	Name = "D2Common.dll";
-	Version = gameVersion;
 	Offset = LoadDiabloLibrary();
 	SetFunctions();
 
@@ -37,7 +36,7 @@ D2CommonLibrary::D2CommonLibrary(int gameVersion) : Library()
 	ptFrameOffset = GetOffsetForVersion(0x08, 0);
 }
 
-void D2CommonLibrary::SetFunctions()
+void D2Common::SetFunctions()
 {
 	D2Common10242 = (TD2Common10242)GetOffsetByProc(10242, 0);
 	D2CanPutItemInInv = (TD2CanPutItemInInv)GetOffsetByProc(10246, 10402);
@@ -98,3 +97,69 @@ void D2CommonLibrary::SetFunctions()
 	D2Common10598 = (TD2Common10598)GetOffsetByProc(10598, 0);
 	D2Common10673 = (TD2Common10673)GetOffsetByProc(10673, 0);
 }
+
+DWORD D2Common::ptPYPlayerDataOffset;
+DWORD D2Common::ptSpecificDataOffset;
+DWORD D2Common::ptGameOffset;
+DWORD D2Common::ptClientGameOffset;
+DWORD D2Common::ptInventoryOffset;
+DWORD D2Common::ptSkillsOffset;
+DWORD D2Common::ptImageOffset;
+DWORD D2Common::ptFrameOffset;
+
+D2Common::TD2Common10242 D2Common::D2Common10242;
+D2Common::TD2CanPutItemInInv D2Common::D2CanPutItemInInv;
+D2Common::TD2InvRemoveItem D2Common::D2InvRemoveItem;
+D2Common::TD2InvAddItem D2Common::D2InvAddItem;
+D2Common::TD2Common10250 D2Common::D2Common10250;
+D2Common::TD2Common10273 D2Common::D2Common10273;
+D2Common::TD2InventoryGetFirstItem D2Common::D2InventoryGetFirstItem;
+D2Common::TD2UnitGetNextItem D2Common::D2UnitGetNextItem;
+D2Common::TD2GetRealItem D2Common::D2GetRealItem;
+D2Common::TD2GetPosX D2Common::D2GetPosX;
+D2Common::TD2GetPosY D2Common::D2GetPosY;
+D2Common::TD2GetMaxGoldBank D2Common::D2GetMaxGoldBank;
+D2Common::TD2InitPlayerData D2Common::D2InitPlayerData;
+D2Common::TD2GetPlayerData D2Common::D2GetPlayerData;
+D2Common::TD2GetDefence D2Common::D2GetDefence;
+D2Common::TD2GetChanceToBlock D2Common::D2GetChanceToBlock;
+D2Common::TD2GetMaxGold D2Common::D2GetMaxGold;
+D2Common::TD2isInState D2Common::D2isInState;
+D2Common::TD2AddPlayerStat D2Common::D2AddPlayerStat;
+D2Common::TD2GetPlayerStat D2Common::D2GetPlayerStat;
+D2Common::TD2GetPlayerBaseStat D2Common::D2GetPlayerBaseStat;
+D2Common::TD2haveDefenceBonus D2Common::D2haveDefenceBonus;
+D2Common::TD2haveFireResBonus D2Common::D2haveFireResBonus;
+D2Common::TD2haveColdResBonus D2Common::D2haveColdResBonus;
+D2Common::TD2haveLightResBonus D2Common::D2haveLightResBonus;
+D2Common::TD2havePoisonResBonus D2Common::D2havePoisonResBonus;
+D2Common::TD2haveDefenceMalus D2Common::D2haveDefenceMalus;
+D2Common::TD2haveFireResMalus D2Common::D2haveFireResMalus;
+D2Common::TD2haveColdResMalus D2Common::D2haveColdResMalus;
+D2Common::TD2haveLightResMalus D2Common::D2haveLightResMalus;
+D2Common::TD2havePoisonResMalus D2Common::D2havePoisonResMalus;
+D2Common::TD2CompileTxtFile D2Common::D2CompileTxtFile;
+D2Common::TD2GetItemsBIN D2Common::D2GetItemsBIN;
+D2Common::TD2GetGemsBIN D2Common::D2GetGemsBIN;
+D2Common::TD2GetCubeMainBIN D2Common::D2GetCubeMainBIN;
+D2Common::TD2GetNbCubeMainBIN D2Common::D2GetNbCubeMainBIN;
+D2Common::TD2GetNextLevelXP D2Common::D2GetNextLevelXP;
+D2Common::TD2GetMaxLevel D2Common::D2GetMaxLevel;
+D2Common::TD2GetDifficultyLevelsBIN D2Common::D2GetDifficultyLevelsBIN;
+D2Common::TD2GetItemQuality D2Common::D2GetItemQuality;
+D2Common::TD2GetItemLevel D2Common::D2GetItemLevel;
+D2Common::TD2ItemGetPage D2Common::D2ItemGetPage;
+D2Common::TD2ItemSetPage D2Common::D2ItemSetPage;
+D2Common::TD2GetUniqueID D2Common::D2GetUniqueID;
+D2Common::TD2SetAnim D2Common::D2SetAnim;
+D2Common::TD2GetNbRunesBIN D2Common::D2GetNbRunesBIN;
+D2Common::TD2GetRunesBIN D2Common::D2GetRunesBIN;
+D2Common::TD2SaveItem D2Common::D2SaveItem;
+D2Common::TD2GetCharStatsBIN D2Common::D2GetCharStatsBIN;
+D2Common::TD2GetItemTypesBIN D2Common::D2GetItemTypesBIN;
+D2Common::TD2GetItemStatCostBIN D2Common::D2GetItemStatCostBIN;
+D2Common::TD2ReadFile D2Common::D2ReadFile;
+D2Common::TD2LoadSuperuniques D2Common::D2LoadSuperuniques;
+D2Common::TD2Common10581 D2Common::D2Common10581;
+D2Common::TD2Common10598 D2Common::D2Common10598;
+D2Common::TD2Common10673 D2Common::D2Common10673;

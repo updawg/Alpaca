@@ -15,20 +15,22 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#include "D2LangLibrary.h"
+#include "D2gfx.h"
 
-D2LangLibrary::D2LangLibrary(int gameVersion) : Library()
+void D2gfx::Init()
 {
-	Name = "D2Lang.dll";
-	Version = gameVersion;
+	Name = "D2gfx.dll";
 	Offset = LoadDiabloLibrary();
 	SetFunctions();
 }
 
-void D2LangLibrary::SetFunctions()
+void D2gfx::SetFunctions()
 {
-	D2GetStringFromString = (TD2GetStringFromString)GetOffsetByProc(10003, 10011);
-	D2GetStringFromIndex = (TD2GetStringFromIndex)GetOffsetByProc(10004, 10004);
-	D2GetLang = (TD2GetLang)GetOffsetByProc(10007, 10001);
-	D2PrintBigNumber = (TD2PrintBigNumber)GetOffsetByProc(10010, 0);
+	D2GetResolution = (TD2GetResolution)GetOffsetByProc(10005, 10012);
+	D2FillArea = (TD2FillArea)GetOffsetByProc(10055, 10028);
+	D2PrintImage = (TD2PrintImage)GetOffsetByProc(10072, 10042);
 }
+
+D2gfx::TD2GetResolution D2gfx::D2GetResolution;
+D2gfx::TD2FillArea D2gfx::D2FillArea;
+D2gfx::TD2PrintImage D2gfx::D2PrintImage;

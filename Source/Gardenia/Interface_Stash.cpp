@@ -452,34 +452,34 @@ void Install_InterfaceStash()
 	log_msg("[Patch] D2Client for stash interface. (InterfaceStash)\n");
 
 	// Print button images
-	mem_seek(D2Client->GetOffsetByAddition(0x39060, 0x9DE26));
-	MEMC_REF4(D2Client->D2LoadBuySelBtn, printBtns);
+	mem_seek(D2Client::GetOffsetByAddition(0x39060, 0x9DE26));
+	MEMC_REF4(D2Client::D2LoadBuySelBtn, printBtns);
 
 	// print page number
-	mem_seek(D2Client->GetOffsetByAddition(0x3903C, 0x9DE03));
-	MEMJ_REF4(D2Win->D2PrintString, printPageNumber);
+	mem_seek(D2Client::GetOffsetByAddition(0x3903C, 0x9DE03));
+	MEMJ_REF4(D2Win::D2PrintString, printPageNumber);
 
 	// Manage mouse down (Play sound)
-	mem_seek(D2Client->GetOffsetByAddition(0x45091, 0x9FC76));
-	MEMC_REF4(Game->Version == VersionUtility::Versions::V113d ? (DWORD)D2ClickOnStashButton : (DWORD)D2isLODGame, Game->Version == VersionUtility::Versions::V113d ? caller_manageBtnDown_111 : caller_manageBtnDown);
+	mem_seek(D2Client::GetOffsetByAddition(0x45091, 0x9FC76));
+	MEMC_REF4(VersionUtility::Is113D() ? (DWORD)D2ClickOnStashButton : (DWORD)D2isLODGame, VersionUtility::Is113D() ? caller_manageBtnDown_111 : caller_manageBtnDown);
 
 	// Manage mouse up
-	mem_seek(D2Client->GetOffsetByAddition(0x455F9, 0x9FAA9));
-	MEMC_REF4(Game->Version == VersionUtility::Versions::V113d ? (DWORD)D2ClickOnStashButton : (DWORD)D2isLODGame, Game->Version == VersionUtility::Versions::V113d ? caller_manageBtnUp_111 : caller_manageBtnUp);
+	mem_seek(D2Client::GetOffsetByAddition(0x455F9, 0x9FAA9));
+	MEMC_REF4(VersionUtility::Is113D() ? (DWORD)D2ClickOnStashButton : (DWORD)D2isLODGame, VersionUtility::Is113D() ? caller_manageBtnUp_111 : caller_manageBtnUp);
 
 	// init state of button on open stash page
-	mem_seek(D2Client->GetOffsetByAddition(0x45B3A, 0x9441A));
+	mem_seek(D2Client::GetOffsetByAddition(0x45B3A, 0x9441A));
 	memt_byte(0x81, 0xE9);
 	MEMT_REF4(0x104C4, initBtnsStates);
 	memt_byte(0, 0x90);
 
 	// init the search of print in green the item set name we have in stash
-	mem_seek(D2Client->GetOffsetByAddition(0x3F098, 0x91A24));
-	MEMJ_REF4(D2Common->D2InventoryGetFirstItem, initGetNextItemForSet);
+	mem_seek(D2Client::GetOffsetByAddition(0x3F098, 0x91A24));
+	MEMJ_REF4(D2Common::D2InventoryGetFirstItem, initGetNextItemForSet);
 
 	// Get next item for print in green the item set name we have in stash
-	mem_seek(D2Client->GetOffsetByAddition(0x3F0FA, 0x91ABB));
-	MEMJ_REF4(D2Common->D2UnitGetNextItem, getNextItemForSet);
+	mem_seek(D2Client::GetOffsetByAddition(0x3F0FA, 0x91ABB));
+	MEMJ_REF4(D2Common::D2UnitGetNextItem, getNextItemForSet);
 
 	log_msg("\n");
 

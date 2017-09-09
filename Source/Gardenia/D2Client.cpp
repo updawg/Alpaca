@@ -15,17 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#include "D2ClientLibrary.h"
+#include "D2Client.h"
 
-D2ClientLibrary::D2ClientLibrary(int gameVersion) : Library()
+void D2Client::Init()
 {
 	Name = "D2Client.dll";
-	Version = gameVersion;
 	Offset = LoadDiabloLibrary();
 	SetFunctions();
 }
 
-void D2ClientLibrary::SetFunctions()
+void D2Client::SetFunctions()
 {
 	D2LoadImage = (TD2LoadImage)GetOffsetByAddition(0x1000, 0xA9480);
 	D2FreeImage = (TD2FreeImage)GetOffsetByAddition(0x1150, 0);
@@ -68,12 +67,17 @@ void D2ClientLibrary::SetFunctions()
 	StatMouse4 = (DWORD*)GetOffsetByAddition(0, 0x11D244);
 }
 
-DWORD* D2ClientLibrary::StatMouse1;
-DWORD* D2ClientLibrary::StatMouse2;
-DWORD* D2ClientLibrary::StatMouse3;
-DWORD* D2ClientLibrary::StatMouse4;
+DWORD D2Client::ResolutionX()
+{
+	return *ptResolutionX;
+}
 
-void __fastcall D2ClientLibrary::D2CleanStatMouseUp_111()
+DWORD D2Client::ResolutionY()
+{
+	return *ptResolutionY;
+}
+
+void __fastcall D2Client::D2CleanStatMouseUp_111()
 {
 	*StatMouse1 = 0;
 	*StatMouse2 = 0;
@@ -81,13 +85,13 @@ void __fastcall D2ClientLibrary::D2CleanStatMouseUp_111()
 	*StatMouse4 = 0;
 }
 
-D2ClientLibrary::TD2CleanStatMouseUp D2ClientLibrary::GetD2CleanStatMouseUp()
+D2Client::TD2CleanStatMouseUp D2Client::GetD2CleanStatMouseUp()
 {
 	DWORD location;
 
-	if (Version >= VersionUtility::Versions::V111)
+	if (VersionUtility::Is113D())
 	{
-		location = (DWORD)&D2ClientLibrary::D2CleanStatMouseUp_111;
+		location = (DWORD)&D2Client::D2CleanStatMouseUp_111;
 	}
 	else
 	{
@@ -96,3 +100,41 @@ D2ClientLibrary::TD2CleanStatMouseUp D2ClientLibrary::GetD2CleanStatMouseUp()
 
 	return (TD2CleanStatMouseUp)location;
 }
+
+D2Client::TD2LoadImage D2Client::D2LoadImage;
+D2Client::TD2FreeImage D2Client::D2FreeImage;
+D2Client::TD2SendMsgToAll D2Client::D2SendMsgToAll;
+D2Client::TD2GetLastMonsterIDFight D2Client::D2GetLastMonsterIDFight;
+D2Client::TD2PrintStatsPage D2Client::D2PrintStatsPage;
+D2Client::TD2PrintStat D2Client::D2PrintStat;
+D2Client::TD2SetColorPopup D2Client::D2SetColorPopup;
+D2Client::TD2PlaySound D2Client::D2PlaySound;
+D2Client::TD2SendToServerXX D2Client::D2SendToServerXX;
+D2Client::TD2TogglePage D2Client::D2TogglePage;
+D2Client::TD2ClickOnStashButton D2Client::D2ClickOnStashButton;
+D2Client::TD2LoadBuySelBtn D2Client::D2LoadBuySelBtn;
+
+D2Client::TD2isLODGame D2Client::D2isLODGame;
+D2Client::TD2GetDifficultyLevel D2Client::D2GetDifficultyLevel;
+D2Client::TD2GetMouseX D2Client::D2GetMouseX;
+D2Client::TD2GetMouseY D2Client::D2GetMouseY;
+D2Client::TD2GetClientPlayer D2Client::D2GetClientPlayer;
+D2Client::TD2CleanStatMouseUp D2Client::D2CleanStatMouseUp;
+D2Client::TD2SendToServer3 D2Client::D2SendToServer3;
+
+DWORD* D2Client::ptResolutionY;
+DWORD* D2Client::ptResolutionX;
+DWORD* D2Client::ptNegWindowStartY;
+DWORD* D2Client::ptWindowStartX;
+DWORD* D2Client::ptIsLodGame;
+BYTE* D2Client::ptDifficultyLevel;
+DWORD* D2Client::ptMouseY;
+DWORD* D2Client::ptMouseX;
+Unit** D2Client::ptptClientChar;
+DWORD* D2Client::ptNbStatDesc;
+DWORD* D2Client::ptStatDescTable;
+
+DWORD* D2Client::StatMouse1;
+DWORD* D2Client::StatMouse2;
+DWORD* D2Client::StatMouse3;
+DWORD* D2Client::StatMouse4;

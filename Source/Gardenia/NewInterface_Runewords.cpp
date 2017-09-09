@@ -26,25 +26,25 @@
 
 #define	getXCloseBtn()			360
 #define	getLCloseBtn()			32
-#define	getYCloseBtn()			(ResolutionY - 60)
+#define	getYCloseBtn()			(D2Client::ResolutionY() - 60)
 #define	getHCloseBtn()			32
 #define isOnCloseBtn(x,y) isOnRect(x, y, getXCloseBtn(), getYCloseBtn(), getLCloseBtn(), getHCloseBtn())
 
 #define	getXNextPageBtn()		120
 #define	getLNextPageBtn()		32
-#define	getYNextPageBtn()		(ResolutionY - 60)
+#define	getYNextPageBtn()		(D2Client::ResolutionY() - 60)
 #define	getHNextPageBtn()		32
 #define isOnNextPageBtn(x,y)	isOnRect(x, y, getXNextPageBtn(), getYNextPageBtn(), getLNextPageBtn(), getHNextPageBtn())
 
 #define	getXPrevRunesBtn()		168
 #define	getLPrevRunesBtn()		32
-#define	getYPrevRunesBtn()		(ResolutionY - 60)
+#define	getYPrevRunesBtn()		(D2Client::ResolutionY() - 60)
 #define	getHPrevRunesBtn()		32
 #define isOnPrevRunesBtn(x,y)	isOnRect(x, y, getXPrevRunesBtn(), getYPrevRunesBtn(), getLPrevRunesBtn(), getHPrevRunesBtn())
 
 #define	getXNextRunesBtn()		200
 #define	getLNextRunesBtn()		32
-#define	getYNextRunesBtn()		(ResolutionY - 60)
+#define	getYNextRunesBtn()		(D2Client::ResolutionY() - 60)
 #define	getHNextRunesBtn()		32
 #define isOnNextRunesBtn(x,y)	isOnRect(x, y, getXNextRunesBtn(), getYNextRunesBtn(), getLNextRunesBtn(), getHNextRunesBtn())
 

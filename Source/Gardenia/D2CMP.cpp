@@ -15,18 +15,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#include "D2NetLibrary.h"
+#include "D2CMP.h"
 
-D2NetLibrary::D2NetLibrary(int gameVersion) : Library()
+void D2CMP::Init()
 {
-	Name = "D2Net.dll";
-	Version = gameVersion;
+	Name = "D2CMP.dll";
 	Offset = LoadDiabloLibrary();
 	SetFunctions();
 }
 
-void D2NetLibrary::SetFunctions()
+void D2CMP::SetFunctions()
 {
-	D2SendToServer = (TD2SendToServer)GetOffsetByProc(0x2715, 0x271F);
-	D2SendToClient = (TD2SendToClient)GetOffsetByProc(0x2716, 0x271C);
+	D2CMP10014 = (TD2CMP10014)GetOffsetByProc(0x2730, 0x2724);
 }
+
+D2CMP::TD2CMP10014 D2CMP::D2CMP10014;

@@ -24,7 +24,7 @@
 
 #define	getXCloseBtn()			360
 #define	getLCloseBtn()			32
-#define	getYCloseBtn()			(ResolutionY - 60)
+#define	getYCloseBtn()			(D2Client::ResolutionY() - 60)
 #define	getHCloseBtn()			32
 #define isOnCloseBtn(x,y) isOnRect(x, y, getXCloseBtn(), getYCloseBtn(), getLCloseBtn(), getHCloseBtn())
 
@@ -39,15 +39,6 @@
 #define	getYNextPageBtn()		RY(D2GetResolution()?0x40:0x70)
 #define	getHNextPageBtn()		32
 #define isOnNextPageBtn(x,y)	isOnRect(x, y, getXNextPageBtn(), getYNextPageBtn(), getLNextPageBtn(), getHNextPageBtn())
-
-/*
-#define	getXNextPageBtn()		120
-#define	getLNextPageBtn()		32
-#define	getYNextPageBtn()		(ResolutionY - 60)
-#define	getHNextPageBtn()		32
-#define isOnNextPageBtn(x,y)	isOnRect(x, y, getXNextPageBtn(), getYNextPageBtn(), getLNextPageBtn(), getHNextPageBtn())
-*/
-
 
 #define	getLAssignBtn()			32
 #define	getHAssignBtn()			32
@@ -68,7 +59,6 @@
 #define	getYAssENEBtn()			0x13C
 #define isOnAssENEBtn(x,y) isOnRect(x, y, getXAssENEBtn(), getYAssENEBtn(), getLAssignBtn(), getHAssignBtn())
 
-
 #define	getLUnassignBtn()		32
 #define	getHUnassignBtn()		32
 
@@ -88,8 +78,6 @@
 #define	getYUnaENEBtn()			getYAssENEBtn()
 #define isOnUnaENEBtn(x,y) isOnRect(x, y, getXUnaENEBtn(), getYUnaENEBtn(), getLUnassignBtn(), getHUnassignBtn())
 
-
-
 void** ptD2RemainingStatsPointsBoxImages = (void**)0x6FBB5E50;
 #define D2RemainingStatsPointsBoxImages (*ptD2RemainingStatsPointsBoxImages)
 
@@ -98,8 +86,6 @@ void** ptD2AssignStatsPointsBoxImages = (void**)0x6FBB5BB8;
 
 void** ptD2AssignStatsPointsBtnImages = (void**)0x6FBB5BB4;
 #define D2AssignStatsPointsBtnImages (*ptD2AssignStatsPointsBtnImages)
-
-
 
 static struct
 {
@@ -250,7 +236,7 @@ void __stdcall printNewStatsPage()
 	nbPixel = D2GetPixelLen(text);
 	D2PrintString(text, MILIEU(0xD,0x29,nbPixel), 0x3B, color, 0);//ESI,EBX,EDI
 
-if (Game->Version <= VersionUtility::Versions::V110)
+if (VersionUtility::Is109B())
 {
 	//print Experience
 	curValue = D2GetPlayerStat(ptChar, STATS_EXPERIENCE, 0);
@@ -557,7 +543,7 @@ if (Game->Version <= VersionUtility::Versions::V110)
 	else if (isOnRect(x, y, 0xAD, 0x137, 0x15, 0x13))
 	{
 		
-		if (Game->Version <= VersionUtility::Versions::V110 )
+		if (VersionUtility::Is109B() )
 		{
 			DWORD avgChanceMonsterWillHitYou = 53;//TODO
 	

@@ -15,14 +15,20 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include "D2Net.h"
 
-#include "Library.h"
-
-class D2LaunchLibrary : public Library
+void D2Net::Init()
 {
-public:
-	D2LaunchLibrary(int gameVersion);
-private:
-	void SetFunctions();
-};
+	Name = "D2Net.dll";
+	Offset = LoadDiabloLibrary();
+	SetFunctions();
+}
+
+void D2Net::SetFunctions()
+{
+	D2SendToServer = (TD2SendToServer)GetOffsetByProc(0x2715, 0x271F);
+	D2SendToClient = (TD2SendToClient)GetOffsetByProc(0x2716, 0x271C);
+}
+
+D2Net::TD2SendToServer D2Net::D2SendToServer;
+D2Net::TD2SendToClient D2Net::D2SendToClient;

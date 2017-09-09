@@ -222,8 +222,6 @@ DWORD __stdcall ReceiveSaveFiles (DWORD clientID, t_rcvMsg* msg)
 	{
 	case TS_SAVE_PERSONAL :	isShared = false;break;
 	case TS_SAVE_SHARED :	isShared = true;break;
-//	case TS_PUTGOLD :		putGold(ptChar, (DWORD)msg->data); return 0;
-//	case TS_TAKEGOLD :		takeGold(ptChar, (DWORD)msg->data); return 0;
 	default: return 0;//return msg->packID;
 	}
 
@@ -235,7 +233,6 @@ DWORD __stdcall ReceiveSaveFiles (DWORD clientID, t_rcvMsg* msg)
 
 	if (curSF && curSF->completed)
 		freeCurrentCF(0 * PClientGame->memoryPool, &curSF);
-
 
 	if (!curSF)
 	{
@@ -452,24 +449,24 @@ void Install_LoadPlayerData()
 	log_msg("[Patch] D2Game & D2Client for load Player's custom data. (LoadPlayerData)\n");
 
 	// Load SP player custom data.
-	mem_seek(D2Game->GetOffsetByAddition(0x5046F, 0x3BCCD));
+	mem_seek(D2Game::GetOffsetByAddition(0x5046F, 0x3BCCD));
 	memt_byte(0x8B, 0xE8);
 	MEMT_REF4(0x75F685F0 , caller_LoadSPPlayerCustomData);
 	memt_byte(0x16, 0x90);
 
 	// Load MP player custom data.
-	mem_seek(D2Game->GetOffsetByAddition(0x50790, 0x3BB57));
+	mem_seek(D2Game::GetOffsetByAddition(0x50790, 0x3BB57));
 	memt_byte(0x83, 0xE8);
-	MEMT_REF4(Game->Version == VersionUtility::Versions::V113d ? 0x2174003B : 0x1D74003F, Game->Version == VersionUtility::Versions::V113d ? caller_LoadMPPlayerCustomData_111 : caller_LoadMPPlayerCustomData_9);
+	MEMT_REF4(VersionUtility::Is113D() ? 0x2174003B : 0x1D74003F, VersionUtility::Is113D() ? caller_LoadMPPlayerCustomData_111 : caller_LoadMPPlayerCustomData_9);
 
 	// Send save files to Server.
-	mem_seek(D2Client->GetOffsetByAddition(0xCF42, 0xB638C));
-	MEMJ_REF4(Fog->D2FogGetSavePath, Game->Version == VersionUtility::Versions::V113d ? caller_SendSaveFiles_111 : caller_SendSaveFiles);
+	mem_seek(D2Client::GetOffsetByAddition(0xCF42, 0xB638C));
+	MEMJ_REF4(Fog::D2FogGetSavePath, VersionUtility::Is113D() ? caller_SendSaveFiles_111 : caller_SendSaveFiles);
 
 	// Receive save files from client.
-	mem_seek(D2Game->GetOffsetByAddition(0x183A, 0xD53E9));
+	mem_seek(D2Game::GetOffsetByAddition(0x183A, 0xD53E9));
 	memt_byte(0x8B, 0xE8);
-	if (Game->Version == VersionUtility::Versions::V113d) {
+	if (VersionUtility::Is113D()) {
 		MEMT_REF4(0xB60F005D, caller_ReceiveSaveFiles_111);
 		memt_byte(0x45, 0x90);
 		memt_byte(0x04, 0x90);
@@ -479,9 +476,9 @@ void Install_LoadPlayerData()
 		MEMT_REF4(0x04468A3E, caller_ReceiveSaveFiles);
 	}
 
-	if (Game->Version == VersionUtility::Versions::V109b)
+	if (VersionUtility::Is109B())
 	{
-		mem_seek(Fog->GetOffsetByAddition(0x47DE, 0));
+		mem_seek(Fog::GetOffsetByAddition(0x47DE, 0));
 		memt_byte(0x8B, 0xE8);
 		MEMT_REF4(0x891C2444, caller_BugFix109b);
 		memt_byte(0x44 ,0x90);
@@ -489,7 +486,7 @@ void Install_LoadPlayerData()
 		memt_byte(0x20 ,0x90);
 	}
 
-	if (Game->Version == VersionUtility::Versions::V109b)
+	if (VersionUtility::Is109B())
 	{
 		customPackID -= 3;
 	}

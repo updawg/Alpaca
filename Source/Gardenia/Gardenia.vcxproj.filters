@@ -48,9 +48,6 @@
     <ClCompile Include="CustomLibraries.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="D2wrapper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Error.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -120,9 +117,6 @@
     <ClCompile Include="Utilities\VersionUtility.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
-    <ClCompile Include="Utilities\LibraryUtility.cpp">
-      <Filter>Source Files\Utilities</Filter>
-    </ClCompile>
     <ClCompile Include="NewInterface_CubeListing.cpp">
       <Filter>Source Files\NewInterface</Filter>
     </ClCompile>
@@ -138,47 +132,50 @@
     <ClCompile Include="NewInterfaces.cpp">
       <Filter>Source Files\NewInterface</Filter>
     </ClCompile>
-    <ClCompile Include="D2CommonLibrary.cpp">
-      <Filter>Source Files\Libraries</Filter>
-    </ClCompile>
-    <ClCompile Include="Library.cpp">
-      <Filter>Source Files\Libraries</Filter>
-    </ClCompile>
-    <ClCompile Include="D2CMPLibrary.cpp">
-      <Filter>Source Files\Libraries</Filter>
-    </ClCompile>
-    <ClCompile Include="StormLibrary.cpp">
-      <Filter>Source Files\Libraries</Filter>
-    </ClCompile>
-    <ClCompile Include="FogLibrary.cpp">
-      <Filter>Source Files\Libraries</Filter>
-    </ClCompile>
-    <ClCompile Include="D2ClientLibrary.cpp">
-      <Filter>Source Files\Libraries</Filter>
-    </ClCompile>
-    <ClCompile Include="D2GameLibrary.cpp">
-      <Filter>Source Files\Libraries</Filter>
-    </ClCompile>
-    <ClCompile Include="D2gfxLibrary.cpp">
-      <Filter>Source Files\Libraries</Filter>
-    </ClCompile>
-    <ClCompile Include="D2LangLibrary.cpp">
-      <Filter>Source Files\Libraries</Filter>
-    </ClCompile>
-    <ClCompile Include="D2LaunchLibrary.cpp">
-      <Filter>Source Files\Libraries</Filter>
-    </ClCompile>
-    <ClCompile Include="D2NetLibrary.cpp">
-      <Filter>Source Files\Libraries</Filter>
-    </ClCompile>
-    <ClCompile Include="D2WinLibrary.cpp">
-      <Filter>Source Files\Libraries</Filter>
-    </ClCompile>
     <ClCompile Include="D2Functions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameLibrary.cpp">
+    <ClCompile Include="Utilities\LibraryLoader.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="D2Launch.cpp">
       <Filter>Source Files\Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="D2Client.cpp">
+      <Filter>Source Files\Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="D2CMP.cpp">
+      <Filter>Source Files\Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="Storm.cpp">
+      <Filter>Source Files\Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="D2Common.cpp">
+      <Filter>Source Files\Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="D2Game.cpp">
+      <Filter>Source Files\Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="D2gfx.cpp">
+      <Filter>Source Files\Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="D2Lang.cpp">
+      <Filter>Source Files\Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="D2Win.cpp">
+      <Filter>Source Files\Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="D2Net.cpp">
+      <Filter>Source Files\Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="Fog.cpp">
+      <Filter>Source Files\Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Source Files\Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -195,9 +192,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="customLibraries.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="d2wrapper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="extendedSaveFile.h">
@@ -287,42 +281,6 @@
     <ClInclude Include="Utilities\VersionUtility.h">
       <Filter>Header Files\Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="Utilities\LibraryUtility.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="D2ClientLibrary.h">
-      <Filter>Header Files\Libraries</Filter>
-    </ClInclude>
-    <ClInclude Include="D2CommonLibrary.h">
-      <Filter>Header Files\Libraries</Filter>
-    </ClInclude>
-    <ClInclude Include="D2CMPLibrary.h">
-      <Filter>Header Files\Libraries</Filter>
-    </ClInclude>
-    <ClInclude Include="D2GameLibrary.h">
-      <Filter>Header Files\Libraries</Filter>
-    </ClInclude>
-    <ClInclude Include="D2gfxLibrary.h">
-      <Filter>Header Files\Libraries</Filter>
-    </ClInclude>
-    <ClInclude Include="D2LangLibrary.h">
-      <Filter>Header Files\Libraries</Filter>
-    </ClInclude>
-    <ClInclude Include="D2LaunchLibrary.h">
-      <Filter>Header Files\Libraries</Filter>
-    </ClInclude>
-    <ClInclude Include="D2NetLibrary.h">
-      <Filter>Header Files\Libraries</Filter>
-    </ClInclude>
-    <ClInclude Include="D2WinLibrary.h">
-      <Filter>Header Files\Libraries</Filter>
-    </ClInclude>
-    <ClInclude Include="FogLibrary.h">
-      <Filter>Header Files\Libraries</Filter>
-    </ClInclude>
-    <ClInclude Include="StormLibrary.h">
-      <Filter>Header Files\Libraries</Filter>
-    </ClInclude>
     <ClInclude Include="..\Commons\D2Constants.h">
       <Filter>Header Files\Commons</Filter>
     </ClInclude>
@@ -344,13 +302,52 @@
     <ClInclude Include="Error.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Library.h">
-      <Filter>Header Files\Libraries</Filter>
-    </ClInclude>
     <ClInclude Include="D2Functions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameLibrary.h">
+    <ClInclude Include="savePath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\LibraryLoader.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="D2Launch.h">
+      <Filter>Header Files\Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="D2Client.h">
+      <Filter>Header Files\Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="D2CMP.h">
+      <Filter>Header Files\Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="Storm.h">
+      <Filter>Header Files\Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="D2Common.h">
+      <Filter>Header Files\Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="D2Game.h">
+      <Filter>Header Files\Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="D2gfx.h">
+      <Filter>Header Files\Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="D2Lang.h">
+      <Filter>Header Files\Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="D2Win.h">
+      <Filter>Header Files\Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="D2Net.h">
+      <Filter>Header Files\Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="Fog.h">
+      <Filter>Header Files\Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Header Files\Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="Library.h">
       <Filter>Header Files\Libraries</Filter>
     </ClInclude>
   </ItemGroup>
