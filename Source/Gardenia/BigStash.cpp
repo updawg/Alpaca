@@ -53,10 +53,9 @@ InventoryBIN* __stdcall modifStashGrid(InventoryBIN* ptInventoryBin)
 	return ptInventoryBin;
 }
 
-
 FCT_ASM ( caller_modifStashGrid )
 	POP ESI
-	CALL D2CompileTxtFile
+	CALL D2CompileTxtFileBase
 	PUSH EAX
 	CALL modifStashGrid
 	JMP ESI
@@ -86,7 +85,7 @@ void Install_BigStash()
 
 	// Modification of stash grid
 	mem_seek(D2Common::GetOffsetByAddition(0xC9F3, 0x6CC25));
-	MEMC_REF4(D2CompileTxtFile, caller_modifStashGrid);
+	MEMC_REF4(D2CompileTxtFileBase, caller_modifStashGrid);
 
 	// Modification of stash background
 	mem_seek(D2Client::GetOffsetByAddition(0x45B1C, 0x943FC));

@@ -27,8 +27,11 @@ public:
 	typedef DWORD(__stdcall *TD2SendToServer) (DWORD size, DWORD one, void* data);
 	typedef DWORD(__stdcall *TD2SendToClient) (DWORD zero, DWORD clientID, void* data, DWORD size);
 
-	static TD2SendToServer D2SendToServer;
+	static TD2SendToServer D2SendToServer();
 	static TD2SendToClient D2SendToClient;
 private:
 	static void SetFunctions();
+
+	static TD2SendToServer D2Net::GetD2SendToServerOffset();
+	static void D2Net::D2SendToServer_1XX();
 };

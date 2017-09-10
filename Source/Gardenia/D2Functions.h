@@ -45,8 +45,6 @@ extern s_shifting shifting;
 #define RX(v) (*ptWindowStartX + (v))
 #define RY(v) (D2Client::ResolutionY() + *ptNegWindowStartY - (v))
 
-// At this point only typedef and externs are implemented
-
 // D2Common
 extern D2Common::TD2Common10242 D2Common10242;
 extern D2Common::TD2CanPutItemInInv D2CanPutItemInInv;
@@ -79,7 +77,7 @@ extern D2Common::TD2haveFireResMalus D2haveFireResMalus;
 extern D2Common::TD2haveColdResMalus D2haveColdResMalus;
 extern D2Common::TD2haveLightResMalus D2haveLightResMalus;
 extern D2Common::TD2havePoisonResMalus D2havePoisonResMalus;
-extern D2Common::TD2CompileTxtFile D2CompileTxtFile;
+extern D2Common::TD2CompileTxtFile D2CompileTxtFileBase;
 extern D2Common::TD2GetItemsBIN D2GetItemsBIN;
 extern D2Common::TD2GetGemsBIN D2GetGemsBIN;
 extern D2Common::TD2GetCubeMainBIN D2GetCubeMainBIN;
@@ -221,7 +219,7 @@ extern D2CMP::TD2CMP10014 D2CMP10014;
 extern DataTables* SgptDataTables;
 
 extern WORD (*getDescStrPos)	(DWORD statID);
-extern void* (__stdcall *compileTxtFile)(DWORD unused, const char* filename, BINField* ptFields, DWORD* ptRecordCount, DWORD recordLength);
+extern void* (__stdcall *D2CompileTxtFile)(DWORD unused, const char* filename, BINField* ptFields, DWORD* ptRecordCount, DWORD recordLength);
 void setImage(sDrawImageInfo* data, void* image);
 void setFrame(sDrawImageInfo* data, DWORD frame);
 void __inline fillRect(DWORD x, DWORD y, DWORD Width, DWORD Height, DWORD color, DWORD transTbl){D2FillArea(x,y,x+Width,y+Height,color,transTbl);};

@@ -16,6 +16,7 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "D2Common.h"
+#include "Fog.h"
 
 void D2Common::Init()
 {
@@ -69,7 +70,7 @@ void D2Common::SetFunctions()
 	D2haveColdResMalus = (TD2haveColdResMalus)GetOffsetByProc(10548, 0);
 	D2haveLightResMalus = (TD2haveLightResMalus)GetOffsetByProc(10549, 0);
 	D2havePoisonResMalus = (TD2havePoisonResMalus)GetOffsetByProc(10550, 0);
-	D2CompileTxtFile = (TD2CompileTxtFile)GetOffsetByProc(10578, 10037);
+	D2CompileTxtFileBase = (TD2CompileTxtFile)GetOffsetByProc(10578, 10037);
 	D2GetItemsBIN = (TD2GetItemsBIN)GetOffsetByProc(10600, 10994);
 	D2GetGemsBIN = (TD2GetGemsBIN)GetOffsetByProc(10616, 10619);
 	D2GetCubeMainBIN = (TD2GetCubeMainBIN)GetOffsetByProc(11232, 10393);
@@ -96,6 +97,100 @@ void D2Common::SetFunctions()
 	D2Common10581 = (TD2Common10581)GetOffsetByProc(10581, 0);
 	D2Common10598 = (TD2Common10598)GetOffsetByProc(10598, 0);
 	D2Common10673 = (TD2Common10673)GetOffsetByProc(10673, 0);
+}
+
+D2Common::TD2CompileTxtFile D2Common::D2CompileTxtFile()
+{
+	if (VersionUtility::Is113D())
+	{
+		return (TD2CompileTxtFile)compileTxtFile_111;
+	}
+	else
+	{
+		return (TD2CompileTxtFile)compileTxtFile_9;
+	}
+}
+
+char* D2Common::CompileTxtFileName = "D2CompileTxtFile";
+char* D2Common::ErrorReadTxtFileName = "pbData";
+
+__declspec(naked) void* __stdcall D2Common::compileTxtFile_9(DWORD unused, const char* filename, BINField* ptFields, DWORD* ptRecordCount, DWORD recordLength)
+{
+	_asm {
+		SUB ESP, 0x210
+		PUSH EBX
+		PUSH EBP
+		PUSH ESI
+		PUSH EDI
+		MOV ESI, DWORD PTR SS : [ESP + 0x228]
+		MOV DWORD PTR SS : [ESP + 0x10], 0
+
+		MOV EDI, wsprintf
+		PUSH ESI
+		LEA EAX, DWORD PTR SS : [ESP + 0x20]
+		PUSH EAX
+		CALL EDI
+		ADD ESP, 8
+
+		LEA EDX, DWORD PTR SS : [ESP + 0x10]
+		PUSH 0
+		PUSH CompileTxtFileName
+		PUSH EDX
+		MOV ECX, DWORD PTR SS : [ESP + 0x230]
+		LEA EDX, DWORD PTR SS : [ESP + 0x28]
+		CALL D2ReadFile
+		TEST EAX, EAX
+		JNZ continue_compileTxtFile
+		PUSH 0
+		PUSH CompileTxtFileName
+		PUSH ErrorReadTxtFileName
+		CALL Fog::D2FogAssertOld
+		PUSH - 1
+		CALL exit
+		continue_compileTxtFile :
+		MOV ECX, D2CompileTxtFileBase
+		ADD ECX, 0x305
+		JMP ECX
+	}
+}
+
+__declspec(naked) void* __stdcall D2Common::compileTxtFile_111(DWORD unused, const char* filename, BINField* ptFields, DWORD* ptRecordCount, DWORD recordLength)
+{
+	_asm {
+		SUB ESP, 0x20C
+		PUSH EBX
+		PUSH EBP
+		PUSH ESI
+		PUSH EDI
+		MOV DWORD PTR SS : [ESP + 0x10], 0
+		MOV EBX, DWORD PTR SS : [ESP + 0x224]
+
+		PUSH EBX
+		LEA EAX, DWORD PTR SS : [ESP + 0x1C]
+		PUSH EAX
+		CALL DWORD PTR SS : [wsprintf]
+		MOV EDX, DWORD PTR SS : [ESP + 0x228]
+		ADD ESP, 8
+		LEA EDX, DWORD PTR SS : [ESP + 0x10]
+		PUSH EDX
+		PUSH EAX
+		LEA EAX, DWORD PTR SS : [ESP + 0x20]
+		CALL D2ReadFile
+		TEST EAX, EAX
+		JNZ continue_compileTxtFile
+		PUSH __LINE__
+		CALL Fog::D2GetInstructionPointer
+		PUSH EAX
+		PUSH ErrorReadTxtFileName
+		CALL Fog::D2FogAssert
+		ADD ESP, 0xC
+		PUSH - 1
+		CALL exit
+		continue_compileTxtFile :
+		MOV ECX, D2CompileTxtFileBase
+		ADD ECX, 0x1EC
+		JMP ECX
+	}
 }
 
 DWORD D2Common::ptPYPlayerDataOffset;
@@ -138,7 +233,7 @@ D2Common::TD2haveFireResMalus D2Common::D2haveFireResMalus;
 D2Common::TD2haveColdResMalus D2Common::D2haveColdResMalus;
 D2Common::TD2haveLightResMalus D2Common::D2haveLightResMalus;
 D2Common::TD2havePoisonResMalus D2Common::D2havePoisonResMalus;
-D2Common::TD2CompileTxtFile D2Common::D2CompileTxtFile;
+D2Common::TD2CompileTxtFile D2Common::D2CompileTxtFileBase;
 D2Common::TD2GetItemsBIN D2Common::D2GetItemsBIN;
 D2Common::TD2GetGemsBIN D2Common::D2GetGemsBIN;
 D2Common::TD2GetCubeMainBIN D2Common::D2GetCubeMainBIN;

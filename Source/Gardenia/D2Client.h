@@ -64,7 +64,7 @@ public:
 	static TD2GetMouseX D2GetMouseX;
 	static TD2GetMouseY D2GetMouseY;
 	static TD2GetClientPlayer D2GetClientPlayer;
-	static TD2CleanStatMouseUp D2CleanStatMouseUp;
+	static TD2CleanStatMouseUp D2CleanStatMouseUp();
 	static TD2SendToServer3 D2SendToServer3;
 
 	static DWORD ResolutionX();
@@ -82,6 +82,9 @@ public:
 	static Unit** ptptClientChar;
 	static DWORD* ptNbStatDesc;
 	static DWORD* ptStatDescTable;
+private:
+	static void SetFunctions();
+	static void __fastcall D2CleanStatMouseUp_111();
 
 	// C++ ISO Standards prohibit using a pointer-to-member address as a way to access the function in the instance.
 	// There are workarounds available (static functions being one (They are essentially the same as non-member functions)
@@ -92,12 +95,4 @@ public:
 	static DWORD* StatMouse2;
 	static DWORD* StatMouse3;
 	static DWORD* StatMouse4;
-
-	static void __fastcall D2CleanStatMouseUp_111();
-
-private:
-	static void SetFunctions();
-
-	// Redirected Functions
-	static TD2CleanStatMouseUp GetD2CleanStatMouseUp();
 };

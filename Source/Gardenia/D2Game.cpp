@@ -34,14 +34,26 @@ void D2Game::SetFunctions()
 	D2TestPositionInRoom = (TD2TestPositionInRoom)GetOffsetByAddition(0, 0x1340);
 	D2LoadInventory = (TD2LoadInventory)GetOffsetByAddition(0x4F100, 0x3A4C0);
 	D2GameGetObject = (TD2GameGetObject)GetOffsetByAddition(0x7BAE0, 0x6DC40);
-
-	// Until 1.10
 	D2GetClient = (TD2GetClient)GetOffsetByAddition(0x7C2C0, 0);
 
-	D2SaveGame = (TD2SaveGame)GetOffsetByAddition(0, 0xBE660);
-	VD2SaveGame = D2SaveGame;
-
 	ptClientTable = (NetClient**)GetOffsetByAddition(0xF2A80, 0x1105E0);
+}
+
+D2Game::TD2SaveGame D2Game::D2SaveGame()
+{
+	if (VersionUtility::Is113D())
+	{
+		return GetD2SaveGameOffset();
+	}
+	else
+	{
+		return (TD2SaveGame)D2SaveGame_1XX;
+	}
+}
+
+D2Game::TD2SaveGame D2Game::GetD2SaveGameOffset()
+{
+	return (TD2SaveGame)GetOffsetByAddition(0, 0xBE660);
 }
 
 __declspec (naked) void D2Game::D2SaveGame_1XX()
@@ -50,7 +62,7 @@ __declspec (naked) void D2Game::D2SaveGame_1XX()
 		POP EAX
 		POP ECX
 		PUSH EAX
-		JMP VD2SaveGame
+		JMP GetD2SaveGameOffset
 	};
 }
 
@@ -62,13 +74,6 @@ D2Game::TD2VerifIfNotCarry1 D2Game::D2VerifIfNotCarry1;
 D2Game::TD2TestPositionInRoom D2Game::D2TestPositionInRoom;
 D2Game::TD2LoadInventory D2Game::D2LoadInventory;
 D2Game::TD2GameGetObject D2Game::D2GameGetObject;
-D2Game::TD2SaveGame D2Game::D2SaveGame;
 
 D2Game::TD2GetClient D2Game::D2GetClient;
 NetClient** D2Game::ptClientTable;
-
-// These static variables need to be here so that we can call
-// the address of the offset (that we retrieved from inside of our
-// instanced version of this class) in the static __declspec
-// (naked) functions.
-D2Game::TD2SaveGame D2Game::VD2SaveGame;

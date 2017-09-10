@@ -415,7 +415,7 @@ void Install_DisplayBaseStatsValue()
 
 RunesBIN* __stdcall compileRunesTxt(DWORD unused, const char* filename, BINField* ptFields, DWORD* ptRecordCount, DWORD recordLength)
 {
-	RunesBIN* ptRunesBin = (RunesBIN*)D2CompileTxtFile(unused, filename, ptFields, ptRecordCount, recordLength);
+	RunesBIN* ptRunesBin = (RunesBIN*)D2CompileTxtFileBase(unused, filename, ptFields, ptRecordCount, recordLength);
 	for (DWORD i=0; i < *ptRecordCount; i++)
 		ptRunesBin[i].Server=0;
 	return ptRunesBin;
@@ -430,7 +430,7 @@ void Install_LadderRunewords()
 	log_msg("[Patch] D2Common for enabled the ladder only runewords. (LadderRunewords)\n");
 
 	mem_seek(D2Common::GetOffsetByAddition(0, 0x63782));
-	MEMC_REF4(D2Common::D2CompileTxtFile, compileRunesTxt);
+	MEMC_REF4(D2Common::D2CompileTxtFileBase, compileRunesTxt);
 
 	log_msg("\n");
 

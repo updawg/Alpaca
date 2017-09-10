@@ -119,7 +119,13 @@ public:
 	static TD2haveColdResMalus D2haveColdResMalus;
 	static TD2haveLightResMalus D2haveLightResMalus;
 	static TD2havePoisonResMalus D2havePoisonResMalus;
-	static TD2CompileTxtFile D2CompileTxtFile;
+
+	// Some functions use the base function directly
+	static TD2CompileTxtFile D2CompileTxtFileBase;
+
+	// Some functions use the wrapped version
+	static TD2CompileTxtFile D2CompileTxtFile();
+
 	static TD2GetItemsBIN D2GetItemsBIN;
 	static TD2GetGemsBIN D2GetGemsBIN;
 	static TD2GetCubeMainBIN D2GetCubeMainBIN;
@@ -152,4 +158,9 @@ public:
 	static TD2Common10673 D2Common10673;
 private:
 	static void SetFunctions();
+
+	static char* CompileTxtFileName;
+	static char* ErrorReadTxtFileName;
+	static void* __stdcall compileTxtFile_9(DWORD unused, const char* filename, BINField* ptFields, DWORD* ptRecordCount, DWORD recordLength);
+	static void* __stdcall compileTxtFile_111(DWORD unused, const char* filename, BINField* ptFields, DWORD* ptRecordCount, DWORD recordLength);
 };

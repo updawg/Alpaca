@@ -45,7 +45,6 @@ void D2Client::SetFunctions()
 	D2GetMouseX = (TD2GetMouseX)GetOffsetByAddition(0xB6670, 0);
 	D2GetMouseY = (TD2GetMouseY)GetOffsetByAddition(0xB6680, 0);
 	D2GetClientPlayer = (TD2GetClientPlayer)GetOffsetByAddition(0x8DC40, 0);
-	D2CleanStatMouseUp = GetD2CleanStatMouseUp();
 	D2SendToServer3 = (TD2SendToServer3)GetOffsetByAddition(0xD210, 0);
 
 	// Variables
@@ -85,22 +84,6 @@ void __fastcall D2Client::D2CleanStatMouseUp_111()
 	*StatMouse4 = 0;
 }
 
-D2Client::TD2CleanStatMouseUp D2Client::GetD2CleanStatMouseUp()
-{
-	DWORD location;
-
-	if (VersionUtility::Is113D())
-	{
-		location = (DWORD)&D2Client::D2CleanStatMouseUp_111;
-	}
-	else
-	{
-		location = GetOffsetByAddition(0xB920, 0);
-	}
-
-	return (TD2CleanStatMouseUp)location;
-}
-
 D2Client::TD2LoadImage D2Client::D2LoadImage;
 D2Client::TD2FreeImage D2Client::D2FreeImage;
 D2Client::TD2SendMsgToAll D2Client::D2SendMsgToAll;
@@ -119,7 +102,23 @@ D2Client::TD2GetDifficultyLevel D2Client::D2GetDifficultyLevel;
 D2Client::TD2GetMouseX D2Client::D2GetMouseX;
 D2Client::TD2GetMouseY D2Client::D2GetMouseY;
 D2Client::TD2GetClientPlayer D2Client::D2GetClientPlayer;
-D2Client::TD2CleanStatMouseUp D2Client::D2CleanStatMouseUp;
+
+D2Client::TD2CleanStatMouseUp D2Client::D2CleanStatMouseUp()
+{
+	DWORD location;
+
+	if (VersionUtility::Is113D())
+	{
+		location = (DWORD)&D2Client::D2CleanStatMouseUp_111;
+	}
+	else
+	{
+		location = GetOffsetByAddition(0xB920, 0);
+	}
+
+	return (TD2CleanStatMouseUp)location;
+}
+
 D2Client::TD2SendToServer3 D2Client::D2SendToServer3;
 
 DWORD* D2Client::ptResolutionY;

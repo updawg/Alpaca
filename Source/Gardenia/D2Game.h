@@ -45,14 +45,13 @@ public:
 	static TD2TestPositionInRoom D2TestPositionInRoom;
 	static TD2LoadInventory D2LoadInventory;
 	static TD2GameGetObject D2GameGetObject;
-	static TD2SaveGame D2SaveGame;
+	static TD2SaveGame D2SaveGame();
 
 	static TD2GetClient D2GetClient;
 	static NetClient** ptClientTable;
-	 
-	// _declspec (naked) functions (Our custom/wrapper function)
-	static void D2SaveGame_1XX();
-	static TD2SaveGame VD2SaveGame;
 private:
 	static void SetFunctions();
+
+	static TD2SaveGame GetD2SaveGameOffset();
+	static void D2SaveGame_1XX();
 };
