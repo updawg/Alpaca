@@ -28,7 +28,6 @@ void D2Game::SetFunctions()
 {
 	D2SetNbPlayers = (TD2SetNbPlayers)GetOffsetByProc(10059, 10002);
 	D2SendPacket = (TD2SendPacket)GetOffsetByAddition(0xC380, 0xDB780);
-	D2SetSkillBaseLevelOnClient = (TD2SetSkillBaseLevelOnClient)GetOffsetByAddition(0xD650, 0xDD4F0);
 	D2LinkPortal = (TD2LinkPortal)GetOffsetByAddition(0, 0x15F40);
 	D2VerifIfNotCarry1 = (TD2VerifIfNotCarry1)GetOffsetByAddition(0, 0xB2F70);
 	D2TestPositionInRoom = (TD2TestPositionInRoom)GetOffsetByAddition(0, 0x1340);
@@ -68,7 +67,6 @@ __declspec (naked) void D2Game::D2SaveGame_1XX()
 
 D2Game::TD2SetNbPlayers D2Game::D2SetNbPlayers;
 D2Game::TD2SendPacket D2Game::D2SendPacket;
-D2Game::TD2SetSkillBaseLevelOnClient D2Game::D2SetSkillBaseLevelOnClient;
 D2Game::TD2LinkPortal D2Game::D2LinkPortal;
 D2Game::TD2VerifIfNotCarry1 D2Game::D2VerifIfNotCarry1;
 D2Game::TD2TestPositionInRoom D2Game::D2TestPositionInRoom;

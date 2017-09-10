@@ -26,7 +26,6 @@ public:
 
 	typedef void(__fastcall *TD2SetNbPlayers) (DWORD nbPlayers);
 	typedef DWORD(__fastcall *TD2SendPacket) (void* ptNetClient, LPVOID pData, DWORD size);
-	typedef void(__fastcall *TD2SetSkillBaseLevelOnClient) (void* ptClient, Unit* ptChar, DWORD skillID, DWORD sLvl, DWORD bRemove);
 	typedef DWORD(__stdcall *TD2LinkPortal) (GameStruct* ptGame, Unit* ptObject, DWORD levelEndID, DWORD levelStartID);
 	typedef DWORD(__fastcall *TD2VerifIfNotCarry1) (Unit* ptItem, ItemsBIN* itemsData, Unit* ptFirstItem);
 	typedef Room* (__fastcall *TD2TestPositionInRoom) (Room* ptRoom, DWORD x, DWORD y);
@@ -39,7 +38,6 @@ public:
 
 	static TD2SetNbPlayers D2SetNbPlayers;
 	static TD2SendPacket D2SendPacket;
-	static TD2SetSkillBaseLevelOnClient D2SetSkillBaseLevelOnClient;
 	static TD2LinkPortal D2LinkPortal;
 	static TD2VerifIfNotCarry1 D2VerifIfNotCarry1;
 	static TD2TestPositionInRoom D2TestPositionInRoom;

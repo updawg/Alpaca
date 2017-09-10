@@ -51,8 +51,8 @@ D2Common::TD2haveFireResMalus D2haveFireResMalus;
 D2Common::TD2haveColdResMalus D2haveColdResMalus;
 D2Common::TD2haveLightResMalus D2haveLightResMalus;
 D2Common::TD2havePoisonResMalus D2havePoisonResMalus;
-D2Common::TD2CompileTxtFile D2CompileTxtFileBase;
-D2Common::TD2CompileTxtFile	D2CompileTxtFile;
+D2Common::TD2CompileTxtFile D2CompileTxtFileDirect;
+D2Common::TD2CompileTxtFile D2CompileTxtFile;
 D2Common::TD2GetItemsBIN D2GetItemsBIN;
 D2Common::TD2GetGemsBIN D2GetGemsBIN;
 D2Common::TD2GetCubeMainBIN D2GetCubeMainBIN;
@@ -119,7 +119,6 @@ DWORD* ptStatDescTable;
 // D2Game
 D2Game::TD2SetNbPlayers D2SetNbPlayers;
 D2Game::TD2SendPacket D2SendPacket;
-D2Game::TD2SetSkillBaseLevelOnClient D2SetSkillBaseLevelOnClient;
 D2Game::TD2LinkPortal D2LinkPortal;
 D2Game::TD2VerifIfNotCarry1 D2VerifIfNotCarry1;
 D2Game::TD2TestPositionInRoom D2TestPositionInRoom;
@@ -184,32 +183,25 @@ D2CMP::TD2CMP10014 D2CMP10014;
 
 DataTables* SgptDataTables;
 
-// D2Common
-D2Common::TD2AddPlayerStat			 V2AddPlayerStat;
-D2Common::TD2GetPlayerStat			 V2GetPlayerStat;
-D2Common::TD2GetPlayerBaseStat		 V2GetPlayerBaseStat;
-D2Common::TD2GetItemTypesBIN			 V2GetItemTypesBIN;
-D2Common::TD2GetCharStatsBIN			 V2GetCharStatsBIN;
-D2Common::TD2GetItemStatCostBIN		 V2GetItemStatCostBIN;
+// All V2 are used for redirection.
 
 // D2Client
-D2Client::TD2PrintStat				 V2PrintStat;
-D2Client::TD2SendMsgToAll		     V2SendMsgToAll;
-D2Client::TD2SetColorPopup			 V2SetColorPopup;
-D2Client::TD2LoadImage				 V2LoadImage;
-D2Client::TD2PlaySound				 V2PlaySound;
+D2Client::TD2SendMsgToAll V2SendMsgToAll;
+D2Client::TD2SetColorPopup V2SetColorPopup;
+D2Client::TD2LoadImage V2LoadImage;
+D2Client::TD2PlaySound V2PlaySound;
 
 // D2Game
-D2Game::TD2SetSkillBaseLevelOnClient	 V2SetSkillBaseLevelOnClient;
-D2Game::TD2VerifIfNotCarry1			 V2VerifIfNotCarry1;
-D2Game::TD2GameGetObject				 V2GameGetObject;
-D2Game::TD2TestPositionInRoom		 V2TestPositionInRoom;
-D2Game::TD2SendPacket				 V2SendPacket;
-D2Game::TD2LoadInventory				 V2LoadInventory;
+D2Game::TD2VerifIfNotCarry1 V2VerifIfNotCarry1;
+D2Game::TD2GameGetObject V2GameGetObject;
+D2Game::TD2TestPositionInRoom V2TestPositionInRoom;
+D2Game::TD2SendPacket V2SendPacket;
+D2Game::TD2LoadInventory V2LoadInventory;
 
+/// STUFF
 WORD (*getDescStrPos) (DWORD statID);
 
-DWORD getStatDescIDFrom (DWORD statID) //FOR 1.09
+DWORD getStatDescIDFrom(DWORD statID) //FOR 1.09
 {
 	DWORD* desc = ptStatDescTable;
 	DWORD curDesc = 0;
@@ -217,81 +209,26 @@ DWORD getStatDescIDFrom (DWORD statID) //FOR 1.09
 	{
 		if (*desc == statID)
 			return curDesc;
-		desc+=4;
+		desc += 4;
 		curDesc++;
 	}
 	return curDesc;
 }
 
-FCT_ASM ( D2AddPlayerStat_9 )//(Unit* ptChar, DWORD statID, DWORD amount, DWORD index)
-	PUSH DWORD PTR SS:[ESP+0xC]
-	PUSH DWORD PTR SS:[ESP+0xC]
-	PUSH DWORD PTR SS:[ESP+0xC]
-	CALL V2AddPlayerStat
-	RETN 0x10
-}}
-
-FCT_ASM ( D2GetPlayerStat_9 )//(Unit* ptChar, DWORD statID, DWORD index)
-	PUSH DWORD PTR SS:[ESP+0x8]
-	PUSH DWORD PTR SS:[ESP+0x8]
-	CALL V2GetPlayerStat
-	RETN 0x0C
-}}
-
-FCT_ASM ( D2GetPlayerBaseStat_9 )//(Unit* ptChar, DWORD statID, DWORD index)
-	PUSH DWORD PTR SS:[ESP+0x8]
-	PUSH DWORD PTR SS:[ESP+0x8]
-	CALL V2GetPlayerBaseStat
-	RETN 0x0C
-}}
-
-FCT_ASM ( D2SetSkillBaseLevelOnClient_9 )//(void* ptClient, Unit* ptChar, DWORD skillID, DWORD newValue, DWORD zero)
-	POP EAX
-	MOV ECX,EDX
-	POP EDX
-	PUSH EAX
-	JMP V2SetSkillBaseLevelOnClient
-}}
-
-FCT_ASM ( D2GetCharStatsBIN_9 )
-	PUSH ECX
-	CALL D2Common10581
-	RETN
-}}
-
-FCT_ASM ( D2GetItemStatCostBIN_9 )
-	PUSH ECX
-	CALL D2Common10598
-	RETN
-}}
-
-FCT_ASM ( D2GetItemTypesBIN_9 )
-	PUSH ECX
-	CALL D2Common10673
-	RETN
-}}
-
-DWORD __fastcall D2PrintStat_9 (Unit* ptItem, Stats* ptStats, DWORD statID, DWORD statIndex, DWORD statValue, LPWSTR lpText)
+WORD getDescStrPos_9(DWORD statID)
 {
-	DWORD curDesc = getStatDescIDFrom(statID);
-	if (curDesc < *ptNbStatDesc)
-		return V2PrintStat(ptItem, (Stats*)curDesc, statValue, 0, 0, lpText);
-	return 0;
+	DWORD* desc = &ptStatDescTable[getStatDescIDFrom(statID) * 4];
+	return (WORD)*(desc + 2);
 }
-
-void setImage(sDrawImageInfo* data, void* image){((void**)data)[shifting.ptImage/4]=image;}//0x4 0x8 0x3C
-void setFrame(sDrawImageInfo* data, DWORD frame){((DWORD*)data)[shifting.ptFrame/4]=frame;}//0x8 0x44 0x40
-
-WORD getDescStrPos_9 (DWORD statID)
-{
-	DWORD* desc = &ptStatDescTable[getStatDescIDFrom(statID)*4];
-	return (WORD)*(desc+2);
-}
-WORD getDescStrPos_10 (DWORD statID)
+WORD getDescStrPos_10(DWORD statID)
 {
 	ItemStatCostBIN* itemStatCost = D2GetItemStatCostBIN(statID);
 	return itemStatCost->descstrpos;
 }
+
+/// STUFF
+void setImage(sDrawImageInfo* data, void* image){((void**)data)[shifting.ptImage/4]=image;}//0x4 0x8 0x3C
+void setFrame(sDrawImageInfo* data, DWORD frame){((DWORD*)data)[shifting.ptFrame/4]=frame;}//0x8 0x44 0x40
 
 DWORD __fastcall	D2isLODGame_111(){return IsLodGame;}
 BYTE  __fastcall	D2GetDifficultyLevel_111(){return DifficultyLevel;}
@@ -361,30 +298,6 @@ FCT_ASM ( D2GetClient_111 )
 	RETN 4
 }}
 
-FCT_ASM ( D2SetSkillBaseLevelOnClient_111 )
-	PUSH EBX
-	PUSH ESI
-	PUSH DWORD PTR SS:[ESP+0x14]
-	PUSH DWORD PTR SS:[ESP+0x14]
-	MOV EBX, DWORD PTR SS:[ESP+0x14]
-	MOV EAX,ECX
-	MOV ESI,EDX
-	CALL V2SetSkillBaseLevelOnClient
-	POP ESI
-	POP EBX
-	RETN 0xC
-}}
-
-FCT_ASM ( D2GetCharStatsBIN_111 )
-	MOV EAX,ECX
-	JMP V2GetCharStatsBIN
-}}
-
-FCT_ASM ( D2GetItemStatCostBIN_111 )
-	MOV EAX,ECX
-	JMP V2GetItemStatCostBIN
-}}
-
 FCT_ASM ( D2SendToServer3_111 )
 	PUSH EBX
 	PUSH ECX
@@ -397,19 +310,6 @@ FCT_ASM ( D2SendToServer3_111 )
 	POP ECX
 	POP EBX
 	RETN
-}}
-
-FCT_ASM ( D2PrintStat_111 )
-	PUSH ESI
-	MOV ESI,DWORD PTR SS:[ESP+0x14]
-	MOV EAX,DWORD PTR SS:[ESP+0x08]
-	PUSH DWORD PTR SS:[ESP+0x10]
-	PUSH DWORD PTR SS:[ESP+0x10]
-	PUSH EDX
-	PUSH ECX
-	CALL V2PrintStat
-	POP ESI
-	RETN 0x10
 }}
 
 FCT_ASM ( D2SendPacket_111 )
@@ -455,11 +355,6 @@ FCT_ASM ( D2TestPositionInRoom_111 )
 	RETN 4
 }}
 
-FCT_ASM ( D2GetItemTypesBIN_111)
-	MOV EAX,ECX
-	JMP V2GetItemTypesBIN
-}}
-
 void initD2functions()
 {
 	// D2Common
@@ -481,9 +376,9 @@ void initD2functions()
 	D2GetChanceToBlock = D2Common::D2GetChanceToBlock;
 	D2GetMaxGold = D2Common::D2GetMaxGold;
 	D2isInState = D2Common::D2isInState;
-	D2AddPlayerStat = D2Common::D2AddPlayerStat;
-	D2GetPlayerStat = D2Common::D2GetPlayerStat;
-	D2GetPlayerBaseStat = D2Common::D2GetPlayerBaseStat;
+	D2AddPlayerStat = D2Common::D2AddPlayerStat();
+	D2GetPlayerStat = D2Common::D2GetPlayerStat();
+	D2GetPlayerBaseStat = D2Common::D2GetPlayerBaseStat();
 	D2haveDefenceBonus = D2Common::D2haveDefenceBonus;
 	D2haveFireResBonus = D2Common::D2haveFireResBonus;
 	D2haveColdResBonus = D2Common::D2haveColdResBonus;
@@ -494,7 +389,7 @@ void initD2functions()
 	D2haveColdResMalus = D2Common::D2haveColdResMalus;
 	D2haveLightResMalus = D2Common::D2haveLightResMalus;
 	D2havePoisonResMalus = D2Common::D2havePoisonResMalus;
-	D2CompileTxtFileBase = D2Common::D2CompileTxtFileBase;
+	D2CompileTxtFileDirect = D2Common::D2CompileTxtFileDirect;
 	D2CompileTxtFile = D2Common::D2CompileTxtFile();
 	D2GetItemsBIN = D2Common::D2GetItemsBIN;
 	D2GetGemsBIN = D2Common::D2GetGemsBIN;
@@ -512,9 +407,9 @@ void initD2functions()
 	D2GetNbRunesBIN = D2Common::D2GetNbRunesBIN;
 	D2GetRunesBIN = D2Common::D2GetRunesBIN;
 	D2SaveItem = D2Common::D2SaveItem;
-	D2GetCharStatsBIN = D2Common::D2GetCharStatsBIN;
-	D2GetItemTypesBIN = D2Common::D2GetItemTypesBIN;
-	D2GetItemStatCostBIN = D2Common::D2GetItemStatCostBIN;
+	D2GetCharStatsBIN = D2Common::D2GetCharStatsBIN();
+	D2GetItemTypesBIN = D2Common::D2GetItemTypesBIN();
+	D2GetItemStatCostBIN = D2Common::D2GetItemStatCostBIN();
 	D2ReadFile = D2Common::D2ReadFile;
 	D2LoadSuperuniques = D2Common::D2LoadSuperuniques;
 
@@ -524,7 +419,7 @@ void initD2functions()
 	D2SendMsgToAll = D2Client::D2SendMsgToAll;
 	D2GetLastMonsterIDFight = D2Client::D2GetLastMonsterIDFight;
 	D2PrintStatsPage = D2Client::D2PrintStatsPage;
-	D2PrintStat = D2Client::D2PrintStat;
+	D2PrintStat = D2Client::D2PrintStat();
 	D2SetColorPopup = D2Client::D2SetColorPopup;
 	D2PlaySound = D2Client::D2PlaySound;
 	D2SendToServerXX = D2Client::D2SendToServerXX;
@@ -557,7 +452,6 @@ void initD2functions()
 	// D2Game
 	D2SetNbPlayers = D2Game::D2SetNbPlayers;
 	D2SendPacket = D2Game::D2SendPacket;
-	D2SetSkillBaseLevelOnClient = D2Game::D2SetSkillBaseLevelOnClient;
 	D2LinkPortal = D2Game::D2LinkPortal;
 	D2VerifIfNotCarry1 = D2Game::D2VerifIfNotCarry1;
 	D2TestPositionInRoom = D2Game::D2TestPositionInRoom;
@@ -633,23 +527,15 @@ void initD2functions()
 	// Basically all these functions wrap around the original functions we mapped in order to extend their functionality.
 	getDescStrPos = VersionUtility::Is113D() ? getDescStrPos_10 : getDescStrPos_9;
 
-	V2AddPlayerStat = D2AddPlayerStat;
-	V2GetPlayerStat = D2GetPlayerStat;
-	V2GetPlayerBaseStat = D2GetPlayerBaseStat;
-	V2SetSkillBaseLevelOnClient = D2SetSkillBaseLevelOnClient;
-	V2PrintStat = D2PrintStat;
 	V2SendMsgToAll = D2SendMsgToAll;
 	V2SetColorPopup = D2SetColorPopup;
 	V2LoadImage = D2LoadImage;
 	V2PlaySound = D2PlaySound;
-	V2GetCharStatsBIN = D2GetCharStatsBIN;
-	V2GetItemStatCostBIN = D2GetItemStatCostBIN;
 	V2SendPacket = D2SendPacket;
 	V2LoadInventory = D2LoadInventory;
 	V2VerifIfNotCarry1 = D2VerifIfNotCarry1;
 	V2GameGetObject = D2GameGetObject;
 	V2TestPositionInRoom = D2TestPositionInRoom;
-	V2GetItemTypesBIN = D2GetItemTypesBIN;
 
 	//////////////// REDIRECT ON CUSTOM FUNCTIONS ////////////////
 
@@ -662,15 +548,10 @@ void initD2functions()
 		D2PlaySound = (D2Client::TD2PlaySound) D2PlaySound_111;
 		D2GetClient = (D2Game::TD2GetClient) D2GetClient_111;
 		D2SendToServer3 = (D2Client::TD2SendToServer3) D2SendToServer3_111;
-		D2SetSkillBaseLevelOnClient = (D2Game::TD2SetSkillBaseLevelOnClient) D2SetSkillBaseLevelOnClient_111;
-		D2GetCharStatsBIN = (D2Common::TD2GetCharStatsBIN) D2GetCharStatsBIN_111;
-		D2GetItemStatCostBIN = (D2Common::TD2GetItemStatCostBIN) D2GetItemStatCostBIN_111;
-		D2PrintStat = (D2Client::TD2PrintStat) D2PrintStat_111;
 		D2SendPacket = (D2Game::TD2SendPacket) D2SendPacket_111;
 		D2LoadInventory = (D2Game::TD2LoadInventory) D2LoadInventory_111;
 		D2VerifIfNotCarry1 = (D2Game::TD2VerifIfNotCarry1) D2VerifIfNotCarry1_111;
 		D2GameGetObject = (D2Game::TD2GameGetObject) D2GameGetObject_111;
-		D2GetItemTypesBIN = (D2Common::TD2GetItemTypesBIN) D2GetItemTypesBIN_111;
 		D2TestPositionInRoom = (D2Game::TD2TestPositionInRoom) D2TestPositionInRoom_111;
 		D2isLODGame = D2isLODGame_111;
 		D2GetDifficultyLevel = D2GetDifficultyLevel_111;
@@ -678,18 +559,6 @@ void initD2functions()
 		D2GetMouseY = D2GetMouseY_111;
 		D2GetClientPlayer = D2GetClientPlayer_111;
 		D2GetRealItem = D2GetRealItem_111;
-	}
-
-	if (VersionUtility::Is109B())
-	{
-		D2AddPlayerStat =				(D2Common::TD2AddPlayerStat) D2AddPlayerStat_9;
-		D2GetPlayerStat =				(D2Common::TD2GetPlayerStat) D2GetPlayerStat_9;
-		D2GetPlayerBaseStat =			(D2Common::TD2GetPlayerBaseStat) D2GetPlayerBaseStat_9;
-		D2GetCharStatsBIN =				(D2Common::TD2GetCharStatsBIN) D2GetCharStatsBIN_9;
-		D2GetItemStatCostBIN =			(D2Common::TD2GetItemStatCostBIN) D2GetItemStatCostBIN_9;
-		D2GetItemTypesBIN =				(D2Common::TD2GetItemTypesBIN) D2GetItemTypesBIN_9;
-		D2PrintStat =					(D2Client::TD2PrintStat)D2PrintStat_9;
-		D2SetSkillBaseLevelOnClient =   (D2Game::TD2SetSkillBaseLevelOnClient)D2SetSkillBaseLevelOnClient_9;
 	}
 
 	//////////////// STRUCTURE MANAGEMENT ////////////////

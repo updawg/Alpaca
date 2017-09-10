@@ -16,6 +16,7 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "D2Client.h"
+#include "D2Common.h"
 
 void D2Client::Init()
 {
@@ -31,7 +32,6 @@ void D2Client::SetFunctions()
 	D2SendMsgToAll = (TD2SendMsgToAll)GetOffsetByAddition(0xD640, 0xB6890);
 	D2GetLastMonsterIDFight = (TD2GetLastMonsterIDFight)GetOffsetByAddition(0, 0);
 	D2PrintStatsPage = (TD2PrintStatsPage)GetOffsetByAddition(0x29800, 0xBF640);
-	D2PrintStat = (TD2PrintStat)GetOffsetByAddition(0x4BB20, 0x2CE40);
 	D2SetColorPopup = (TD2SetColorPopup)GetOffsetByAddition(0x85A60, 0x18820);
 	D2PlaySound = (TD2PlaySound)GetOffsetByAddition(0xB4360, 0x26270);
 	D2SendToServerXX = (TD2SendToServerXX)GetOffsetByAddition(0, 0xB61F0);
@@ -64,6 +64,8 @@ void D2Client::SetFunctions()
 	StatMouse2 = (DWORD*)GetOffsetByAddition(0, 0x11D228);
 	StatMouse3 = (DWORD*)GetOffsetByAddition(0, 0x11D240);
 	StatMouse4 = (DWORD*)GetOffsetByAddition(0, 0x11D244);
+
+	D2PrintStatDirect = (TD2PrintStat)GetOffsetByAddition(0x4BB20, 0x2CE40);
 }
 
 DWORD D2Client::ResolutionX()
@@ -84,25 +86,6 @@ void __fastcall D2Client::D2CleanStatMouseUp_111()
 	*StatMouse4 = 0;
 }
 
-D2Client::TD2LoadImage D2Client::D2LoadImage;
-D2Client::TD2FreeImage D2Client::D2FreeImage;
-D2Client::TD2SendMsgToAll D2Client::D2SendMsgToAll;
-D2Client::TD2GetLastMonsterIDFight D2Client::D2GetLastMonsterIDFight;
-D2Client::TD2PrintStatsPage D2Client::D2PrintStatsPage;
-D2Client::TD2PrintStat D2Client::D2PrintStat;
-D2Client::TD2SetColorPopup D2Client::D2SetColorPopup;
-D2Client::TD2PlaySound D2Client::D2PlaySound;
-D2Client::TD2SendToServerXX D2Client::D2SendToServerXX;
-D2Client::TD2TogglePage D2Client::D2TogglePage;
-D2Client::TD2ClickOnStashButton D2Client::D2ClickOnStashButton;
-D2Client::TD2LoadBuySelBtn D2Client::D2LoadBuySelBtn;
-
-D2Client::TD2isLODGame D2Client::D2isLODGame;
-D2Client::TD2GetDifficultyLevel D2Client::D2GetDifficultyLevel;
-D2Client::TD2GetMouseX D2Client::D2GetMouseX;
-D2Client::TD2GetMouseY D2Client::D2GetMouseY;
-D2Client::TD2GetClientPlayer D2Client::D2GetClientPlayer;
-
 D2Client::TD2CleanStatMouseUp D2Client::D2CleanStatMouseUp()
 {
 	DWORD location;
@@ -118,6 +101,86 @@ D2Client::TD2CleanStatMouseUp D2Client::D2CleanStatMouseUp()
 
 	return (TD2CleanStatMouseUp)location;
 }
+
+D2Client::TD2PrintStat D2Client::D2PrintStat()
+{
+	if (VersionUtility::Is113D())
+	{
+		return (TD2PrintStat)D2PrintStat_111;
+	}
+	else
+	{
+		return (TD2PrintStat)D2PrintStat_9;
+	}
+}
+
+__declspec(naked) void D2Client::D2PrintStat_111()
+{
+	__asm {
+		PUSH ESI
+		MOV ESI, DWORD PTR SS : [ESP + 0x14]
+		MOV EAX, DWORD PTR SS : [ESP + 0x08]
+		PUSH DWORD PTR SS : [ESP + 0x10]
+		PUSH DWORD PTR SS : [ESP + 0x10]
+		PUSH EDX
+		PUSH ECX
+		CALL D2PrintStatDirect
+		POP ESI
+		RETN 0x10
+	}
+}
+
+DWORD __fastcall D2Client::D2PrintStat_9(Unit* ptItem, Stats* ptStats, DWORD statID, DWORD statIndex, DWORD statValue, LPWSTR lpText)
+{
+	DWORD curDesc = getStatDescIDFrom(statID);
+	if (curDesc < *ptNbStatDesc)
+		return D2PrintStatDirect(ptItem, (Stats*)curDesc, statValue, 0, 0, lpText);
+	return 0;
+}
+
+DWORD D2Client::getStatDescIDFrom(DWORD statID) //FOR 1.09
+{
+	DWORD* desc = ptStatDescTable;
+	DWORD curDesc = 0;
+	while (curDesc < *ptNbStatDesc)
+	{
+		if (*desc == statID)
+			return curDesc;
+		desc += 4;
+		curDesc++;
+	}
+	return curDesc;
+}
+
+WORD D2Client::getDescStrPos_10(DWORD statID)
+{
+	ItemStatCostBIN* itemStatCost = ((D2Common::TD2GetItemStatCostBIN)D2Common::D2GetItemStatCostBIN)(statID);
+	return itemStatCost->descstrpos;
+}
+
+WORD D2Client::getDescStrPos_9(DWORD statID)
+{
+	DWORD* desc = &ptStatDescTable[getStatDescIDFrom(statID) * 4];
+	return (WORD)*(desc + 2);
+}
+
+D2Client::TD2LoadImage D2Client::D2LoadImage;
+D2Client::TD2FreeImage D2Client::D2FreeImage;
+D2Client::TD2SendMsgToAll D2Client::D2SendMsgToAll;
+D2Client::TD2GetLastMonsterIDFight D2Client::D2GetLastMonsterIDFight;
+D2Client::TD2PrintStatsPage D2Client::D2PrintStatsPage;
+D2Client::TD2SetColorPopup D2Client::D2SetColorPopup;
+D2Client::TD2PlaySound D2Client::D2PlaySound;
+D2Client::TD2SendToServerXX D2Client::D2SendToServerXX;
+D2Client::TD2TogglePage D2Client::D2TogglePage;
+D2Client::TD2ClickOnStashButton D2Client::D2ClickOnStashButton;
+D2Client::TD2LoadBuySelBtn D2Client::D2LoadBuySelBtn;
+
+D2Client::TD2isLODGame D2Client::D2isLODGame;
+D2Client::TD2GetDifficultyLevel D2Client::D2GetDifficultyLevel;
+D2Client::TD2GetMouseX D2Client::D2GetMouseX;
+D2Client::TD2GetMouseY D2Client::D2GetMouseY;
+D2Client::TD2GetClientPlayer D2Client::D2GetClientPlayer;
 
 D2Client::TD2SendToServer3 D2Client::D2SendToServer3;
 
@@ -137,3 +200,5 @@ DWORD* D2Client::StatMouse1;
 DWORD* D2Client::StatMouse2;
 DWORD* D2Client::StatMouse3;
 DWORD* D2Client::StatMouse4;
+
+D2Client::TD2PrintStat D2Client::D2PrintStatDirect;

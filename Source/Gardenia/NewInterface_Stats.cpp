@@ -159,21 +159,6 @@ void __stdcall printNewStatsPage()
 	sDrawImageInfo data;
 	ZeroMemory(&data,sizeof(data));
 
-	//print background
-/*	setImage(&data, newStatsInterfaceImages);
-	setFrame(&data, 0);
-	D2PrintImage(&data, 0,	256, -1, 5, 0);
-	setFrame(&data, 1);
-	D2PrintImage(&data, 256,256, -1, 5, 0);
-	setFrame(&data, 2);
-	D2PrintImage(&data, 0,	512, -1, 5, 0);
-	setFrame(&data, 3);
-	D2PrintImage(&data, 256,512, -1, 5, 0);
-	setFrame(&data, 4);
-	D2PrintImage(&data, 0,	552, -1, 5, 0);
-	setFrame(&data, 5);
-	D2PrintImage(&data, 256,552, -1, 5, 0);
-*/
 	fillRect(0,0,400,552,0,5);
 
 	//print button close

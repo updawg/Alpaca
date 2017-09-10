@@ -51,7 +51,7 @@ public:
 	static TD2SendMsgToAll D2SendMsgToAll;
 	static TD2GetLastMonsterIDFight D2GetLastMonsterIDFight;
 	static TD2PrintStatsPage D2PrintStatsPage;
-	static TD2PrintStat D2PrintStat;
+	static TD2PrintStat D2PrintStat();
 	static TD2SetColorPopup D2SetColorPopup;
 	static TD2PlaySound D2PlaySound;
 	static TD2SendToServerXX D2SendToServerXX;
@@ -82,6 +82,9 @@ public:
 	static Unit** ptptClientChar;
 	static DWORD* ptNbStatDesc;
 	static DWORD* ptStatDescTable;
+
+	static WORD getDescStrPos_10(DWORD statID);
+	static WORD getDescStrPos_9(DWORD statID);
 private:
 	static void SetFunctions();
 	static void __fastcall D2CleanStatMouseUp_111();
@@ -95,4 +98,11 @@ private:
 	static DWORD* StatMouse2;
 	static DWORD* StatMouse3;
 	static DWORD* StatMouse4;
+
+	static DWORD getStatDescIDFrom(DWORD statID);
+
+	static void D2PrintStat_111();
+	static DWORD __fastcall D2PrintStat_9(Unit* ptItem, Stats* ptStats, DWORD statID, DWORD statIndex, DWORD statValue, LPWSTR lpText);
+
+	static TD2PrintStat D2PrintStatDirect;
 };

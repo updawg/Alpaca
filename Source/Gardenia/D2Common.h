@@ -106,9 +106,9 @@ public:
 	static TD2GetChanceToBlock D2GetChanceToBlock;
 	static TD2GetMaxGold D2GetMaxGold;
 	static TD2isInState D2isInState;
-	static TD2AddPlayerStat D2AddPlayerStat;
-	static TD2GetPlayerStat D2GetPlayerStat;
-	static TD2GetPlayerBaseStat D2GetPlayerBaseStat;
+	static TD2AddPlayerStat D2AddPlayerStat();
+	static TD2GetPlayerStat D2GetPlayerStat();
+	static TD2GetPlayerBaseStat D2GetPlayerBaseStat();
 	static TD2haveDefenceBonus D2haveDefenceBonus;
 	static TD2haveFireResBonus D2haveFireResBonus;
 	static TD2haveColdResBonus D2haveColdResBonus;
@@ -121,7 +121,7 @@ public:
 	static TD2havePoisonResMalus D2havePoisonResMalus;
 
 	// Some functions use the base function directly
-	static TD2CompileTxtFile D2CompileTxtFileBase;
+	static TD2CompileTxtFile D2CompileTxtFileDirect;
 
 	// Some functions use the wrapped version
 	static TD2CompileTxtFile D2CompileTxtFile();
@@ -142,9 +142,9 @@ public:
 	static TD2GetNbRunesBIN D2GetNbRunesBIN;
 	static TD2GetRunesBIN D2GetRunesBIN;
 	static TD2SaveItem D2SaveItem;
-	static TD2GetCharStatsBIN D2GetCharStatsBIN;
-	static TD2GetItemTypesBIN D2GetItemTypesBIN;
-	static TD2GetItemStatCostBIN D2GetItemStatCostBIN;
+	static TD2GetCharStatsBIN D2GetCharStatsBIN();
+	static TD2GetItemTypesBIN D2GetItemTypesBIN();
+	static TD2GetItemStatCostBIN D2GetItemStatCostBIN();
 	static TD2ReadFile D2ReadFile;
 	static TD2LoadSuperuniques D2LoadSuperuniques;
 
@@ -161,6 +161,26 @@ private:
 
 	static char* CompileTxtFileName;
 	static char* ErrorReadTxtFileName;
-	static void* __stdcall compileTxtFile_9(DWORD unused, const char* filename, BINField* ptFields, DWORD* ptRecordCount, DWORD recordLength);
+
 	static void* __stdcall compileTxtFile_111(DWORD unused, const char* filename, BINField* ptFields, DWORD* ptRecordCount, DWORD recordLength);
+	static void* __stdcall compileTxtFile_9(DWORD unused, const char* filename, BINField* ptFields, DWORD* ptRecordCount, DWORD recordLength);
+
+	static void D2AddPlayerStat_9();
+	static void D2GetPlayerStat_9();
+	static void D2GetPlayerBaseStat_9();
+	static void D2GetCharStatsBIN_111();
+	static void D2GetCharStatsBIN_9();
+	static void D2GetItemStatCostBIN_111();
+	static void D2GetItemStatCostBIN_9();
+	static void D2GetItemTypesBIN_111();
+	static void D2GetItemTypesBIN_9();
+
+	// These values will only be used by the naked functions since it isn't recommended
+	// to declare local variables inside of them.
+	static TD2AddPlayerStat D2AddPlayerStatDirect;
+	static TD2GetPlayerStat D2GetPlayerStatDirect;
+	static TD2GetPlayerBaseStat D2GetPlayerBaseStatDirect;
+	static TD2GetCharStatsBIN D2GetCharStatsBINDirect;
+	static TD2GetItemStatCostBIN D2GetItemStatCostBINDirect;
+	static TD2GetItemTypesBIN D2GetItemTypesBINDirect;
 };

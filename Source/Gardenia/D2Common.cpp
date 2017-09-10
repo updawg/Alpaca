@@ -57,9 +57,6 @@ void D2Common::SetFunctions()
 	D2GetChanceToBlock = (TD2GetChanceToBlock)GetOffsetByProc(10433, 0);
 	D2GetMaxGold = (TD2GetMaxGold)GetOffsetByProc(10439, 11159);
 	D2isInState = (TD2isInState)GetOffsetByProc(10487, 0);
-	D2AddPlayerStat = (TD2AddPlayerStat)GetOffsetByProc(10518, 10645);
-	D2GetPlayerStat = (TD2GetPlayerStat)GetOffsetByProc(10519, 10550);
-	D2GetPlayerBaseStat = (TD2GetPlayerBaseStat)GetOffsetByProc(10521, 10216);
 	D2haveDefenceBonus = (TD2haveDefenceBonus)GetOffsetByProc(10539, 0);
 	D2haveFireResBonus = (TD2haveFireResBonus)GetOffsetByProc(10540, 0);
 	D2haveColdResBonus = (TD2haveColdResBonus)GetOffsetByProc(10541, 0);
@@ -70,7 +67,7 @@ void D2Common::SetFunctions()
 	D2haveColdResMalus = (TD2haveColdResMalus)GetOffsetByProc(10548, 0);
 	D2haveLightResMalus = (TD2haveLightResMalus)GetOffsetByProc(10549, 0);
 	D2havePoisonResMalus = (TD2havePoisonResMalus)GetOffsetByProc(10550, 0);
-	D2CompileTxtFileBase = (TD2CompileTxtFile)GetOffsetByProc(10578, 10037);
+	D2CompileTxtFileDirect = (TD2CompileTxtFile)GetOffsetByProc(10578, 10037);
 	D2GetItemsBIN = (TD2GetItemsBIN)GetOffsetByProc(10600, 10994);
 	D2GetGemsBIN = (TD2GetGemsBIN)GetOffsetByProc(10616, 10619);
 	D2GetCubeMainBIN = (TD2GetCubeMainBIN)GetOffsetByProc(11232, 10393);
@@ -87,9 +84,6 @@ void D2Common::SetFunctions()
 	D2GetNbRunesBIN = (TD2GetNbRunesBIN)GetOffsetByProc(10619, 10981);
 	D2GetRunesBIN = (TD2GetRunesBIN)GetOffsetByProc(10620, 10405);
 	D2SaveItem = (TD2SaveItem)GetOffsetByProc(10881, 10665);
-	D2GetCharStatsBIN = (TD2GetCharStatsBIN)GetOffsetByAddition(0, 0x17B0);
-	D2GetItemTypesBIN = (TD2GetItemTypesBIN)GetOffsetByAddition(0, 0x1160);
-	D2GetItemStatCostBIN = (TD2GetItemStatCostBIN)GetOffsetByAddition(0, 0x17E0);
 	D2ReadFile = (TD2ReadFile)GetOffsetByAddition(0x738A4, 0xB5E0);
 	D2LoadSuperuniques = (TD2LoadSuperuniques)GetOffsetByAddition(0x1F500, 0x80C40);
 
@@ -97,6 +91,13 @@ void D2Common::SetFunctions()
 	D2Common10581 = (TD2Common10581)GetOffsetByProc(10581, 0);
 	D2Common10598 = (TD2Common10598)GetOffsetByProc(10598, 0);
 	D2Common10673 = (TD2Common10673)GetOffsetByProc(10673, 0);
+
+	D2AddPlayerStatDirect = (TD2AddPlayerStat)GetOffsetByProc(10518, 10645);
+	D2GetPlayerStatDirect = (TD2GetPlayerStat)GetOffsetByProc(10519, 10550);
+	D2GetPlayerBaseStatDirect = (TD2GetPlayerBaseStat)GetOffsetByProc(10521, 10216);
+	D2GetCharStatsBINDirect = (TD2GetCharStatsBIN)GetOffsetByAddition(0, 0x17B0);
+	D2GetItemStatCostBINDirect = (TD2GetItemStatCostBIN)GetOffsetByAddition(0, 0x17E0);
+	D2GetItemTypesBINDirect = (TD2GetItemTypesBIN)GetOffsetByAddition(0, 0x1160);
 }
 
 D2Common::TD2CompileTxtFile D2Common::D2CompileTxtFile()
@@ -148,7 +149,7 @@ __declspec(naked) void* __stdcall D2Common::compileTxtFile_9(DWORD unused, const
 		PUSH - 1
 		CALL exit
 		continue_compileTxtFile :
-		MOV ECX, D2CompileTxtFileBase
+		MOV ECX, D2CompileTxtFileDirect
 		ADD ECX, 0x305
 		JMP ECX
 	}
@@ -187,9 +188,163 @@ __declspec(naked) void* __stdcall D2Common::compileTxtFile_111(DWORD unused, con
 		PUSH - 1
 		CALL exit
 		continue_compileTxtFile :
-		MOV ECX, D2CompileTxtFileBase
+		MOV ECX, D2CompileTxtFileDirect
 		ADD ECX, 0x1EC
 		JMP ECX
+	}
+}
+
+D2Common::TD2AddPlayerStat D2Common::D2AddPlayerStat()
+{
+	if (VersionUtility::Is113D())
+	{
+		return D2AddPlayerStatDirect;
+	}
+	else
+	{
+		return (TD2AddPlayerStat)D2AddPlayerStat_9;
+	}
+}
+
+__declspec(naked) void D2Common::D2AddPlayerStat_9()
+{
+	__asm {
+		PUSH DWORD PTR SS : [ESP + 0xC]
+		PUSH DWORD PTR SS : [ESP + 0xC]
+		PUSH DWORD PTR SS : [ESP + 0xC]
+		CALL D2AddPlayerStatDirect
+		RETN 0x10
+	}
+}
+
+D2Common::TD2GetPlayerStat D2Common::D2GetPlayerStat()
+{
+	if (VersionUtility::Is113D())
+	{
+		return D2GetPlayerStatDirect;
+	}
+	else
+	{
+		return (TD2GetPlayerStat)D2GetPlayerStat_9;
+	}
+}
+
+__declspec(naked) void D2Common::D2GetPlayerStat_9()
+{
+	__asm {
+		PUSH DWORD PTR SS : [ESP + 0x8]
+		PUSH DWORD PTR SS : [ESP + 0x8]
+		CALL D2GetPlayerStatDirect
+		RETN 0x0C
+	}
+}
+
+D2Common::TD2GetPlayerBaseStat D2Common::D2GetPlayerBaseStat()
+{
+	if (VersionUtility::Is113D())
+	{
+		return D2GetPlayerBaseStatDirect;
+	}
+	else
+	{
+		return (TD2GetPlayerBaseStat)D2GetPlayerBaseStat_9;
+	}
+}
+
+__declspec(naked) void D2Common::D2GetPlayerBaseStat_9()
+{
+	__asm {
+		PUSH DWORD PTR SS : [ESP + 0x8]
+		PUSH DWORD PTR SS : [ESP + 0x8]
+		CALL D2GetPlayerBaseStatDirect
+		RETN 0x0C
+	}
+}
+
+D2Common::TD2GetCharStatsBIN D2Common::D2GetCharStatsBIN()
+{
+	if (VersionUtility::Is113D())
+	{
+		return (TD2GetCharStatsBIN)D2GetCharStatsBIN_111;
+	}
+	else
+	{
+		return (TD2GetCharStatsBIN)D2GetCharStatsBIN_9;
+	}
+}
+
+__declspec(naked) void D2Common::D2GetCharStatsBIN_111()
+{
+	__asm {
+		MOV EAX, ECX
+		JMP D2GetCharStatsBINDirect
+	}
+}
+
+__declspec(naked) void D2Common::D2GetCharStatsBIN_9()
+{
+	__asm {
+		PUSH ECX
+		CALL D2Common10581
+		RETN
+	}
+}
+
+D2Common::TD2GetItemStatCostBIN D2Common::D2GetItemStatCostBIN()
+{
+	if (VersionUtility::Is113D())
+	{
+		return (TD2GetItemStatCostBIN)D2GetItemStatCostBIN_111;
+	}
+	else
+	{
+		return (TD2GetItemStatCostBIN)D2GetItemStatCostBIN_9;
+	}
+}
+
+__declspec(naked) void D2Common::D2GetItemStatCostBIN_111()
+{
+	__asm {
+		MOV EAX,ECX
+		JMP D2GetItemStatCostBINDirect
+	}
+} 
+
+__declspec(naked) void D2Common::D2GetItemStatCostBIN_9()
+{
+	__asm {
+		PUSH ECX
+		CALL D2Common10598
+		RETN
+	}
+}
+
+D2Common::TD2GetItemTypesBIN D2Common::D2GetItemTypesBIN()
+{
+	if (VersionUtility::Is113D())
+	{
+		return (TD2GetItemTypesBIN)D2Common::D2GetItemTypesBIN_111;
+	}
+	else
+	{
+		return (TD2GetItemTypesBIN)D2GetItemTypesBIN_9;
+	}
+}
+
+__declspec(naked) void D2Common::D2GetItemTypesBIN_111()
+{
+	__asm {
+		MOV EAX,ECX
+		JMP D2GetItemTypesBINDirect
+	}
+}
+
+__declspec(naked) void D2Common::D2GetItemTypesBIN_9()
+{
+	__asm {
+		PUSH ECX
+		CALL D2Common10673
+		RETN
 	}
 }
 
@@ -220,9 +375,6 @@ D2Common::TD2GetDefence D2Common::D2GetDefence;
 D2Common::TD2GetChanceToBlock D2Common::D2GetChanceToBlock;
 D2Common::TD2GetMaxGold D2Common::D2GetMaxGold;
 D2Common::TD2isInState D2Common::D2isInState;
-D2Common::TD2AddPlayerStat D2Common::D2AddPlayerStat;
-D2Common::TD2GetPlayerStat D2Common::D2GetPlayerStat;
-D2Common::TD2GetPlayerBaseStat D2Common::D2GetPlayerBaseStat;
 D2Common::TD2haveDefenceBonus D2Common::D2haveDefenceBonus;
 D2Common::TD2haveFireResBonus D2Common::D2haveFireResBonus;
 D2Common::TD2haveColdResBonus D2Common::D2haveColdResBonus;
@@ -233,7 +385,7 @@ D2Common::TD2haveFireResMalus D2Common::D2haveFireResMalus;
 D2Common::TD2haveColdResMalus D2Common::D2haveColdResMalus;
 D2Common::TD2haveLightResMalus D2Common::D2haveLightResMalus;
 D2Common::TD2havePoisonResMalus D2Common::D2havePoisonResMalus;
-D2Common::TD2CompileTxtFile D2Common::D2CompileTxtFileBase;
+D2Common::TD2CompileTxtFile D2Common::D2CompileTxtFileDirect;
 D2Common::TD2GetItemsBIN D2Common::D2GetItemsBIN;
 D2Common::TD2GetGemsBIN D2Common::D2GetGemsBIN;
 D2Common::TD2GetCubeMainBIN D2Common::D2GetCubeMainBIN;
@@ -250,11 +402,16 @@ D2Common::TD2SetAnim D2Common::D2SetAnim;
 D2Common::TD2GetNbRunesBIN D2Common::D2GetNbRunesBIN;
 D2Common::TD2GetRunesBIN D2Common::D2GetRunesBIN;
 D2Common::TD2SaveItem D2Common::D2SaveItem;
-D2Common::TD2GetCharStatsBIN D2Common::D2GetCharStatsBIN;
-D2Common::TD2GetItemTypesBIN D2Common::D2GetItemTypesBIN;
-D2Common::TD2GetItemStatCostBIN D2Common::D2GetItemStatCostBIN;
 D2Common::TD2ReadFile D2Common::D2ReadFile;
 D2Common::TD2LoadSuperuniques D2Common::D2LoadSuperuniques;
+
 D2Common::TD2Common10581 D2Common::D2Common10581;
 D2Common::TD2Common10598 D2Common::D2Common10598;
 D2Common::TD2Common10673 D2Common::D2Common10673;
+
+D2Common::TD2AddPlayerStat D2Common::D2AddPlayerStatDirect;
+D2Common::TD2GetPlayerStat D2Common::D2GetPlayerStatDirect;
+D2Common::TD2GetPlayerBaseStat D2Common::D2GetPlayerBaseStatDirect;
+D2Common::TD2GetCharStatsBIN D2Common::D2GetCharStatsBINDirect;
+D2Common::TD2GetItemStatCostBIN D2Common::D2GetItemStatCostBINDirect;
+D2Common::TD2GetItemTypesBIN D2Common::D2GetItemTypesBINDirect;

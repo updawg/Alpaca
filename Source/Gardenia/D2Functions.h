@@ -77,7 +77,7 @@ extern D2Common::TD2haveFireResMalus D2haveFireResMalus;
 extern D2Common::TD2haveColdResMalus D2haveColdResMalus;
 extern D2Common::TD2haveLightResMalus D2haveLightResMalus;
 extern D2Common::TD2havePoisonResMalus D2havePoisonResMalus;
-extern D2Common::TD2CompileTxtFile D2CompileTxtFileBase;
+extern D2Common::TD2CompileTxtFile D2CompileTxtFileDirect;
 extern D2Common::TD2GetItemsBIN D2GetItemsBIN;
 extern D2Common::TD2GetGemsBIN D2GetGemsBIN;
 extern D2Common::TD2GetCubeMainBIN D2GetCubeMainBIN;
@@ -152,7 +152,6 @@ extern DWORD* ptStatDescTable;
 // D2Game
 extern D2Game::TD2SetNbPlayers D2SetNbPlayers;
 extern D2Game::TD2SendPacket D2SendPacket;
-extern D2Game::TD2SetSkillBaseLevelOnClient D2SetSkillBaseLevelOnClient;
 extern D2Game::TD2LinkPortal D2LinkPortal;
 extern D2Game::TD2VerifIfNotCarry1 D2VerifIfNotCarry1;
 extern D2Game::TD2TestPositionInRoom D2TestPositionInRoom;

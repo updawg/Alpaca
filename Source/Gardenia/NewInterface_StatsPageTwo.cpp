@@ -125,11 +125,8 @@ void printStat(Unit* ptChar, DWORD statID, DWORD x, DWORD y, DWORD color, LPWSTR
 		swprintf(lpText, L"%s +%i%%", text, D2GetPlayerStat(ptChar,statID,0));
 		break;
 	default:
-		D2PrintStat(ptChar, NULL, statID, 0, D2GetPlayerStat(ptChar,statID,0), lpText);//param2=ptChar->ptStats->ptItemStats
+		D2PrintStat(ptChar, NULL, statID, 0, D2GetPlayerStat(ptChar, statID, 0), lpText);//param2=ptChar->ptStats->ptItemStats
 	}
-//	D2SetFont(1);
-//	if (D2GetPixelLen(lpText)>0x110)
-//		D2SetFont(6);
 	D2PrintString(lpText, x, y, color, 0);
 }
 
@@ -180,34 +177,6 @@ void __stdcall printNewStatsPageTwo(int currentPage)
 	for (int i=0; i<nbStatsInterface; i++)
 		manageStatLine(ptChar, &statsInterface[i], currentPage, text);
 
-/*
-//	DWORD x,y;
-//	DWORD curValue;
-//	CharStatsBIN* charStats = D2GetCharStatsBIN(ptChar->nPlayerClass);
-//	DifficultyLevelsBIN* difficultyLevels = D2GetDifficultyLevelsBIN (D2GetDifficultyLevel());
-	//print deadly Strike / Critical Strike
-	x=RX(25);
-	y=RY(445);
-	Unit* ptItem = D2GetSkillItem(ptChar);
-	DWORD cs = ptItem ? D2GetCriticalStrikeFromMasteries(ptChar,ptItem,0,2) : 0;
-	cs = cs>100?100:cs;
-	cs += D2GetPlayerStat(ptChar, STATS_PASSIVE_CRITICAL_STRIKE, 0)*(100-cs)/100;
-	cs = cs>100?100:cs;
-	//SkillDescBIN* skilldesc = SgptDataTables->skilldesc + 9;
-	LPWSTR lpCS = D2GetStringFromIndex(skilldesc->strNameID);
-
-	lpText = D2GetStringFromIndex(getDescStrPos(STATS_ITEM_DEADLYSTRIKE));
-	curValue = D2GetPlayerStat(ptChar, STATS_ITEM_DEADLYSTRIKE, 0);
-
-	cs += curValue*(100-cs)/100;
-	curValue = cs>100?100:cs;
-
-	swprintf(text,L"%i%% %s/%s",curValue,lpCS,lpText);
-	D2SetFont(1);
-	D2SetFont( D2GetPixelLen(text)>0x110 ? 6 : 1);
-	D2PrintString(text, x, y, WHITE, 0);
-*/
-
 	//print background previous/next page buttons
 	setImage(&data, statsBackgroundImages);
 	setFrame(&data, D2GetResolution()?1:0);
@@ -225,7 +194,6 @@ void __stdcall printNewStatsPageTwo(int currentPage)
 	//print next page button
 	setFrame(&data, 14 + isDownBtn.nextPage);
 	D2PrintImage(&data, getXNextPageBtn(), getYNextPageBtn(), -1, 5, 0);
-
 
 //////////////////// POPUP PRINTING ////////////////////
 	//set MouseX & MouseY

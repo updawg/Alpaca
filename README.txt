@@ -24,6 +24,18 @@ https://github.com/fearedbliss/Bliss-Version-Switcher
 
 Compiled with Visual Studio 2017.
 
+Tips for working with Gardenia (in Visual Studio 2017)
+====
+- Always use Release Mode
+- Don't use /GS (Security Check)
+- Don't use compiler optimizations
+- Use the debugger and compile debugging symbols (.PDB)
+
+The reason for the above is because since the code uses a lot of
+naked functions, there are times when the code directly maybe cause
+an access violation, or something that could be perceived as an overflow.
+Sometimes the code only works in Release mode but doesn't work in Debug mode.
+
 Features
 ====
 Each features can be turn on/off via Gardenia.ini (see "COMMENTS ON THE CONFIGURATION FILE")
@@ -76,10 +88,8 @@ Removed
 - Removed ability to change how much stat/skill points one receives per level
 - Change the save path directory.
 
-
 Other TODO
 =====
 - Make separate hardcore stashes non changable.
-- Check to see why /page4 no longer works.
 - Remove /dml alias, just keep /dlm.
 - d2mod support can be removed since d2mod only supports 1.10 and we dont support 1.10 in this mod
