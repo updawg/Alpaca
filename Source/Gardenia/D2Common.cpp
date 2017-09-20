@@ -47,7 +47,6 @@ void D2Common::SetFunctions()
 	D2Common10273 = (TD2Common10273)GetOffsetByProc(10273, 0);
 	D2InventoryGetFirstItem = (TD2InventoryGetFirstItem)GetOffsetByProc(10277, 11040);
 	D2UnitGetNextItem = (TD2UnitGetNextItem)GetOffsetByProc(10304, 10879);
-	D2GetRealItem = (TD2GetRealItem)GetOffsetByProc(10305, 10897);
 	D2GetPosX = (TD2GetPosX)GetOffsetByProc(10326, 0);
 	D2GetPosY = (TD2GetPosY)GetOffsetByProc(10329, 0);
 	D2GetMaxGoldBank = (TD2GetMaxGoldBank)GetOffsetByProc(10339, 11025);
@@ -348,6 +347,24 @@ __declspec(naked) void D2Common::D2GetItemTypesBIN_9()
 	}
 }
 
+
+D2Common::TD2GetRealItem D2Common::D2GetRealItem()
+{
+	if (VersionUtility::Is113D())
+	{
+		return (TD2GetRealItem)D2GetRealItem_111;
+	}
+	else
+	{
+		return (TD2GetRealItem)GetOffsetByProc(10305, 10897);
+	}
+}
+
+Unit* __stdcall	D2Common::D2GetRealItem_111(Unit* ptItem)
+{
+	return ptItem;
+}
+
 DWORD D2Common::ptPYPlayerDataOffset;
 DWORD D2Common::ptSpecificDataOffset;
 DWORD D2Common::ptGameOffset;
@@ -365,7 +382,6 @@ D2Common::TD2Common10250 D2Common::D2Common10250;
 D2Common::TD2Common10273 D2Common::D2Common10273;
 D2Common::TD2InventoryGetFirstItem D2Common::D2InventoryGetFirstItem;
 D2Common::TD2UnitGetNextItem D2Common::D2UnitGetNextItem;
-D2Common::TD2GetRealItem D2Common::D2GetRealItem;
 D2Common::TD2GetPosX D2Common::D2GetPosX;
 D2Common::TD2GetPosY D2Common::D2GetPosY;
 D2Common::TD2GetMaxGoldBank D2Common::D2GetMaxGoldBank;

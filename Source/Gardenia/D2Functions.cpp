@@ -15,6 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+// This file should be used when attempting to access any of the functions provided
+// in the libraries. The reason for this is the following:
+// 1. Most of the existing code currently attempts to find the global function reference to the function.
+// 2. Some of the mem_seek operations (and possibly more) pass a function pointer to its call.
+//    However, if the function has been redirected internally, then passing a function pointer to this
+//    redirected library function will cause the application to crash or lead to unintended behavior.
+// If you really want to use the library function directly (ideally we would), you should make sure
+// that nothing breaks.
 #include "common.h"
 
 s_shifting shifting;
@@ -93,9 +101,9 @@ D2Client::TD2SendToServerXX D2SendToServerXX;
 D2Client::TD2TogglePage D2TogglePage;
 D2Client::TD2ClickOnStashButton D2ClickOnStashButton;
 D2Client::TD2LoadBuySelBtn D2LoadBuySelBtn;
+D2Client::TD2isLODGame D2isLODGame;
 
 // D2Client: Only 1.10
-D2Client::TD2isLODGame D2isLODGame;
 D2Client::TD2GetDifficultyLevel D2GetDifficultyLevel;
 D2Client::TD2GetMouseX D2GetMouseX;
 D2Client::TD2GetMouseY D2GetMouseY;
@@ -108,7 +116,6 @@ DWORD* ptResolutionY;
 DWORD* ptResolutionX;
 DWORD* ptNegWindowStartY;
 DWORD* ptWindowStartX;
-DWORD* ptIsLodGame;
 BYTE* ptDifficultyLevel;
 DWORD* ptMouseY;
 DWORD* ptMouseX;
@@ -121,7 +128,6 @@ D2Game::TD2SetNbPlayers D2SetNbPlayers;
 D2Game::TD2SendPacket D2SendPacket;
 D2Game::TD2LinkPortal D2LinkPortal;
 D2Game::TD2VerifIfNotCarry1 D2VerifIfNotCarry1;
-D2Game::TD2TestPositionInRoom D2TestPositionInRoom;
 D2Game::TD2LoadInventory D2LoadInventory;
 D2Game::TD2GameGetObject D2GameGetObject;
 D2Game::TD2SaveGame D2SaveGame;
@@ -183,177 +189,8 @@ D2CMP::TD2CMP10014 D2CMP10014;
 
 DataTables* SgptDataTables;
 
-// All V2 are used for redirection.
-
-// D2Client
-D2Client::TD2SendMsgToAll V2SendMsgToAll;
-D2Client::TD2SetColorPopup V2SetColorPopup;
-D2Client::TD2LoadImage V2LoadImage;
-D2Client::TD2PlaySound V2PlaySound;
-
-// D2Game
-D2Game::TD2VerifIfNotCarry1 V2VerifIfNotCarry1;
-D2Game::TD2GameGetObject V2GameGetObject;
-D2Game::TD2TestPositionInRoom V2TestPositionInRoom;
-D2Game::TD2SendPacket V2SendPacket;
-D2Game::TD2LoadInventory V2LoadInventory;
-
-/// STUFF
-WORD (*getDescStrPos) (DWORD statID);
-
-DWORD getStatDescIDFrom(DWORD statID) //FOR 1.09
-{
-	DWORD* desc = ptStatDescTable;
-	DWORD curDesc = 0;
-	while (curDesc < *ptNbStatDesc)
-	{
-		if (*desc == statID)
-			return curDesc;
-		desc += 4;
-		curDesc++;
-	}
-	return curDesc;
-}
-
-WORD getDescStrPos_9(DWORD statID)
-{
-	DWORD* desc = &ptStatDescTable[getStatDescIDFrom(statID) * 4];
-	return (WORD)*(desc + 2);
-}
-WORD getDescStrPos_10(DWORD statID)
-{
-	ItemStatCostBIN* itemStatCost = D2GetItemStatCostBIN(statID);
-	return itemStatCost->descstrpos;
-}
-
-/// STUFF
 void setImage(sDrawImageInfo* data, void* image){((void**)data)[shifting.ptImage/4]=image;}//0x4 0x8 0x3C
 void setFrame(sDrawImageInfo* data, DWORD frame){((DWORD*)data)[shifting.ptFrame/4]=frame;}//0x8 0x44 0x40
-
-DWORD __fastcall	D2isLODGame_111(){return IsLodGame;}
-BYTE  __fastcall	D2GetDifficultyLevel_111(){return DifficultyLevel;}
-DWORD __stdcall	D2GetMouseX_111(){return MouseX;}
-DWORD __stdcall	D2GetMouseY_111(){return MouseY;}
-Unit* __stdcall	D2GetClientPlayer_111(){return ptClientChar;}
-Unit* __stdcall	D2GetRealItem_111(Unit* ptItem){return ptItem;}
-
-FCT_ASM ( D2SendMsgToAll_111 )
-	PUSH ESI
-	MOV ESI,ECX
-	CALL V2SendMsgToAll
-	POP ESI
-	RETN
-}}
-
-FCT_ASM ( D2SetColorPopup_111 )
-	PUSH EDI
-	PUSH EDX
-	MOV EDI,ECX
-	CALL V2SetColorPopup
-	POP EDI
-	RETN
-}}
-
-FCT_ASM ( D2LoadImage_111 )
-	PUSH EDX
-	MOV EAX,ECX
-	CALL V2LoadImage
-	RETN
-}}
-
-const char* D2FreeImage_FILE = __FILE__;
-FCT_ASM ( D2FreeImage_111 )
-	PUSH ESI
-	MOV ESI,ECX
-	PUSH ESI
-	CALL D2CMP10014
-	TEST ESI,ESI
-	JE END_D2Free
-	PUSH 0
-	PUSH __LINE__
-	MOV EDX,D2FreeImage_FILE                ;  ASCII "C:\projects\D2\head\Diablo2\Source\D2Client\CORE\ARCHIVE.CPP"
-	MOV ECX,ESI
-	CALL D2FogMemDeAlloc
-END_D2Free:
-	POP ESI
-	RETN
-}}
-
-FCT_ASM ( D2PlaySound_111 )
-	PUSH EBX
-	PUSH DWORD PTR SS:[ESP+0x10]
-	PUSH DWORD PTR SS:[ESP+0x10]
-	PUSH DWORD PTR SS:[ESP+0x10]
-	PUSH EDX
-	MOV EBX,ECX
-	CALL V2PlaySound
-	POP EBX
-	RETN 0xC
-}}
-
-FCT_ASM ( D2GetClient_111 )
-	PUSH ECX
-	CALL D2GetPlayerData
-	MOV EAX,DWORD PTR DS:[EAX+0x9C]
-	RETN 4
-}}
-
-FCT_ASM ( D2SendToServer3_111 )
-	PUSH EBX
-	PUSH ECX
-	MOV BYTE PTR SS:[ESP],CL
-	MOV WORD PTR SS:[ESP+1],DX
-	MOV EBX,3
-	LEA EDX,DWORD PTR SS:[ESP]
-	PUSH EDX
-	CALL D2SendToServerXX
-	POP ECX
-	POP EBX
-	RETN
-}}
-
-FCT_ASM ( D2SendPacket_111 )
-	POP EAX
-	PUSH EDX
-	PUSH EAX
-	MOV EAX,ECX
-	JMP V2SendPacket
-}}
-
-FCT_ASM ( D2LoadInventory_111 )
-	MOV EAX,DWORD PTR SS:[ESP+4]
-	MOV DWORD PTR SS:[ESP+4],EDX
-	JMP V2LoadInventory
-}}
-
-FCT_ASM ( D2VerifIfNotCarry1_111 )
-	PUSH EBX
-	PUSH ECX
-	MOV EBX,EDX
-	MOV EAX,DWORD PTR SS:[ESP+0xC]
-	CALL V2VerifIfNotCarry1
-	POP EBX
-	RETN 4
-}}
-
-FCT_ASM ( D2GameGetObject_111 )
-	MOV EAX,EDX
-	MOV EDX,DWORD PTR SS:[ESP+4]
-	CALL V2GameGetObject
-	RETN 4
-}}
-
-FCT_ASM ( D2TestPositionInRoom_111 )
-	PUSH EDI
-	PUSH EBX
-	MOV EDI,DWORD PTR SS:[ESP+0xC]
-	MOV EAX,ECX
-	MOV EBX,EDX
-	CALL V2TestPositionInRoom
-	POP EBX
-	POP EDI
-	RETN 4
-}}
 
 void initD2functions()
 {
@@ -366,7 +203,7 @@ void initD2functions()
 	D2Common10273 = D2Common::D2Common10273;
 	D2InventoryGetFirstItem = D2Common::D2InventoryGetFirstItem;
 	D2UnitGetNextItem = D2Common::D2UnitGetNextItem;
-	D2GetRealItem = D2Common::D2GetRealItem;
+	D2GetRealItem = D2Common::D2GetRealItem();
 	D2GetPosX = D2Common::D2GetPosX;
 	D2GetPosY = D2Common::D2GetPosY;
 	D2GetMaxGoldBank = D2Common::D2GetMaxGoldBank;
@@ -414,34 +251,33 @@ void initD2functions()
 	D2LoadSuperuniques = D2Common::D2LoadSuperuniques;
 
 	// D2Client
-	D2LoadImage = D2Client::D2LoadImage;
-	D2FreeImage = D2Client::D2FreeImage;
-	D2SendMsgToAll = D2Client::D2SendMsgToAll;
+	D2LoadImage = D2Client::D2LoadImage();
+	D2FreeImage = D2Client::D2FreeImage();
+	D2SendMsgToAll = D2Client::D2SendMsgToAll();
 	D2GetLastMonsterIDFight = D2Client::D2GetLastMonsterIDFight;
 	D2PrintStatsPage = D2Client::D2PrintStatsPage;
 	D2PrintStat = D2Client::D2PrintStat();
-	D2SetColorPopup = D2Client::D2SetColorPopup;
-	D2PlaySound = D2Client::D2PlaySound;
+	D2SetColorPopup = D2Client::D2SetColorPopup();
+	D2PlaySound = D2Client::D2PlaySound();
 	D2SendToServerXX = D2Client::D2SendToServerXX;
 	D2TogglePage = D2Client::D2TogglePage;
 	D2ClickOnStashButton = D2Client::D2ClickOnStashButton;
 	D2LoadBuySelBtn = D2Client::D2LoadBuySelBtn;
-
+	D2isLODGame = D2Client::IsExpansion();
+	
 	// D2Client: Only 1.10
-	D2isLODGame = D2Client::D2isLODGame;
-	D2GetDifficultyLevel = D2Client::D2GetDifficultyLevel;
-	D2GetMouseX = D2Client::D2GetMouseX;
-	D2GetMouseY = D2Client::D2GetMouseY;
-	D2GetClientPlayer = D2Client::D2GetClientPlayer;
+	D2GetDifficultyLevel = D2Client::D2GetDifficultyLevel();
+	D2GetMouseX = D2Client::D2GetMouseX();
+	D2GetMouseY = D2Client::D2GetMouseY();
+	D2GetClientPlayer = D2Client::D2GetClientPlayer();
 	D2CleanStatMouseUp = D2Client::D2CleanStatMouseUp();
-	D2SendToServer3 = D2Client::D2SendToServer3;
+	D2SendToServer3 = D2Client::D2SendToServer3();
 
 	// D2Client: Variables
 	ptResolutionY = D2Client::ptResolutionY;
 	ptResolutionX = D2Client::ptResolutionX;
 	ptNegWindowStartY = D2Client::ptNegWindowStartY;
 	ptWindowStartX = D2Client::ptWindowStartX;
-	ptIsLodGame = D2Client::ptIsLodGame;
 	ptDifficultyLevel = D2Client::ptDifficultyLevel;
 	ptMouseY = D2Client::ptMouseY;
 	ptMouseX = D2Client::ptMouseX;
@@ -451,16 +287,15 @@ void initD2functions()
 
 	// D2Game
 	D2SetNbPlayers = D2Game::D2SetNbPlayers;
-	D2SendPacket = D2Game::D2SendPacket;
+	D2SendPacket = D2Game::D2SendPacket();
 	D2LinkPortal = D2Game::D2LinkPortal;
-	D2VerifIfNotCarry1 = D2Game::D2VerifIfNotCarry1;
-	D2TestPositionInRoom = D2Game::D2TestPositionInRoom;
-	D2LoadInventory = D2Game::D2LoadInventory;
-	D2GameGetObject = D2Game::D2GameGetObject;
+	D2VerifIfNotCarry1 = D2Game::D2VerifIfNotCarry1();
+	D2LoadInventory = D2Game::D2LoadInventory();
+	D2GameGetObject = D2Game::D2GameGetObject();
 	D2SaveGame = D2Game::D2SaveGame();
 
 	// D2Game: Only 1.10
-	D2GetClient = D2Game::D2GetClient;
+	D2GetClient = D2Game::D2GetClient();
 
 	// D2Game: Variables
 	ptClientTable = D2Game::ptClientTable;
@@ -521,44 +356,6 @@ void initD2functions()
 		D2Common10581 = D2Common::D2Common10581;
 		D2Common10598 = D2Common::D2Common10598;
 		D2Common10673 = D2Common::D2Common10673;
-	}
-
-	//////////////// MISC FCT ////////////////
-	// Basically all these functions wrap around the original functions we mapped in order to extend their functionality.
-	getDescStrPos = VersionUtility::Is113D() ? getDescStrPos_10 : getDescStrPos_9;
-
-	V2SendMsgToAll = D2SendMsgToAll;
-	V2SetColorPopup = D2SetColorPopup;
-	V2LoadImage = D2LoadImage;
-	V2PlaySound = D2PlaySound;
-	V2SendPacket = D2SendPacket;
-	V2LoadInventory = D2LoadInventory;
-	V2VerifIfNotCarry1 = D2VerifIfNotCarry1;
-	V2GameGetObject = D2GameGetObject;
-	V2TestPositionInRoom = D2TestPositionInRoom;
-
-	//////////////// REDIRECT ON CUSTOM FUNCTIONS ////////////////
-
-	if (VersionUtility::Is113D())
-	{
-		D2SendMsgToAll = (D2Client::TD2SendMsgToAll) D2SendMsgToAll_111;
-		D2SetColorPopup = (D2Client::TD2SetColorPopup) D2SetColorPopup_111;
-		D2LoadImage = (D2Client::TD2LoadImage) D2LoadImage_111;
-		D2FreeImage = (D2Client::TD2FreeImage) D2FreeImage_111;
-		D2PlaySound = (D2Client::TD2PlaySound) D2PlaySound_111;
-		D2GetClient = (D2Game::TD2GetClient) D2GetClient_111;
-		D2SendToServer3 = (D2Client::TD2SendToServer3) D2SendToServer3_111;
-		D2SendPacket = (D2Game::TD2SendPacket) D2SendPacket_111;
-		D2LoadInventory = (D2Game::TD2LoadInventory) D2LoadInventory_111;
-		D2VerifIfNotCarry1 = (D2Game::TD2VerifIfNotCarry1) D2VerifIfNotCarry1_111;
-		D2GameGetObject = (D2Game::TD2GameGetObject) D2GameGetObject_111;
-		D2TestPositionInRoom = (D2Game::TD2TestPositionInRoom) D2TestPositionInRoom_111;
-		D2isLODGame = D2isLODGame_111;
-		D2GetDifficultyLevel = D2GetDifficultyLevel_111;
-		D2GetMouseX = D2GetMouseX_111;
-		D2GetMouseY = D2GetMouseY_111;
-		D2GetClientPlayer = D2GetClientPlayer_111;
-		D2GetRealItem = D2GetRealItem_111;
 	}
 
 	//////////////// STRUCTURE MANAGEMENT ////////////////

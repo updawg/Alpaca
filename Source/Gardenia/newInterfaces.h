@@ -30,7 +30,7 @@ void GoStatPage(int page);
 int GetCurrentPage();
 
 extern bool active_newInterfaces;
-extern bool selectMainPageOnOpenning;
+extern bool selectMainPageOnOpening;
 extern bool printBackgroundOnMainPage;
 
 void Install_NewInterfaces();

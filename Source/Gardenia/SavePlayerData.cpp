@@ -189,18 +189,6 @@ void __stdcall SendSaveFilesToSave( Unit* ptChar )
 	log_msg("clientID=%d\t init=%d\t sizeExtended=%X\t curExtended=%X\t dataExtended=%X\t sizeShared=%X\t curShared=%X\t dataShared=%08X\n", 
 		dataToSend->clientID, dataToSend->init, dataToSend->sizeExtended, dataToSend->curExtended, dataToSend->dataExtended, dataToSend->sizeShared, dataToSend->curShared, dataToSend->dataShared);
 
-/*	NetClient* ptClient = D2GetClient(ptChar,__FILE__,__LINE__);
-	if (dataExt)
-	{
-		sendDataToSave(ptClient->clientID, dataExt, curSizeExt, false);
-		D2FreeMem(PCGame->memoryPool, dataExt,__FILE__,__LINE__,0);
-	}
-	if (dataShr)
-	{
-		sendDataToSave(ptClient->clientID, dataShr, curSizeShr, true);
-		D2FreeMem(PCGame->memoryPool, dataShr,__FILE__,__LINE__,0);
-	}
-*/
 	log_msg("End SendSaveFilesToSave.\n\n");
 }
 

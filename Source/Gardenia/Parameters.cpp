@@ -80,8 +80,8 @@ const char* S_active_VersionTextChange = "ActiveVersionTextChange";
 const char* S_active_VersionTextChanges = "ActiveVersionTextChanges";
 const char* S_versionText = "VersionText";
 const char* S_modVersionColor = "ColorOfVersionText";
-const char* S_active_PrintPlugYVersion = "ActivePrintPlugYVersion";
-const char* S_colorOfPlugYVersion = "ColorOfPlugYVersion";
+const char* S_active_PrintGardeniaVersion = "ActivePrintGardeniaVersion";
+const char* S_colorOfGardeniaVersion = "ColorOfGardeniaVersion";
 
 const char* S_STASH = "STASH";
 const char* S_active_multiPageStash = "ActiveMultiPageStash";
@@ -92,7 +92,6 @@ const char* S_active_sharedStash = "ActiveSharedStash";
 const char* S_openSharedStashOnLoading = "OpenSharedStashOnLoading";
 const char* S_maxSharedPages = "MaxSharedPages";
 const char* S_sharedStashFilename = "SharedStashFilename";
-const char* S_separateHardSoftStash = "SeparateHardcoreStash";
 const char* S_active_bigStash = "ActiveBigStash";
 const char* S_displaySharedSetItemNameInGreen = "DisplaySharedSetItemNameInGreen";
 const char* S_active_sharedGold = "ActiveSharedGold";
@@ -118,7 +117,7 @@ const char* S_limitValueToShiftClick = "LimitValueToShiftClick";
 
 const char* S_INTERFACE = "INTERFACE";
 const char* S_active_newInterfaces = "ActiveNewStatsInterface";
-const char* S_selectMainPageOnOpenning = "SelectMainPageOnOpenning";
+const char* S_selectMainPageOnOpening = "selectMainPageOnOpening";
 const char* S_printBackgroundOnMainPage = "PrintButtonsBackgroundOnMainStatsPage";
 
 const char* S_EXTRA = "EXTRA";
@@ -375,15 +374,15 @@ void init_VersionText(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefau
 		log_msg("modVersionColor\t\t\t\t= %u\n", modVersionColor);
 	}
 
-	GET_PRIVATE_PROFILE_STRING(S_MAIN_SCREEN, S_active_PrintPlugYVersion, "1");
-	active_PrintPlugYVersion = atoi(buffer) != 0;
-	log_msg("active_PrintPlugYVersion\t\t= %u\n", active_PrintPlugYVersion);
+	GET_PRIVATE_PROFILE_STRING(S_MAIN_SCREEN, S_active_PrintGardeniaVersion, "1");
+	active_PrintGardeniaVersion = atoi(buffer) != 0;
+	log_msg("active_PrintGardeniaVersion\t\t= %u\n", active_PrintGardeniaVersion);
 
-	if (active_PrintPlugYVersion)
+	if (active_PrintGardeniaVersion)
 	{
-		GET_PRIVATE_PROFILE_STRING(S_MAIN_SCREEN, S_colorOfPlugYVersion, "4");
-		colorOfPlugYVersion = atoi(buffer);
-		log_msg("colorOfPlugYVersion\t\t\t= %u\n", colorOfPlugYVersion);
+		GET_PRIVATE_PROFILE_STRING(S_MAIN_SCREEN, S_colorOfGardeniaVersion, "4");
+		colorOfGardeniaVersion = atoi(buffer);
+		log_msg("colorOfGardeniaVersion\t\t\t= %u\n", colorOfGardeniaVersion);
 	}
 	
 	log_msg("\n");
@@ -470,9 +469,8 @@ void init_Stash(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefaultFile
 		strcpy(sharedStashFilename, buffer);
 		log_msg("sharedStashFilename\t\t\t= %s\n", sharedStashFilename);
 
-		GET_PRIVATE_PROFILE_STRING(S_STASH, S_separateHardSoftStash, "1");
-		separateHardSoftStash = atoi(buffer) != 0;
-		log_msg("separateHardSoftStash\t\t\t= %u\n", separateHardSoftStash);
+		// Mixing items between hardcore and softcore is not allowed in the SPF.
+		separateHardSoftStash = 1;
 
 		GET_PRIVATE_PROFILE_STRING(S_STASH, S_displaySharedSetItemNameInGreen, "1");
 		displaySharedSetItemNameInGreen = atoi(buffer) != 0;
@@ -509,9 +507,9 @@ void init_NewInterfaces(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDef
 
 	if (active_newInterfaces)
 	{
-		GET_PRIVATE_PROFILE_STRING(S_INTERFACE, S_selectMainPageOnOpenning, "1");
-		selectMainPageOnOpenning = atoi(buffer) != 0;
-		log_msg("selectMainPageOnOpenning\t\t= %u\n", selectMainPageOnOpenning);
+		GET_PRIVATE_PROFILE_STRING(S_INTERFACE, S_selectMainPageOnOpening, "1");
+		selectMainPageOnOpening = atoi(buffer) != 0;
+		log_msg("selectMainPageOnOpening\t\t= %u\n", selectMainPageOnOpening);
 
 		GET_PRIVATE_PROFILE_STRING(S_INTERFACE, S_printBackgroundOnMainPage, "1");
 		printBackgroundOnMainPage = atoi(buffer) != 0;

@@ -27,7 +27,7 @@
 #include <stdio.h>
 
 bool active_newInterfaces=false;
-bool selectMainPageOnOpenning=true;
+bool selectMainPageOnOpening=true;
 bool printBackgroundOnMainPage=true;
 
 DWORD bDontPrintBorder=false;
@@ -264,7 +264,7 @@ void Install_NewInterfaces()
 		extraHiddenPage = 1;
 	}
 
-	if (selectMainPageOnOpenning)
+	if (selectMainPageOnOpening)
 	{
 		if (VersionUtility::Is113D())
 		{

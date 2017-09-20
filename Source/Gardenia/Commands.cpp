@@ -36,10 +36,8 @@ const char * CMD_PLAYERS="players set to";
 const char * CMD_SAVE="/save";
 const char * CMD_SELECTPAGE="/page";
 
-const char * CMD_LOCK_MOUSE = "/lockmouse";
-const char * CMD_LOCK_MOUSE2 = "/lock";
-const char * CMD_UNLOCK_MOUSE = "/unlockmouse";
-const char * CMD_UNLOCK_MOUSE2 = "/unlock";
+const char * CMD_LOCK_MOUSE = "/lock";
+const char * CMD_UNLOCK_MOUSE = "/unlock";
 
 const char * CMD_RENAME_CHAR="/renamechar";
 
@@ -52,10 +50,7 @@ const char * CMD_DELETE_PAGE = "/deletepage";
 const char * CMD_SWAP = "/swap";
 const char * CMD_TOGGLE = "/toggle";
 
-const char * CMD_DISPLAY_MANA_LIFE = "/dml";
 const char * CMD_DISPLAY_LIFE_MANA = "/dlm";
-const char * CMD_DISPLAY_LIFE = "/dl";
-const char * CMD_DISPLAY_MANA = "/dm";
 
 const char * CMD_LISTCUBEFORMULA="/listcube";
 
@@ -225,14 +220,14 @@ int __stdcall commands (char* ptText)
 		return 0;
 	}
 
-	if (!strcmp(command, CMD_LOCK_MOUSE) || !strcmp(command, CMD_LOCK_MOUSE2))
+	if (!strcmp(command, CMD_LOCK_MOUSE))
 	{
 		if (onRealm) return 1;
 		lockMouseCursor();
 		return 0;
 	}
 
-	if (!strcmp(command, CMD_UNLOCK_MOUSE) || !strcmp(command, CMD_UNLOCK_MOUSE2))
+	if (!strcmp(command, CMD_UNLOCK_MOUSE))
 	{
 		if (onRealm) return 1;
 		unlockMouseCursor();
@@ -343,19 +338,7 @@ int __stdcall commands (char* ptText)
 		return 0;
 	}
 
-	if (!strcmp(command,CMD_DISPLAY_LIFE))
-	{
-		active_AlwaysDisplayLifeMana = !active_AlwaysDisplayLifeMana;
-		return 0;
-	}
-
-	if (!strcmp(command,CMD_DISPLAY_MANA))
-	{
-		active_AlwaysDisplayLifeMana = !active_AlwaysDisplayLifeMana;
-		return 0;
-	}
-
-	if (!strcmp(command,CMD_DISPLAY_LIFE_MANA) || !strcmp(command,CMD_DISPLAY_MANA_LIFE))
+	if (!strcmp(command,CMD_DISPLAY_LIFE_MANA))
 	{
 		active_AlwaysDisplayLifeMana = !active_AlwaysDisplayLifeMana;
 		return 0;

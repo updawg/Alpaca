@@ -87,7 +87,7 @@ void Install_PlugYFiles()
 	static int isInstalled = false;
 	if (isInstalled) return;
 
-	log_msg("[Patch] Storm to find custom file. (PlugYFiles)\n");
+	log_msg("[Patch] Storm to find custom file. (GardeniaFiles)\n");
 
 	// Try in Diablo II\Gardenia\ if file not found
 	mem_seek(Storm::GetOffsetByAddition(0x192C6, 0x2DA79));
@@ -156,7 +156,7 @@ void Install_PlugYImagesFiles()
 
 	Install_PlugYFiles();
 
-	log_msg("[Patch] D2Client to load/free custom images. (PlugYImagesFiles)\n");
+	log_msg("[Patch] D2Client to load/free custom images. (GardeniaImagesFiles)\n");
 
 	// Load custom images
 	mem_seek(D2Client::GetOffsetByAddition(0x57E21, 0x6E0BE));
@@ -216,7 +216,7 @@ void Install_PlugYTxtFiles()
 
 	Install_PlugYFiles();
 
-	log_msg("[Patch] D2Common to load/free custom txt files. (PlugYTxtFiles)\n");
+	log_msg("[Patch] D2Common to load/free custom txt files. (GardeniaTxtFiles)\n");
 
 	// Load custom txt files
 	mem_seek(D2Common::GetOffsetByAddition(0x7F4B, 0x855E4));

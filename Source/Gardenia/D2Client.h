@@ -36,9 +36,9 @@ public:
 	typedef void(__fastcall *TD2TogglePage) (DWORD a, DWORD b, DWORD c);
 	typedef void(__fastcall *TD2ClickOnStashButton) (DWORD x, DWORD y);
 	typedef void* (__stdcall *TD2LoadBuySelBtn) ();
+	typedef DWORD(__fastcall *TD2isLODGame) ();
 
 	// Until 1.10
-	typedef DWORD(__fastcall *TD2isLODGame) ();
 	typedef BYTE(__fastcall *TD2GetDifficultyLevel) ();
 	typedef DWORD(__stdcall *TD2GetMouseX) ();
 	typedef DWORD(__stdcall *TD2GetMouseY) ();
@@ -46,26 +46,26 @@ public:
 	typedef void(__fastcall *TD2CleanStatMouseUp) ();
 	typedef void(__fastcall *TD2SendToServer3) (BYTE type, WORD p);
 
-	static TD2LoadImage D2LoadImage;
-	static TD2FreeImage D2FreeImage;
-	static TD2SendMsgToAll D2SendMsgToAll;
+	static TD2LoadImage D2LoadImage();
+	static TD2FreeImage D2FreeImage();
+	static TD2SendMsgToAll D2SendMsgToAll();
 	static TD2GetLastMonsterIDFight D2GetLastMonsterIDFight;
 	static TD2PrintStatsPage D2PrintStatsPage;
 	static TD2PrintStat D2PrintStat();
-	static TD2SetColorPopup D2SetColorPopup;
-	static TD2PlaySound D2PlaySound;
+	static TD2SetColorPopup D2SetColorPopup();
+	static TD2PlaySound D2PlaySound();
 	static TD2SendToServerXX D2SendToServerXX;
 	static TD2TogglePage D2TogglePage;
 	static TD2ClickOnStashButton D2ClickOnStashButton;
 	static TD2LoadBuySelBtn D2LoadBuySelBtn;
+	static TD2isLODGame IsExpansion();
 
-	static TD2isLODGame D2isLODGame;
-	static TD2GetDifficultyLevel D2GetDifficultyLevel;
-	static TD2GetMouseX D2GetMouseX;
-	static TD2GetMouseY D2GetMouseY;
-	static TD2GetClientPlayer D2GetClientPlayer;
+	static TD2GetDifficultyLevel D2GetDifficultyLevel();
+	static TD2GetMouseX D2GetMouseX();
+	static TD2GetMouseY D2GetMouseY();
+	static TD2GetClientPlayer D2GetClientPlayer();
 	static TD2CleanStatMouseUp D2CleanStatMouseUp();
-	static TD2SendToServer3 D2SendToServer3;
+	static TD2SendToServer3 D2SendToServer3();
 
 	static DWORD ResolutionX();
 	static DWORD ResolutionY();
@@ -75,7 +75,6 @@ public:
 	static DWORD* ptResolutionX;
 	static DWORD* ptNegWindowStartY;
 	static DWORD* ptWindowStartX;
-	static DWORD* ptIsLodGame;
 	static BYTE* ptDifficultyLevel;
 	static DWORD* ptMouseY;
 	static DWORD* ptMouseX;
@@ -83,8 +82,7 @@ public:
 	static DWORD* ptNbStatDesc;
 	static DWORD* ptStatDescTable;
 
-	static WORD getDescStrPos_10(DWORD statID);
-	static WORD getDescStrPos_9(DWORD statID);
+	static WORD GetDescStrPos(DWORD statID);
 private:
 	static void SetFunctions();
 	static void __fastcall D2CleanStatMouseUp_111();
@@ -99,10 +97,36 @@ private:
 	static DWORD* StatMouse3;
 	static DWORD* StatMouse4;
 
-	static DWORD getStatDescIDFrom(DWORD statID);
+	static DWORD GetStatDescIDFrom(DWORD statID);
+	static WORD GetDescStrPos_10(DWORD statID);
+	static WORD GetDescStrPos_9(DWORD statID);
 
 	static void D2PrintStat_111();
 	static DWORD __fastcall D2PrintStat_9(Unit* ptItem, Stats* ptStats, DWORD statID, DWORD statIndex, DWORD statValue, LPWSTR lpText);
 
 	static TD2PrintStat D2PrintStatDirect;
+
+	static DWORD __fastcall D2isLODGame_111();
+
+	static TD2SendMsgToAll D2SendMsgToAllDirect;
+	static void D2SendMsgToAll_111();
+
+	static TD2SetColorPopup D2SetColorPopupDirect;
+	static void D2SetColorPopup_111();
+
+	static TD2LoadImage D2LoadImageDirect;
+	static void D2LoadImage_111();
+
+	static void D2FreeImage_111();
+	static const char* D2Client::D2FreeImage_FILE;
+
+	static TD2PlaySound D2PlaySoundDirect;
+	static void D2PlaySound_111();
+
+	static void D2SendToServer3_111();
+
+	static BYTE __fastcall D2GetDifficultyLevel_111();
+	static DWORD __stdcall	D2GetMouseX_111();
+	static DWORD __stdcall	D2GetMouseY_111();
+	static Unit* __stdcall	D2GetClientPlayer_111();
 };

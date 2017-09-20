@@ -22,8 +22,8 @@
 extern bool active_VersionTextChange;
 extern char* versionText;
 extern BYTE modVersionColor;
-extern bool active_PrintPlugYVersion;
-extern BYTE colorOfPlugYVersion;
+extern bool active_PrintGardeniaVersion;
+extern BYTE colorOfGardeniaVersion;
 
 void Install_PrintPlugYVersion();
 void Install_VersionChange();

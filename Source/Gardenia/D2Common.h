@@ -96,7 +96,7 @@ public:
 	static TD2Common10273 D2Common10273;
 	static TD2InventoryGetFirstItem D2InventoryGetFirstItem;
 	static TD2UnitGetNextItem D2UnitGetNextItem;
-	static TD2GetRealItem D2GetRealItem;
+	static TD2GetRealItem D2GetRealItem();
 	static TD2GetPosX D2GetPosX;
 	static TD2GetPosY D2GetPosY;
 	static TD2GetMaxGoldBank D2GetMaxGoldBank;
@@ -183,4 +183,6 @@ private:
 	static TD2GetCharStatsBIN D2GetCharStatsBINDirect;
 	static TD2GetItemStatCostBIN D2GetItemStatCostBINDirect;
 	static TD2GetItemTypesBIN D2GetItemTypesBINDirect;
+
+	static Unit* __stdcall D2GetRealItem_111(Unit* ptItem);
 };

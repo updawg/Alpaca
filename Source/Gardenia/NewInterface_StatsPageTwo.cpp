@@ -120,7 +120,7 @@ void printStat(Unit* ptChar, DWORD statID, DWORD x, DWORD y, DWORD color, LPWSTR
 	case STATS_COLDRESIST:
 	case STATS_LIGHTRESIST:
 	case STATS_POISONRESIST:
-		text = D2GetStringFromIndex(getDescStrPos(statID));
+		text = D2GetStringFromIndex(D2Client::GetDescStrPos(statID));
 		if (wcslen(text) > 50) return;
 		swprintf(lpText, L"%s +%i%%", text, D2GetPlayerStat(ptChar,statID,0));
 		break;

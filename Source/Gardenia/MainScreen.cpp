@@ -22,8 +22,8 @@
 char* versionText = "";
 bool active_VersionTextChange = 0;
 BYTE modVersionColor = 0;
-bool active_PrintPlugYVersion = 1;
-BYTE colorOfPlugYVersion = 4;
+bool active_PrintGardeniaVersion = 1;
+BYTE colorOfGardeniaVersion = 4;
 
 DWORD newTextBoxData[]={4,0x237,0x243,0xC8,0x14,0,0,0,0,0,0,2};//type,x,y,l,h,?,?,?,?,?,?,?(0,257,C8,28)
 
@@ -31,14 +31,14 @@ void __stdcall printPlugYVersion(void** childrens, DWORD* sgnNumChildren)
 {
 	if (active_Windowed)
 		SetWindowedOptions();
-	if (active_PrintPlugYVersion)
+	if (active_PrintGardeniaVersion)
 	{
 		char buf[30];
 		void* textbox = D2CreateTextBox(newTextBoxData);
 		childrens[*sgnNumChildren] = textbox;
 		d2_assert((*sgnNumChildren)++ >= 40, "sgnNumChildren < MAX_CHILDREN", __FILE__, __LINE__);
 		sprintf(buf, "%s %s", GARDENIA_NAME, GARDENIA_VERSION);
-		D2PrintLineOnTextBox(textbox, buf, colorOfPlugYVersion);
+		D2PrintLineOnTextBox(textbox, buf, colorOfGardeniaVersion);
 	}
 }
 
@@ -56,9 +56,9 @@ void Install_PrintPlugYVersion()
 	static int isInstalled = false;
 	if (isInstalled) return;
 
-	log_msg("[Patch] D2Launch to print PlugY version. (PrintPlugYVersion)\n");
+	log_msg("[Patch] D2Launch to print Gardenia version. (PrintGardeniaVersion)\n");
 
-	// Print PlugY version.
+	// Print Gardenia version.
 	mem_seek(D2Launch::GetOffsetByAddition(0x7F5D, 0x10A11));
 	MEMJ_REF4(D2Win::D2CreateTextBox, caller_printPlugYVersion);
 
@@ -82,7 +82,7 @@ FCT_ASM ( caller_VersionChange_10 )
 	RETN
 }}
 
-void Install_VersionChange()// BUG WITH 2MOD if D2Mod started before PlugY ????
+void Install_VersionChange()// BUG WITH 2MOD if D2Mod started before Gardenia ????
 {
 	static int isInstalled = false;
 	if (isInstalled) return;

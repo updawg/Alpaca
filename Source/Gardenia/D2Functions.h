@@ -133,7 +133,6 @@ extern DWORD* ptResolutionY;
 extern DWORD* ptResolutionX;
 extern DWORD* ptNegWindowStartY;
 extern DWORD* ptWindowStartX;
-extern DWORD* ptIsLodGame;
 extern BYTE* ptDifficultyLevel;
 extern DWORD* ptMouseY;
 extern DWORD* ptMouseX;
@@ -141,20 +140,11 @@ extern Unit** ptptClientChar;
 extern DWORD* ptNbStatDesc;
 extern DWORD* ptStatDescTable;
 
-#define NegWindowStartY (*ptNegWindowStartY)
-#define WindowStartX (*ptWindowStartX)
-#define IsLodGame (*ptIsLodGame)
-#define DifficultyLevel (*ptDifficultyLevel)
-#define MouseY (*ptMouseY)
-#define MouseX (*ptMouseX)
-#define ptClientChar (*ptptClientChar)
-
 // D2Game
 extern D2Game::TD2SetNbPlayers D2SetNbPlayers;
 extern D2Game::TD2SendPacket D2SendPacket;
 extern D2Game::TD2LinkPortal D2LinkPortal;
 extern D2Game::TD2VerifIfNotCarry1 D2VerifIfNotCarry1;
-extern D2Game::TD2TestPositionInRoom D2TestPositionInRoom;
 extern D2Game::TD2LoadInventory D2LoadInventory;
 extern D2Game::TD2GameGetObject D2GameGetObject;
 extern D2Game::TD2SaveGame D2SaveGame;
@@ -217,7 +207,6 @@ extern D2CMP::TD2CMP10014 D2CMP10014;
 // Other
 extern DataTables* SgptDataTables;
 
-extern WORD (*getDescStrPos)	(DWORD statID);
 extern void* (__stdcall *D2CompileTxtFile)(DWORD unused, const char* filename, BINField* ptFields, DWORD* ptRecordCount, DWORD recordLength);
 void setImage(sDrawImageInfo* data, void* image);
 void setFrame(sDrawImageInfo* data, DWORD frame);

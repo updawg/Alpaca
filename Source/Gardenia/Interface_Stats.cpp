@@ -257,11 +257,11 @@ void Install_InterfaceStats()
 	{
 		// Manage mouse down (Play sound)
 		mem_seek(D2Client::GetOffsetByAddition(0x2AA6D, 0));
-		MEMC_REF4(D2Client::D2GetClientPlayer, caller_statsPageMouseDown);
+		MEMC_REF4(D2GetClientPlayer, caller_statsPageMouseDown);
 
 		// Manage mouse up
 		mem_seek(D2Client::GetOffsetByAddition(0x2AC43, 0));
-		MEMC_REF4(D2Client::D2GetClientPlayer, caller_statsPageMouseUp_9);
+		MEMC_REF4(D2GetClientPlayer, caller_statsPageMouseUp_9);
 	}
 
 	log_msg("\n");

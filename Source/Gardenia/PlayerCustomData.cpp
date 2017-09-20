@@ -271,10 +271,10 @@ void Install_PlayerCustomData()
 	{
 		// update item
 		mem_seek(D2Game::GetOffsetByAddition(0x10933, 0));
-		MEMC_REF4(D2Game::D2GameGetObject, caller_updateItem_9);
+		MEMC_REF4(D2GameGetObject, caller_updateItem_9);
 
 		mem_seek(D2Game::GetOffsetByAddition(0x1097B, 0));
-		MEMC_REF4(D2Game::D2GameGetObject, caller_updateItem_9);
+		MEMC_REF4(D2GameGetObject, caller_updateItem_9);
 	}
 
 	// Update client on loading

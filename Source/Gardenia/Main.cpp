@@ -140,6 +140,14 @@ extern "C" __declspec(dllexport) bool __stdcall Release()
 
 extern "C" __declspec(dllexport) void* __stdcall Init(LPSTR IniName)
 {
+	// If you want to debug all of the Gardenia initialization code
+	// you can uncomment the below MessageBox and put a breakpoint after it.
+	// Reason for this is that this code happens quickly and very early before D2
+	// fully starts, thus by the time you can attach your debugger to Game.exe,
+	// all of this code already finished. So we can use the MessageBox trick.
+	// Thanks to Necrolis @ PhrozenKeep for bringing this trick up.
+	//MessageBox(GetActiveWindow(), (LPCSTR)L"Gardenia is Loaded", (LPCSTR)L"Gardenia", MB_APPLMODAL);
+
 	if (IniName) log_msg("* Gardenia is called from D2mod.dll\n\n");
 
 	static int isInstalled = false;
@@ -193,7 +201,7 @@ void Install_Functions()
 	if (active_VersionTextChange)
 		Install_VersionChange();
 
-	if (active_PrintPlugYVersion || active_Windowed)
+	if (active_PrintGardeniaVersion || active_Windowed)
 		Install_PrintPlugYVersion();
 
 	if (active_DisplayBaseStatsValue)
