@@ -1,8 +1,15 @@
-Gardenia is a fork of PlugY 11.02 by Yohann Nicolas that removes all
-of the components that are not allowed in the Diablo II IncGamers SPF
-forum and leaves the basics, primarily unlimited stash. 
+=============
+Synopsis
+=============
+Gardenia is a Diablo II 1.09b mod that is forked from Yohann Nicolas' PlugY 11.02.
+My mod removes all excess components and provides a much slimmer and maintainable mod
+through code reduction and massive refactoring and redesign.
 
-This is compatible only with 1.09b and 1.13d.
+In order to increase the maintainability of the mod and provide an
+optimal experience for whatever version you are playing, Gardenia now
+only supports a single Diablo II version. For my mod specifically, it only
+support 1.09b. I'm providing a 1.13d legacy branch that people can use to
+improve their version of Gardenia if desired.
 
 Gardenia IS compatible with Bliss Version Switcher. So if you want to have separate stashes
 while you are time traveling, you can. Just point Bliss Version Switcher to use "Gardenia.exe"
@@ -16,14 +23,14 @@ https://github.com/fearedbliss/Bliss-Version-Switcher
 =============
 Features
 =============
-Each features can be turned on/off via Gardenia.ini (see "COMMENTS ON THE CONFIGURATION FILE")
+Each feature can be turned on/off via Gardenia.ini (see "COMMENTS ON THE CONFIGURATION FILE"):
+
 - Disable access to Battle.net.
 - Infinite storage space in the stash.
 - Shared storage space in the stash.
 - Automatically execute /players X when you launch a new game.
 - Launch any number of Diablo II games on the same computer.
 - Added some pages for display more characters stats like %MF.
-- Enabled the ladder only runewords out of realms.
 - Display item level in its popup.
 - Increase the stash to 10x10 squares.
 - Always display Mana and Life values above the globes.
@@ -33,11 +40,9 @@ Each features can be turned on/off via Gardenia.ini (see "COMMENTS ON THE CONFIG
 - D2 can load all files, even those opened with Microsoft Excel (disabled by default).
 
 - Add following commands (see "COMMENTS ON THE CONFIGURATION FILE"):
-	/save : Save game without exit (1.13d only)
 	/page 1 : Show normal stats page (stats page must be opened).
 	/page 2 : Show extra stats page (stats page must be opened).
 	/page 3 : Show resistance stats page (stats page must be opened).
-	/page 4 : (beta) Show available runewords (stats page must be opened).
 	/lock : Lock mouse cursor in the window.
 	/unlock : Unlock mouse cursor in the window.
 	/renamechar newname : Rename your character and save it.

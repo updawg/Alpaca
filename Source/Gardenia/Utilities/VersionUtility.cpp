@@ -34,7 +34,7 @@ int VersionUtility::GetVersion()
 
 bool VersionUtility::IsSupported()
 {
-	return GameVersion == Versions::V109b || GameVersion == Versions::V113d;
+	return GameVersion == Versions::V109b;
 }
 
 const char* VersionUtility::GetVersionAsString()

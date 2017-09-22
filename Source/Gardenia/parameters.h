@@ -18,10 +18,10 @@
 #pragma once
 
 #define GARDENIA_NAME "Gardenia"
-#define GARDENIA_VERSION "1.00"
+#define GARDENIA_VERSION "1.01"
 #define GARDENIA_AUTHOR_NAME "Jonathan Vasquez"
 #define GARDENIA_AUTHOR_EMAIL "jon@xyinn.org"
-#define GARDENIA_BUILD_DATE "September 20, 2017 @ 21:58 ET"
+#define GARDENIA_BUILD_DATE "September 22, 2017 @ 08:33 ET"
 
 enum TargetMod
 {
