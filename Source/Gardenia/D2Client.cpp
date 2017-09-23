@@ -37,6 +37,7 @@ void D2Client::SetFunctions()
 	D2ClickOnStashButton = (TD2ClickOnStashButton)GetOffsetByAddition(0, 0x90C10);
 	D2LoadBuySelBtn = (TD2LoadBuySelBtn)GetOffsetByAddition(0x897B0, 0x18AA0);
 	D2SendMsgToAllDirect = (TD2SendMsgToAll)GetOffsetByAddition(0xD640, 0xB6890);
+	D2CleanStatMouseUp = (TD2CleanStatMouseUp)GetOffsetByAddition(0xB920, 0);
 
 	// Variables
 	ptResolutionY = (DWORD*)GetOffsetByAddition(0xD50E8, 0xF7038);
@@ -76,22 +77,6 @@ void __fastcall D2Client::D2CleanStatMouseUp_111()
 	*StatMouse2 = 0;
 	*StatMouse3 = 0;
 	*StatMouse4 = 0;
-}
-
-D2Client::TD2CleanStatMouseUp D2Client::D2CleanStatMouseUp()
-{
-	DWORD location;
-
-	if (VersionUtility::Is113D())
-	{
-		location = (DWORD)&D2Client::D2CleanStatMouseUp_111;
-	}
-	else
-	{
-		location = GetOffsetByAddition(0xB920, 0);
-	}
-
-	return (TD2CleanStatMouseUp)location;
 }
 
 D2Client::TD2PrintStat D2Client::D2PrintStat()
@@ -418,6 +403,7 @@ D2Client::TD2SendToServerXX D2Client::D2SendToServerXX;
 D2Client::TD2TogglePage D2Client::D2TogglePage;
 D2Client::TD2ClickOnStashButton D2Client::D2ClickOnStashButton;
 D2Client::TD2LoadBuySelBtn D2Client::D2LoadBuySelBtn;
+D2Client::TD2CleanStatMouseUp D2Client::D2CleanStatMouseUp;
 
 DWORD* D2Client::ptResolutionY;
 DWORD* D2Client::ptResolutionX;

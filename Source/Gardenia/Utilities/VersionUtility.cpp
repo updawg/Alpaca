@@ -79,11 +79,6 @@ const bool VersionUtility::Is113D()
 	return GameVersion == VersionUtility::Versions::V113d;
 }
 
-const bool VersionUtility::Is114D()
-{
-	return GameVersion == VersionUtility::Versions::V114d;
-}
-
 VersionUtility::Versions VersionUtility::GetVersion(const LPCVOID pVersionResource)
 {
 	if (!pVersionResource) return Versions::UNKNOWN;

@@ -130,7 +130,6 @@ D2Game::TD2LinkPortal D2LinkPortal;
 D2Game::TD2VerifIfNotCarry1 D2VerifIfNotCarry1;
 D2Game::TD2LoadInventory D2LoadInventory;
 D2Game::TD2GameGetObject D2GameGetObject;
-D2Game::TD2SaveGame D2SaveGame;
 
 // D2Game: Only 1.10
 D2Game::TD2GetClient D2GetClient;
@@ -270,7 +269,7 @@ void initD2functions()
 	D2GetMouseX = D2Client::D2GetMouseX();
 	D2GetMouseY = D2Client::D2GetMouseY();
 	D2GetClientPlayer = D2Client::D2GetClientPlayer();
-	D2CleanStatMouseUp = D2Client::D2CleanStatMouseUp();
+	D2CleanStatMouseUp = D2Client::D2CleanStatMouseUp;
 	D2SendToServer3 = D2Client::D2SendToServer3();
 
 	// D2Client: Variables
@@ -292,7 +291,6 @@ void initD2functions()
 	D2VerifIfNotCarry1 = D2Game::D2VerifIfNotCarry1();
 	D2LoadInventory = D2Game::D2LoadInventory();
 	D2GameGetObject = D2Game::D2GameGetObject();
-	D2SaveGame = D2Game::D2SaveGame();
 
 	// D2Game: Only 1.10
 	D2GetClient = D2Game::D2GetClient();

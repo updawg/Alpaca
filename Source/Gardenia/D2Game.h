@@ -30,7 +30,6 @@ public:
 	typedef DWORD(__fastcall *TD2VerifIfNotCarry1) (Unit* ptItem, ItemsBIN* itemsData, Unit* ptFirstItem);
 	typedef DWORD(__fastcall *TD2LoadInventory) (GameStruct* ptGame, Unit* pChar, saveBitField* pdata, DWORD p2, DWORD maxSize, DWORD p4, DWORD *ptNbBytesRead);
 	typedef Unit* (__fastcall *TD2GameGetObject) (GameStruct* ptGame, DWORD type, DWORD itemNum);
-	typedef void(__stdcall *TD2SaveGame) (GameStruct* ptGame);
 
 	// Until 1.10
 	typedef NetClient* (__fastcall *TD2GetClient) (Unit* ptUnit, char* lpszErrFile, DWORD ErrLine);
@@ -41,15 +40,11 @@ public:
 	static TD2VerifIfNotCarry1 D2VerifIfNotCarry1();
 	static TD2LoadInventory D2LoadInventory();
 	static TD2GameGetObject D2GameGetObject();
-	static TD2SaveGame D2SaveGame();
 
 	static TD2GetClient D2GetClient();
 	static NetClient** ptClientTable;
 private:
 	static void SetFunctions();
-
-	static TD2SaveGame GetD2SaveGameOffset();
-	static void D2SaveGame_1XX();
 
 	static void D2Game::D2GetClient_111();
 

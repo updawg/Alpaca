@@ -23,27 +23,20 @@ void LibraryLoader::Init()
 
 	// We need to load the game now so that we have the game version for the rest of the Dlls.
 	Game::Init();
-	
-	if (VersionUtility::Is114D())
-	{
-		log_msg("1.14d support is not implemented.\n");
-		//exit(-1);
-	}
-	else
-	{
-		// Initialize static class variables
-		D2Client::Init();
-		D2CMP::Init();
-		D2Common::Init();
-		D2Game::Init();
-		D2gfx::Init();
-		D2Lang::Init();
-		D2Launch::Init();
-		D2Net::Init();
-		D2Win::Init();
-		Fog::Init();
-		Storm::Init();
-	}
+
+	// Initialize static class variables
+	D2Client::Init();
+	D2CMP::Init();
+	D2Common::Init();
+	D2Game::Init();
+	D2gfx::Init();
+	D2Lang::Init();
+	D2Launch::Init();
+	D2Net::Init();
+	D2Win::Init();
+	Fog::Init();
+	Storm::Init();
+
 	log_msg("\n");
 }
 
@@ -51,25 +44,18 @@ void LibraryLoader::HookLibraries()
 {
 	log_msg("***** Unprotect Libraries *****\n");
 
-	if (VersionUtility::Is114D())
-	{
-		log_msg("Hooking 1.14 libraries");
-	}
-	else
-	{
-		D2Client::HookLibrary();
-		//D2CMP::HookLibrary();
-		D2Common::HookLibrary();
-		D2Game::HookLibrary();
-		D2gfx::HookLibrary();
-		D2Lang::HookLibrary();
-		D2Launch::HookLibrary();
-		//D2Net::HookLibrary();
-		//D2Win::HookLibrary();
-		Fog::HookLibrary();
-		Storm::HookLibrary();
-	}
-
+	D2Client::HookLibrary();
+	//D2CMP::HookLibrary();
+	D2Common::HookLibrary();
+	D2Game::HookLibrary();
+	D2gfx::HookLibrary();
+	D2Lang::HookLibrary();
+	D2Launch::HookLibrary();
+	//D2Net::HookLibrary();
+	//D2Win::HookLibrary();
+	Fog::HookLibrary();
+	Storm::HookLibrary();
+	
 	log_msg("\n");
 }
 
@@ -77,24 +63,17 @@ void LibraryLoader::UnhookLibraries()
 {
 	log_msg("***** Reprotect Libraries *****\n");
 
-	if (VersionUtility::Is114D())
-	{
-		log_msg("Unhooking 1.14 libraries");
-	}
-	else
-	{
-		D2Client::UnhookLibrary();
-		//D2CMP::UnhookLibrary();
-		D2Common::UnhookLibrary();
-		D2Game::UnhookLibrary();
-		D2gfx::UnhookLibrary();
-		D2Lang::UnhookLibrary();
-		D2Launch::UnhookLibrary();
-		//D2Net::UnhookLibrary();
-		//D2Win::UnhookLibrary();
-		Fog::UnhookLibrary();
-		Storm::UnhookLibrary();
-	}
+	D2Client::UnhookLibrary();
+	//D2CMP::UnhookLibrary();
+	D2Common::UnhookLibrary();
+	D2Game::UnhookLibrary();
+	D2gfx::UnhookLibrary();
+	D2Lang::UnhookLibrary();
+	D2Launch::UnhookLibrary();
+	//D2Net::UnhookLibrary();
+	//D2Win::UnhookLibrary();
+	Fog::UnhookLibrary();
+	Storm::UnhookLibrary();
 
 	log_msg("\n");
 }

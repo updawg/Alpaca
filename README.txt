@@ -26,11 +26,11 @@ Features
 Each feature can be turned on/off via Gardenia.ini (see "COMMENTS ON THE CONFIGURATION FILE"):
 
 - Disable access to Battle.net.
-- Infinite storage space in the stash.
-- Shared storage space in the stash.
+- Infinite stash storage space (Personal Stash)
+- Infinite shared stash storage space (Shared Stash)
 - Automatically execute /players X when you launch a new game.
 - Launch any number of Diablo II games on the same computer.
-- Added some pages for display more characters stats like %MF.
+- Extended stats available in the Character Page (i.e %MF).
 - Display item level in its popup.
 - Increase the stash to 10x10 squares.
 - Always display Mana and Life values above the globes.
@@ -45,7 +45,6 @@ Each feature can be turned on/off via Gardenia.ini (see "COMMENTS ON THE CONFIGU
 	/page 3 : Show resistance stats page (stats page must be opened).
 	/lock : Lock mouse cursor in the window.
 	/unlock : Unlock mouse cursor in the window.
-	/renamechar newname : Rename your character and save it.
 	/renamepage name : Rename current page stash.
 	/setindex : Set current stash page as index.
 	/setmainindex : Set current stash page as main index.
@@ -55,7 +54,6 @@ Each feature can be turned on/off via Gardenia.ini (see "COMMENTS ON THE CONFIGU
 	/swap page : Swap the content of current stash page with the content of another page.
 	/toggle page : Swap the content of current stash page with the content of another page in opposing stash shared/personal.
 	/dlm : Toggle always display mana and life mode.
-	/listcube : (beta) Create a "cube.txt" file in save directory containing all cube's receipts.
 
 =============
 Development, Goals, Tips, License

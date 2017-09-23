@@ -25,12 +25,6 @@
     <Filter Include="Header Files\Libraries">
       <UniqueIdentifier>{86c27b30-5ce7-4a76-ab3e-bfb9b3a04c16}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\NewInterface">
-      <UniqueIdentifier>{6bae30e8-86c2-4c50-bc70-9b291dfe1bc6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\NewInterface">
-      <UniqueIdentifier>{39e60b5e-9509-44d1-9900-5b0cc2f2d756}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Libraries">
       <UniqueIdentifier>{87bd3937-2015-45ae-ad64-8dc9ed87cea5}</UniqueIdentifier>
     </Filter>
@@ -102,9 +96,6 @@
     <ClCompile Include="SharedSaveFile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StatsPoints.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="UpdateClient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -116,21 +107,6 @@
     </ClCompile>
     <ClCompile Include="Utilities\VersionUtility.cpp">
       <Filter>Source Files\Utilities</Filter>
-    </ClCompile>
-    <ClCompile Include="NewInterface_CubeListing.cpp">
-      <Filter>Source Files\NewInterface</Filter>
-    </ClCompile>
-    <ClCompile Include="NewInterface_Runewords.cpp">
-      <Filter>Source Files\NewInterface</Filter>
-    </ClCompile>
-    <ClCompile Include="NewInterface_Stats.cpp">
-      <Filter>Source Files\NewInterface</Filter>
-    </ClCompile>
-    <ClCompile Include="NewInterface_StatsPageTwo.cpp">
-      <Filter>Source Files\NewInterface</Filter>
-    </ClCompile>
-    <ClCompile Include="NewInterfaces.cpp">
-      <Filter>Source Files\NewInterface</Filter>
     </ClCompile>
     <ClCompile Include="D2Functions.cpp">
       <Filter>Source Files</Filter>
@@ -175,6 +151,12 @@
       <Filter>Source Files\Libraries</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NewInterfaces.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NewInterface_StatsPageTwo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -248,9 +230,6 @@
     <ClInclude Include="sharedSaveFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="statsPoints.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -283,21 +262,6 @@
     </ClInclude>
     <ClInclude Include="..\Commons\D2Constants.h">
       <Filter>Header Files\Commons</Filter>
-    </ClInclude>
-    <ClInclude Include="newInterface_CubeListing.h">
-      <Filter>Header Files\NewInterface</Filter>
-    </ClInclude>
-    <ClInclude Include="newInterface_Runewords.h">
-      <Filter>Header Files\NewInterface</Filter>
-    </ClInclude>
-    <ClInclude Include="newInterface_Stats.h">
-      <Filter>Header Files\NewInterface</Filter>
-    </ClInclude>
-    <ClInclude Include="newInterface_StatsPageTwo.h">
-      <Filter>Header Files\NewInterface</Filter>
-    </ClInclude>
-    <ClInclude Include="newInterfaces.h">
-      <Filter>Header Files\NewInterface</Filter>
     </ClInclude>
     <ClInclude Include="Error.h">
       <Filter>Header Files</Filter>
@@ -349,6 +313,12 @@
     </ClInclude>
     <ClInclude Include="Library.h">
       <Filter>Header Files\Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="newInterface_StatsPageTwo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="newInterfaces.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

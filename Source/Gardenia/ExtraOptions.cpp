@@ -24,8 +24,6 @@ DWORD nbPlayersCommand = 0;
 int active_RunLODs = false;
 int active_AlwaysDisplayLifeMana = false;
 int active_EnabledTXTFilesWithMSExcel = false;
-int active_DisplayBaseStatsValue = false;
-int active_LadderRunewords = false;
 
 /****************************************************************************************************/
 
@@ -142,7 +140,7 @@ void SendPlayersCommand()
 	D2SetNbPlayers(nbPlayersCommand);
 
 	memset(&data,0,sizeof(data));
-	data.displayType=0x15;
+	data.displayType=0x14;
 	data.un=1;
 	data.zero=0;
 	data.null=NULL;
@@ -338,99 +336,6 @@ void Install_EnabledTXTFilesWithMSExcel()
 	mem_seek((DWORD)Storm::D2StormMPQOpenFile + (VersionUtility::Is113D() ? 0x12A : 0xFF));
 	memt_byte(0x01, 0x03);	//; |ShareMode = FILE_SHARE_READ|FILE_SHARE_WRITE					
 	//6FC1C969  |. 6A 01          PUSH 1        ; |ShareMode = FILE_SHARE_READ
-
-	log_msg("\n");
-
-	isInstalled = true;
-}
-
-/****************************************************************************************************/
-
-void __stdcall printDisplayBaseStatsValue(WORD statID, sDrawImageInfo* data, DWORD x, DWORD y, DWORD p4, DWORD p5, DWORD p6)
-{
-	if ( onRealm || !D2isLODGame())
-	{
-		D2PrintImage(data,x,y,p4,p5,p6);
-		return;
-	}
-	Unit* ptChar = D2GetClientPlayer();
-
-	CharStatsBIN* charStats = D2GetCharStatsBIN(ptChar->nPlayerClass);
-	int minValue=1;
-	switch (statID)
-	{
-		case STATS_STRENGTH: minValue = charStats->baseSTR; break;
-		case STATS_DEXTERITY: minValue = charStats->baseDEX; break;
-		case STATS_VITALITY: minValue = charStats->baseVIT; break;
-		case STATS_ENERGY: minValue = charStats->baseENE; break;
-	}
-	int statValue = D2GetPlayerBaseStat(ptChar, statID, 0);
-
-	if (isOnRect(D2GetMouseX(),D2GetMouseY(),x+5,y+5,32,32))
-	{
-		WCHAR text[100];
-		_snwprintf(text, sizeof(text), getLocalString(STR_STATS_BASE_MIN), statValue, minValue);
-		D2SetFont(1);
-		D2PrintPopup(text, x+18, y-32, WHITE, 1);
-	}
-
-	if ( D2GetPlayerBaseStat(ptChar, 4, 0) <= 0)
-		setFrame(data, 2);
-	D2PrintImage(data,x,y,p4,p5,p6);
-}
-
-FCT_ASM ( caller_displayBaseStatsValue )
-	POP EAX
-	XOR ECX,ECX
-	MOV CX,WORD PTR DS:[ESI+8]
-	PUSH ECX
-	PUSH EAX
-	JMP printDisplayBaseStatsValue
-}}
-
-void Install_DisplayBaseStatsValue()
-{
-	static int isInstalled = false;
-	if (isInstalled) return;
-
-	log_msg("[Patch] D2Client for display base stats value. (DisplayBaseStatsValue)\n");
-
-	// Always print stat button images.
-	mem_seek(D2Client::GetOffsetByAddition(0x29B12, 0xBF955));
-	memt_byte(0x8B, 0xEB);
-	memt_byte(0x4C, (BYTE)D2Client::GetOffsetForVersion(0x12, 0x13));
-	memt_byte(0x24, 0x90);
-	memt_byte((BYTE)D2Client::GetOffsetForVersion(0x20, 0x1C), 0x90);
-
-	mem_seek(D2Client::GetOffsetByAddition(0x29B9D, 0xBF9DE));
-
-	MEMJ_REF4(D2gfx::D2PrintImage, caller_displayBaseStatsValue);
-
-	log_msg("\n");
-
-	isInstalled = true;
-}
-
-/****************************************************************************************************/
-
-RunesBIN* __stdcall compileRunesTxt(DWORD unused, const char* filename, BINField* ptFields, DWORD* ptRecordCount, DWORD recordLength)
-{
-	RunesBIN* ptRunesBin = (RunesBIN*)D2CompileTxtFileDirect(unused, filename, ptFields, ptRecordCount, recordLength);
-	for (DWORD i=0; i < *ptRecordCount; i++)
-		ptRunesBin[i].Server=0;
-	return ptRunesBin;
-}
-
-void Install_LadderRunewords()
-{
-	static int isInstalled = false;
-	if (isInstalled) return;
-	if (VersionUtility::Is109B()) return;
-
-	log_msg("[Patch] D2Common for enabled the ladder only runewords. (LadderRunewords)\n");
-
-	mem_seek(D2Common::GetOffsetByAddition(0, 0x63782));
-	MEMC_REF4(D2Common::D2CompileTxtFileDirect, compileRunesTxt);
 
 	log_msg("\n");
 

@@ -15,7 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#include "statsPoints.h"
 #include "plugYFiles.h"		// Install_PlugYImagesFiles()
 #include "newInterfaces.h"
 #include "common.h"

@@ -19,7 +19,6 @@
 #include "commands.h"			// Install_Commands()
 #include "mainScreen.h"			// Install_PrintPlugYVersion() Install_VersionChange()
 #include "bigStash.h"			// Install_BigStash()
-#include "statsPoints.h"		// Install_StatsPoints() Install_StatsLimitShiftClick()
 #include "infinityStash.h"		// Install_MultiPageStash()
 #include "newInterfaces.h"		// Install_NewInterfaces()
 #include "extraOptions.h"		// Install_AlwaysRegenMapInSP()
@@ -36,8 +35,6 @@ void freeLibrary(DWORD library)
 
 void freeD2Libraries()
 {
-	if (VersionUtility::Is114D()) return;
-
 	log_msg("***** Free Libraries *****\n");
 
 	freeLibrary(D2Client::Offset);
@@ -204,12 +201,6 @@ void Install_Functions()
 	if (active_PrintGardeniaVersion || active_Windowed)
 		Install_PrintPlugYVersion();
 
-	if (active_DisplayBaseStatsValue)
-		Install_DisplayBaseStatsValue();
-
-	if (active_StatsShiftClickLimit)
-		Install_StatsLimitShiftClick();
-
 	if (active_RunLODs)
 		Install_RunLODs();
 
@@ -233,9 +224,6 @@ void Install_Functions()
 
 	if (active_EnabledTXTFilesWithMSExcel)
 		Install_EnabledTXTFilesWithMSExcel();
-
-	if (active_LadderRunewords)
-		Install_LadderRunewords();
 
 	log_msg("DLL patched sucessfully.\n\n");
 }

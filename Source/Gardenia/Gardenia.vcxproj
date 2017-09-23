@@ -133,16 +133,12 @@
     <ClCompile Include="MainScreen.cpp" />
     <ClCompile Include="ModifMemory.cpp" />
     <ClCompile Include="NewInterfaces.cpp" />
-    <ClCompile Include="NewInterface_CubeListing.cpp" />
-    <ClCompile Include="NewInterface_Runewords.cpp" />
-    <ClCompile Include="NewInterface_Stats.cpp" />
     <ClCompile Include="NewInterface_StatsPageTwo.cpp" />
     <ClCompile Include="Parameters.cpp" />
     <ClCompile Include="PlayerCustomData.cpp" />
     <ClCompile Include="PlugYFiles.cpp" />
     <ClCompile Include="SavePlayerData.cpp" />
     <ClCompile Include="SharedSaveFile.cpp" />
-    <ClCompile Include="StatsPoints.cpp" />
     <ClCompile Include="Storm.cpp" />
     <ClCompile Include="UpdateClient.cpp" />
     <ClCompile Include="UpdateServer.cpp" />
@@ -189,9 +185,6 @@
     <ClInclude Include="mainScreen.h" />
     <ClInclude Include="modifMemory.h" />
     <ClInclude Include="newInterfaces.h" />
-    <ClInclude Include="newInterface_CubeListing.h" />
-    <ClInclude Include="newInterface_Runewords.h" />
-    <ClInclude Include="newInterface_Stats.h" />
     <ClInclude Include="newInterface_StatsPageTwo.h" />
     <ClInclude Include="parameters.h" />
     <ClInclude Include="playerCustomData.h" />
@@ -200,7 +193,6 @@
     <ClInclude Include="savePath.h" />
     <ClInclude Include="savePlayerData.h" />
     <ClInclude Include="sharedSaveFile.h" />
-    <ClInclude Include="statsPoints.h" />
     <ClInclude Include="Storm.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="updateClient.h" />

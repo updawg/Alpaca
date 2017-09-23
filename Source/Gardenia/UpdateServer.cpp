@@ -16,7 +16,6 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "updateServer.h"
-#include "statsPoints.h"
 #include "infinityStash.h"
 #include "commands.h"
 #include "common.h"
@@ -47,8 +46,6 @@ int __stdcall handleServerUpdate(Unit* ptChar, WORD param)
 		case US_SELECT_NEXT_INDEX2 :	selectNextIndex2Stash( ptChar ); return 1;
 		case US_INSERT_PAGE:			insertStash(ptChar); selectNextStash(ptChar); return 1;
 		case US_DELETE_PAGE:			deleteStash(ptChar, false); return 1;
-
-		case US_SAVE :					savePlayers( ptChar ); return 1;
 
 		case US_MAXGOLD :				maxGold(ptChar); return 1;
 		case US_PUTGOLD :				putGold(ptChar, 0); return 1;

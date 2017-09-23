@@ -64,7 +64,7 @@ public:
 	static TD2GetMouseX D2GetMouseX();
 	static TD2GetMouseY D2GetMouseY();
 	static TD2GetClientPlayer D2GetClientPlayer();
-	static TD2CleanStatMouseUp D2CleanStatMouseUp();
+	static TD2CleanStatMouseUp D2CleanStatMouseUp;
 	static TD2SendToServer3 D2SendToServer3();
 
 	static DWORD ResolutionX();
@@ -85,7 +85,6 @@ public:
 	static WORD GetDescStrPos(DWORD statID);
 private:
 	static void SetFunctions();
-	static void __fastcall D2CleanStatMouseUp_111();
 
 	// C++ ISO Standards prohibit using a pointer-to-member address as a way to access the function in the instance.
 	// There are workarounds available (static functions being one (They are essentially the same as non-member functions)
@@ -101,32 +100,27 @@ private:
 	static WORD GetDescStrPos_10(DWORD statID);
 	static WORD GetDescStrPos_9(DWORD statID);
 
-	static void D2PrintStat_111();
 	static DWORD __fastcall D2PrintStat_9(Unit* ptItem, Stats* ptStats, DWORD statID, DWORD statIndex, DWORD statValue, LPWSTR lpText);
 
 	static TD2PrintStat D2PrintStatDirect;
-
-	static DWORD __fastcall D2isLODGame_111();
-
 	static TD2SendMsgToAll D2SendMsgToAllDirect;
-	static void D2SendMsgToAll_111();
-
 	static TD2SetColorPopup D2SetColorPopupDirect;
-	static void D2SetColorPopup_111();
-
 	static TD2LoadImage D2LoadImageDirect;
-	static void D2LoadImage_111();
-
-	static void D2FreeImage_111();
 	static const char* D2Client::D2FreeImage_FILE;
-
 	static TD2PlaySound D2PlaySoundDirect;
-	static void D2PlaySound_111();
 
-	static void D2SendToServer3_111();
-
+	// Remove these since they will no longer be called
+	static void __fastcall D2CleanStatMouseUp_111();
 	static BYTE __fastcall D2GetDifficultyLevel_111();
 	static DWORD __stdcall	D2GetMouseX_111();
 	static DWORD __stdcall	D2GetMouseY_111();
 	static Unit* __stdcall	D2GetClientPlayer_111();
+	static void D2SendMsgToAll_111();
+	static DWORD __fastcall D2isLODGame_111();
+	static void D2SetColorPopup_111();
+	static void D2LoadImage_111();
+	static void D2FreeImage_111();
+	static void D2PlaySound_111();
+	static void D2SendToServer3_111();
+	static void D2PrintStat_111();
 };

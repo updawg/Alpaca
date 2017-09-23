@@ -147,7 +147,6 @@ extern D2Game::TD2LinkPortal D2LinkPortal;
 extern D2Game::TD2VerifIfNotCarry1 D2VerifIfNotCarry1;
 extern D2Game::TD2LoadInventory D2LoadInventory;
 extern D2Game::TD2GameGetObject D2GameGetObject;
-extern D2Game::TD2SaveGame D2SaveGame;
 
 // D2Game: Only 1.10
 extern D2Game::TD2GetClient D2GetClient;

@@ -19,27 +19,20 @@
 #include "updateClient.h"
 #include "infinityStash.h"
 #include "newInterfaces.h"
-#include "newInterface_CubeListing.h"
 #include "extraOptions.h"
 #include "windowed.h"
 #include "common.h"
 
 bool active_Commands=true;
 
-bool active_listAllCubeFormula=true;
-bool active_savegame=false;
-
 #define MAX_CMD_SIZE 200
 
 const char * CMD_PLAYERS="players set to";
 
-const char * CMD_SAVE="/save";
 const char * CMD_SELECTPAGE="/page";
 
 const char * CMD_LOCK_MOUSE = "/lock";
 const char * CMD_UNLOCK_MOUSE = "/unlock";
-
-const char * CMD_RENAME_CHAR="/renamechar";
 
 const char * CMD_REPAGE_NAME = "/renamepage";
 const char * CMD_SET_INDEX = "/setindex";
@@ -51,17 +44,6 @@ const char * CMD_SWAP = "/swap";
 const char * CMD_TOGGLE = "/toggle";
 
 const char * CMD_DISPLAY_LIFE_MANA = "/dlm";
-
-const char * CMD_LISTCUBEFORMULA="/listcube";
-
-void savePlayers(Unit* ptChar)
-{
-	// 1.09-1.10 offsets aren't implemented.
-	if (active_savegame)
-	{
-		D2SaveGame(PCGame);
-	}
-}
 
 void maxGold(Unit* ptChar)
 {
@@ -115,78 +97,12 @@ void takeGold(Unit* ptChar, DWORD amount)
 	updateClient(ptChar, UC_SHARED_GOLD, PCPY->sharedGold, 0, 0);
 }
 
-
 void updateSharedGold(DWORD goldAmount)
 {
 	Unit* ptChar = D2GetClientPlayer();
 	log_msg("SharedGold = %d\n",goldAmount);
 	PCPY->sharedGold = goldAmount;
 }
-
-bool renameCharacter(Unit* ptChar, const char* newName)
-{
-	int len = strlen(newName);
-	if (len < 2 || len > 15)
-		return 0;
-	for (int i = 0; i < len; i++)
-	{
-		char c = newName[i];
-		if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == '_')))
-			return 1;
-	}
-	// Move current save file
-	{
-		char szCurrentFile[MAX_PATH];
-		char szNewFile[MAX_PATH];
-
-		//Get temporary savefile name.
-		D2FogGetSavePath(szCurrentFile, MAX_PATH);
-		D2FogGetSavePath(szNewFile, MAX_PATH);
-		strcat(szCurrentFile, ptChar->ptPlayerData->name);
-		strcat(szNewFile, newName);
-		strcat(szCurrentFile, ".");
-		strcat(szNewFile, ".");
-		int curLen = strlen(szCurrentFile);
-		int newLen = strlen(szNewFile);
-		strcpy(&szCurrentFile[curLen], "d2s");
-		strcpy(&szNewFile[newLen], "d2s");
-		MoveFile(szCurrentFile, szNewFile);
-		strcpy(&szCurrentFile[curLen], "d2x");
-		strcpy(&szNewFile[newLen], "d2x");
-		MoveFile(szCurrentFile, szNewFile);
-		strcpy(&szCurrentFile[curLen], "key");
-		strcpy(&szNewFile[newLen], "key");
-		MoveFile(szCurrentFile, szNewFile);
-		strcpy(&szCurrentFile[curLen], "ma0");
-		strcpy(&szNewFile[newLen], "ma0");
-		MoveFile(szCurrentFile, szNewFile);
-		strcpy(&szCurrentFile[curLen], "ma1");
-		strcpy(&szNewFile[newLen], "ma1");
-		MoveFile(szCurrentFile, szNewFile);
-		strcpy(&szCurrentFile[curLen], "ma2");
-		strcpy(&szNewFile[newLen], "ma2");
-		MoveFile(szCurrentFile, szNewFile);
-		strcpy(&szCurrentFile[curLen], "ma3");
-		strcpy(&szNewFile[newLen], "ma3");
-		MoveFile(szCurrentFile, szNewFile);
-		strcpy(&szCurrentFile[curLen], "ma4");
-		strcpy(&szNewFile[newLen], "ma4");
-		MoveFile(szCurrentFile, szNewFile);
-		strcpy(&szCurrentFile[curLen], "map");
-		strcpy(&szNewFile[newLen], "map");
-		MoveFile(szCurrentFile, szNewFile);
-	}
-	// Update server
-	for (int i = 0; i <= len; i++)
-		updateServer(US_RENAME + (newName[i] << 8));
-
-	// Update client
-	log_msg("Rename on Client : %s -> %s\n", ptChar->ptPlayerData->name, newName);
-	strcpy(ptChar->ptPlayerData->name, newName);
-	updateServer(US_SAVE);
-	return 0;
-}
-/****************************************************************************************************/
 
 int __stdcall commands (char* ptText)
 {
@@ -204,13 +120,6 @@ int __stdcall commands (char* ptText)
 		if (nb > 0 && nb <= 64)
 			nbPlayersCommand = nb;
 		return 1;
-	}
-
-	if (!strcmp(command, CMD_SAVE))
-	{
-		if (onRealm) return 1;
-		updateServer(US_SAVE);
-		return 0;
 	}
 
 	if (!strncmp(command, CMD_SELECTPAGE, strlen(CMD_SELECTPAGE)))
@@ -232,15 +141,6 @@ int __stdcall commands (char* ptText)
 		if (onRealm) return 1;
 		unlockMouseCursor();
 		return 0;
-	}
-
-	if (!strncmp(command, CMD_RENAME_CHAR, strlen(CMD_RENAME_CHAR)))
-	{
-		const char* param = &ptText[strlen(CMD_RENAME_CHAR)];
-		if (param[0] != ' ')
-			return 1;
-		param++;
-		return renameCharacter(ptChar, param);
 	}
 
 	if (!strncmp(command, CMD_REPAGE_NAME,strlen(CMD_REPAGE_NAME)))
@@ -344,13 +244,6 @@ int __stdcall commands (char* ptText)
 		return 0;
 	}
 
-	if (!strcmp(command, CMD_LISTCUBEFORMULA))
-	{
-		if (!active_listAllCubeFormula) return 1;
-		listAllCubeFormula();
-		return 0;
-	}
-
 	return 1;
 }
 
@@ -399,9 +292,6 @@ void Install_Commands()
 	Install_UpdateServer();
 
 	log_msg("[Patch] D2Client for install commands. (Commands)\n");
-
-	active_listAllCubeFormula = VersionUtility::Is113D();
-	active_savegame = VersionUtility::Is113D();
 
 	// Run custom commmand
 	mem_seek(D2Client::GetOffsetByAddition(0x2C120, 0xB1FD6));

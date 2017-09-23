@@ -20,9 +20,7 @@
 #include "updateServer.h"	// Install_UpdateServer()
 #include "interface_Stats.h"// Install_InterfaceStats()
 #include "newInterfaces.h"
-#include "newInterface_Stats.h"
 #include "newInterface_StatsPageTwo.h"
-#include "newInterface_Runewords.h"
 #include "common.h"
 #include <stdio.h>
 
@@ -61,16 +59,11 @@ int GetCurrentPage()
 	return selectedPage;
 }
 
-
 void __stdcall printCustomPage()
 {
 	if(onRealm) {D2PrintStatsPage();return;}
 	if ( (selectedPage > 0) && (selectedPage<=lastPage) )
 		printNewStatsPageTwo(selectedPage);
-	else if (selectedPage == lastPage+1)
-		printRunewordsPage();
-	else if (selectedPage == lastPage+2)
-		printNewStatsPage();
 	else
 		D2PrintStatsPage();
 }
@@ -80,10 +73,6 @@ DWORD __stdcall mouseCustomPageLeftDown(sWinMessage* msg)
 	if(onRealm) return -1;
 	if ( (selectedPage > 0) && (selectedPage<=lastPage) )
 		return mouseNewStatsPageTwoLeftDown(msg);
-	else if (selectedPage == lastPage+1)
-		return mouseRunewordsPageLeftDown(msg);
-	else if (selectedPage == lastPage+2)
-		return mouseNewStatsPageLeftDown(msg);
 	else
 		return -1;
 }
@@ -93,10 +82,6 @@ DWORD __stdcall mouseCustomPageLeftUp(sWinMessage* msg)
 	if(onRealm) return -1;
 	if ( (selectedPage > 0) && (selectedPage <= lastPage) )
 		return mouseNewStatsPageTwoLeftUp(msg);
-	else if (selectedPage == lastPage+1)
-		return mouseRunewordsPageLeftUp(msg);
-	else if (selectedPage == lastPage+2)
-		return mouseNewStatsPageLeftUp(msg);
 	else
 		return -1;
 }
@@ -124,7 +109,6 @@ printBorder:
 	MOV ECX,0x12
 	RETN
 }}
-
 
 FCT_ASM ( caller_mouseCustomPageLeftDown_111 )
 	PUSH EAX

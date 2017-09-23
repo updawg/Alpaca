@@ -17,7 +17,6 @@
 
 #include "updateServer.h"
 #include "plugYFiles.h"
-#include "statsPoints.h"
 #include "newInterfaces.h"
 #include "common.h"
 #include <stdio.h>

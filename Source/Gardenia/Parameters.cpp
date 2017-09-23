@@ -28,7 +28,6 @@
 
 #define BUFSIZE 0x400
 
-#include "statsPoints.h"
 #include "mainScreen.h"
 #include "bigStash.h"
 #include "infinityStash.h"
@@ -111,10 +110,6 @@ const char* S_posYPutGoldBtn = "PosYPutGoldBtn";
 const char* S_posXTakeGoldBtn = "PosXTakeGoldBtn";
 const char* S_posYTakeGoldBtn = "PosYTakeGoldBtn";
 
-const char* S_STATS_POINTS = "STATS POINTS";
-const char* S_active_StatsShiftClickLimit = "ActiveShiftClickLimit";
-const char* S_limitValueToShiftClick = "LimitValueToShiftClick";
-
 const char* S_INTERFACE = "INTERFACE";
 const char* S_active_newInterfaces = "ActiveNewStatsInterface";
 const char* S_selectMainPageOnOpening = "selectMainPageOnOpening";
@@ -126,8 +121,6 @@ const char* S_active_DisplayItemLevel = "ActiveDisplayItemLevel";
 const char* S_active_RunLODs = "ActiveLaunchAnyNumberOfLOD";
 const char* S_active_AlwaysDisplayLifeMana = "AlwaysDisplayLifeAndManaValues";
 const char* S_active_EnabledTXTFilesWithMSExcel= "EnabledTXTFilesWhenMSExcelOpenIt";
-const char* S_active_DisplayBaseStatsValue = "ActiveDisplayBaseStatsValue";
-const char* S_active_LadderRunewords = "ActiveLadderRunewords";
 
 const char* S_DLL = "DLL:\t";
 const char* S_DEFAULT = "DEFAULT:";
@@ -484,21 +477,6 @@ void init_Stash(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefaultFile
 	log_msg("\n");
 }
 
-void init_StatsPoints(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefaultFile, char* buffer, DWORD maxSize)
-{
-	GET_PRIVATE_PROFILE_STRING(S_STATS_POINTS, S_active_StatsShiftClickLimit, "0");
-	active_StatsShiftClickLimit = atoi(buffer) != 0;
-	log_msg("active_StatsShiftClickLimit\t\t= %u\n", active_StatsShiftClickLimit);
-
-	if (active_StatsShiftClickLimit)
-	{
-		GET_PRIVATE_PROFILE_STRING(S_STATS_POINTS, S_limitValueToShiftClick, "5");
-		limitValueToShiftClick = atoi(buffer);
-		log_msg("limitValueToShiftClick\t\t= %u\n", limitValueToShiftClick);
-	}
-	log_msg("\n");
-}
-
 void init_NewInterfaces(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefaultFile, char* buffer, DWORD maxSize)
 {
 	GET_PRIVATE_PROFILE_STRING(S_INTERFACE, S_active_newInterfaces, "0");
@@ -542,18 +520,6 @@ void init_ExtraOptions(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefa
 	GET_PRIVATE_PROFILE_STRING(S_EXTRA, S_active_EnabledTXTFilesWithMSExcel, "0");
 	active_EnabledTXTFilesWithMSExcel = atoi(buffer);
 	log_msg("active_EnabledTXTFilesWithMSExcel\t= %u\n\n", active_EnabledTXTFilesWithMSExcel);
-
-	GET_PRIVATE_PROFILE_STRING(S_EXTRA, S_active_DisplayBaseStatsValue, "0");
-	active_DisplayBaseStatsValue = atoi(buffer);
-	log_msg("active_DisplayBaseStatsValue\t\t= %u\n\n", active_DisplayBaseStatsValue);
-
-	GET_PRIVATE_PROFILE_STRING(S_EXTRA, S_active_LadderRunewords, "0");
-	active_LadderRunewords = atoi(buffer);
-	if (active_LadderRunewords && (VersionUtility::Is109B())) {
-		active_LadderRunewords = 0;
-		log_msg("active_LadderRunewords\t\t\t= %d (Warning : Warning : this feature is only for LoD version 1.10 or higher, so it's automatically disabled)\n", active_LadderRunewords);
-	} else
-		log_msg("active_LadderRunewords\t\t\t= %u\n\n", active_LadderRunewords);
 }
 
 void loadParameters()
@@ -594,7 +560,6 @@ void loadParameters()
 			init_ActiveLanguage(iniFile, iniFixedFile, iniDefaultFile, buffer,BUFSIZE);
 			init_VersionText(iniFile, iniFixedFile, iniDefaultFile, buffer, BUFSIZE);
 			init_Stash(iniFile, iniFixedFile, iniDefaultFile, buffer, BUFSIZE);
-			init_StatsPoints(iniFile, iniFixedFile, iniDefaultFile, buffer, BUFSIZE);
 			init_NewInterfaces(iniFile, iniFixedFile, iniDefaultFile, buffer, BUFSIZE);
 			init_ExtraOptions(iniFile, iniFixedFile, iniDefaultFile, buffer, BUFSIZE);
 		}

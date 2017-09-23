@@ -38,33 +38,6 @@ void D2Game::SetFunctions()
 	D2GameGetObjectDirect = (TD2GameGetObject)GetOffsetByAddition(0x7BAE0, 0x6DC40);
 }
 
-D2Game::TD2SaveGame D2Game::D2SaveGame()
-{
-	if (VersionUtility::Is113D())
-	{
-		return GetD2SaveGameOffset();
-	}
-	else
-	{
-		return (TD2SaveGame)D2SaveGame_1XX;
-	}
-}
-
-D2Game::TD2SaveGame D2Game::GetD2SaveGameOffset()
-{
-	return (TD2SaveGame)GetOffsetByAddition(0, 0xBE660);
-}
-
-__declspec (naked) void D2Game::D2SaveGame_1XX()
-{
-	__asm {
-		POP EAX
-		POP ECX
-		PUSH EAX
-		JMP GetD2SaveGameOffset
-	};
-}
-
 D2Game::TD2GetClient D2Game::D2GetClient()
 {
 	if (VersionUtility::Is113D())
