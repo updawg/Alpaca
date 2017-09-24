@@ -45,13 +45,6 @@ disableBattleNet:
 	RETN
 }}
 
-FCT_ASM ( caller_TCPIPBtnPress111 )
-	MOV onRealm,0
-	CALL BtnPress
-	MOV ESI,0x40
-	RETN
-}}
-
 FCT_ASM ( caller_TCPIPBtnPress )
 	MOV onRealm,0
 	CALL BtnPress
@@ -74,26 +67,18 @@ void Install_VariableOnRealm()
 	log_msg("[Patch] D2Launch for disabling online buttons. (VariableonRealm)\n");
 
 	// click on Battle.net button
-	mem_seek(D2Launch::GetOffsetByAddition(0x8195, 0x11C65));
+	mem_seek(D2Launch::GetOffsetByAddition(0x8195));
 	memt_byte(0x81, 0xE8);
 	MEMT_REF4(0x400EC, caller_BnetBtnPress);
 	memt_byte(0, 0x90);
 
 	// click on TCP/IP button
-	mem_seek(D2Launch::GetOffsetByAddition(0x87B9, 0x1053E));
-	if (VersionUtility::Is113D())
-	{
-		memt_byte(0xBE, 0xE8);
-		MEMT_REF4(0x40, caller_TCPIPBtnPress111);
-	}
-	else
-	{
-		memt_byte(0xBD, 0xE8);
-		MEMT_REF4(1, caller_TCPIPBtnPress);
-	}
-
+	mem_seek(D2Launch::GetOffsetByAddition(0x87B9));
+	memt_byte(0xBD, 0xE8);
+	MEMT_REF4(1, caller_TCPIPBtnPress);
+	
 	// click on SinglePlayer button
-	mem_seek(D2Launch::GetOffsetByAddition(0xD1F6, 0xA906));
+	mem_seek(D2Launch::GetOffsetByAddition(0xD1F6));
 	memt_byte(0xBA, 0xE8);
 	MEMT_REF4(0x400, caller_SinglePlayerBtnPress);
 

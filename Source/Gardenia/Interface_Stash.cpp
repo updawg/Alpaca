@@ -283,7 +283,9 @@ void __fastcall printPageNumber(LPWSTR maxGoldText, DWORD x, DWORD y, DWORD colo
 		if (PCPY->currentStash->name && PCPY->currentStash->name[0])
 			mbstowcs(popupText,PCPY->currentStash->name,50);//strlen(PCPY->currentStash->name)+1
 		else _snwprintf(popupText, sizeof(popupText), getLocalString( isShared ? STR_SHARED_PAGE_NUMBER : STR_PERSONAL_PAGE_NUMBER), currentId+1);
-		D2PrintString(popupText, x, y, isShared ? (isIndex ? CRYSTAL_RED : RED) : (isIndex ? BRIGHT_WHITE : WHITE), bfalse);
+
+		int stashNameColor = isShared ? (isIndex ? GREEN : RED) : (isIndex ? GREEN : WHITE);
+		D2PrintString(popupText, x, y, stashNameColor, bfalse);
 	} else {
 		_snwprintf(popupText, sizeof(popupText), getLocalString(STR_NO_SELECTED_PAGE));
 		D2PrintString(popupText, x, y, WHITE, bfalse);
@@ -350,24 +352,6 @@ Unit* __stdcall initGetNextItemForSet(Inventory* ptInventory)
 	return getNextItemForSet(item);
 }
 
-
-FCT_ASM( caller_manageBtnDown_111 )
-	PUSH EBP
-	CALL manageBtnDown
-	TEST EAX,EAX
-	JE IS_NOT_ON_BUTTON
-	POP EDX
-	MOV EDX, DWORD PTR DS:[EDX+0x10]
-	MOV DWORD PTR DS:[EDX],1
-	POP EDI
-	POP ESI
-	POP EBP
-	POP EBX
-	RETN 4
-IS_NOT_ON_BUTTON:
-	JMP D2ClickOnStashButton
-}}
-
 FCT_ASM( caller_manageBtnDown )
 	PUSH EDI
 	CALL manageBtnDown
@@ -383,31 +367,6 @@ FCT_ASM( caller_manageBtnDown )
 	RETN 4
 IS_NOT_ON_BUTTON:
 	JMP D2isLODGame
-}}
-
-FCT_ASM( caller_manageBtnUp_111 )
-	PUSH EBX
-	CALL manageBtnUp
-	MOV isDownBtn.all,0
-	TEST EAX,EAX
-	JE IS_NOT_ON_BUTTON
-	POP EDX
-	MOV EDX, DWORD PTR DS:[EDX+0x1A]
-	MOV DWORD PTR DS:[EDX],0
-	SUB EDX,8
-	MOV DWORD PTR DS:[EDX],0
-	ADD EDX,4
-	MOV DWORD PTR DS:[EDX],0
-	ADD EDX,0x68
-	MOV DWORD PTR DS:[EDX],0
-	POP EDI
-	POP ESI
-	POP EBP
-	POP EBX
-	POP ECX
-	RETN 4
-IS_NOT_ON_BUTTON:
-	JMP D2ClickOnStashButton
 }}
 
 FCT_ASM( caller_manageBtnUp )
@@ -434,7 +393,6 @@ IS_NOT_ON_BUTTON:
 	JMP D2isLODGame
 }}
 
-
 FCT_ASM ( initBtnsStates )
 	MOV isDownBtn.all,0
 	ADD ESP,0x104
@@ -452,33 +410,33 @@ void Install_InterfaceStash()
 	log_msg("[Patch] D2Client for stash interface. (InterfaceStash)\n");
 
 	// Print button images
-	mem_seek(D2Client::GetOffsetByAddition(0x39060, 0x9DE26));
+	mem_seek(D2Client::GetOffsetByAddition(0x39060));
 	MEMC_REF4(D2Client::D2LoadBuySelBtn, printBtns);
 
 	// print page number
-	mem_seek(D2Client::GetOffsetByAddition(0x3903C, 0x9DE03));
+	mem_seek(D2Client::GetOffsetByAddition(0x3903C));
 	MEMJ_REF4(D2Win::D2PrintString, printPageNumber);
 
 	// Manage mouse down (Play sound)
-	mem_seek(D2Client::GetOffsetByAddition(0x45091, 0x9FC76));
-	MEMC_REF4(VersionUtility::Is113D() ? (DWORD)D2ClickOnStashButton : (DWORD)D2isLODGame, VersionUtility::Is113D() ? caller_manageBtnDown_111 : caller_manageBtnDown);
+	mem_seek(D2Client::GetOffsetByAddition(0x45091));
+	MEMC_REF4((DWORD)D2isLODGame, caller_manageBtnDown);
 
 	// Manage mouse up
-	mem_seek(D2Client::GetOffsetByAddition(0x455F9, 0x9FAA9));
-	MEMC_REF4(VersionUtility::Is113D() ? (DWORD)D2ClickOnStashButton : (DWORD)D2isLODGame, VersionUtility::Is113D() ? caller_manageBtnUp_111 : caller_manageBtnUp);
+	mem_seek(D2Client::GetOffsetByAddition(0x455F9));
+	MEMC_REF4((DWORD)D2isLODGame, caller_manageBtnUp);
 
 	// init state of button on open stash page
-	mem_seek(D2Client::GetOffsetByAddition(0x45B3A, 0x9441A));
+	mem_seek(D2Client::GetOffsetByAddition(0x45B3A));
 	memt_byte(0x81, 0xE9);
 	MEMT_REF4(0x104C4, initBtnsStates);
 	memt_byte(0, 0x90);
 
 	// init the search of print in green the item set name we have in stash
-	mem_seek(D2Client::GetOffsetByAddition(0x3F098, 0x91A24));
+	mem_seek(D2Client::GetOffsetByAddition(0x3F098));
 	MEMJ_REF4(D2Common::D2InventoryGetFirstItem, initGetNextItemForSet);
 
 	// Get next item for print in green the item set name we have in stash
-	mem_seek(D2Client::GetOffsetByAddition(0x3F0FA, 0x91ABB));
+	mem_seek(D2Client::GetOffsetByAddition(0x3F0FA));
 	MEMJ_REF4(D2Common::D2UnitGetNextItem, getNextItemForSet);
 
 	log_msg("\n");

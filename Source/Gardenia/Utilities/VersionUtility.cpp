@@ -69,16 +69,6 @@ const char* VersionUtility::GetVersionAsString()
 	 return UnknownVersion;
 }
 
-const bool VersionUtility::Is109B()
-{
-	return GameVersion == VersionUtility::Versions::V109b;
-}
-
-const bool VersionUtility::Is113D()
-{
-	return GameVersion == VersionUtility::Versions::V113d;
-}
-
 VersionUtility::Versions VersionUtility::GetVersion(const LPCVOID pVersionResource)
 {
 	if (!pVersionResource) return Versions::UNKNOWN;

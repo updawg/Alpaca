@@ -25,7 +25,6 @@ public:
 	static void Init();
 
 	typedef void(__stdcall *TD2FogAssertOld) (const char* ptMessage, DWORD eip, DWORD line);
-	typedef void(__fastcall *TD2FogAssert) (const char* ptMessage, DWORD eip, DWORD line);
 	typedef void* (__fastcall *TD2FogMemAlloc) (DWORD dwMemSize, LPCSTR lpszErrFile, DWORD ErrLine, DWORD Zero);
 	typedef void* (__fastcall *TD2FogMemDeAlloc) (void* ptMemLoc, LPCSTR lpszErrFile, DWORD ErrLine, DWORD Zero);
 	typedef void* (__fastcall *TD2AllocMem) (DWORD, DWORD dwMemSize, LPCSTR lpszErrFile, DWORD ErrLine, DWORD Zero);
@@ -36,11 +35,9 @@ public:
 	typedef DWORD(__fastcall *TD2MPQGetSizeFile) (void* mpqfile, DWORD* toReset);
 	typedef void(__fastcall *TD2FogGetSavePath) (char* ptPath, DWORD maxsize);
 	typedef void(__fastcall *TD2FogGetInstallPath) (char* ptPath, DWORD maxsize);
-	typedef void(__stdcall *TD2Fog10212) (DWORD unknow);
-	typedef int(__stdcall *TD2GetInstructionPointer) ();
+	typedef void(__stdcall *TD2Fog10212) (DWORD unknown);
 
 	static TD2FogAssertOld D2FogAssertOld;
-	static TD2FogAssert D2FogAssert;
 	static TD2FogMemAlloc D2FogMemAlloc;
 	static TD2FogMemDeAlloc D2FogMemDeAlloc;
 	static TD2AllocMem D2AllocMem;
@@ -52,7 +49,6 @@ public:
 	static TD2FogGetSavePath D2FogGetSavePath;
 	static TD2FogGetInstallPath D2FogGetInstallPath;
 	static TD2Fog10212 D2Fog10212;
-	static TD2GetInstructionPointer D2GetInstructionPointer;
 private:
 	static void SetFunctions();
 };

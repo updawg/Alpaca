@@ -109,19 +109,15 @@ extern D2Common::TD2Common10673 D2Common10673;
 extern D2Client::TD2LoadImage D2LoadImage;
 extern D2Client::TD2FreeImage D2FreeImage;
 extern D2Client::TD2SendMsgToAll D2SendMsgToAll;
-extern D2Client::TD2GetLastMonsterIDFight D2GetLastMonsterIDFight;
 extern D2Client::TD2PrintStatsPage D2PrintStatsPage;
 extern D2Client::TD2PrintStat D2PrintStat;
 extern D2Client::TD2SetColorPopup D2SetColorPopup;
 extern D2Client::TD2PlaySound D2PlaySound;
-extern D2Client::TD2SendToServerXX D2SendToServerXX;
 extern D2Client::TD2TogglePage D2TogglePage;
-extern D2Client::TD2ClickOnStashButton D2ClickOnStashButton;
 extern D2Client::TD2LoadBuySelBtn D2LoadBuySelBtn;
 
 // D2Client: Only 1.10
 extern D2Client::TD2isLODGame D2isLODGame;
-extern D2Client::TD2GetDifficultyLevel D2GetDifficultyLevel;
 extern D2Client::TD2GetMouseX D2GetMouseX;
 extern D2Client::TD2GetMouseY D2GetMouseY;
 extern D2Client::TD2GetClientPlayer D2GetClientPlayer;
@@ -133,18 +129,13 @@ extern DWORD* ptResolutionY;
 extern DWORD* ptResolutionX;
 extern DWORD* ptNegWindowStartY;
 extern DWORD* ptWindowStartX;
-extern BYTE* ptDifficultyLevel;
-extern DWORD* ptMouseY;
-extern DWORD* ptMouseX;
-extern Unit** ptptClientChar;
+
 extern DWORD* ptNbStatDesc;
 extern DWORD* ptStatDescTable;
 
 // D2Game
 extern D2Game::TD2SetNbPlayers D2SetNbPlayers;
 extern D2Game::TD2SendPacket D2SendPacket;
-extern D2Game::TD2LinkPortal D2LinkPortal;
-extern D2Game::TD2VerifIfNotCarry1 D2VerifIfNotCarry1;
 extern D2Game::TD2LoadInventory D2LoadInventory;
 extern D2Game::TD2GameGetObject D2GameGetObject;
 
@@ -160,7 +151,6 @@ extern D2Net::TD2SendToClient D2SendToClient;
 
 // Fog
 extern Fog::TD2FogAssertOld D2FogAssertOld;
-extern Fog::TD2FogAssert D2FogAssert;
 extern Fog::TD2FogMemAlloc D2FogMemAlloc;
 extern Fog::TD2FogMemDeAlloc D2FogMemDeAlloc;
 extern Fog::TD2AllocMem D2AllocMem;
@@ -172,7 +162,6 @@ extern Fog::TD2MPQGetSizeFile D2MPQGetSizeFile;
 extern Fog::TD2FogGetSavePath D2FogGetSavePath;
 extern Fog::TD2FogGetInstallPath D2FogGetInstallPath;
 extern Fog::TD2Fog10212 D2Fog10212;
-extern Fog::TD2GetInstructionPointer D2GetInstructionPointer;
 
 // D2Lang
 extern D2Lang::TD2GetStringFromString D2GetStringFromString;
@@ -202,9 +191,6 @@ extern D2Win::TD2CreateTextBox D2CreateTextBox;
 
 // D2CMP
 extern D2CMP::TD2CMP10014 D2CMP10014;
-
-// Other
-extern DataTables* SgptDataTables;
 
 extern void* (__stdcall *D2CompileTxtFile)(DWORD unused, const char* filename, BINField* ptFields, DWORD* ptRecordCount, DWORD recordLength);
 void setImage(sDrawImageInfo* data, void* image);

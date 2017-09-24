@@ -59,7 +59,7 @@ void Install_PrintPlugYVersion()
 	log_msg("[Patch] D2Launch to print Gardenia version. (PrintGardeniaVersion)\n");
 
 	// Print Gardenia version.
-	mem_seek(D2Launch::GetOffsetByAddition(0x7F5D, 0x10A11));
+	mem_seek(D2Launch::GetOffsetByAddition(0x7F5D));
 	MEMJ_REF4(D2Win::D2CreateTextBox, caller_printPlugYVersion);
 
 	log_msg("\n");
@@ -74,15 +74,7 @@ void __fastcall versionChange(void* screen, char* text, DWORD color)
 	D2PrintLineOnTextBox(screen,versionText,modVersionColor);
 }
 
-FCT_ASM ( caller_VersionChange_10 )
-	MOV CL, BYTE PTR DS:[modVersionColor]
-	MOV BYTE PTR SS:[ESP+4], CL
-	MOV EDX,versionText
-	MOV ECX,EDI
-	RETN
-}}
-
-void Install_VersionChange()// BUG WITH 2MOD if D2Mod started before Gardenia ????
+void Install_VersionChange()
 {
 	static int isInstalled = false;
 	if (isInstalled) return;
@@ -90,18 +82,9 @@ void Install_VersionChange()// BUG WITH 2MOD if D2Mod started before Gardenia ??
 	log_msg("[Patch] D2Launch to print Mod version. (VersionChange)\n");
 
 	// Print LoD/Mod version.
-	if (VersionUtility::Is113D())
-	{
-		mem_seek(D2Launch::GetOffsetByAddition(0, 0x10AE4));
-		memt_byte(0x8D, 0xE8);
-		MEMT_REF4(0x8B102454, caller_VersionChange_10);
-		memt_byte(0xCF, 0x90);
-	}
-	else
-	{
-		mem_seek(D2Launch::GetOffsetByAddition(0x801B, 0x10AEB));
-		MEMJ_REF4(D2Win::D2PrintLineOnTextBox, versionChange);
-	}
+	mem_seek(D2Launch::GetOffsetByAddition(0x801B));
+	MEMJ_REF4(D2Win::D2PrintLineOnTextBox, versionChange);
+	
 	log_msg("\n");
 
 	isInstalled = true;

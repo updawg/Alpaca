@@ -26,14 +26,14 @@ void D2Win::Init()
 
 void D2Win::SetFunctions()
 {
-	D2PrintLineOnTextBox = (TD2PrintLineOnTextBox)GetOffsetByProc(10046, 10051);
-	D2PrintString = (TD2PrintString)GetOffsetByProc(10117, 10076);
-	D2GetPixelLen = (TD2GetPixelLen)GetOffsetByProc(10121, 10150);
-	D2SetFont = (TD2SetFont)GetOffsetByProc(10127, 10047);
-	D2PrintPopup = (TD2PrintPopup)GetOffsetByProc(10129, 10137);
-	D2GetPixelRect = (TD2GetPixelRect)GetOffsetByProc(10131, 0);
-	D2PrintTextPopup = (TD2PrintTextPopup)GetOffsetByProc(10132, 0);
-	D2CreateTextBox = (TD2CreateTextBox)GetOffsetByProc(10017, 10164);
+	D2PrintLineOnTextBox = (TD2PrintLineOnTextBox)GetOffsetByProc(10046);
+	D2PrintString = (TD2PrintString)GetOffsetByProc(10117);
+	D2GetPixelLen = (TD2GetPixelLen)GetOffsetByProc(10121);
+	D2SetFont = (TD2SetFont)GetOffsetByProc(10127);
+	D2PrintPopup = (TD2PrintPopup)GetOffsetByProc(10129);
+	D2GetPixelRect = (TD2GetPixelRect)GetOffsetByProc(10131);
+	D2PrintTextPopup = (TD2PrintTextPopup)GetOffsetByProc(10132);
+	D2CreateTextBox = (TD2CreateTextBox)GetOffsetByProc(10017);
 }
 
 D2Win::TD2PrintLineOnTextBox D2Win::D2PrintLineOnTextBox;

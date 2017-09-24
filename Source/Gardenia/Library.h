@@ -80,66 +80,18 @@ public:
 	}
 
 	// Retrieves the address by using GetProcAddress
-	static DWORD GetOffsetByProc(const VersionOffsets moduleOffsets)
+	static DWORD GetOffsetByProc(const DWORD offset)
 	{
-		DWORD proposedOffset = GetOffsetForVersion(moduleOffsets);
-		return GetFunctionAddress((LPCSTR)proposedOffset);
-	}
-	static DWORD GetOffsetByProc(DWORD V109B, DWORD V113D)
-	{
-		return GetOffsetByProc(CreateOffsets(V109B, V113D));
+		return GetFunctionAddress((LPCSTR)offset);
 	}
 
 	// Retrieves the address by adding the DLLs base offset to the recorded offset
-	static DWORD GetOffsetByAddition(const VersionOffsets moduleOffsets)
+	static DWORD GetOffsetByAddition(const DWORD offset)
 	{
-		DWORD offset = GetOffsetForVersion(moduleOffsets);
 		DWORD proposedOffset = Offset + offset;
 		//log_msg("Retrieving %s function for offset %08X (%i) by Addition (on base %08X) ... SUCCESS. Located at %08X.\n", Name, offset, offset, Offset, proposedOffset);
 		return proposedOffset;
 	}
-	static DWORD GetOffsetByAddition(DWORD V109B, DWORD V113D)
-	{
-		return GetOffsetByAddition(CreateOffsets(V109B, V113D));
-	}
-
-	// Offsets for functions in these specific versions. When updating to a new diablo version, you will
-	// want to add an entry to each of the function sets in each library that require an update.
-	static DWORD GetOffsetForVersion(const VersionOffsets& offsets)
-	{
-		//log_msg("For game version: %s, %d\n", VersionUtility::GetVersionAsString(), VersionUtility::GetVersion());
-
-		// properly convert the version to an enum in the future.
-		VersionOffsets::const_iterator it = offsets.find((VersionUtility::Versions)VersionUtility::GetVersion());
-
-		if (it != offsets.end())
-		{
-			//log_msg("Found it: %s :: %08X\n", VersionUtility::GetVersionAsString(), it->second);
-			return it->second;
-		}
-
-		//log_msg("Falling back to 1.09B even though game version is: %s\n", VersionUtility::GetVersionAsString());
-		// Existing behavior is to return 1.09 (lowest offset/version that we have)
-		return offsets.find(VersionUtility::Versions::V109b)->second;
-	}
-
-	static DWORD GetOffsetForVersion(DWORD V109B, DWORD V113D)
-	{
-		return GetOffsetForVersion(CreateOffsets(V109B, V113D));
-	}
-
-	// Contains all offsets that are possible for this particular function pointer.
-	static VersionOffsets CreateOffsets(DWORD V109B, DWORD V113D)
-	{
-		VersionOffsets indexes =
-		{
-			{ VersionUtility::Versions::V109b, V109B },
-			{ VersionUtility::Versions::V113d, V113D }
-		};
-
-		return indexes;
-	}
-
 protected:
 	// Retrieves the address using GetProcAddress
 	static DWORD GetFunctionAddress(LPCSTR offset)

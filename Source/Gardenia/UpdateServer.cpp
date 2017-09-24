@@ -85,27 +85,6 @@ int __stdcall handleServerUpdate(Unit* ptChar, WORD param)
 	}
 }
 
-FCT_ASM( caller_handleServerUpdate)
-	PUSH ESI
-	PUSH EBX
-	CALL handleServerUpdate
-	TEST EAX,EAX
-	JNZ END_RCM
-	MOV EAX,ESI
-	AND EAX,0xFF
-	SHR ESI,8
-	MOV EDI,EAX
-	RETN
-END_RCM:
-	ADD ESP,4
-	POP EDI
-	POP ESI
-	XOR EAX,EAX
-	POP EBX
-	RETN 8
-}}
-
-
 FCT_ASM( caller_handleServerUpdate_9)
 	XOR EDX,EDX
 	MOV DX,WORD PTR DS:[EAX+1]
@@ -133,21 +112,13 @@ void Install_UpdateServer()
 	log_msg("[Patch] D2Game for received button click message. (UpdateServer)\n");
 
 	// manage button click message from Client.
-	mem_seek(D2Game::GetOffsetByAddition(0x4A702, 0x676C3));
-	if (VersionUtility::Is113D()) {
-		memt_byte(0xC1, 0x57);
-		memt_byte(0xEE, 0xE8);
-		MEMT_REF4(0xF88B5708, caller_handleServerUpdate);
-	}
-	else
-	{
-		memt_byte(0x33, 0xE8);
-		MEMT_REF4(0x508B66D2, caller_handleServerUpdate_9);
-		memt_byte(0x01, 0x90);
-	}
-
+	mem_seek(D2Game::GetOffsetByAddition(0x4A702));
+	
+	memt_byte(0x33, 0xE8);
+	MEMT_REF4(0x508B66D2, caller_handleServerUpdate_9);
+	memt_byte(0x01, 0x90);
+	
 	log_msg("\n");
-
 	isInstalled = true;
 }
 

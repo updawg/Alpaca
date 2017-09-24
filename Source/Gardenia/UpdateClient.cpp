@@ -75,17 +75,6 @@ DWORD __fastcall handleClientUpdate(DataPacket* packet)
 	}
 }
 
-
-FCT_ASM ( caller_handleClientUpdate_111 )
-	LEA ECX,DWORD PTR SS:[ESP+8]
-	CALL handleClientUpdate
-	POP EDI
-	POP ESI
-	MOV ESP,EBP
-	POP EBP
-	RETN
-}}
-
 FCT_ASM ( caller_handleClientUpdate )
 	LEA ECX,DWORD PTR SS:[ESP]
 	CALL handleClientUpdate
@@ -101,8 +90,8 @@ void Install_UpdateClient()
 	log_msg("[Patch] D2Client for received item packet. (UpdateClient)\n");
 
 	// execute if it's our packet else continue
-	mem_seek(D2Client::GetOffsetByAddition(0x14236, 0x84D96));
-	MEMT_REF4(VersionUtility::Is113D() ? 0xCF : 0xD6, VersionUtility::Is113D() ? caller_handleClientUpdate_111 : caller_handleClientUpdate);
+	mem_seek(D2Client::GetOffsetByAddition(0x14236));
+	MEMT_REF4(0xD6, caller_handleClientUpdate);
 
 	log_msg("\n");
 

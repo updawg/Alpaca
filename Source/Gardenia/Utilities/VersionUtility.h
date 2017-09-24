@@ -44,9 +44,6 @@ public:
 
 	static const char* GetVersionAsString();
 
-	static const bool VersionUtility::Is109B();
-	static const bool VersionUtility::Is113D();
-
 	static Versions GetVersion(const LPCVOID pVersionResource);
 	static Versions GetVersion(const char* gameExeName);
 	static Versions GetVersion(const HMODULE hModule);

@@ -26,9 +26,9 @@ void Storm::Init()
 
 void Storm::SetFunctions()
 {
-	D2StormMPQOpenFile = (TD2StormMPQOpenFile)GetOffsetByProc(268, 268);
-	D2Storm503 = (TD2Storm503)GetOffsetByProc(503, 503);
-	D2FreeWinMessage = (TD2FreeWinMessage)GetOffsetByProc(511, 511);
+	D2StormMPQOpenFile = (TD2StormMPQOpenFile)GetOffsetByProc(268);
+	D2Storm503 = (TD2Storm503)GetOffsetByProc(503);
+	D2FreeWinMessage = (TD2FreeWinMessage)GetOffsetByProc(511);
 }
 
 Storm::TD2StormMPQOpenFile Storm::D2StormMPQOpenFile;

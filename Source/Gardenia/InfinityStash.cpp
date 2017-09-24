@@ -187,55 +187,7 @@ int changeToSelectedStash_9(Unit* ptChar, Stash* newStash, DWORD bOnlyItems, DWO
 	return 1;
 }
 
-int changeToSelectedStash_10(Unit* ptChar, Stash* newStash, DWORD bOnlyItems, DWORD bIsClient)
-{
-	if (!newStash) return 0;
-
-	log_msg("changeToSelectedStash ID:%d\tshared:%d\tonlyItems:%d\tclient:%d\n",newStash->id,newStash->isShared, bOnlyItems,bIsClient);
-
-	Stash* currentStash = PCPY->currentStash;
-	if (currentStash == newStash) return 0;
-
-	d2_assert( currentStash && currentStash->ptListItem, "ERROR : currentStash isn't empty (ptListItem != NULL)",__FILE__,__LINE__);
-
-	// Remove items from current page
-	Unit* ptNextItem;
-	Unit* ptItem = D2InventoryGetFirstItem(PCInventory);
-	while (ptItem)
-	{
-		ptNextItem = D2UnitGetNextItem(ptItem);
-		if (D2ItemGetPage(ptItem) == 4)
-		{
-			BYTE tmp = ptItem->ptItemData->ItemData2;
-			ptItem = D2InvRemoveItem(PCInventory, ptItem);
-			ptItem->ptItemData->ItemData2 = tmp;
-			if (currentStash)
-			{
-				ptItem->ptItemData->ptNextItem = currentStash->ptListItem;
-				currentStash->ptListItem = ptItem;
-			}
-		}
-		ptItem = ptNextItem;
-	}
-
-	// add items of new stash
-	ptItem = newStash->ptListItem;
-	while (ptItem)
-	{
-		D2InvAddItem(PCInventory, ptItem, ptItem->path->x, ptItem->path->y, 0xC, bIsClient, 4);
-		ptItem = D2UnitGetNextItem(ptItem);
-	}
-	if (bOnlyItems)
-		newStash->ptListItem = PCPY->currentStash->ptListItem;
-	else
-		PCPY->currentStash = newStash;
-	PCPY->currentStash->ptListItem = NULL;
-
-	return 1;
-}
-
 TchangeToSelectedStash changeToSelectedStash;
-
 
 DWORD loadStash(Unit* ptChar, Stash* ptStash, BYTE data[], DWORD startSize, DWORD maxSize, DWORD* retSize)
 {
@@ -541,7 +493,6 @@ void renameCurrentStash(Unit* ptChar, char* name)
 	log_msg("renameCurrentStash 4\n");
 }
 
-
 void setCurrentStashIndex(Unit* ptChar, int index)
 {
 	if (!PCPY->currentStash)
@@ -551,14 +502,12 @@ void setCurrentStashIndex(Unit* ptChar, int index)
 	updateSelectedStashClient(ptChar);
 }
 
-
 void selectPreviousStash(Unit* ptChar)
 {
 	Stash* selStash = PCPY->currentStash->previousStash;
 	if (selStash && (selStash != PCPY->currentStash))
 		selectStash(ptChar, selStash);
 }
-
 
 void selectPrevious2Stash(Unit* ptChar)// Select first stash
 {
@@ -734,165 +683,6 @@ FCT_ASM ( caller_getNextItem )
 	RETN 4
 }}
 
-
-DWORD __stdcall carry1Limit(Unit* ptChar, Unit* ptItemParam, DWORD itemNum, BYTE page)
-{
-	if (!ptChar) return 0;
-	Unit* ptItem = ptItemParam ? ptItemParam : D2GameGetObject(PCGame, UNIT_ITEM, itemNum);
-	if ((page != 4) && (D2GetItemQuality(ptItem) == 7) && ptChar)
-	{
-		int uniqueID = D2GetUniqueID(ptItem);
-		if ((uniqueID>=0) && (uniqueID < (int)SgptDataTables->nbUniqueItems))
-		{
-			UniqueItemsBIN*	uniqueItems = SgptDataTables->uniqueItems + uniqueID;
-			if (uniqueItems && (uniqueItems->carry1==1))
-			{
-				ItemsBIN* ptItemsBin = D2GetItemsBIN(ptItem->nTxtFileNo);
-				Unit* ptFirstItem = D2InventoryGetFirstItem(PCInventory);
-				if (ptItemsBin && ptFirstItem)
-					return D2VerifIfNotCarry1(ptItem, ptItemsBin, ptFirstItem);
-			}
-		}
-	}
-	return 0;
-}
-
-FCT_ASM ( caller_carry1Limit_111 )
-	PUSH DWORD PTR SS:[ESP+0x08]//page
-	PUSH 0//EDI
-	PUSH DWORD PTR SS:[ESP+0x0C]
-	PUSH ESI//ptChar
-	CALL carry1Limit
-	TEST EAX,EAX
-	JNZ	end_carry1Limit
-	JMP D2ItemSetPage
-end_carry1Limit:
-	ADD ESP,0xC
-	XOR EAX,EAX
-	POP EDI
-	POP EBX
-	POP ESI
-	POP EBP
-	RETN 8
-}}
-
-FCT_ASM ( caller_carry1Limit )
-	PUSH DWORD PTR SS:[ESP+0x08]//page
-	PUSH 0//EBP
-	PUSH DWORD PTR SS:[ESP+0x0C]
-	PUSH DWORD PTR SS:[ESP+0x28]//ptChar
-	CALL carry1Limit
-	TEST EAX,EAX
-	JNZ	end_carry1Limit
-	JMP D2ItemSetPage
-end_carry1Limit:
-	ADD ESP,0xC
-	POP EDI
-	POP ESI
-	POP EBP
-	XOR EAX,EAX
-	POP EBX
-	ADD ESP,0x24
-	RETN 8
-}}
-
-FCT_ASM ( caller_carry1LimitSwap_112 )
-	PUSH EAX
-	PUSH DWORD PTR SS:[ESP+0x1C]
-	PUSH 0
-	PUSH ESI//ptChar
-	CALL carry1Limit
-	TEST EAX,EAX
-	JNZ	end_carry1Limit
-	JMP D2ItemGetPage
-end_carry1Limit:
-	ADD ESP,8
-	XOR EAX,EAX
-	POP EDI
-	POP EBP
-	POP ESI
-	POP EBX
-	POP ECX
-	RETN 8
-}}
-
-FCT_ASM ( caller_carry1LimitSwap )
-	PUSH EAX
-	PUSH DWORD PTR SS:[ESP+0x20]
-	PUSH 0
-	PUSH EBP//ptChar
-	CALL carry1Limit
-	TEST EAX,EAX
-	JNZ	end_carry1Limit
-	JMP D2ItemGetPage
-end_carry1Limit:
-	ADD ESP,8
-	POP EDI
-	POP ESI
-	POP EBP
-	XOR EAX,EAX
-	POP EBX
-	ADD ESP,0x4C
-	RETN 8
-}}
-
-FCT_ASM ( caller_carry1LimitWhenDrop_111 )
-	PUSH 0
-	PUSH 0
-	PUSH DWORD PTR SS:[ESP+0x10] //ptItem
-	PUSH ESI //ptChar
-	CALL carry1Limit
-	TEST EAX,EAX
-	JNZ	end_carry1Limit
-	JMP D2CanPutItemInInv
-end_carry1Limit:
-	XOR EAX,EAX
-	RETN 0x1C
-}}
-
-FCT_ASM ( caller_carry1LimitWhenDrop )
-	PUSH EAX
-	PUSH 0
-	PUSH 0
-	PUSH ESI//ptItem
-	PUSH EDI//ptChar
-	CALL carry1Limit
-	TEST EAX,EAX
-	POP EAX
-	JNZ END_carry1LimitWhenDrop
-	MOV EDX,0x806
-	RETN
-END_carry1LimitWhenDrop:
-	ADD DWORD PTR SS:[ESP],0x1F
-	RETN
-}}
-
-FCT_ASM ( caller_carry1OutOfStash_111 )
-	PUSH EDI
-	CALL D2ItemGetPage
-	CMP AL,4
-	JNZ continue_carry1OutOfStash
-	ADD DWORD PTR SS:[ESP],0x17C
-	RETN
-continue_carry1OutOfStash:
-	MOV ESI,DWORD PTR SS:[ESP+0x10]
-	TEST ESI,ESI
-	RETN
-}}
-
-FCT_ASM ( caller_carry1OutOfStash )
-	PUSH ESI
-	CALL D2ItemGetPage
-	CMP AL,4
-	JNZ continue_carry1OutOfStash
-	ADD DWORD PTR SS:[ESP],0x1AF
-	RETN
-continue_carry1OutOfStash:
-	MOV EAX,DWORD PTR SS:[ESP+0x14]
-	TEST EAX,EAX
-	RETN
-}}
-
 void Install_MultiPageStash()
 {
 	static int isInstalled = false;
@@ -901,42 +691,7 @@ void Install_MultiPageStash()
 	Install_PlayerCustomData();
 	Install_InterfaceStash();
 
-	changeToSelectedStash = VersionUtility::Is113D() ? changeToSelectedStash_10 : changeToSelectedStash_9;
-
-	if (VersionUtility::Is113D())
-	{
-		log_msg("[Patch] D2Game for carry1 unique item. (MultiPageStash)\n");
-
-		// Cannot put 2 items carry1 in inventory
-		mem_seek(D2Game::GetOffsetByAddition(0, 0x6B013));
-		MEMJ_REF4(D2Common::D2ItemSetPage, VersionUtility::Is113D() ? caller_carry1Limit_111 : caller_carry1Limit);
-
-		// Cannot put 2 items carry1 in inventory by swapping
-		mem_seek(D2Game::GetOffsetByAddition(0, 0x6BC78));
-		MEMJ_REF4(D2Common::D2ItemGetPage , VersionUtility::Is113D() ? caller_carry1LimitSwap_112 : caller_carry1LimitSwap);
-
-		if (VersionUtility::Is113D() )
-		{
-			// Cannot put 2 items carry1 in inventory when drop cube
-			mem_seek(D2Game::GetOffsetByAddition(0, 0xB7B15));
-			MEMJ_REF4(D2Common::D2CanPutItemInInv, caller_carry1LimitWhenDrop_111);
-		}
-		else
-		{
-			// Cannot put 2 items carry1 in inventory when drop cube
-			mem_seek(D2Game::GetOffsetByAddition(0, 0));
-			memt_byte(0xBA, 0xE8);
-			MEMT_REF4(0x806, caller_carry1LimitWhenDrop);
-		}
-
-		// Verify only carry1 out of stash page when pick up an item
-		mem_seek(D2Game::GetOffsetByAddition(0, 0xB301B));
-		memt_byte(0x8B, 0xE8);
-		MEMT_REF4(VersionUtility::Is113D() ? 0x850C2474 : 0x85102444, VersionUtility::Is113D() ? caller_carry1OutOfStash_111 : caller_carry1OutOfStash);
-		memt_byte(VersionUtility::Is113D() ? 0xF6 : 0xC0, 0x90);
-
-		log_msg("\n");
-	}
+	changeToSelectedStash = changeToSelectedStash_9;
 
 	isInstalled = true;
 }

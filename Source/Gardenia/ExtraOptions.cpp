@@ -36,34 +36,6 @@ void __stdcall displayItemlevel(LPWSTR popup, Unit* ptItem)
 	wcscat(popup,text);
 }
 
-FCT_ASM ( caller_displayItemlevel_113 )
-	PUSH ECX
-	PUSH EAX
-	PUSH EAX
-	LEA EAX,DWORD PTR SS:[ESP+0x1E70]
-	PUSH EAX
-	CALL displayItemlevel
-	POP EAX
-	POP ECX
-	POP EDX
-	PUSH 0x100
-	JMP EDX
-}}
-
-FCT_ASM ( caller_displayItemlevelSet_111 )
-	PUSH ECX
-	PUSH EDX
-	PUSH ECX
-	LEA EAX,DWORD PTR SS:[ESP+0x1958]
-	PUSH EAX
-	CALL displayItemlevel
-	POP EDX
-	POP ECX
-	POP EAX
-	PUSH 0x100
-	JMP EAX
-}}
-
 FCT_ASM ( caller_displayItemlevel_9 )
 	PUSH ECX
 	PUSH EDX
@@ -100,14 +72,14 @@ void Install_DisplayItemLevel()
 	log_msg("[Patch] D2Client for display item popup. (DisplayPopup)\n");
 
 	// print the text in the final buffer
-	mem_seek(D2Client::GetOffsetByAddition(0x3D47C, 0x98590));
+	mem_seek(D2Client::GetOffsetByAddition(0x3D47C));
 	memt_byte(0x68, 0xE8);
-	MEMT_REF4(0x100, VersionUtility::Is113D() ? caller_displayItemlevel_113 : caller_displayItemlevel_9);
+	MEMT_REF4(0x100, caller_displayItemlevel_9);
 
 	// print the text in the final buffer (for set items)
-	mem_seek(D2Client::GetOffsetByAddition(0x3C452, 0x973B3));
+	mem_seek(D2Client::GetOffsetByAddition(0x3C452));
 	memt_byte(0x68, 0xE8);
-	MEMT_REF4(0x100, VersionUtility::Is113D() ? caller_displayItemlevelSet_111 : caller_displayItemlevelSet_9);
+	MEMT_REF4(0x100, caller_displayItemlevelSet_9);
 
 	log_msg("\n");
 
@@ -121,13 +93,14 @@ DWORD* infoEnabledSendPlayersCommand;
 void SendPlayersCommand()
 {
 	#pragma pack(1)
-	struct {
+
+	typedef struct Data {
 		BYTE displayType;//0x15 main msg;  0x14: char popup
 		BYTE un;
 		BYTE zero;
 		char string[0xFF];
 		char null;
-	} data;
+	} Data;
 	#pragma pack()
 
 	if (!needToInit || onRealm) return;
@@ -139,6 +112,7 @@ void SendPlayersCommand()
 
 	D2SetNbPlayers(nbPlayersCommand);
 
+	Data data;
 	memset(&data,0,sizeof(data));
 	data.displayType=0x14;
 	data.un=1;
@@ -160,14 +134,10 @@ void Install_SendPlayersCommand()
 
 	log_msg("[Patch] D2Client for init default number of players. (SendPlayersCommand)\n");
 
-	infoEnabledSendPlayersCommand = (DWORD*)D2Client::GetOffsetByAddition(0x111D60, 0x11D1DC);
-	if (VersionUtility::Is113D())
-	{
-		msgNBPlayersString = (char*)D2Client::GetOffsetByAddition(0, 0xD470C);
-	}
+	infoEnabledSendPlayersCommand = (DWORD*)D2Client::GetOffsetByAddition(0x111D60);
 
 	// Set default number of players
-	mem_seek(D2Client::GetOffsetByAddition(0x8723B, 0x1D3F2));
+	mem_seek(D2Client::GetOffsetByAddition(0x8723B));
 	MEMJ_REF4(D2gfx::D2GetResolution, caller_SendPlayersCommand);
 
 	log_msg("\n");
@@ -185,7 +155,7 @@ void Install_RunLODs()
 	log_msg("[Patch] D2gfx for launch any number of Diablo II game in the same computer. (Run Multiple Diablos)\n");
 
 	// execute if it's our packet else continue
-	mem_seek(D2gfx::GetOffsetByAddition(0x447C, 0xB6B0));
+	mem_seek(D2gfx::GetOffsetByAddition(0x447C));
 	memt_byte(0x74, 0xEB);
 
 	log_msg("\n");
@@ -194,40 +164,6 @@ void Install_RunLODs()
 }
 
 /****************************************************************************************************/
-
-
-FCT_ASM (caller_AlwaysDisplayLife_113)
-	POP EAX
-	CMP onRealm,0
-	JNZ normalDisplayLife
-	CMP active_AlwaysDisplayLifeMana,0
-	JE normalDisplayLife
-	ADD EAX,0x28
-	JMP EAX
-normalDisplayLife:
-	CMP EDX,0x1E
-	JGE cont
-	ADD EAX,0xBC
-cont:
-	JMP EAX
-}}
-
-__declspec (naked) void caller_AlwaysDisplayLife_111()
-{
-	__asm {
-		CMP onRealm,0
-		JNZ normalDisplayLife
-		CMP active_AlwaysDisplayLifeMana,0
-		JE normalDisplayLife
-		POP EAX
-		ADD EAX,0x25
-		JMP EAX
-	normalDisplayLife:
-		MOV EAX,ptResolutionY
-		MOV EAX,DWORD PTR DS:[EAX]
-		RETN
-	}
-}
 
 FCT_ASM (caller_AlwaysDisplayLife)
 	CMP onRealm,0
@@ -240,22 +176,6 @@ FCT_ASM (caller_AlwaysDisplayLife)
 normalDisplayLife:
 	MOV EAX,ptResolutionY
 	MOV EAX,DWORD PTR DS:[EAX]
-	RETN
-}}
-
-
-
-FCT_ASM (caller_AlwaysDisplayMana_113)
-	MOV EAX,DWORD PTR DS:[ptResolutionY]
-	MOV EAX,DWORD PTR DS:[EAX]
-	CMP onRealm,0
-	JNZ normalDisplayMana
-	CMP active_AlwaysDisplayLifeMana,0
-	JE normalDisplayMana
-	POP EAX
-	ADD EAX,0x3C
-	JMP EAX
-normalDisplayMana:
 	RETN
 }}
 
@@ -285,35 +205,16 @@ void Install_AlwaysDisplayLifeMana()
 
 	log_msg("[Patch] D2Client for always display life and mana. (AlwaysPrintLifeMana)\n");
 
-	if (VersionUtility::Is113D())
-	{
-		mem_seek(D2Client::GetOffsetByAddition(0, 0x6D6FA));
-		memt_byte(0x0F, 0x90);
-		memt_byte(0x8C, 0xE8);
-		MEMT_REF4(0xBC, caller_AlwaysDisplayLife_113);
-	}
-	else
-	{
-		// Always display life.
-		mem_seek(D2Client::GetOffsetByAddition(0x58B32, 0));
-		memt_byte(0xA1, 0xE8);
-		MEMT_REF4(ptResolutionY, VersionUtility::Is113D() ? caller_AlwaysDisplayLife_111 : caller_AlwaysDisplayLife);
-	}
+	// Always display life.
+	mem_seek(D2Client::GetOffsetByAddition(0x58B32));
+	memt_byte(0xA1, 0xE8);
+	MEMT_REF4(ptResolutionY, caller_AlwaysDisplayLife);
 
 	// Always display mana.
-	if (VersionUtility::Is113D())
-	{
-		mem_seek(D2Client::GetOffsetByAddition(0, 0x6D7BC));
-		memt_byte(0xA1, 0xE8);
-		MEMT_REF4(ptResolutionY, caller_AlwaysDisplayMana_113);
-	}
-	else
-	{
-		mem_seek(D2Client::GetOffsetByAddition(0x58C09, 0));
-		memt_byte(0xE9, 0xE8);
-		MEMT_REF4(0xC2, caller_AlwaysDisplayMana_9);
-	}
-
+	mem_seek(D2Client::GetOffsetByAddition(0x58C09));
+	memt_byte(0xE9, 0xE8);
+	MEMT_REF4(0xC2, caller_AlwaysDisplayMana_9);
+	
 	if (active_AlwaysDisplayLifeMana == 2)
 	{
 		active_AlwaysDisplayLifeMana = 0;
@@ -333,7 +234,7 @@ void Install_EnabledTXTFilesWithMSExcel()
 
 	log_msg("[Patch] D2Client for enabled the opening of files already opened by MS Excel. (EnabledTXTFilesWithMSExcel)\n");
 
-	mem_seek((DWORD)Storm::D2StormMPQOpenFile + (VersionUtility::Is113D() ? 0x12A : 0xFF));
+	mem_seek((DWORD)Storm::D2StormMPQOpenFile + 0xFF);
 	memt_byte(0x01, 0x03);	//; |ShareMode = FILE_SHARE_READ|FILE_SHARE_WRITE					
 	//6FC1C969  |. 6A 01          PUSH 1        ; |ShareMode = FILE_SHARE_READ
 

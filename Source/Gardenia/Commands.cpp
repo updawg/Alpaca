@@ -259,30 +259,6 @@ MANAGESOUNDCHAOSDEBUG:
 	RETN 8
 }}
 
-FCT_ASM ( caller_Commands_111 )
-	TEST EAX,EAX
-	JE MANAGESOUNDCHAOSDEBUG
-	PUSH ESI
-	CALL commands
-	TEST EAX,EAX
-	JNZ MANAGESOUNDCHAOSDEBUG
-	ADD DWORD PTR SS:[ESP],7
-MANAGESOUNDCHAOSDEBUG:
-	RETN 8
-}}
-
-FCT_ASM ( caller_Commands_113d )
-	TEST EAX,EAX
-	JE MANAGESOUNDCHAOSDEBUG
-	PUSH EDI
-	CALL commands
-	TEST EAX,EAX
-	JNZ MANAGESOUNDCHAOSDEBUG
-	ADD DWORD PTR SS:[ESP],7
-MANAGESOUNDCHAOSDEBUG:
-	RETN 8
-}}
-
 // [Patch]
 void Install_Commands()
 {
@@ -294,9 +270,9 @@ void Install_Commands()
 	log_msg("[Patch] D2Client for install commands. (Commands)\n");
 
 	// Run custom commmand
-	mem_seek(D2Client::GetOffsetByAddition(0x2C120, 0xB1FD6));
+	mem_seek(D2Client::GetOffsetByAddition(0x2C120));
 	memt_byte(0x83, 0xE8); 
-	MEMT_REF4(0xC08508C4, VersionUtility::Is113D() ? caller_Commands_113d : caller_Commands);
+	MEMT_REF4(0xC08508C4, caller_Commands);
 
 	log_msg("\n");
 

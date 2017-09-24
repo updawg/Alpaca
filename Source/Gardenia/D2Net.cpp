@@ -26,24 +26,13 @@ void D2Net::Init()
 
 void D2Net::SetFunctions()
 {
-	D2SendToClient = (TD2SendToClient)GetOffsetByProc(0x2716, 0x271C);
-}
-
-D2Net::TD2SendToServer D2Net::D2SendToServer()
-{
-	if (VersionUtility::Is113D())
-	{
-		return GetD2SendToServerOffset();
-	}
-	else
-	{
-		return (TD2SendToServer)D2SendToServer_1XX;
-	}
+	D2SendToClient = (TD2SendToClient)GetOffsetByProc(0x2716);
+	D2SendToServer = (TD2SendToServer)D2SendToServer_1XX;
 }
 
 D2Net::TD2SendToServer D2Net::GetD2SendToServerOffset()
 {
-	return (TD2SendToServer)GetOffsetByProc(0x2715, 0x271F);
+	return (TD2SendToServer)GetOffsetByProc(0x2715);
 }
 
 __declspec (naked) void D2Net::D2SendToServer_1XX()
@@ -57,4 +46,5 @@ __declspec (naked) void D2Net::D2SendToServer_1XX()
 	}
 }
 
+D2Net::TD2SendToServer D2Net::D2SendToServer;
 D2Net::TD2SendToClient D2Net::D2SendToClient;

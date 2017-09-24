@@ -63,25 +63,6 @@ ISNOTMODDATA:
 	JMP DWORD PTR CS:[LeaveCriticalSection]
 }}
 
-FCT_ASM ( caller_isModFile_111 )
-	TEST EDI,EDI
-	JNZ ISNOTMODDATA
-	MOV ESI, DWORD PTR SS:[ESP+0x130]
-	PUSH ESI
-	CALL isModFile
-	TEST EAX,EAX
-	JE ISNOTMODDATA
-	MOV BL, BYTE PTR SS:[ESP+0x134]
-	POP EAX
-	POP EAX
-	MOV EAX,D2StormMPQOpenFile
-	ADD EAX,0xBD
-	MOV EBP,GetFileAttributesA
-	JMP EAX
-ISNOTMODDATA:
-	JMP DWORD PTR CS:[LeaveCriticalSection]
-}}
-
 void Install_PlugYFiles()
 {
 	static int isInstalled = false;
@@ -90,17 +71,15 @@ void Install_PlugYFiles()
 	log_msg("[Patch] Storm to find custom file. (GardeniaFiles)\n");
 
 	// Try in Diablo II\Gardenia\ if file not found
-	mem_seek(Storm::GetOffsetByAddition(0x192C6, 0x2DA79));
+	mem_seek(Storm::GetOffsetByAddition(0x192C6));
 	memt_byte(0xFF, 0x90);
 	memt_byte(0x15, 0xE8);
-	MEMD_REF4(LeaveCriticalSection, VersionUtility::Is113D() ? caller_isModFile_111 : caller_isModFile);
+	MEMD_REF4(LeaveCriticalSection, caller_isModFile);
 
 	log_msg("\n" );
 
 	isInstalled = true;
 }
-
-/****************************************************************************************************/
 
 void loadImagesFile(void** images, const char* name)
 {
@@ -159,12 +138,12 @@ void Install_PlugYImagesFiles()
 	log_msg("[Patch] D2Client to load/free custom images. (GardeniaImagesFiles)\n");
 
 	// Load custom images
-	mem_seek(D2Client::GetOffsetByAddition(0x57E21, 0x6E0BE));
+	mem_seek(D2Client::GetOffsetByAddition(0x57E21));
 	memt_byte(0xB9, 0xE8);
 	MEMT_REF4(0xC, caller_loadCustomImages);
 
 	// Free custom images
-	mem_seek(D2Client::GetOffsetByAddition(0x57FA9, 0x6D07D));
+	mem_seek(D2Client::GetOffsetByAddition(0x57FA9));
 	memt_byte(0xB9, 0xE8);
 	MEMT_REF4(0xC, caller_freeCustomImages);
 
@@ -191,12 +170,6 @@ void __fastcall freeTxtFiles()
 	freeStatsInterfaceDesc();
 }
 
-FCT_ASM ( caller_loadTxtFiles_111 )
-	MOV ECX,DWORD PTR SS:[ESP+4]
-	CALL loadTxtFiles
-	JMP D2LoadSuperuniques
-}}
-
 FCT_ASM ( caller_loadTxtFiles )
 	PUSH ECX
 	CALL loadTxtFiles
@@ -219,11 +192,11 @@ void Install_PlugYTxtFiles()
 	log_msg("[Patch] D2Common to load/free custom txt files. (GardeniaTxtFiles)\n");
 
 	// Load custom txt files
-	mem_seek(D2Common::GetOffsetByAddition(0x7F4B, 0x855E4));
-	MEMC_REF4(D2Common::D2LoadSuperuniques, VersionUtility::Is113D() ? caller_loadTxtFiles_111 : caller_loadTxtFiles);
+	mem_seek(D2Common::GetOffsetByAddition(0x7F4B));
+	MEMC_REF4(D2Common::D2LoadSuperuniques, caller_loadTxtFiles);
 
 	// Free custom txt files
-	mem_seek(D2Common::GetOffsetByAddition(0x79EC, 0xFAA3));
+	mem_seek(D2Common::GetOffsetByAddition(0x79EC));
 	MEMJ_REF4(Fog::D2Fog10212, caller_freeTxtFiles);
 
 	log_msg("\n" );

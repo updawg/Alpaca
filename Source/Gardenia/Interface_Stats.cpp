@@ -144,16 +144,6 @@ Unit* __stdcall statsPageMouseUp(sWinMessage* msg)
 	return ptChar;
 }
 
-FCT_ASM ( caller_printStatsPageBtns_111 )
-	CALL printStatsPageBtns
-	POP EDI
-	POP ESI
-	POP EBP
-	POP EBX
-	ADD ESP,0x370
-	RETN
-}}
-
 FCT_ASM ( caller_printStatsPageBtns_9 )
 	CALL printStatsPageBtns
 	POP EDI
@@ -236,32 +226,17 @@ void Install_InterfaceStats()
 	log_msg("[Patch] D2Client for stats interface. (InterfaceStats)\n");
 
 	// Print new buttons images
-	mem_seek(D2Client::GetOffsetByAddition(0x2A7BE, 0xC03B6));
+	mem_seek(D2Client::GetOffsetByAddition(0x2A7BE));
 	memt_byte(0x5F, 0xE9);
-	MEMT_REF4(0x815B5D5E, VersionUtility::Is113D() ? caller_printStatsPageBtns_111 : caller_printStatsPageBtns_9);
+	MEMT_REF4(0x815B5D5E, caller_printStatsPageBtns_9);
 
-	if (VersionUtility::Is113D())
-	{
-		// Manage mouse down (Play sound)
-		mem_seek(D2Client::GetOffsetByAddition(0x2AA6D, 0xBF568));
-		memt_byte(0xA1, 0xE8);
-		MEMT_REF4(D2Client::ptptClientChar, caller_statsPageMouseDown);
+	// Manage mouse down (Play sound)
+	mem_seek(D2Client::GetOffsetByAddition(0x2AA6D));
+	MEMC_REF4(D2GetClientPlayer, caller_statsPageMouseDown);
 
-		// Manage mouse up
-		mem_seek(D2Client::GetOffsetByAddition(0x2AC43, 0xC05D3));
-		memt_byte(0xA1, 0xE8);
-		MEMT_REF4(D2Client::ptptClientChar, caller_statsPageMouseUp);
-	}
-	else
-	{
-		// Manage mouse down (Play sound)
-		mem_seek(D2Client::GetOffsetByAddition(0x2AA6D, 0));
-		MEMC_REF4(D2GetClientPlayer, caller_statsPageMouseDown);
-
-		// Manage mouse up
-		mem_seek(D2Client::GetOffsetByAddition(0x2AC43, 0));
-		MEMC_REF4(D2GetClientPlayer, caller_statsPageMouseUp_9);
-	}
+	// Manage mouse up
+	mem_seek(D2Client::GetOffsetByAddition(0x2AC43));
+	MEMC_REF4(D2GetClientPlayer, caller_statsPageMouseUp_9);
 
 	log_msg("\n");
 

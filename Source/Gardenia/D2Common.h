@@ -87,6 +87,9 @@ public:
 	typedef ItemStatCostBIN* (__fastcall *TD2GetItemStatCostBIN) (DWORD id);
 	typedef void* (__fastcall *TD2ReadFile) (DWORD unused, char* filename, DWORD* size, const char*, DWORD);
 	typedef void(__stdcall *TD2LoadSuperuniques) (DWORD mempool);
+	typedef CharStatsBIN* (__stdcall *TD2Common10581) (DWORD charID);
+	typedef ItemStatCostBIN* (__stdcall *TD2Common10598) (DWORD itemStatCostID);
+	typedef ItemTypesBIN* (__stdcall *TD2Common10673) (DWORD itemTypesID);
 
 	static TD2Common10242 D2Common10242;
 	static TD2CanPutItemInInv D2CanPutItemInInv;
@@ -96,7 +99,7 @@ public:
 	static TD2Common10273 D2Common10273;
 	static TD2InventoryGetFirstItem D2InventoryGetFirstItem;
 	static TD2UnitGetNextItem D2UnitGetNextItem;
-	static TD2GetRealItem D2GetRealItem();
+	static TD2GetRealItem D2GetRealItem;
 	static TD2GetPosX D2GetPosX;
 	static TD2GetPosY D2GetPosY;
 	static TD2GetMaxGoldBank D2GetMaxGoldBank;
@@ -106,9 +109,9 @@ public:
 	static TD2GetChanceToBlock D2GetChanceToBlock;
 	static TD2GetMaxGold D2GetMaxGold;
 	static TD2isInState D2isInState;
-	static TD2AddPlayerStat D2AddPlayerStat();
-	static TD2GetPlayerStat D2GetPlayerStat();
-	static TD2GetPlayerBaseStat D2GetPlayerBaseStat();
+	static TD2AddPlayerStat D2AddPlayerStat;
+	static TD2GetPlayerStat D2GetPlayerStat;
+	static TD2GetPlayerBaseStat D2GetPlayerBaseStat;
 	static TD2haveDefenceBonus D2haveDefenceBonus;
 	static TD2haveFireResBonus D2haveFireResBonus;
 	static TD2haveColdResBonus D2haveColdResBonus;
@@ -124,7 +127,7 @@ public:
 	static TD2CompileTxtFile D2CompileTxtFileDirect;
 
 	// Some functions use the wrapped version
-	static TD2CompileTxtFile D2CompileTxtFile();
+	static TD2CompileTxtFile D2CompileTxtFile;
 
 	static TD2GetItemsBIN D2GetItemsBIN;
 	static TD2GetGemsBIN D2GetGemsBIN;
@@ -142,16 +145,11 @@ public:
 	static TD2GetNbRunesBIN D2GetNbRunesBIN;
 	static TD2GetRunesBIN D2GetRunesBIN;
 	static TD2SaveItem D2SaveItem;
-	static TD2GetCharStatsBIN D2GetCharStatsBIN();
-	static TD2GetItemTypesBIN D2GetItemTypesBIN();
-	static TD2GetItemStatCostBIN D2GetItemStatCostBIN();
+	static TD2GetCharStatsBIN D2GetCharStatsBIN;
+	static TD2GetItemTypesBIN D2GetItemTypesBIN;
+	static TD2GetItemStatCostBIN D2GetItemStatCostBIN;
 	static TD2ReadFile D2ReadFile;
 	static TD2LoadSuperuniques D2LoadSuperuniques;
-
-	// Only 1.09
-	typedef CharStatsBIN* (__stdcall *TD2Common10581) (DWORD charID);
-	typedef ItemStatCostBIN* (__stdcall *TD2Common10598) (DWORD itemStatCostID);
-	typedef ItemTypesBIN* (__stdcall *TD2Common10673) (DWORD itemTypesID);
 
 	static TD2Common10581 D2Common10581;
 	static TD2Common10598 D2Common10598;
@@ -161,18 +159,13 @@ private:
 
 	static char* CompileTxtFileName;
 	static char* ErrorReadTxtFileName;
-
-	static void* __stdcall compileTxtFile_111(DWORD unused, const char* filename, BINField* ptFields, DWORD* ptRecordCount, DWORD recordLength);
 	static void* __stdcall compileTxtFile_9(DWORD unused, const char* filename, BINField* ptFields, DWORD* ptRecordCount, DWORD recordLength);
 
 	static void D2AddPlayerStat_9();
 	static void D2GetPlayerStat_9();
 	static void D2GetPlayerBaseStat_9();
-	static void D2GetCharStatsBIN_111();
 	static void D2GetCharStatsBIN_9();
-	static void D2GetItemStatCostBIN_111();
 	static void D2GetItemStatCostBIN_9();
-	static void D2GetItemTypesBIN_111();
 	static void D2GetItemTypesBIN_9();
 
 	// These values will only be used by the naked functions since it isn't recommended
@@ -180,9 +173,4 @@ private:
 	static TD2AddPlayerStat D2AddPlayerStatDirect;
 	static TD2GetPlayerStat D2GetPlayerStatDirect;
 	static TD2GetPlayerBaseStat D2GetPlayerBaseStatDirect;
-	static TD2GetCharStatsBIN D2GetCharStatsBINDirect;
-	static TD2GetItemStatCostBIN D2GetItemStatCostBINDirect;
-	static TD2GetItemTypesBIN D2GetItemTypesBINDirect;
-
-	static Unit* __stdcall D2GetRealItem_111(Unit* ptItem);
 };

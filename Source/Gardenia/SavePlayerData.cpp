@@ -53,14 +53,6 @@ void __stdcall SaveSPPlayerCustomData(Unit* ptChar)
 	log_msg("End saving.\n\n");
 }
 
-
-FCT_ASM ( caller_SaveSPPlayerCustomData_111 )
-	CALL D2FogGetSavePath
-	PUSH DWORD PTR SS:[ESP+0x2608]
-	CALL SaveSPPlayerCustomData
-	RETN
-}}
-
 FCT_ASM ( caller_SaveSPPlayerCustomData_9 )
 	CALL D2FogGetSavePath
 	PUSH ESI
@@ -346,18 +338,6 @@ void __stdcall SaveMPPlayerCustomData(BYTE* dataD2Savefile )
 	log_msg("--- End SaveMPPlayerCustomData. ---\n\n");
 }
 
-FCT_ASM( caller_ManageNextPacketToSend )
-	PUSH ESI
-	CALL ManageNextPacketToSend
-	TEST EAX,EAX
-	JNZ end_caller_ManageNextPacketToSend
-	XOR ECX,ECX
-	RETN
-end_caller_ManageNextPacketToSend:
-	MOV ECX,DWORD PTR DS:[ESI+0x17C]
-	RETN
-}}
-
 FCT_ASM( caller_ManageNextPacketToSend_9 )
 	PUSH ESI
 	CALL ManageNextPacketToSend
@@ -369,14 +349,6 @@ FCT_ASM( caller_ManageNextPacketToSend_9 )
 	RETN
 end_caller_ManageNextPacketToSend_9:
 	MOV EAX,DWORD PTR DS:[ESI+0x150]
-	RETN
-}}
-
-FCT_ASM( caller_SendSaveFilesToSave_111 )
-	PUSH DWORD PTR SS:[ESP+0x2014]
-	CALL SendSaveFilesToSave
-	MOV EAX,DWORD PTR SS:[ESP+0x8]
-	TEST EAX,EAX
 	RETN
 }}
 
@@ -393,20 +365,6 @@ FCT_ASM( caller_SendSaveFilesToSave_9 )
 	CALL SendSaveFilesToSave
 	MOV ESI,DWORD PTR SS:[ESP+0x14]
 	TEST ESI,ESI
-	RETN
-}}
-
-
-FCT_ASM ( caller_ReceivedSaveFilesToSave_111 )
-	LEA EAX,DWORD PTR SS:[ESP+0x10]
-	PUSH EAX
-	CALL ReceiveSaveFilesToSave
-	TEST EAX,EAX
-	JE continue_rcvFct
-	ADD DWORD PTR SS:[ESP],0x3D
-	RETN
-continue_rcvFct:
-	MOVZX EAX,BYTE PTR SS:[ESP+0x10]
 	RETN
 }}
 
@@ -428,21 +386,7 @@ continue_rcvFct:
 	POP EAX
 	SUB ESP,0x5F4//5F4
 	JMP EAX
-//	JMP DWORD PTR SS:[ESP+0x5F0]
 }}
-
-FCT_ASM ( caller_SaveMPPlayerCustomData_111 )
-	PUSH EAX
-	PUSH ECX
-	PUSH EAX
-	CALL SaveMPPlayerCustomData
-	POP ECX
-	POP EAX
-	CMP ECX,0xAA55AA55
-	RETN
-}}
-
-
 
 FCT_ASM ( caller_SaveMPPlayerCustomData )
 	PUSH ECX
@@ -462,58 +406,33 @@ void Install_SavePlayerData()
 	log_msg("[Patch] D2Game & D2Client for save Player's custom data. (SavePlayerData)\n");
 
 	//Save single player custom data.
-	mem_seek(D2Game::GetOffsetByAddition(0x4DF04, 0x39835));
-	MEMJ_REF4(Fog::D2FogGetSavePath, VersionUtility::Is113D() ? caller_SaveSPPlayerCustomData_111 : caller_SaveSPPlayerCustomData_9);
+	mem_seek(D2Game::GetOffsetByAddition(0x4DF04));
+	MEMJ_REF4(Fog::D2FogGetSavePath, caller_SaveSPPlayerCustomData_9);
 
 	//Send SaveFiles
-	mem_seek(D2Game::GetOffsetByAddition(0x4DFFA, 0x397AB));
+	mem_seek(D2Game::GetOffsetByAddition(0x4DFFA));
 	memt_byte(0x8B, 0x90);
-	memt_byte(VersionUtility::Is113D() ? 0x44 : 0x74, 0xE8);
-	MEMT_REF4(VersionUtility::Is113D() ? 0xC0850424 : 0xF6851024, VersionUtility::Is113D() ? caller_SendSaveFilesToSave_111 : caller_SendSaveFilesToSave_9);
+	memt_byte(0x74, 0xE8);
+	MEMT_REF4(0xF6851024, caller_SendSaveFilesToSave_9);
 
-	mem_seek(D2Game::GetOffsetByAddition(0x7993, 0xBEDD3));
+	mem_seek(D2Game::GetOffsetByAddition(0x7993));
 	memt_byte(0x8B, 0x90);
-	memt_byte(VersionUtility::Is113D() ? 0x8E : 0x86, 0xE8);
-	MEMT_REF4(VersionUtility::Is113D() ? 0x17C : 0x150, VersionUtility::Is113D() ? caller_ManageNextPacketToSend : caller_ManageNextPacketToSend_9);
+	memt_byte(0x86, 0xE8);
+	MEMT_REF4(0x150, caller_ManageNextPacketToSend_9);
+	
+	// Received SaveFiles
+	mem_seek(D2Client::GetOffsetByAddition(0x116F0));
+	memt_byte(0x81, 0x90);
+	memt_byte(0xEC, 0xE8);
+	MEMT_REF4(0x5F4, caller_ReceivedSaveFilesToSave);
 
-	if (VersionUtility::Is113D())
-	{
-		//Received SaveFiles
-		mem_seek(D2Client::GetOffsetByAddition(0x116F0, 0x448E6));
-		memt_byte(0x0F, 0xE8);
-		MEMT_REF4(0x0C2444B6, caller_ReceivedSaveFilesToSave_111);
-
-		// Save multiplayer player custom data.
-		mem_seek(D2Client::GetOffsetByAddition(0x117FC, 0x829C2));
-		memt_byte(0x81, 0xE8);
-		MEMT_REF4(0x55AA55F9, caller_SaveMPPlayerCustomData_111);
-		memt_byte(0xAA, 0x90); // CALL // TODO: Comment says CALL, but byte is a NOP.. bug?
-	}
-	else
-	{
-		// Received SaveFiles
-		mem_seek(D2Client::GetOffsetByAddition(0x116F0, 0));
-		memt_byte(0x81, 0x90);
-		memt_byte(0xEC, 0xE8);
-		MEMT_REF4(0x5F4, caller_ReceivedSaveFilesToSave);
-
-		// Save multiplayer player custom data.
-		mem_seek(D2Client::GetOffsetByAddition(0x117FC, 0));
-		memt_byte(0x8B, 0xE8);
-		MEMT_REF4(0x04518B01, caller_SaveMPPlayerCustomData);
-	}
-
-	if (VersionUtility::Is113D())
-	{
-		customPackID++;
-	}
-	else
-	{
-		customPackID = 0xAB;
-	}
-
+	// Save multiplayer player custom data.
+	mem_seek(D2Client::GetOffsetByAddition(0x117FC));
+	memt_byte(0x8B, 0xE8);
+	MEMT_REF4(0x04518B01, caller_SaveMPPlayerCustomData);
+	
+	customPackID = 0xAB;
 	log_msg("\n");
-
 	isInstalled = true;
 }
 

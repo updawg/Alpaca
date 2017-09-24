@@ -86,18 +86,6 @@ DWORD __stdcall mouseCustomPageLeftUp(sWinMessage* msg)
 		return -1;
 }
 
-FCT_ASM ( caller_DontPrintBorder_111 )
-	MOV ECX,bDontPrintBorder
-	TEST ECX,ECX
-	JE printBorder
-	MOV bDontPrintBorder,0
-	ADD DWORD PTR SS:[ESP],0xBC
-	RETN
-printBorder:
-	MOV ECX,0x12
-	RETN
-}}
-
 FCT_ASM ( caller_DontPrintBorder )
 	MOV ECX,bDontPrintBorder
 	TEST ECX,ECX
@@ -108,30 +96,6 @@ FCT_ASM ( caller_DontPrintBorder )
 printBorder:
 	MOV ECX,0x12
 	RETN
-}}
-
-FCT_ASM ( caller_mouseCustomPageLeftDown_111 )
-	PUSH EAX
-	PUSH ESI
-	CALL mouseCustomPageLeftDown
-	TEST EAX,EAX
-	POP EAX
-	JE end_mouseNewPageLDown
-	JG continue_mouseNewPageLDown
-	LEA ECX,DWORD PTR DS:[EAX+0x80]
-	RETN
-continue_mouseNewPageLDown:
-	POP EAX
-	ADD EAX,0x143
-	PUSH EDI
-	JMP EAX
-	RETN
-end_mouseNewPageLDown:
-	ADD ESP,4
-	POP ESI
-	POP EBP
-	POP EBX
-	RETN 4
 }}
 
 FCT_ASM ( caller_mouseCustomPageLeftDown_9 )
@@ -153,30 +117,6 @@ end_mouseNewPageLDown:
 	POP ESI
 	POP EBP
 	POP EBX
-	RETN 4
-}}
-
-
-
-FCT_ASM ( caller_mouseCustomPageLeftUp_111 )
-	PUSH EBP
-	CALL mouseCustomPageLeftUp
-	TEST EAX,EAX
-	JE end_mouseNewPageLUp
-	JG continue_mouseNewPageLUp
-	MOV EAX,DWORD PTR DS:[ptWindowStartX]
-	MOV EAX,DWORD PTR DS:[EAX]
-	RETN
-continue_mouseNewPageLUp:
-	ADD DWORD PTR SS:[ESP],0x2C4
-	RETN
-end_mouseNewPageLUp:
-	ADD ESP,4
-	POP EDI
-	POP ESI
-	POP EBP
-	POP EBX
-	ADD ESP,8
 	RETN 4
 }}
 
@@ -202,25 +142,6 @@ end_mouseNewPageLUp:
 	RETN 4
 }}
 
-FCT_ASM ( caller_resetSelectedPageByToolBar )
-	MOV selectedPage,0
-	CMP EAX,0x26
-	JNZ noJump
-	ADD DWORD PTR SS:[ESP],0x1F
-noJump:
-	RETN
-}}
-
-FCT_ASM ( caller_resetSelectedPageByKey )
-	MOV selectedPage,0
-	POP EAX
-	PUSH EBP
-	XOR EBP,EBP
-	CMP EDX,EBP
-	JMP EAX
-}}
-
-
 FCT_ASM ( caller_resetSelectedPage )
 	TEST EAX,EAX
 	SETE DL
@@ -243,52 +164,34 @@ void Install_NewInterfaces()
 	Install_InterfaceStats();
 
 	log_msg("[Patch] D2Client for new custom page interface. (NewInterfaces)\n");
-	if (VersionUtility::Is113D())
-	{
-		extraHiddenPage = 1;
-	}
 
 	if (selectMainPageOnOpening)
 	{
-		if (VersionUtility::Is113D())
-		{
-			// Reset selectedPage variable on opening stats page
-			mem_seek(D2Client::GetOffsetByAddition(0, 0xC41FE));
-			memt_byte(0x83, 0xE8);
-			MEMT_REF4(0x1F7426F8, caller_resetSelectedPageByToolBar);
-
-			mem_seek(D2Client::GetOffsetByAddition(0, 0x3E39A));
-			memt_byte(0x55, 0xE8);
-			MEMT_REF4(0xD53BED33, caller_resetSelectedPageByKey);
-		} 
-		else 
-		{
-			// Reset selectedPage variable on opening stats page
-			mem_seek(D2Client::GetOffsetByAddition(0x88B58, 0));
-			memt_byte(0x85, 0xE8);
-			MEMT_REF4(0xC2940FC0, caller_resetSelectedPage);
-		}
+		// Reset selectedPage variable on opening stats page
+		mem_seek(D2Client::GetOffsetByAddition(0x88B58));
+		memt_byte(0x85, 0xE8);
+		MEMT_REF4(0xC2940FC0, caller_resetSelectedPage);	
 	}
 
 	// Print custom page
-	mem_seek(D2Client::GetOffsetByAddition(0x87697, 0x1D549));
+	mem_seek(D2Client::GetOffsetByAddition(0x87697));
 	MEMC_REF4(D2Client::D2PrintStatsPage, printCustomPage);
 
 	// Don't print Border
-	mem_seek(D2Client::GetOffsetByAddition(0x58EF6, 0x6D2B6));
+	mem_seek(D2Client::GetOffsetByAddition(0x58EF6));
 	memt_byte(0xB9, 0xE8);
-	MEMT_REF4(0x00000012, VersionUtility::Is113D() ? caller_DontPrintBorder_111 : caller_DontPrintBorder);
+	MEMT_REF4(0x00000012, caller_DontPrintBorder);
 
 	// Manage mouse down (Play sound)
-	mem_seek(D2Client::GetOffsetByAddition(0x2A9DC, 0xBF4D6));
+	mem_seek(D2Client::GetOffsetByAddition(0x2A9DC));
 	memt_byte(0x8D, 0xE8);
-	MEMT_REF4(0x00008088, VersionUtility::Is113D() ? caller_mouseCustomPageLeftDown_111 : caller_mouseCustomPageLeftDown_9);
+	MEMT_REF4(0x00008088, caller_mouseCustomPageLeftDown_9);
 	memt_byte(0, 0x90);
 
 	// Manage mouse up
-	mem_seek(D2Client::GetOffsetByAddition(0x2ABBB, 0xC0459));
+	mem_seek(D2Client::GetOffsetByAddition(0x2ABBB));
 	memt_byte(0xA1, 0xE8);
-	MEMT_REF4(ptWindowStartX, VersionUtility::Is113D() ? caller_mouseCustomPageLeftUp_111 : caller_mouseCustomPageLeftUp_9);
+	MEMT_REF4(ptWindowStartX, caller_mouseCustomPageLeftUp_9);
 
 	log_msg("\n");
 

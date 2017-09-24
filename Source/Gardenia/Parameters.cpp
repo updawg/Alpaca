@@ -500,9 +500,10 @@ void init_ExtraOptions(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefa
 {
 	GET_PRIVATE_PROFILE_STRING(S_EXTRA, S_nbPlayersCommandByDefault, "0");
 	nbPlayersCommandByDefault = atoi(buffer);
-	if (VersionUtility::Is109B())
-		{if (nbPlayersCommandByDefault > 64) nbPlayersCommandByDefault=64;}
-	else if (nbPlayersCommandByDefault > 8) nbPlayersCommandByDefault=8;
+	
+	// 1.09b can go up to 'players 64'
+	nbPlayersCommandByDefault=64;
+	
 	log_msg("nbPlayersCommandByDefault\t\t= %d\n", nbPlayersCommandByDefault);
 
 	GET_PRIVATE_PROFILE_STRING(S_EXTRA, S_active_DisplayItemLevel, "0");
