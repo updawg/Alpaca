@@ -1,24 +1,33 @@
+Gardenia - 1.20
+Jonathan Vasquez <jon@xyinn.org>
+Released under the GPLv3+
+Project based off Yohann Nicolas' PlugY 11.02
+Current Supported Version: 1.09b
+
 =============
 Synopsis
 =============
-Gardenia is a Diablo II 1.09b mod that is forked from Yohann Nicolas' PlugY 11.02.
-My mod removes all excess components and provides a much slimmer and maintainable mod
-through code reduction and massive refactoring and redesign.
+Gardenia is a Diablo II infinite stash mod that is forked from
+Yohann Nicolas' PlugY 11.02. My mod removes all excess components
+and provides a much slimmer and maintainable mod that is easier
+to upgrade to new Blizzard versions, through code reduction,
+massive refactoring, and redesign.
 
 In order to increase the maintainability of the mod and provide an
 optimal experience for whatever version you are playing, Gardenia now
 only supports a single Diablo II version. For my mod specifically, it only
-support 1.09b. I'm providing a 1.13d legacy branch that people can use to
-improve their version of Gardenia if desired.
+supports 1.09b. I'm providing a 1.13d legacy branch that people can use to
+improve their version of Gardenia if desired. Players wanting to play
+older versions of Diablo II should use the older and corresponding Gardenia
+version.
 
-Gardenia IS compatible with Bliss Version Switcher. So if you want to have separate stashes
-while you are time traveling, you can. Just point Bliss Version Switcher to use "Gardenia.exe"
-rather than "Game.exe". Bliss Version Switcher will automatically point the save directory
-to the desired version of D2 you want to play (and Gardenia saves the stashes with your
-characters as well).
+Gardenia IS compatible with Cactus. So if you want to have separate stashes
+while you are time traveling, you can. Just point Cactus to use "Gardenia.exe"
+rather than "Game.exe". Cactus will automatically point the save directory
+to the desired version of D2 you want to play (and Gardenia saves the stashes
+with your characters as well).
 
-Bliss Version Switcher URL:
-https://github.com/fearedbliss/Bliss-Version-Switcher
+Cactus Project Page - https://github.com/fearedbliss/Cactus
 
 =============
 Features
