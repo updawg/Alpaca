@@ -18,10 +18,10 @@
 #pragma once
 
 #define GARDENIA_NAME "Gardenia"
-#define GARDENIA_VERSION "1.20"
+#define GARDENIA_VERSION "1.22"
 #define GARDENIA_AUTHOR_NAME "Jonathan Vasquez"
 #define GARDENIA_AUTHOR_EMAIL "jon@xyinn.org"
-#define GARDENIA_BUILD_DATE "September 24, 2017 @ 13:24 ET"
+#define GARDENIA_BUILD_DATE "June 3, 2018 @ 09:11 ET"
 
 enum TargetMod
 {
@@ -31,7 +31,6 @@ enum TargetMod
 // Global variable (user parameters)
 extern char* modDataDirectory;
 extern bool active_plugin;
-extern bool active_DisableBattleNet;
 extern bool active_CheckMemory;
 extern char* dllFilenames;
 extern bool active_D2Mod;

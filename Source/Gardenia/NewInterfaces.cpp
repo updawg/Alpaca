@@ -48,12 +48,6 @@ void GoPreviousStatPage()
 		selectedPage = lastPage;
 }
 
-void GoStatPage(int page)
-{
-	if ( (page >= 0) && (page <= lastPage + (D2GetResolution()? extraHiddenPage : 0)) )
-		selectedPage = page;
-}
-
 int GetCurrentPage()
 {
 	return selectedPage;
@@ -61,7 +55,6 @@ int GetCurrentPage()
 
 void __stdcall printCustomPage()
 {
-	if(onRealm) {D2PrintStatsPage();return;}
 	if ( (selectedPage > 0) && (selectedPage<=lastPage) )
 		printNewStatsPageTwo(selectedPage);
 	else
@@ -70,7 +63,6 @@ void __stdcall printCustomPage()
 
 DWORD __stdcall mouseCustomPageLeftDown(sWinMessage* msg)
 {
-	if(onRealm) return -1;
 	if ( (selectedPage > 0) && (selectedPage<=lastPage) )
 		return mouseNewStatsPageTwoLeftDown(msg);
 	else
@@ -79,7 +71,6 @@ DWORD __stdcall mouseCustomPageLeftDown(sWinMessage* msg)
 
 DWORD __stdcall mouseCustomPageLeftUp(sWinMessage* msg)
 {
-	if(onRealm) return -1;
 	if ( (selectedPage > 0) && (selectedPage <= lastPage) )
 		return mouseNewStatsPageTwoLeftUp(msg);
 	else

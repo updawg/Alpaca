@@ -42,7 +42,6 @@ struct Stash
 	Stash* nextStash;
 };
 
-
 struct PYPlayerData
 {
 	union {
@@ -51,7 +50,6 @@ struct PYPlayerData
 			DWORD selfStashIsOpened:1;	//
 			DWORD sharedStashIsOpened:1;//
 			DWORD showSharedStash:1;	//
-//			DWORD notOnRealm:1;			//set to 1 when the player is load from client or in SP
 		}; 
 	};
 	DWORD	sharedGold;
@@ -63,4 +61,3 @@ struct PYPlayerData
 };
 
 void Install_PlayerCustomData();
-

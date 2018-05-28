@@ -32,8 +32,8 @@ int __stdcall handleServerUpdate(Unit* ptChar, WORD param)
 	switch(type)
 	{
 		case US_SET_INDEX:				setCurrentStashIndex(ptChar, 1); return 1;
+		case US_UNSET_INDEX:			setCurrentStashIndex(ptChar, 0); return 1;
 		case US_SET_MAIN_INDEX:			setCurrentStashIndex(ptChar, 2); return 1;
-		case US_RESET_INDEX:			setCurrentStashIndex(ptChar, 0); return 1;
 		case US_SELECT_PREVIOUS :		selectPreviousStash( ptChar ); return 1;
 		case US_SELECT_NEXT :			selectNextStash( ptChar ); return 1;
 		case US_SELECT_SELF :			if (active_sharedStash) toggleToSelfStash( ptChar ); return 1;

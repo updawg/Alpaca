@@ -27,7 +27,6 @@ void D2Game::Init()
 
 void D2Game::SetFunctions()
 {
-	D2SetNbPlayers = (TD2SetNbPlayers)GetOffsetByProc(10059);
 	D2GetClient = (TD2GetClient)GetOffsetByAddition(0x7C2C0);
 	D2SendPacket = (TD2SendPacket)GetOffsetByAddition(0xC380);
 	D2LoadInventory = (TD2LoadInventory)GetOffsetByAddition(0x4F100);
@@ -39,5 +38,4 @@ D2Game::TD2GetClient D2Game::D2GetClient;
 D2Game::TD2SendPacket D2Game::D2SendPacket;
 D2Game::TD2LoadInventory D2Game::D2LoadInventory;
 D2Game::TD2GameGetObject D2Game::D2GameGetObject;
-D2Game::TD2SetNbPlayers D2Game::D2SetNbPlayers;
 NetClient** D2Game::ptClientTable;

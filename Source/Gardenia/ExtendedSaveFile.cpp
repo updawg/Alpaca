@@ -54,7 +54,6 @@ BYTE * readExtendedSaveFile(char* name, DWORD* size)//WORKS
 		*size = 14;
 		*((DWORD*)&data[0])  = FILE_EXTENDED; //"CSTM"
 		*((WORD *)&data[4])  = FILE_VERSION;
-		*((DWORD*)&data[6])  = nbPlayersCommandByDefault - 1;
 		*((DWORD*)&data[10]) = 0;// number of stash
 
 		TCustomDll* currentDll = customDlls;
@@ -66,7 +65,6 @@ BYTE * readExtendedSaveFile(char* name, DWORD* size)//WORKS
 	}
 	return data;
 }
-
 
 int loadExtendedSaveFile(Unit* ptChar, BYTE data[], DWORD maxSize)//WORKS
 {
@@ -89,7 +87,6 @@ int loadExtendedSaveFile(Unit* ptChar, BYTE data[], DWORD maxSize)//WORKS
 		return 9;
 	}
 	curSize += 2;
-	nbPlayersCommand = (*(BYTE*)&data[curSize]) + 1;
 	curSize += 1;
 	curSize += 3;
 
@@ -106,8 +103,6 @@ int loadExtendedSaveFile(Unit* ptChar, BYTE data[], DWORD maxSize)//WORKS
 	PCPY->selfStashIsOpened = true;
 	return ret;
 }
-
-
 
 void writeExtendedSaveFile(char* name, BYTE* data, DWORD size)
 {
@@ -153,14 +148,12 @@ void backupExtendedSaveFile(char* name)
 	CopyFile(szSaveName, szBackupName, true);
 }
 
-
 void saveExtendedSaveFile(Unit* ptChar, BYTE** data, DWORD* maxSize, DWORD* curSize)
 {
 	*(DWORD *)(*data + *curSize) = FILE_EXTENDED; //"CSTM"
 	*curSize += 4;
 	*(WORD *)(*data + *curSize) = FILE_VERSION;
 	*curSize += 2;
-	*(DWORD *)(*data + *curSize) = (BYTE)(nbPlayersCommand - 1);
 	*curSize += 4;
 
 	saveStashList(ptChar, PCPY->selfStash, data, maxSize, curSize);

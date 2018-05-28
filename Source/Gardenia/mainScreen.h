@@ -25,7 +25,7 @@ extern BYTE modVersionColor;
 extern bool active_PrintGardeniaVersion;
 extern BYTE colorOfGardeniaVersion;
 
-void Install_PrintPlugYVersion();
+void Install_PrintGardeniaVersion();
 void Install_VersionChange();
 
 

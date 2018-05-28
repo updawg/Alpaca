@@ -100,7 +100,7 @@ DWORD	getYTakeGoldBtn()		{return RY(posYTakeGoldBtn<0 ? 0x1A8 : posYTakeGoldBtn)
 
 void* __stdcall printBtns()
 {
-	if (onRealm || !D2isLODGame()) return D2LoadBuySelBtn();
+	if (!D2isLODGame()) return D2LoadBuySelBtn();
 
 	Unit* ptChar = D2GetClientPlayer();
 
@@ -178,7 +178,7 @@ void* __stdcall printBtns()
 
 DWORD __stdcall manageBtnDown(sWinMessage* msg)
 {
-	if (onRealm || !D2isLODGame()) return 0;
+	if (!D2isLODGame()) return 0;
 
 	if (isOnButtonPreviousStash(msg->x,msg->y))
 		isDownBtn.previous = 1;
@@ -204,7 +204,7 @@ DWORD __stdcall manageBtnDown(sWinMessage* msg)
 	
 DWORD __stdcall manageBtnUp(sWinMessage* msg)
 {
-	if (onRealm || !D2isLODGame()) return 0;
+	if (!D2isLODGame()) return 0;
 
 	Unit* ptChar = D2GetClientPlayer();
 
@@ -265,7 +265,7 @@ DWORD __stdcall manageBtnUp(sWinMessage* msg)
 
 void __fastcall printPageNumber(LPWSTR maxGoldText, DWORD x, DWORD y, DWORD color, DWORD bfalse)
 {
-	if (onRealm || !D2isLODGame() )
+	if (!D2isLODGame() )
 	{
 		D2PrintString(maxGoldText,x,y,color,bfalse);
 		return;

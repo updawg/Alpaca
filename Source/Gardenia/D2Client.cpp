@@ -54,6 +54,8 @@ void D2Client::SetFunctions()
 
 	ptNbStatDesc = (DWORD*)GetOffsetByAddition(0xDB918);
 	ptStatDescTable = (DWORD*)GetOffsetByAddition(0xDAF98);
+
+	CustomCommandOffset = GetOffsetByAddition(0x2C120);
 }
 
 DWORD D2Client::ResolutionX()
@@ -118,3 +120,5 @@ DWORD* D2Client::ptWindowStartX;
 
 DWORD* D2Client::ptNbStatDesc;
 DWORD* D2Client::ptStatDescTable;
+
+DWORD D2Client::CustomCommandOffset;

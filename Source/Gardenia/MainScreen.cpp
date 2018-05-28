@@ -16,7 +16,6 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "extraOptions.h"
-#include "windowed.h"
 #include "common.h"
 
 char* versionText = "";
@@ -25,12 +24,10 @@ BYTE modVersionColor = 0;
 bool active_PrintGardeniaVersion = 1;
 BYTE colorOfGardeniaVersion = 4;
 
-DWORD newTextBoxData[]={4,0x237,0x243,0xC8,0x14,0,0,0,0,0,0,2};//type,x,y,l,h,?,?,?,?,?,?,?(0,257,C8,28)
+DWORD newTextBoxData[]={4,0x237,0x243,0xC8,0x14,0,0,0,0,0,0,2}; //type,x,y,l,h,?,?,?,?,?,?,?(0,257,C8,28)
 
-void __stdcall printPlugYVersion(void** childrens, DWORD* sgnNumChildren)
+void __stdcall PrintGardeniaVersion(void** childrens, DWORD* sgnNumChildren)
 {
-	if (active_Windowed)
-		SetWindowedOptions();
 	if (active_PrintGardeniaVersion)
 	{
 		char buf[30];
@@ -42,16 +39,16 @@ void __stdcall printPlugYVersion(void** childrens, DWORD* sgnNumChildren)
 	}
 }
 
-FCT_ASM ( caller_printPlugYVersion )
+FCT_ASM ( caller_PrintGardeniaVersion )
 	POP ESI
 	PUSH DWORD PTR [ESI+2]
 	PUSH DWORD PTR [ESI+9]
-	CALL printPlugYVersion
+	CALL PrintGardeniaVersion
 	CALL D2CreateTextBox
 	JMP ESI
 }}
 
-void Install_PrintPlugYVersion()
+void Install_PrintGardeniaVersion()
 {
 	static int isInstalled = false;
 	if (isInstalled) return;
@@ -59,8 +56,8 @@ void Install_PrintPlugYVersion()
 	log_msg("[Patch] D2Launch to print Gardenia version. (PrintGardeniaVersion)\n");
 
 	// Print Gardenia version.
-	mem_seek(D2Launch::GetOffsetByAddition(0x7F5D));
-	MEMJ_REF4(D2Win::D2CreateTextBox, caller_printPlugYVersion);
+	mem_seek(D2Launch::PrintGardeniaVersionOffset);
+	MEMJ_REF4(D2Win::D2CreateTextBox, caller_PrintGardeniaVersion);
 
 	log_msg("\n");
 

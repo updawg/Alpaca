@@ -112,7 +112,6 @@ DWORD* ptNbStatDesc;
 DWORD* ptStatDescTable;
 
 // D2Game
-D2Game::TD2SetNbPlayers D2SetNbPlayers;
 D2Game::TD2SendPacket D2SendPacket;
 D2Game::TD2LoadInventory D2LoadInventory;
 D2Game::TD2GameGetObject D2GameGetObject;
@@ -259,7 +258,6 @@ void initD2functions()
 	ptStatDescTable = D2Client::ptStatDescTable;
 
 	// D2Game
-	D2SetNbPlayers = D2Game::D2SetNbPlayers;
 	D2SendPacket = D2Game::D2SendPacket;
 	D2LoadInventory = D2Game::D2LoadInventory;
 	D2GameGetObject = D2Game::D2GameGetObject;

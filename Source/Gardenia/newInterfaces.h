@@ -26,7 +26,6 @@ extern DWORD bDontPrintBorder;
 
 void GoNextStatPage();
 void GoPreviousStatPage();
-void GoStatPage(int page);
 int GetCurrentPage();
 
 extern bool active_newInterfaces;

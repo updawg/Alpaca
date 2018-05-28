@@ -51,9 +51,6 @@
     <ClCompile Include="ExtraOptions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GlobalVariable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="InfinityStash.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -64,9 +61,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Interface_Stats.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Language.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LoadPlayerData.cpp">
@@ -100,9 +94,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UpdateServer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Windowed.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Utilities\VersionUtility.cpp">
@@ -182,9 +173,6 @@
     <ClInclude Include="extraOptions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="globalVariable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="infinityStash.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -195,9 +183,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="interface_Stats.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="language.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="loadPlayerData.h">
@@ -237,9 +222,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="updateServer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="windowed.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Commons\d2BinFile.h">

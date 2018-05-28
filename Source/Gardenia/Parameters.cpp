@@ -34,8 +34,6 @@
 #include "newInterfaces.h"
 #include "extraOptions.h"
 #include "commands.h"
-#include "language.h"
-#include "windowed.h"
 
 char* modDataDirectory = "Gardenia";
 bool active_plugin = true;
@@ -54,25 +52,6 @@ const char* S_active_DisableBattleNet = "DisableBattleNet";
 const char* S_active_logFile = "ActiveLogFile";
 const char* S_active_CheckMemory = "ActiveCheckMemory";
 const char* S_active_Commands = "ActiveCommands";
-
-const char* S_WINDOWED = "WINDOWED";
-const char* S_ActiveWindowed = "ActiveWindowed";
-const char* S_RemoveBorder = "RemoveBorder";
-const char* S_WindowOnTop = "WindowOnTop";
-const char* S_Maximized = "Maximized";
-const char* S_SetWindowPos = "SetWindowPos";
-const char* S_X = "X";
-const char* S_Y = "Y";
-const char* S_Width = "Width";
-const char* S_Height = "Height";
-const char* S_LockMouseOnStartup = "LockMouseOnStartup";
-
-const char* S_LANGUAGE = "LANGUAGE";
-const char* S_active_ChangeLanguage = "ActiveChangeLanguage";
-const char* S_selectedLanguage = "SelectedLanguage";
-const char* S_active_LanguageManagement = "ActiveLanguageManagement";
-const char* S_defaultLanguage = "DefaultLanguage";
-const char* S_availableLanguages = "AvailableLanguages";
 
 const char* S_MAIN_SCREEN = "MAIN SCREEN";
 const char* S_active_VersionTextChange = "ActiveVersionTextChange";
@@ -116,11 +95,7 @@ const char* S_selectMainPageOnOpening = "selectMainPageOnOpening";
 const char* S_printBackgroundOnMainPage = "PrintButtonsBackgroundOnMainStatsPage";
 
 const char* S_EXTRA = "EXTRA";
-const char* S_nbPlayersCommandByDefault = "NBPlayersByDefault";
 const char* S_active_DisplayItemLevel = "ActiveDisplayItemLevel";
-const char* S_active_RunLODs = "ActiveLaunchAnyNumberOfLOD";
-const char* S_active_AlwaysDisplayLifeMana = "AlwaysDisplayLifeAndManaValues";
-const char* S_active_EnabledTXTFilesWithMSExcel= "EnabledTXTFilesWhenMSExcelOpenIt";
 
 const char* S_DLL = "DLL:\t";
 const char* S_DEFAULT = "DEFAULT:";
@@ -196,138 +171,6 @@ void init_General(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefaultFi
 
 	log_msg("dllFilenames\t\t\t\t= %s\n",dllFilenames);
 
-	log_msg("\n");
-}
-
-void init_Windowed(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefaultFile, char* buffer, DWORD maxSize)
-{
-	GET_PRIVATE_PROFILE_STRING(S_WINDOWED, S_ActiveWindowed, "0");
-	active_Windowed = atoi(buffer) != 0;
-	log_msg("active_Windowed\t\t\t\t= %d\n", active_Windowed);
-	if (active_Windowed)
-	{
-		GET_PRIVATE_PROFILE_STRING(S_WINDOWED, S_RemoveBorder, "0");
-		active_RemoveBorder = atoi(buffer) != 0;
-		log_msg("active_RemoveBorder\t\t\t= %d\n", active_RemoveBorder);
-
-		GET_PRIVATE_PROFILE_STRING(S_WINDOWED, S_WindowOnTop, "0");
-		active_WindowOnTop = atoi(buffer) != 0;
-		log_msg("active_WindowOnTop\t\t\t= %d\n", active_WindowOnTop);
-
-		GET_PRIVATE_PROFILE_STRING(S_WINDOWED, S_Maximized, "0");
-		active_Maximized = atoi(buffer) != 0;
-		log_msg("active_Maximized\t\t\t= %d\n", active_Maximized);
-
-		GET_PRIVATE_PROFILE_STRING(S_WINDOWED, S_SetWindowPos, "0");
-		active_SetWindowPos = atoi(buffer) != 0;
-		log_msg("active_MoveAndResizeWindow\t\t= %d\n", active_SetWindowPos);
-
-		GET_PRIVATE_PROFILE_STRING(S_WINDOWED, S_X, "0");
-		windowedX = atoi(buffer);
-		log_msg("windowedX\t\t\t\t= %d\n", windowedX);
-
-		GET_PRIVATE_PROFILE_STRING(S_WINDOWED, S_Y, "0");
-		windowedY = atoi(buffer);
-		log_msg("windowedY\t\t\t\t= %d\n", windowedY);
-
-		GET_PRIVATE_PROFILE_STRING(S_WINDOWED, S_Width, "0");
-		windowedWidth = atoi(buffer);
-		log_msg("windowedWidth\t\t\t\t= %d\n", windowedWidth);
-
-		GET_PRIVATE_PROFILE_STRING(S_WINDOWED, S_Height, "0");
-		windowedHeight = atoi(buffer);
-		log_msg("windowedHeight\t\t\t\t= %d\n", windowedHeight);
-
-		GET_PRIVATE_PROFILE_STRING(S_WINDOWED, S_LockMouseOnStartup, "0");
-		active_LockMouseOnStartup = atoi(buffer) != 0;
-		log_msg("active_LockMouseOnStartup\t\t= %d\n\n", active_LockMouseOnStartup);
-	}
-}
-
-void init_ActiveLanguage(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefaultFile, char* buffer, DWORD maxSize)
-{
-	GET_PRIVATE_PROFILE_STRING(S_LANGUAGE, S_active_ChangeLanguage, "0");
-	active_ChangeLanguage = atoi(buffer) != 0;
-	log_msg("active_ChangeLanguage\t\t\t= %d\n", active_ChangeLanguage);
-
-	if (active_ChangeLanguage)
-	{
-		GET_PRIVATE_PROFILE_STRING(S_LANGUAGE, S_selectedLanguage, "ENG");
-		_strupr(buffer);
-		switch (*(DWORD*)buffer)
-		{
-			case BIN('E','N','G',0) : selectedLanguage=LNG_ENG;break;
-			case BIN('E','S','P',0) : selectedLanguage=LNG_ESP;break;
-			case BIN('D','E','U',0) : selectedLanguage=LNG_DEU;break;
-			case BIN('F','R','A',0) : selectedLanguage=LNG_FRA;break;
-			case BIN('P','O','R',0) : selectedLanguage=LNG_POR;break;
-			case BIN('I','T','A',0) : selectedLanguage=LNG_ITA;break;
-			case BIN('J','P','N',0) : selectedLanguage=LNG_JPN;break;
-			case BIN('K','O','R',0) : selectedLanguage=LNG_KOR;break;
-			case BIN('S','I','N',0) : selectedLanguage=LNG_SIN;break;
-			case BIN('C','H','I',0) : selectedLanguage=LNG_CHI;break;
-			case BIN('P','O','L',0) : selectedLanguage=LNG_POL;break;
-			case BIN('R','U','S',0) : selectedLanguage=LNG_RUS;break;
-			default: active_ChangeLanguage = false;
-			log_msg("active_ChangeLanguage\t\t\t= %d (because bad language string : %s)\n", active_ChangeLanguage, buffer);
-		}
-	}
-	if (active_ChangeLanguage)
-		log_msg("selectedLanguage\t\t\t= %u\n", selectedLanguage);
-
-
-	GET_PRIVATE_PROFILE_STRING(S_LANGUAGE, S_active_LanguageManagement, "0");
-	active_LanguageManagement = atoi(buffer) != 0;
-	log_msg("active_LanguageManagement\t\t= %d\n", active_LanguageManagement);
-
-	if (active_LanguageManagement)
-	{
-		GET_PRIVATE_PROFILE_STRING(S_LANGUAGE, S_defaultLanguage, "ENG");
-		_strupr(buffer);
-		switch (*(DWORD*)buffer)
-		{
-			case BIN('E','N','G',0) : defaultLanguage=LNG_ENG;break;
-			case BIN('E','S','P',0) : defaultLanguage=LNG_ESP;break;
-			case BIN('D','E','U',0) : defaultLanguage=LNG_DEU;break;
-			case BIN('F','R','A',0) : defaultLanguage=LNG_FRA;break;
-			case BIN('P','O','R',0) : defaultLanguage=LNG_POR;break;
-			case BIN('I','T','A',0) : defaultLanguage=LNG_ITA;break;
-			case BIN('J','P','N',0) : defaultLanguage=LNG_JPN;break;
-			case BIN('K','O','R',0) : defaultLanguage=LNG_KOR;break;
-			case BIN('S','I','N',0) : defaultLanguage=LNG_SIN;break;
-			case BIN('C','H','I',0) : defaultLanguage=LNG_CHI;break;
-			case BIN('P','O','L',0) : defaultLanguage=LNG_POL;break;
-			case BIN('R','U','S',0) : defaultLanguage=LNG_RUS;break;
-			default: defaultLanguage=LNG_ENG;
-		}
-		log_msg("defaultLanguage\t\t\t= %d\n", defaultLanguage);
-
-		GET_PRIVATE_PROFILE_STRING(S_LANGUAGE, S_availableLanguages, "ENG|ESP|DEU|FRA|POR|ITA|JPN|KOR|SIN|CHI|POL|RUS");
-		availableLanguages.all = 0;
-		_strupr(buffer);
-		char* curString = strtok(buffer,"|");
-		while (curString)
-		{
-			switch (*(DWORD*)curString)
-			{
-				case BIN('E','N','G',0) : availableLanguages.eng=1;break;
-				case BIN('E','S','P',0) : availableLanguages.esp=1;break;
-				case BIN('D','E','U',0) : availableLanguages.deu=1;break;
-				case BIN('F','R','A',0) : availableLanguages.fra=1;break;
-				case BIN('P','O','R',0) : availableLanguages.por=1;break;
-				case BIN('I','T','A',0) : availableLanguages.ita=1;break;
-				case BIN('J','P','N',0) : availableLanguages.jpn=1;break;
-				case BIN('K','O','R',0) : availableLanguages.kor=1;break;
-				case BIN('S','I','N',0) : availableLanguages.sin=1;break;
-				case BIN('C','H','I',0) : availableLanguages.chi=1;break;
-				case BIN('P','O','L',0) : availableLanguages.pol=1;break;
-				case BIN('R','U','S',0) : availableLanguages.rus=1;break;
-				default:;
-			}
-			curString=strtok(NULL,"|");
-		}
-		log_msg("availableLanguage.all\t\t= 0x%04X\n\n",availableLanguages.all);
-	}
 	log_msg("\n");
 }
 
@@ -498,29 +341,9 @@ void init_NewInterfaces(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDef
 
 void init_ExtraOptions(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefaultFile, char* buffer, DWORD maxSize)
 {
-	GET_PRIVATE_PROFILE_STRING(S_EXTRA, S_nbPlayersCommandByDefault, "0");
-	nbPlayersCommandByDefault = atoi(buffer);
-	
-	// 1.09b can go up to 'players 64'
-	nbPlayersCommandByDefault=64;
-	
-	log_msg("nbPlayersCommandByDefault\t\t= %d\n", nbPlayersCommandByDefault);
-
 	GET_PRIVATE_PROFILE_STRING(S_EXTRA, S_active_DisplayItemLevel, "0");
 	active_DisplayItemLevel = atoi(buffer);
 	log_msg("active_DisplayItemLevel\t\t\t= %d\n", active_DisplayItemLevel);
-
-	GET_PRIVATE_PROFILE_STRING(S_EXTRA, S_active_AlwaysDisplayLifeMana, "0");
-	active_AlwaysDisplayLifeMana = atoi(buffer);
-	log_msg("active_AlwaysDisplayLifeMana\t\t= %d\n", active_AlwaysDisplayLifeMana);
-
-	GET_PRIVATE_PROFILE_STRING(S_EXTRA, S_active_RunLODs, "0");
-	active_RunLODs = atoi(buffer);
-	log_msg("active_RunLODs\t\t\t\t= %u\n", active_RunLODs);
-
-	GET_PRIVATE_PROFILE_STRING(S_EXTRA, S_active_EnabledTXTFilesWithMSExcel, "0");
-	active_EnabledTXTFilesWithMSExcel = atoi(buffer);
-	log_msg("active_EnabledTXTFilesWithMSExcel\t= %u\n\n", active_EnabledTXTFilesWithMSExcel);
 }
 
 void loadParameters()
@@ -557,8 +380,6 @@ void loadParameters()
 		if (active_plugin)
 		{
 			init_General(iniFile, iniFixedFile, iniDefaultFile, buffer, BUFSIZE);
-			init_Windowed(iniFile, iniFixedFile, iniDefaultFile, buffer, BUFSIZE);
-			init_ActiveLanguage(iniFile, iniFixedFile, iniDefaultFile, buffer,BUFSIZE);
 			init_VersionText(iniFile, iniFixedFile, iniDefaultFile, buffer, BUFSIZE);
 			init_Stash(iniFile, iniFixedFile, iniDefaultFile, buffer, BUFSIZE);
 			init_NewInterfaces(iniFile, iniFixedFile, iniDefaultFile, buffer, BUFSIZE);
@@ -581,4 +402,3 @@ void loadParameters()
 	delete iniDefaultFile;
 	delete iniFixedFile;
 }
-

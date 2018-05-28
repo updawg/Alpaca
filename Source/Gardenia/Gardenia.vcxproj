@@ -14,7 +14,7 @@
     <ProjectGuid>{EB63DF4E-A019-4522-A140-9E8C7350B331}</ProjectGuid>
     <RootNamespace>Gardenia</RootNamespace>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
     <ProjectName>Gardenia</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -122,12 +122,10 @@
     <ClCompile Include="ExtraOptions.cpp" />
     <ClCompile Include="Fog.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GlobalVariable.cpp" />
     <ClCompile Include="InfinityStash.cpp" />
     <ClCompile Include="INIfile.cpp" />
     <ClCompile Include="Interface_Stash.cpp" />
     <ClCompile Include="Interface_Stats.cpp" />
-    <ClCompile Include="Language.cpp" />
     <ClCompile Include="LoadPlayerData.cpp" />
     <ClCompile Include="LocalizedStrings.cpp" />
     <ClCompile Include="MainScreen.cpp" />
@@ -144,7 +142,6 @@
     <ClCompile Include="UpdateServer.cpp" />
     <ClCompile Include="Utilities\LibraryLoader.cpp" />
     <ClCompile Include="Utilities\VersionUtility.cpp" />
-    <ClCompile Include="Windowed.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Commons\d2BinFile.h" />
@@ -173,12 +170,10 @@
     <ClInclude Include="extraOptions.h" />
     <ClInclude Include="Fog.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="globalVariable.h" />
     <ClInclude Include="infinityStash.h" />
     <ClInclude Include="INIfile.h" />
     <ClInclude Include="interface_Stash.h" />
     <ClInclude Include="interface_Stats.h" />
-    <ClInclude Include="language.h" />
     <ClInclude Include="Library.h" />
     <ClInclude Include="loadPlayerData.h" />
     <ClInclude Include="LocalizedStrings.h" />
@@ -199,7 +194,6 @@
     <ClInclude Include="updateServer.h" />
     <ClInclude Include="Utilities\LibraryLoader.h" />
     <ClInclude Include="Utilities\VersionUtility.h" />
-    <ClInclude Include="windowed.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Gardenia.rc" />

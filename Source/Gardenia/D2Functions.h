@@ -134,7 +134,6 @@ extern DWORD* ptNbStatDesc;
 extern DWORD* ptStatDescTable;
 
 // D2Game
-extern D2Game::TD2SetNbPlayers D2SetNbPlayers;
 extern D2Game::TD2SendPacket D2SendPacket;
 extern D2Game::TD2LoadInventory D2LoadInventory;
 extern D2Game::TD2GameGetObject D2GameGetObject;

@@ -15,15 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#include "globalVariable.h"		// Install_VariableOnRealm()
 #include "commands.h"			// Install_Commands()
-#include "mainScreen.h"			// Install_PrintPlugYVersion() Install_VersionChange()
+#include "mainScreen.h"			// Install_PrintGardeniaVersion(), Install_VersionChange()
 #include "bigStash.h"			// Install_BigStash()
 #include "infinityStash.h"		// Install_MultiPageStash()
 #include "newInterfaces.h"		// Install_NewInterfaces()
 #include "extraOptions.h"		// Install_AlwaysRegenMapInSP()
-#include "language.h"			// Install_LanguageManagement()
-#include "windowed.h"			// installed with Install_PrintPlugYVersion()
 #include "customLibraries.h"
 #include "common.h"				// Includes "d2wrapper.h"
 
@@ -187,22 +184,14 @@ void Install_Functions()
 {
 	log_msg("***** INSTALL FUNCTIONS *****\n");
 
-	Install_VariableOnRealm();
-
 	if (active_Commands)
 		Install_Commands();
-
-	if (active_ChangeLanguage || active_LanguageManagement)
-		Install_LanguageManagement();
 
 	if (active_VersionTextChange)
 		Install_VersionChange();
 
-	if (active_PrintGardeniaVersion || active_Windowed)
-		Install_PrintPlugYVersion();
-
-	if (active_RunLODs)
-		Install_RunLODs();
+	if (active_PrintGardeniaVersion)
+		Install_PrintGardeniaVersion();
 
 	if (active_bigStash)
 		Install_BigStash();
@@ -213,17 +202,8 @@ void Install_Functions()
 	if (active_newInterfaces)
 		Install_NewInterfaces();
 
-	if (nbPlayersCommandByDefault)
-		Install_SendPlayersCommand();
-
 	if (active_DisplayItemLevel)
 		Install_DisplayItemLevel();
-
-	if (active_AlwaysDisplayLifeMana)
-		Install_AlwaysDisplayLifeMana();
-
-	if (active_EnabledTXTFilesWithMSExcel)
-		Install_EnabledTXTFilesWithMSExcel();
 
 	log_msg("DLL patched sucessfully.\n\n");
 }

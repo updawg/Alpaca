@@ -1,4 +1,4 @@
-Gardenia - 1.20
+Gardenia - 1.22
 Jonathan Vasquez <jon@xyinn.org>
 Released under the GPLv3+
 Project based off Yohann Nicolas' PlugY 11.02
@@ -15,11 +15,10 @@ massive refactoring, and redesign.
 
 In order to increase the maintainability of the mod and provide an
 optimal experience for whatever version you are playing, Gardenia now
-only supports a single Diablo II version. For my mod specifically, it only
-supports 1.09b. I'm providing a 1.13d legacy branch that people can use to
-improve their version of Gardenia if desired. Players wanting to play
-older versions of Diablo II should use the older and corresponding Gardenia
-version.
+only supports a single Diablo II version. I'm providing a 1.13d legacy
+branch that people can use to improve their version of Gardenia if desired.
+Players wanting to play older versions of Diablo II should use the older
+and corresponding Gardenia version.
 
 Gardenia IS compatible with Cactus. So if you want to have separate stashes
 while you are time traveling, you can. Just point Cactus to use "Gardenia.exe"
@@ -34,41 +33,23 @@ Features
 =============
 Each feature can be turned on/off via Gardenia.ini (see "COMMENTS ON THE CONFIGURATION FILE"):
 
-- Disable access to Battle.net.
+Core Features
+----------------
 - Infinite stash storage space (Personal Stash)
 - Infinite shared stash storage space (Shared Stash)
-- Automatically execute /players X when you launch a new game.
-- Launch any number of Diablo II games on the same computer.
+- Increase the stash to 10x10 squares.
 - Extended stats available in the Character Page (i.e %MF, Gold Find, Crushing Blow, ...).
 - Display item level in its popup.
-- Increase the stash to 10x10 squares.
-- Always display Mana and Life values above the globes.
-- Can launch game in windowed mode with some options (lock mouse/resize/on top/noborder).
-- Change the selected language.
-- D2 can load all files, even those opened with Microsoft Excel (disabled by default).
-- Added the following in-game commands:
-
-Character Stats Commands:
-   /page 1 : Show normal stats page (stats page must be opened).
-   /page 2 : Show extra stats page (stats page must be opened).
-   /page 3 : Show resistance stats page (stats page must be opened).
-
-Windowing Commands:
-   /lock : Lock mouse cursor in the window.
-   /unlock : Unlock mouse cursor in the window.
 
 Stash Management Commands:
    /renamepage name : Rename current page stash. (If empty, resets name)
    /setindex : Set current stash page as index.
+   /unsetindex : Remove index flag on the current stash page.
    /setmainindex : Set current stash page as main index.
-   /resetindex : Remove index flag on the current stash page.
    /insertpage : Insert a new page after the current page.
    /deletepage : Delete current page if empty.
    /swap page : Swap the content of current stash page with the content of another page.
    /toggle page : Swap the content of current stash page with the content of another page in opposing stash shared/personal.
-
-Other Commands:
-   /dlm : Toggle always display mana and life mode.
 
 =============
 Known Bugs or Concerns
@@ -99,7 +80,7 @@ Compiled with Visual Studio 2017.
 
 Tips for working with Gardenia (in Visual Studio 2017)
 =============
-- Always use Release Mode
+- Always use Release Mode (Working on fixing/testing Debug mode)
 - Don't use /GS (Security Check)
 - Don't use compiler optimizations
 - Use the debugger and compile debugging symbols (.PDB)

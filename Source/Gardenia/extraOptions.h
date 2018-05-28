@@ -20,14 +20,6 @@
 #include "common.h"
 
 extern int active_DisplayItemLevel;
-extern DWORD nbPlayersCommandByDefault;
 extern DWORD nbPlayersCommand;
-extern int active_RunLODs;
-extern int active_AlwaysDisplayLifeMana;
-extern int active_EnabledTXTFilesWithMSExcel;
 
 void Install_DisplayItemLevel();
-void Install_SendPlayersCommand();
-void Install_RunLODs();
-void Install_AlwaysDisplayLifeMana();
-void Install_EnabledTXTFilesWithMSExcel();

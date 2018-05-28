@@ -23,6 +23,8 @@ class D2Launch : public Library<D2Launch>
 {
 public:
 	static void Init();
+
+	static DWORD PrintGardeniaVersionOffset;
 private:
 	static void SetFunctions();
 };

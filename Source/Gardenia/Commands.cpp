@@ -20,30 +20,20 @@
 #include "infinityStash.h"
 #include "newInterfaces.h"
 #include "extraOptions.h"
-#include "windowed.h"
 #include "common.h"
-
-bool active_Commands=true;
 
 #define MAX_CMD_SIZE 200
 
-const char * CMD_PLAYERS="players set to";
-
-const char * CMD_SELECTPAGE="/page";
-
-const char * CMD_LOCK_MOUSE = "/lock";
-const char * CMD_UNLOCK_MOUSE = "/unlock";
+bool active_Commands = true;
 
 const char * CMD_REPAGE_NAME = "/renamepage";
 const char * CMD_SET_INDEX = "/setindex";
+const char * CMD_UNSET_INDEX = "/unsetindex";
 const char * CMD_SET_MAIN_INDEX = "/setmainindex";
-const char * CMD_RESET_INDEX = "/resetindex";
 const char * CMD_INSERT_PAGE = "/insertpage";
 const char * CMD_DELETE_PAGE = "/deletepage";
 const char * CMD_SWAP = "/swap";
 const char * CMD_TOGGLE = "/toggle";
-
-const char * CMD_DISPLAY_LIFE_MANA = "/dlm";
 
 void maxGold(Unit* ptChar)
 {
@@ -88,7 +78,6 @@ void takeGold(Unit* ptChar, DWORD amount)
 	log_msg("takeGold : %d\n", amount);
 
 	DWORD maxGold =     D2GetMaxGold(ptChar) - D2GetPlayerStat(ptChar, STATS_GOLD, 0);
-//	DWORD maxGoldBank = D2GetMaxGoldBank(ptChar) - D2GetPlayerStat(ptChar, STATS_GOLDBANK, 0);
 	DWORD toAdd = maxGold < PCPY->sharedGold ? maxGold : PCPY->sharedGold;
 	if (amount && (toAdd > amount))
 		toAdd = amount;
@@ -113,35 +102,6 @@ int __stdcall commands (char* ptText)
 	ZeroMemory(command,MAX_CMD_SIZE);
 	strncpy(command,ptText,MAX_CMD_SIZE-1);
 	_strlwr(command);
-
-	if (!strncmp(command, CMD_PLAYERS, strlen(CMD_PLAYERS)))
-	{
-		int nb = atoi(&command[strlen(CMD_PLAYERS)]);
-		if (nb > 0 && nb <= 64)
-			nbPlayersCommand = nb;
-		return 1;
-	}
-
-	if (!strncmp(command, CMD_SELECTPAGE, strlen(CMD_SELECTPAGE)))
-	{
-		if (!active_newInterfaces) return 1;
-		GoStatPage(atoi(&command[strlen(CMD_SELECTPAGE)]) - 1);
-		return 0;
-	}
-
-	if (!strcmp(command, CMD_LOCK_MOUSE))
-	{
-		if (onRealm) return 1;
-		lockMouseCursor();
-		return 0;
-	}
-
-	if (!strcmp(command, CMD_UNLOCK_MOUSE))
-	{
-		if (onRealm) return 1;
-		unlockMouseCursor();
-		return 0;
-	}
 
 	if (!strncmp(command, CMD_REPAGE_NAME,strlen(CMD_REPAGE_NAME)))
 	{
@@ -187,10 +147,10 @@ int __stdcall commands (char* ptText)
 		return 0;
 	}
 
-	if (!strcmp(command, CMD_RESET_INDEX))
+	if (!strcmp(command, CMD_UNSET_INDEX))
 	{
 		if (!active_multiPageStash) return 1;
-		updateServer(US_RESET_INDEX);
+		updateServer(US_UNSET_INDEX);
 		return 0;
 	}
 
@@ -238,12 +198,6 @@ int __stdcall commands (char* ptText)
 		return 0;
 	}
 
-	if (!strcmp(command,CMD_DISPLAY_LIFE_MANA))
-	{
-		active_AlwaysDisplayLifeMana = !active_AlwaysDisplayLifeMana;
-		return 0;
-	}
-
 	return 1;
 }
 
@@ -270,7 +224,7 @@ void Install_Commands()
 	log_msg("[Patch] D2Client for install commands. (Commands)\n");
 
 	// Run custom commmand
-	mem_seek(D2Client::GetOffsetByAddition(0x2C120));
+	mem_seek(D2Client::CustomCommandOffset);
 	memt_byte(0x83, 0xE8); 
 	MEMT_REF4(0xC08508C4, caller_Commands);
 

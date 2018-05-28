@@ -26,5 +26,7 @@ void D2Launch::Init()
 
 void D2Launch::SetFunctions()
 {
-	
+	PrintGardeniaVersionOffset = GetOffsetByAddition(0x7F5D);
 }
+
+DWORD D2Launch::PrintGardeniaVersionOffset;

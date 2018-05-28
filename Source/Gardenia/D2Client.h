@@ -79,6 +79,8 @@ public:
 	static DWORD* ptStatDescTable;
 
 	static WORD GetDescStrPos(DWORD statID);
+
+	static DWORD CustomCommandOffset;
 private:
 	static void SetFunctions();
 

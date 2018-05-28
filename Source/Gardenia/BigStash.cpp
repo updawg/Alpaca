@@ -32,7 +32,7 @@ const DWORD gridbottom_BB = 371;
 InventoryBIN* __stdcall modifStashGrid(InventoryBIN* ptInventoryBin)
 {
 	active_bigStash_tested = true;
-	if ( onRealm || !active_bigStash) return ptInventoryBin;
+	if (!active_bigStash) return ptInventoryBin;
 
 	InventoryBIN* inventory=ptInventoryBin+12;
 	inventory->gridX = gridX_BB;
@@ -62,13 +62,10 @@ FCT_ASM ( caller_modifStashGrid )
 }}
 
 FCT_ASM ( caller_changeTradeStash )
-	CMP onRealm,0
-	JNZ normalTradeStash
 	MOV EAX,modDataDirectory
 	MOV DWORD PTR SS:[ESP+0x8],EAX
 	MOV EAX,tradeStash_RefFile
 	MOV DWORD PTR SS:[ESP+0x4],EAX
-normalTradeStash:
 	POP EAX
 	PUSH 0x104
 	JMP EAX
