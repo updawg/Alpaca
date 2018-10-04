@@ -1,8 +1,8 @@
 Copy the following files and folders to the root of your Diablo II directory:
 
-Gardenia/
-Gardenia.exe
-Gardenia.dll
-Gardenia.ini
+Alpaca/
+Alpaca.exe
+Alpaca.dll
+Alpaca.ini
 
-Double click Gardenia.exe and Enjoy!
+Double click Alpaca.exe and Enjoy!
