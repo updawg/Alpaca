@@ -27,7 +27,6 @@ Cactus Project Page - https://github.com/fearedbliss/Cactus
 =============
 Features
 =============
-Each feature can be turned on/off via Alpaca.ini (see "COMMENTS ON THE CONFIGURATION FILE"):
 
 Core Features
 ----------------
@@ -48,8 +47,6 @@ Stash Management Commands:
 =============
 Known Bugs or Concerns
 =============
-- It seems that putting Diablo II in Full Screen will cause an exception in D2Direct3D.dll.
-  So basically Alpaca only works in Window Mode.
 - When using GlideWrapper, any message send operations that result in a visual change will look weird.
   > This affects the 'players 8' message (The message displayed is weird, workaround is to display above
     the head of the character).
@@ -79,7 +76,8 @@ Compiled with Visual Studio 2017.
 
 Tips for working with Alpaca (in Visual Studio 2017)
 =============
-- Release Mode and Debug Mode can yield different results! (Crashes or Not)
+- Release Mode and Debug Mode may yield different results!
+  Debug Mode is what I use by default for my releases.
 - Don't use /GS (Security Check)
 - Don't use compiler optimizations
 - Use the debugger and compile debugging symbols (.PDB)
