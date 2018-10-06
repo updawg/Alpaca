@@ -18,7 +18,7 @@
 #include "plugYFiles.h"		// Install_PlugYFiles()
 #include "common.h"
 
-bool active_bigStash = false;
+bool active_bigStash = true;
 bool active_bigStash_tested = false;
 
 const char* tradeStash_RefFile= "%s\\TradeStash";

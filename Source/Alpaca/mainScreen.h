@@ -19,11 +19,11 @@
 
 #include "common.h"
 
-extern bool active_VersionTextChange;
-extern char* versionText;
-extern BYTE modVersionColor;
-extern bool active_PrintVersion;
-extern BYTE colorOfVersionText;
+extern bool active_DiabloVersionTextChange;
+extern char* DiabloVersionText;
+extern BYTE DiabloVersionColor;
+extern bool active_PrintAlpacaVersion;
+extern BYTE AlpacaVersionColor;
 
 void Install_PrintVersion();
 void Install_VersionChange();

@@ -4,6 +4,7 @@
     <LocalDebuggerCommand>D:\Games\Diablo II\Game.exe</LocalDebuggerCommand>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
     <LocalDebuggerAttach>true</LocalDebuggerAttach>
+    <LocalDebuggerCommandArguments>-w -ns</LocalDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup>
     <ShowAllFiles>false</ShowAllFiles>

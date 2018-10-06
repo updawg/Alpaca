@@ -17,24 +17,24 @@
 
 #include "common.h"
 
-char* versionText = "";
-bool active_VersionTextChange = 0;
-BYTE modVersionColor = 0;
-bool active_PrintVersion = 1;
-BYTE colorOfVersionText = 4;
+char* DiabloVersionText = "";
+bool active_DiabloVersionTextChange = 0;
+BYTE DiabloVersionColor = 0;
+bool active_PrintAlpacaVersion = 1;
+BYTE AlpacaVersionColor = 4;
 
 DWORD newTextBoxData[]={4,0x237,0x243,0xC8,0x14,0,0,0,0,0,0,2}; //type,x,y,l,h,?,?,?,?,?,?,?(0,257,C8,28)
 
 void __stdcall PrintVersion(void** childrens, DWORD* sgnNumChildren)
 {
-	if (active_PrintVersion)
+	if (active_PrintAlpacaVersion)
 	{
 		char buf[30];
 		void* textbox = D2CreateTextBox(newTextBoxData);
 		childrens[*sgnNumChildren] = textbox;
 		d2_assert((*sgnNumChildren)++ >= 40, "sgnNumChildren < MAX_CHILDREN", __FILE__, __LINE__);
 		sprintf(buf, "%s %s", PROGRAM_NAME, PROGRAM_VERSION);
-		D2PrintLineOnTextBox(textbox, buf, colorOfVersionText);
+		D2PrintLineOnTextBox(textbox, buf, AlpacaVersionColor);
 	}
 }
 
@@ -66,7 +66,7 @@ void Install_PrintVersion()
 
 void __fastcall versionChange(void* screen, char* text, DWORD color)
 {
-	D2PrintLineOnTextBox(screen,versionText,modVersionColor);
+	D2PrintLineOnTextBox(screen, DiabloVersionText, DiabloVersionColor);
 }
 
 void Install_VersionChange()

@@ -25,4 +25,3 @@ void log_initfile();
 void log_box( const char* pFormat, ... );
 void log_msg( const char* pFormat, ... );
 void d2_assert( bool pCondition, char* pLocation, char* pMessage, int pLineNbr );
-

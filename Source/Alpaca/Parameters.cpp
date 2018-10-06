@@ -47,18 +47,15 @@ const char* S_dllFilenames2 = "DllToLoad2";
 const char* S_active_plugin = "ActivePlugin";
 const char* S_active_logFile = "ActiveLogFile";
 const char* S_active_CheckMemory = "ActiveCheckMemory";
-const char* S_active_Commands = "ActiveCommands";
 
 const char* S_MAIN_SCREEN = "MAIN SCREEN";
-const char* S_active_VersionTextChange = "ActiveVersionTextChange";
-const char* S_active_VersionTextChanges = "ActiveVersionTextChanges";
-const char* S_versionText = "VersionText";
-const char* S_modVersionColor = "ColorOfVersionText";
-const char* S_active_PrintVersion = "ActivePrintVersion";
-const char* S_colorOfVersionText = "ColorOfVersionText";
+const char* S_active_DiabloVersionTextChange = "ActiveDiabloVersionTextChange";
+const char* S_DiabloVersionText = "DiabloVersionText";
+const char* S_active_PrintAlpacaVersion = "ActivePrintAlpacaVersion";
+const char* S_DiabloVersionColor = "ColorOfDiabloVersionText";
+const char* S_AlpacaVersionColor = "ColorOfAlpacaVersionText";
 
 const char* S_STASH = "STASH";
-const char* S_active_multiPageStash = "ActiveMultiPageStash";
 const char* S_maxSelfPages = "MaxPersonnalPages";
 const char* S_nbPagesPerIndex = "NbPagesPerIndex";
 const char* S_nbPagesPerIndex2 = "NbPagesPerIndex2";
@@ -66,7 +63,6 @@ const char* S_active_sharedStash = "ActiveSharedStash";
 const char* S_openSharedStashOnLoading = "OpenSharedStashOnLoading";
 const char* S_maxSharedPages = "MaxSharedPages";
 const char* S_sharedStashFilename = "SharedStashFilename";
-const char* S_active_bigStash = "ActiveBigStash";
 const char* S_displaySharedSetItemNameInGreen = "DisplaySharedSetItemNameInGreen";
 const char* S_active_sharedGold = "ActiveSharedGold";
 
@@ -136,10 +132,6 @@ void init_General(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefaultFi
 	active_logFile = atoi(buffer)+1;
 	log_msg("active_logFile\t\t\t\t= %d\n", active_logFile-1);
 
-	GET_PRIVATE_PROFILE_STRING(S_GENERAL, S_active_Commands, "0");
-	active_Commands = atoi(buffer) != 0;
-	log_msg("active_Commands\t\t\t\t= %d\n", active_Commands);
-
 	GET_PRIVATE_PROFILE_STRING(S_GENERAL, S_active_CheckMemory, "1");
 	active_CheckMemory = atoi(buffer) != 0;
 	log_msg("active_CheckMemory\t\t\t= %d\n", active_CheckMemory);
@@ -160,40 +152,40 @@ void init_General(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefaultFi
 
 void init_VersionText(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefaultFile, char* buffer, DWORD maxSize)
 {
-	GET_PRIVATE_PROFILE_STRING(S_MAIN_SCREEN, S_active_VersionTextChange, "0");
-	active_VersionTextChange = atoi(buffer) != 0;
-	log_msg("active_VersionTextChange\t\t= %u\n", active_VersionTextChange);
+	GET_PRIVATE_PROFILE_STRING(S_MAIN_SCREEN, S_active_DiabloVersionTextChange, "0");
+	active_DiabloVersionTextChange = atoi(buffer) != 0;
+	log_msg("active_VersionTextChange\t\t= %u\n", active_DiabloVersionTextChange);
 
-	if (active_VersionTextChange)
+	if (active_DiabloVersionTextChange)
 	{
-		GET_PRIVATE_PROFILE_STRING(S_MAIN_SCREEN, S_versionText, versionText);
+		GET_PRIVATE_PROFILE_STRING(S_MAIN_SCREEN, S_DiabloVersionText, DiabloVersionText);
 		if (!buffer[0])
 		{
-			if (active_VersionTextChange == 1)
+			if (active_DiabloVersionTextChange == 1)
 			{
-				strcpy(buffer, "v");
+				strcpy(buffer, "v ");
 				strcat(buffer, VersionUtility::GetVersionAsString());
 			}
 		}
 
-		versionText = (char*)D2FogMemAlloc(strlen(buffer)+1,__FILE__,__LINE__,0);
-		strcpy(versionText,buffer);
-		log_msg("versionText\t\t\t\t= %s\n", versionText);
+		DiabloVersionText = (char*)D2FogMemAlloc(strlen(buffer)+1,__FILE__,__LINE__,0);
+		strcpy(DiabloVersionText, buffer);
+		log_msg("DiabloVersionText\t\t\t\t= %s\n", DiabloVersionText);
 
-		GET_PRIVATE_PROFILE_STRING(S_MAIN_SCREEN, S_modVersionColor, "0");
-		modVersionColor = atoi(buffer);
-		log_msg("modVersionColor\t\t\t\t= %u\n", modVersionColor);
+		GET_PRIVATE_PROFILE_STRING(S_MAIN_SCREEN, S_DiabloVersionColor, "0");
+		DiabloVersionColor = atoi(buffer);
+		log_msg("DiabloVersionColor\t\t\t\t= %u\n", DiabloVersionColor);
 	}
 
-	GET_PRIVATE_PROFILE_STRING(S_MAIN_SCREEN, S_active_PrintVersion, "1");
-	active_PrintVersion = atoi(buffer) != 0;
-	log_msg("active_PrintVersion\t\t\t= %u\n", active_PrintVersion);
+	GET_PRIVATE_PROFILE_STRING(S_MAIN_SCREEN, S_active_PrintAlpacaVersion, "1");
+	active_PrintAlpacaVersion = atoi(buffer) != 0;
+	log_msg("active_PrintAlpacaVersion\t\t\t= %u\n", active_PrintAlpacaVersion);
 
-	if (active_PrintVersion)
+	if (active_PrintAlpacaVersion)
 	{
-		GET_PRIVATE_PROFILE_STRING(S_MAIN_SCREEN, S_colorOfVersionText, "4");
-		colorOfVersionText = atoi(buffer);
-		log_msg("colorOfVersionText\t\t\t= %u\n", colorOfVersionText);
+		GET_PRIVATE_PROFILE_STRING(S_MAIN_SCREEN, S_AlpacaVersionColor, "4");
+		AlpacaVersionColor = atoi(buffer);
+		log_msg("AlpacaVersionColor\t\t\t= %u\n", AlpacaVersionColor);
 	}
 	
 	log_msg("\n");
@@ -201,69 +193,56 @@ void init_VersionText(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefau
 
 void init_Stash(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefaultFile, char* buffer, DWORD maxSize)
 {
-	GET_PRIVATE_PROFILE_STRING(S_STASH, S_active_bigStash, "0");
-	active_bigStash = atoi(buffer) != 0;
-	log_msg("active_bigStash\t\t\t\t= %u\n", active_bigStash);
+	active_PlayerCustomData = true;
 
-	GET_PRIVATE_PROFILE_STRING(S_STASH, S_active_multiPageStash, "0");
-	active_multiPageStash = atoi(buffer) != 0;
-	log_msg("active_multiPageStash\t\t\t= %u\n", active_multiPageStash);
+	GET_PRIVATE_PROFILE_STRING(S_STASH, S_maxSelfPages, "0");
+	maxSelfPages = atoi(buffer) - 1;
+	log_msg("maxSelfPages\t\t\t\t= %u\n", maxSelfPages);
 
-	if (active_multiPageStash)
-	{
-		active_PlayerCustomData = true;
-//		log_msg("active_PlayerCustomData\t\t= %d\n", active_PlayerCustomData);
+	GET_PRIVATE_PROFILE_STRING(S_STASH, S_nbPagesPerIndex, "10");
+	nbPagesPerIndex = atoi(buffer);
+	if (!nbPagesPerIndex) nbPagesPerIndex=10;
+	log_msg("nbPagesPerIndex\t\t\t\t= %u\n", nbPagesPerIndex);
 
-		GET_PRIVATE_PROFILE_STRING(S_STASH, S_maxSelfPages, "0");
-		maxSelfPages = atoi(buffer) - 1;
-		log_msg("maxSelfPages\t\t\t\t= %u\n", maxSelfPages);
+	GET_PRIVATE_PROFILE_STRING(S_STASH, S_nbPagesPerIndex2, "100");
+	nbPagesPerIndex2 = atoi(buffer);
+	if (!nbPagesPerIndex2) nbPagesPerIndex2=100;
+	log_msg("nbPagesPerIndex2\t\t\t= %u\n", nbPagesPerIndex2);
 
-		GET_PRIVATE_PROFILE_STRING(S_STASH, S_nbPagesPerIndex, "10");
-		nbPagesPerIndex = atoi(buffer);
-		if (!nbPagesPerIndex) nbPagesPerIndex=10;
-		log_msg("nbPagesPerIndex\t\t\t\t= %u\n", nbPagesPerIndex);
+	GET_PRIVATE_PROFILE_STRING(S_STASH, S_active_sharedStash, "0");
+	active_sharedStash = atoi(buffer) != 0;
+	log_msg("active_sharedStash\t\t\t= %u\n", active_sharedStash);
 
-		GET_PRIVATE_PROFILE_STRING(S_STASH, S_nbPagesPerIndex2, "100");
-		nbPagesPerIndex2 = atoi(buffer);
-		if (!nbPagesPerIndex2) nbPagesPerIndex2=100;
-		log_msg("nbPagesPerIndex2\t\t\t= %u\n", nbPagesPerIndex2);
+	GET_PRIVATE_PROFILE_STRING(S_STASH, S_posXPreviousBtn,"-1");
+	posXPreviousBtn = atoi(buffer);
+	GET_PRIVATE_PROFILE_STRING(S_STASH, S_posYPreviousBtn,"-1");
+	posYPreviousBtn = atoi(buffer);
+	GET_PRIVATE_PROFILE_STRING(S_STASH, S_posXNextBtn,"-1");
+	posXNextBtn = atoi(buffer);
+	GET_PRIVATE_PROFILE_STRING(S_STASH, S_posYNextBtn,"-1");
+	posYNextBtn = atoi(buffer);
+	GET_PRIVATE_PROFILE_STRING(S_STASH, S_posXSharedBtn,"-1");
+	posXSharedBtn = atoi(buffer);
+	GET_PRIVATE_PROFILE_STRING(S_STASH, S_posYSharedBtn,"-1");
+	posYSharedBtn = atoi(buffer);
+	GET_PRIVATE_PROFILE_STRING(S_STASH, S_posXPreviousIndexBtn,"-1");
+	posXPreviousIndexBtn = atoi(buffer);
+	GET_PRIVATE_PROFILE_STRING(S_STASH, S_posYPreviousIndexBtn,"-1");
+	posYPreviousIndexBtn = atoi(buffer);
+	GET_PRIVATE_PROFILE_STRING(S_STASH, S_posXNextIndexBtn,"-1");
+	posXNextIndexBtn = atoi(buffer);
+	GET_PRIVATE_PROFILE_STRING(S_STASH, S_posYNextIndexBtn,"-1");
+	posYNextIndexBtn = atoi(buffer);
+	GET_PRIVATE_PROFILE_STRING(S_STASH, S_posXPutGoldBtn,"-1");
+	posXPutGoldBtn = atoi(buffer);
+	GET_PRIVATE_PROFILE_STRING(S_STASH, S_posYPutGoldBtn,"-1");
+	posYPutGoldBtn = atoi(buffer);
+	GET_PRIVATE_PROFILE_STRING(S_STASH, S_posXTakeGoldBtn,"-1");
+	posXTakeGoldBtn = atoi(buffer);
+	GET_PRIVATE_PROFILE_STRING(S_STASH, S_posYTakeGoldBtn,"-1");
+	posYTakeGoldBtn = atoi(buffer);
 
-		GET_PRIVATE_PROFILE_STRING(S_STASH, S_active_sharedStash, "0");
-		active_sharedStash = atoi(buffer) != 0;
-		log_msg("active_sharedStash\t\t\t= %u\n", active_sharedStash);
-
-		GET_PRIVATE_PROFILE_STRING(S_STASH, S_posXPreviousBtn,"-1");
-		posXPreviousBtn = atoi(buffer);
-		GET_PRIVATE_PROFILE_STRING(S_STASH, S_posYPreviousBtn,"-1");
-		posYPreviousBtn = atoi(buffer);
-		GET_PRIVATE_PROFILE_STRING(S_STASH, S_posXNextBtn,"-1");
-		posXNextBtn = atoi(buffer);
-		GET_PRIVATE_PROFILE_STRING(S_STASH, S_posYNextBtn,"-1");
-		posYNextBtn = atoi(buffer);
-		GET_PRIVATE_PROFILE_STRING(S_STASH, S_posXSharedBtn,"-1");
-		posXSharedBtn = atoi(buffer);
-		GET_PRIVATE_PROFILE_STRING(S_STASH, S_posYSharedBtn,"-1");
-		posYSharedBtn = atoi(buffer);
-		GET_PRIVATE_PROFILE_STRING(S_STASH, S_posXPreviousIndexBtn,"-1");
-		posXPreviousIndexBtn = atoi(buffer);
-		GET_PRIVATE_PROFILE_STRING(S_STASH, S_posYPreviousIndexBtn,"-1");
-		posYPreviousIndexBtn = atoi(buffer);
-		GET_PRIVATE_PROFILE_STRING(S_STASH, S_posXNextIndexBtn,"-1");
-		posXNextIndexBtn = atoi(buffer);
-		GET_PRIVATE_PROFILE_STRING(S_STASH, S_posYNextIndexBtn,"-1");
-		posYNextIndexBtn = atoi(buffer);
-		GET_PRIVATE_PROFILE_STRING(S_STASH, S_posXPutGoldBtn,"-1");
-		posXPutGoldBtn = atoi(buffer);
-		GET_PRIVATE_PROFILE_STRING(S_STASH, S_posYPutGoldBtn,"-1");
-		posYPutGoldBtn = atoi(buffer);
-		GET_PRIVATE_PROFILE_STRING(S_STASH, S_posXTakeGoldBtn,"-1");
-		posXTakeGoldBtn = atoi(buffer);
-		GET_PRIVATE_PROFILE_STRING(S_STASH, S_posYTakeGoldBtn,"-1");
-		posYTakeGoldBtn = atoi(buffer);
-
-		log_msg("\t\nButtons Positions: %d %d %d %d %d %d %d %d %d %d\n",posXPreviousBtn,posYPreviousBtn,posXNextBtn,posYNextBtn,posXSharedBtn,posYSharedBtn,posXPreviousIndexBtn,posYPreviousIndexBtn,posXNextIndexBtn,posYNextIndexBtn);
-
-	}
+	log_msg("\t\nButtons Positions: %d %d %d %d %d %d %d %d %d %d\n",posXPreviousBtn,posYPreviousBtn,posXNextBtn,posYNextBtn,posXSharedBtn,posYSharedBtn,posXPreviousIndexBtn,posYPreviousIndexBtn,posXNextIndexBtn,posYNextIndexBtn);
 
 	if (active_sharedStash)
 	{
@@ -281,7 +260,7 @@ void init_Stash(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefaultFile
 		log_msg("sharedStashFilename\t\t\t= %s\n", sharedStashFilename);
 
 		// Mixing items between hardcore and softcore is not allowed in the SPF.
-		separateHardSoftStash = 1;
+		separateHardSoftStash = true;
 
 		GET_PRIVATE_PROFILE_STRING(S_STASH, S_displaySharedSetItemNameInGreen, "1");
 		displaySharedSetItemNameInGreen = atoi(buffer) != 0;

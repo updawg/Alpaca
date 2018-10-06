@@ -179,13 +179,12 @@ void InstallAlpacaFunctions()
 
 	log_msg("***** INSTALL FUNCTIONS *****\n");
 
-	if (active_Commands)
-		Install_Commands();
+	Install_Commands();
 
-	if (active_VersionTextChange)
+	if (active_DiabloVersionTextChange)
 		Install_VersionChange();
 
-	if (active_PrintVersion)
+	if (active_PrintAlpacaVersion)
 		Install_PrintVersion();
 
 	if (active_bigStash)
