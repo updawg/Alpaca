@@ -18,10 +18,10 @@
 #pragma once
 
 #define PROGRAM_NAME "Alpaca"
-#define PROGRAM_VERSION "1.31"
+#define PROGRAM_VERSION "1.3.1"
 #define PROGRAM_AUTHOR_NAME "Jonathan Vasquez"
 #define PROGRAM_AUTHOR_EMAIL "jon@xyinn.org"
-#define PROGRAM_BUILD_DATE "October 6, 2018 @ 17:40 ET"
+#define PROGRAM_BUILD_DATE "October 6, 2018 @ 23:11 ET"
 
 enum TargetMod
 {

@@ -1,4 +1,4 @@
-Alpaca 1.31 [1.09b]
+Alpaca 1.3.1 [1.09b]
 By Jonathan Vasquez (fearedbliss)
 Released on Saturday, October 6, 2018
 ----------------------------------------
