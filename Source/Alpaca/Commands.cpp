@@ -24,12 +24,12 @@
 
 bool active_Commands = true;
 
-const char * CMD_REPAGE_NAME = "/renamepage";
-const char * CMD_SET_INDEX = "/setindex";
-const char * CMD_UNSET_INDEX = "/unsetindex";
-const char * CMD_SET_MAIN_INDEX = "/setmainindex";
-const char * CMD_INSERT_PAGE = "/insertpage";
-const char * CMD_DELETE_PAGE = "/deletepage";
+const char * CMD_REPAGE_NAME = "/rename";
+const char * CMD_SET_INDEX = "/set";
+const char * CMD_UNSET_INDEX = "/unset";
+const char * CMD_SET_MAIN_INDEX = "/setmain";
+const char * CMD_INSERT_PAGE = "/insert";
+const char * CMD_DELETE_PAGE = "/delete";
 const char * CMD_SWAP = "/swap";
 const char * CMD_TOGGLE = "/toggle";
 
@@ -97,8 +97,8 @@ int __stdcall commands(char* ptText)
 	Unit* ptChar = D2GetClientPlayer();
 
 	char command[MAX_CMD_SIZE];
-	ZeroMemory(command,MAX_CMD_SIZE);
-	strncpy(command,ptText,MAX_CMD_SIZE-1);
+	ZeroMemory(command, MAX_CMD_SIZE);
+	strncpy(command, ptText, MAX_CMD_SIZE - 1);
 	_strlwr(command);
 
 	if (!strncmp(command, CMD_REPAGE_NAME,strlen(CMD_REPAGE_NAME)))
@@ -106,15 +106,16 @@ int __stdcall commands(char* ptText)
 		if (!active_multiPageStash) return 1;
 		char* param = &ptText[strlen(CMD_REPAGE_NAME)];
 		Stash* ptStash = PCPY->currentStash;
-		if (!ptStash)
-			return 0;
+		if (!ptStash) return 0;
 
 		int len = strlen(param);
+
 		while (len > 0 && param[0] == ' ')
 		{
 			param++;
 			len--;
 		}
+
 		if (len > 0 && len <= 15)
 		{
 			log_msg("Rename current page on Client : %s -> %s\n", ptStash->name, param);
@@ -122,12 +123,14 @@ int __stdcall commands(char* ptText)
 			for (int i = 0; i <= len; i++)
 				updateServer(US_PAGENAME + (param[i] << 8));
 		}
+
 		else if (len == 0)
 		{
 			log_msg("Rename current page on Client: %s\n", ptStash->name);
 			renameCurrentStash(ptChar, NULL);
 			updateServer(US_PAGENAME);
 		}
+
 		return 0;
 	}
 

@@ -280,9 +280,35 @@ void __fastcall printPageNumber(LPWSTR maxGoldText, DWORD x, DWORD y, DWORD colo
 		bool isIndex = PCPY->currentStash->isIndex;
 		DWORD currentId = PCPY->currentStash->id;
 
+		// Display the appropriate stash name (If custom display that, if not display
+		// the default stash name for the appropriate language, retrieved from the
+		// LocalizedStrings file.
 		if (PCPY->currentStash->name && PCPY->currentStash->name[0])
-			mbstowcs(popupText,PCPY->currentStash->name,50);//strlen(PCPY->currentStash->name)+1
-		else _snwprintf(popupText, sizeof(popupText), getLocalString( isShared ? STR_SHARED_PAGE_NUMBER : STR_PERSONAL_PAGE_NUMBER), currentId+1);
+		{
+			const int BUFFER_MAX = 50;
+
+			// Convert the custom page number to a string and concat
+			// it at the end of the custom name. This code is ugly,
+			// there should be a more efficient/safer C way of doing this.
+			char pageAsString[BUFFER_MAX];
+			char customNameWithPage[100];
+
+			// Convert the integer to a string
+			sprintf(pageAsString, "%d", currentId + 1);
+
+			// Concat page number to the end of the custom stash name
+			strcpy(customNameWithPage, PCPY->currentStash->name);
+			strcat(customNameWithPage, " [");
+			strcat(customNameWithPage, pageAsString);
+			strcat(customNameWithPage, "]");
+
+			// Display the custom page name with the page number
+			mbstowcs(popupText, customNameWithPage, BUFFER_MAX);
+		}
+		else
+		{
+			_snwprintf(popupText, sizeof(popupText), getLocalString(isShared ? STR_SHARED_PAGE_NUMBER : STR_PERSONAL_PAGE_NUMBER), currentId + 1);
+		}
 
 		int stashNameColor = isShared ? (isIndex ? GREEN : RED) : (isIndex ? GREEN : WHITE);
 		D2PrintString(popupText, x, y, stashNameColor, bfalse);

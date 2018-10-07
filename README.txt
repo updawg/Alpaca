@@ -1,6 +1,6 @@
-Alpaca 1.3.1 [1.09b]
+Alpaca 1.3.2 [1.09b]
 By Jonathan Vasquez (fearedbliss)
-Released on Saturday, October 6, 2018
+Released on Sunday, October 7, 2018
 ----------------------------------------
 
 Synopsis
@@ -46,14 +46,15 @@ Core Features
 
 Stash Management Commands
 -----------
-/renamepage name : Rename current page stash. (If empty, resets name)
-/setindex : Set current stash page as index.
-/unsetindex : Remove index flag on the current stash page.
-/setmainindex : Set current stash page as main index.
-/insertpage : Insert a new page after the current page.
-/deletepage : Delete current page if empty.
-/swap page : Swap the content of current stash page with the content of another page.
-/toggle page : Swap the content of current stash page with the content of another page in opposing stash shared/personal.
+/rename <name> : Renames the current stash page. (If left blank, deletes the page name).
+/set : Marks the current stash page with an index.
+/unset : Removes the current stash page's index.
+/setmain : Marks the current stash page as the main index.
+/insert : Inserts a new page after the current page.
+/delete : Deletes the current stash page if empty.
+/swap <page #> : Swaps the content of the current page with the content of the target page.
+/toggle <page #> : Swaps the content of the current page with the content of
+                   the target page in the opposing shared/personal stash.
 
 Concerns
 =============

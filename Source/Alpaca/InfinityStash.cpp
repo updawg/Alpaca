@@ -30,7 +30,7 @@ DWORD nbPagesPerIndex2 = 100;
 bool active_multiPageStash = true;
 bool active_sharedStash = false;
 bool separateHardSoftStash = false;
-bool active_sharedGold=false;
+bool active_sharedGold = false;
 char* sharedStashFilename = NULL;
 
 typedef int (*TchangeToSelectedStash)(Unit* ptChar, Stash* newStash, DWORD bOnlyItems, DWORD bIsClient);
