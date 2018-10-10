@@ -30,7 +30,8 @@ void freeLibrary(DWORD library)
 
 void freeD2Libraries()
 {
-	log_msg("***** Free Libraries *****\n");
+	log_msg("\nFree Libraries\n");
+	log_msg("====================================\n");
 
 	freeLibrary(D2Client::Offset);
 	freeLibrary(D2CMP::Offset);
@@ -43,34 +44,37 @@ void freeD2Libraries()
 	freeLibrary(D2Win::Offset);
 	freeLibrary(Fog::Offset);
 	freeLibrary(Storm::Offset);
-
-	log_msg("\n\n");
 }
 
 void freeCustomLibraries()
 {
-	if (!customDlls)
-		return;
+	if (!customDlls) return;
 
-	log_msg("***** Free custom libraries *****\n");
-
-	TCustomDll* dll=customDlls;
+	TCustomDll* dll = customDlls;
 	TCustomDll* nextDll;
+
+	log_msg("Free Custom Libraries\n");
+	log_msg("====================================\n");
+
 	while (dll)
 	{
 		dll->release();
 		freeLibrary(dll->offset);
 		nextDll = dll->nextDll;
-		D2FogMemDeAlloc(dll,__FILE__,__LINE__,0);
+		D2FogMemDeAlloc(dll, __FILE__, __LINE__, 0);
 		dll = nextDll;
 	}
 }
 
 void InitializeCustomLibraries()
 {
-	log_msg("***** Init custom libraries *****\n");
+	if (!customDlls) return;
 
-	TCustomDll* dll=customDlls;
+	TCustomDll* dll = customDlls;
+
+	log_msg("Initialize Custom Libraries\n");
+	log_msg("====================================\n");
+
 	while (dll)
 	{
 		dll->init();
@@ -84,36 +88,36 @@ void LoadCustomLibraries()
 	TCustomDll* nextDll;
 	DWORD offset_currentDll;
 
-	log_msg("***** Custom libraries *****\n");
-
 	if (dllFilenames)
-		curString = strtok(dllFilenames,"|");
-
-	if (!curString)
-		log_msg("No custom libraries to load.\n");
-	else
 	{
-		log_msg("Load custom libraries :\n");
-		while (curString)
+		curString = strtok(dllFilenames, "|");
+	
+		if (curString)
 		{
-			if (curString[0])
+			log_msg("Custom Libraries\n");
+			log_msg("====================================\n");
+
+			while (curString)
 			{
-				offset_currentDll = (DWORD)LoadLibrary(curString);
-				if (!offset_currentDll)
+				if (curString[0])
 				{
-					log_msg("Load library %s failed:\n", curString);
-					exit(0);
+					offset_currentDll = (DWORD)LoadLibrary(curString);
+					if (!offset_currentDll)
+					{
+						log_msg("Load library %s failed:\n", curString);
+						exit(0);
+					}
+					nextDll = customDlls;
+					customDlls = new(TCustomDll);
+					customDlls->nextDll = nextDll;
+					customDlls->initialize(offset_currentDll);
 				}
-				nextDll = customDlls;
-				customDlls = new(TCustomDll);
-				customDlls->nextDll = nextDll;
-				customDlls->initialize(offset_currentDll);
+				curString = strtok(NULL,"|");
 			}
-			curString=strtok(NULL,"|");
 		}
+
+		D2FogMemDeAlloc(dllFilenames, __FILE__, __LINE__, 0);
 	}
-	if(dllFilenames)
-		D2FogMemDeAlloc(dllFilenames,__FILE__,__LINE__,0);
 
 	log_msg("\n");
 }
@@ -124,7 +128,11 @@ void InstallAlpacaFunctions();
 
 extern "C" __declspec(dllexport) bool __stdcall Release()
 {
-	log_msg("\n***** ENDING DIABLO II *****\n\n" );
+	active_logFile = 1;
+
+	log_msg("\nExiting Diablo II\n");
+	log_msg("====================================\n");
+
 	freeCustomLibraries();
 	freeD2Libraries();
 	return true;
@@ -166,9 +174,10 @@ extern "C" __declspec(dllexport) void* __stdcall Init(LPSTR IniName)
 	InitializeCustomLibraries();
 	LoadLocalizedStrings();
 
-	log_msg("***** ENTERING DIABLO II *****\n");
+	log_msg("Entering Diablo II\n");
+	log_msg("====================================\n");
 
-	active_logFile = 0;
+	active_logFile = active_logFileIniOriginal;
 
 	return NULL;
 }
@@ -177,7 +186,8 @@ void InstallAlpacaFunctions()
 {
 	LibraryLoader::HookLibraries();
 
-	log_msg("***** INSTALL FUNCTIONS *****\n");
+	log_msg("Install Functions\n");
+	log_msg("====================================\n");
 
 	Install_Commands();
 

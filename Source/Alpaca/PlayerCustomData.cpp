@@ -84,8 +84,6 @@ void __stdcall updateClientPlayerOnLoading(Unit* ptChar)
 	updateClient(ptChar, UC_SHARED_GOLD, PCPY->sharedGold, 0, 0);
 }
 
-/**************************** INIT CUSTOM DATA ****************************/
-
 PlayerData* __fastcall init_PlayerCustomData(DWORD p1, DWORD size, LPCSTR file, DWORD line, DWORD p5)
 {
 	log_msg("init_PlayerCustomData\n");
@@ -93,9 +91,6 @@ PlayerData* __fastcall init_PlayerCustomData(DWORD p1, DWORD size, LPCSTR file, 
 	ZeroMemory((BYTE*)playerData + shifting.ptPYPlayerData, sizeof(PYPlayerData));
 	return playerData;
 }
-
-/**************************** FREE CUSTOM DATA ****************************/
-
 
 void freeStash(Stash* ptStash)
 {
@@ -162,9 +157,6 @@ Unit* __stdcall getNextItemToFree(Unit* ptChar, Unit* ptItem)
 
 	return NULL;
 }
-
-
-/************************ INSTALL PLAYER CUSTOM DATA ****************************/
 
 void __fastcall updateItem_111(Unit* ptItem, Unit* ptChar)
 {

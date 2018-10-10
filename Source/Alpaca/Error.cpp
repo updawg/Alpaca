@@ -25,6 +25,12 @@
 
 DWORD active_logFile = 1;
 
+// This value is just used in order to decide whether or
+// not we will keep logging enable since logging will be
+// stopped if we log and then read the ini file with a disabled
+// logging value.
+DWORD active_logFileIniOriginal = 0;
+
 static char log_file[MAX_PATH] = "";
 static bool log_init = false;
 
@@ -45,14 +51,11 @@ void log_initfile()
 	    log_init = true;
 	}
 	
-	log_msg("<--------------------------------------------->\n"
-			"\n"
-		    "\t%s %s\n"
-		    "\t%s <%s>\n"
-		    "\t%s\n"
-			"\n"
-			"<---------- Starting Diablo II Plugin -------->\n\n"
-			,PROGRAM_NAME, PROGRAM_VERSION, PROGRAM_AUTHOR_NAME, PROGRAM_AUTHOR_EMAIL, PROGRAM_BUILD_DATE);
+	log_msg("%s %s\n"
+		"%s (%s)\n"
+		    "%s\n"
+			"====================================\n\n"
+			, PROGRAM_NAME, PROGRAM_VERSION, PROGRAM_AUTHOR_NAME, PROGRAM_AUTHOR_ALIAS, PROGRAM_BUILD_DATE);
 }
 
 void log_box( const char* pFormat, ... )

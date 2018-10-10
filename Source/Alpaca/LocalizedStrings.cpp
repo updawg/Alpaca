@@ -240,7 +240,8 @@ void LoadLocalizedStrings()
 	int language = D2Lang::D2GetLang();
 	INIFileW *iniFile = new INIFileW;
 
-	log_msg("***** Load localized Strings *****\n");
+	log_msg("Load Localized Strings\n");
+	log_msg("====================================\n");
 
 	const char* localizedStringsFileName = "LocalizedStrings.ini";
 	char filePath[MAX_PATH];

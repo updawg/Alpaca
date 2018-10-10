@@ -1,0 +1,2 @@
+# Alpaca.ini needs to have crlf endings or the user will not be able to load Alpaca.
+Alpaca.ini text eol=crlf

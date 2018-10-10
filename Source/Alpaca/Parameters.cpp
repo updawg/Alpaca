@@ -18,15 +18,10 @@
 #include "Error.h"
 #include "INIfile.h"
 #include "parameters.h"
+
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
-
-#define PARAMETERS_FILENAME "Alpaca.ini"
-#define PARAM_FIXED_FILENAME "Alpaca\\AlpacaFixed.ini"
-#define PARAM_DEFAULT_FILENAME "Alpaca\\AlpacaDefault.ini"
-
-#define BUFSIZE 0x400
 
 #include "mainScreen.h"
 #include "bigStash.h"
@@ -38,6 +33,9 @@ bool active_plugin = true;
 bool active_CheckMemory = true;
 bool active_D2Mod = false;
 char* dllFilenames;
+char* parametersFileName = "Alpaca.ini";
+
+const int BUFFER_SIZE = 1024;
 
 TargetMod selectModParam = MOD_NO;
 
@@ -56,7 +54,7 @@ const char* S_DiabloVersionColor = "ColorOfDiabloVersionText";
 const char* S_AlpacaVersionColor = "ColorOfAlpacaVersionText";
 
 const char* S_STASH = "STASH";
-const char* S_maxSelfPages = "MaxPersonnalPages";
+const char* S_maxSelfPages = "MaxPersonalPages";
 const char* S_nbPagesPerIndex = "NbPagesPerIndex";
 const char* S_nbPagesPerIndex2 = "NbPagesPerIndex2";
 const char* S_active_sharedStash = "ActiveSharedStash";
@@ -81,84 +79,82 @@ const char* S_posYPutGoldBtn = "PosYPutGoldBtn";
 const char* S_posXTakeGoldBtn = "PosXTakeGoldBtn";
 const char* S_posYTakeGoldBtn = "PosYTakeGoldBtn";
 
-const char* S_DLL = "DLL:\t";
-const char* S_DEFAULT = "DEFAULT:";
-const char* S_USER = "USER:\t";
-const char* S_FIXED = "FIXED:\t";
-
 // Convert 4 char code in a DWORD code
 #define BIN(A,B,C,D) ((DWORD)A) + (((DWORD)B) << 8) + (((DWORD)C) << 16) + (((DWORD)D) << 24)
 
-#define GET_PRIVATE_PROFILE_STRING(S,F,D)\
-if (!iniFixedFile->GetPrivateProfileString(S, F, NULL, buffer, maxSize)) \
-if (!iniFile->GetPrivateProfileString(S, F, NULL, buffer, maxSize)) \
-if (!iniDefaultFile->GetPrivateProfileString(S, F, D, buffer, maxSize)) \
-	 log_msg(S_DLL); \
-else log_msg(S_DEFAULT); \
-else log_msg(S_USER); \
-else log_msg(S_FIXED)
-
-#define GET_PRIVATE_PROFILE_STRING2(S,F,D)\
-if (!iniFile->GetPrivateProfileString(S, F, NULL, buffer, maxSize)) \
-if (!iniDefaultFile->GetPrivateProfileString(S, F, D, buffer, maxSize)) \
-	 log_msg(S_DLL); \
-else log_msg(S_DEFAULT); \
-else log_msg(S_USER)
-
-#define GET_PRIVATE_PROFILE_STRING3(S,F,D)\
-if (!iniFile->GetPrivateProfileString(S, F, NULL, buffer, maxSize)) \
-if (!iniFixedFile->GetPrivateProfileString(S, F, NULL, buffer, maxSize)) \
-if (!iniDefaultFile->GetPrivateProfileString(S, F, D, buffer, maxSize)) \
-	 log_msg(S_DLL); \
-else log_msg(S_DEFAULT); \
-else log_msg(S_FIXED); \
-else log_msg(S_USER)
-
-void init_ActivePlugin(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefaultFile, char* buffer, DWORD maxSize)
+bool IsEnabled(char* symbol)
 {
-	iniFixedFile->GetPrivateProfileString(S_GENERAL, S_active_plugin, "0", buffer, maxSize);
-	active_plugin = atoi(buffer) != 0;
-	if (!active_plugin)
-	{
-		GET_PRIVATE_PROFILE_STRING2(S_GENERAL, S_active_plugin, "1");
-		active_plugin = atoi(buffer) != 0;
-	} else log_msg(S_FIXED);
-	log_msg("active_plugin\t\t\t\t= %u\n", active_plugin);
+	return atoi(symbol) != 0;
 }
 
-void init_General(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefaultFile, char* buffer, DWORD maxSize)
+void GetValueFromIni(INIFile* iniFile, const char* areaName, const char* optionName, const char* defaultValue, char* buffer, DWORD maxSize)
 {
-	GET_PRIVATE_PROFILE_STRING(S_GENERAL, S_active_logFile, "0");
-	active_logFile = atoi(buffer)+1;
-	log_msg("active_logFile\t\t\t\t= %d\n", active_logFile-1);
+	if (!iniFile->GetPrivateProfileString(areaName, optionName, defaultValue, buffer, maxSize))
+	{
+		log_msg("[Error] Failed to load \"%s\" from configuration file. Defaulting to %s ...", optionName, defaultValue);
+	}
+}
 
-	GET_PRIVATE_PROFILE_STRING(S_GENERAL, S_active_CheckMemory, "1");
-	active_CheckMemory = atoi(buffer) != 0;
-	log_msg("active_CheckMemory\t\t\t= %d\n", active_CheckMemory);
+void LogParameterBooleanValue(const char* parameterName, bool parameterValue)
+{
+	log_msg("%s = %u\n", parameterName, parameterValue);
+}
 
-	GET_PRIVATE_PROFILE_STRING(S_GENERAL,S_dllFilenames,"");
+void LogParameterIntegerValue(const char* parameterName, DWORD parameterValue)
+{
+	log_msg("%s = %d\n", parameterName, parameterValue);
+}
+
+void LogParameterStringValue(const char* parameterName, const char* parameterValue)
+{
+	log_msg("%s = %s\n", parameterName, parameterValue);
+}
+
+void init_ActivePlugin(INIFile* iniFile, char* buffer, DWORD maxSize)
+{
+	GetValueFromIni(iniFile, S_GENERAL, S_active_plugin, "0", buffer, maxSize);
+	active_plugin = IsEnabled(buffer);
+	LogParameterBooleanValue(S_active_plugin, active_plugin);
+}
+
+void init_General(INIFile* iniFile, char* buffer, DWORD maxSize)
+{
+	GetValueFromIni(iniFile, S_GENERAL, S_active_logFile, "0", buffer, maxSize);
+
+	// Temporarily save the log value into this value since we are still logging data
+	// during initialization. We will turn off logging at the end before we go into D2 if needed.
+	active_logFileIniOriginal = IsEnabled(buffer);
+
+	LogParameterIntegerValue(S_active_logFile, active_logFileIniOriginal);
+
+	GetValueFromIni(iniFile, S_GENERAL, S_active_CheckMemory, "1", buffer, maxSize);
+	active_CheckMemory = IsEnabled(buffer);
+	LogParameterIntegerValue(S_active_CheckMemory, active_CheckMemory);
+
+	GetValueFromIni(iniFile, S_GENERAL, S_dllFilenames, "", buffer, maxSize);
 	strcat(buffer,"|");
 	char* buf = &buffer[strlen(buffer)];
-	if (!iniFixedFile->GetPrivateProfileString(S_GENERAL, S_dllFilenames2, NULL, buf, maxSize))
+
 	if (!iniFile->GetPrivateProfileString(S_GENERAL, S_dllFilenames2, NULL, buf, maxSize))
-		iniDefaultFile->GetPrivateProfileString(S_GENERAL, S_dllFilenames2, NULL, buf, maxSize);
+	{
+		log_msg("No DLL filenames retrieved from configuration file ...");
+	}
+
 	dllFilenames = (char*)D2FogMemAlloc(strlen(buffer)+1,__FILE__,__LINE__,0);
-	strcpy(dllFilenames,buffer);
+	strcpy(dllFilenames, buffer);
 
-	log_msg("dllFilenames\t\t\t\t= %s\n",dllFilenames);
-
-	log_msg("\n");
+	LogParameterStringValue(S_dllFilenames, dllFilenames);
 }
 
-void init_VersionText(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefaultFile, char* buffer, DWORD maxSize)
+void init_VersionText(INIFile* iniFile, char* buffer, DWORD maxSize)
 {
-	GET_PRIVATE_PROFILE_STRING(S_MAIN_SCREEN, S_active_DiabloVersionTextChange, "0");
-	active_DiabloVersionTextChange = atoi(buffer) != 0;
-	log_msg("active_VersionTextChange\t\t= %u\n", active_DiabloVersionTextChange);
+	GetValueFromIni(iniFile, S_MAIN_SCREEN, S_active_DiabloVersionTextChange, "0", buffer, maxSize);
+	active_DiabloVersionTextChange = IsEnabled(buffer);
+	LogParameterBooleanValue(S_active_DiabloVersionTextChange, active_DiabloVersionTextChange);
 
 	if (active_DiabloVersionTextChange)
 	{
-		GET_PRIVATE_PROFILE_STRING(S_MAIN_SCREEN, S_DiabloVersionText, DiabloVersionText);
+		GetValueFromIni(iniFile, S_MAIN_SCREEN, S_DiabloVersionText, DiabloVersionText, buffer, maxSize);
 		if (!buffer[0])
 		{
 			if (active_DiabloVersionTextChange == 1)
@@ -170,161 +166,123 @@ void init_VersionText(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefau
 
 		DiabloVersionText = (char*)D2FogMemAlloc(strlen(buffer)+1,__FILE__,__LINE__,0);
 		strcpy(DiabloVersionText, buffer);
-		log_msg("DiabloVersionText\t\t\t\t= %s\n", DiabloVersionText);
+		LogParameterStringValue(S_DiabloVersionText, DiabloVersionText);
 
-		GET_PRIVATE_PROFILE_STRING(S_MAIN_SCREEN, S_DiabloVersionColor, "0");
+		GetValueFromIni(iniFile, S_MAIN_SCREEN, S_DiabloVersionColor, "0", buffer, maxSize);
 		DiabloVersionColor = atoi(buffer);
-		log_msg("DiabloVersionColor\t\t\t\t= %u\n", DiabloVersionColor);
+		LogParameterIntegerValue(S_DiabloVersionColor, DiabloVersionColor);
 	}
 
-	GET_PRIVATE_PROFILE_STRING(S_MAIN_SCREEN, S_active_PrintAlpacaVersion, "1");
-	active_PrintAlpacaVersion = atoi(buffer) != 0;
-	log_msg("active_PrintAlpacaVersion\t\t\t= %u\n", active_PrintAlpacaVersion);
+	GetValueFromIni(iniFile, S_MAIN_SCREEN, S_active_PrintAlpacaVersion, "1", buffer, maxSize);
+	active_PrintAlpacaVersion = IsEnabled(buffer);
+	LogParameterBooleanValue(S_active_PrintAlpacaVersion, active_PrintAlpacaVersion);
 
 	if (active_PrintAlpacaVersion)
 	{
-		GET_PRIVATE_PROFILE_STRING(S_MAIN_SCREEN, S_AlpacaVersionColor, "4");
+		GetValueFromIni(iniFile, S_MAIN_SCREEN, S_AlpacaVersionColor, "4", buffer, maxSize);
 		AlpacaVersionColor = atoi(buffer);
-		log_msg("AlpacaVersionColor\t\t\t= %u\n", AlpacaVersionColor);
+		LogParameterIntegerValue(S_AlpacaVersionColor, AlpacaVersionColor);
 	}
-	
-	log_msg("\n");
 }
 
-void init_Stash(INIFile* iniFile, INIFile* iniFixedFile, INIFile* iniDefaultFile, char* buffer, DWORD maxSize)
+void init_Stash(INIFile* iniFile, char* buffer, DWORD maxSize)
 {
 	active_PlayerCustomData = true;
 
-	GET_PRIVATE_PROFILE_STRING(S_STASH, S_maxSelfPages, "0");
-	maxSelfPages = atoi(buffer) - 1;
-	log_msg("maxSelfPages\t\t\t\t= %u\n", maxSelfPages);
+	GetValueFromIni(iniFile, S_STASH, S_maxSelfPages, "-1", buffer, maxSize);
+	maxSelfPages = atoi(buffer);
+	LogParameterIntegerValue(S_maxSelfPages, maxSelfPages);
 
-	GET_PRIVATE_PROFILE_STRING(S_STASH, S_nbPagesPerIndex, "10");
+	GetValueFromIni(iniFile, S_STASH, S_nbPagesPerIndex, "10", buffer, maxSize);
 	nbPagesPerIndex = atoi(buffer);
-	if (!nbPagesPerIndex) nbPagesPerIndex=10;
-	log_msg("nbPagesPerIndex\t\t\t\t= %u\n", nbPagesPerIndex);
+	if (!nbPagesPerIndex) nbPagesPerIndex = 10;
+	LogParameterIntegerValue(S_nbPagesPerIndex, nbPagesPerIndex);
 
-	GET_PRIVATE_PROFILE_STRING(S_STASH, S_nbPagesPerIndex2, "100");
+	GetValueFromIni(iniFile, S_STASH, S_nbPagesPerIndex2, "100", buffer, maxSize);
 	nbPagesPerIndex2 = atoi(buffer);
-	if (!nbPagesPerIndex2) nbPagesPerIndex2=100;
-	log_msg("nbPagesPerIndex2\t\t\t= %u\n", nbPagesPerIndex2);
+	if (!nbPagesPerIndex2) nbPagesPerIndex2 = 100;
+	LogParameterIntegerValue(S_nbPagesPerIndex2, nbPagesPerIndex2);
 
-	GET_PRIVATE_PROFILE_STRING(S_STASH, S_active_sharedStash, "0");
-	active_sharedStash = atoi(buffer) != 0;
-	log_msg("active_sharedStash\t\t\t= %u\n", active_sharedStash);
+	GetValueFromIni(iniFile, S_STASH, S_active_sharedStash, "0", buffer, maxSize);
+	active_sharedStash = IsEnabled(buffer);
+	LogParameterBooleanValue(S_active_sharedStash, active_sharedStash);
 
-	GET_PRIVATE_PROFILE_STRING(S_STASH, S_posXPreviousBtn,"-1");
-	posXPreviousBtn = atoi(buffer);
-	GET_PRIVATE_PROFILE_STRING(S_STASH, S_posYPreviousBtn,"-1");
-	posYPreviousBtn = atoi(buffer);
-	GET_PRIVATE_PROFILE_STRING(S_STASH, S_posXNextBtn,"-1");
-	posXNextBtn = atoi(buffer);
-	GET_PRIVATE_PROFILE_STRING(S_STASH, S_posYNextBtn,"-1");
-	posYNextBtn = atoi(buffer);
-	GET_PRIVATE_PROFILE_STRING(S_STASH, S_posXSharedBtn,"-1");
-	posXSharedBtn = atoi(buffer);
-	GET_PRIVATE_PROFILE_STRING(S_STASH, S_posYSharedBtn,"-1");
-	posYSharedBtn = atoi(buffer);
-	GET_PRIVATE_PROFILE_STRING(S_STASH, S_posXPreviousIndexBtn,"-1");
-	posXPreviousIndexBtn = atoi(buffer);
-	GET_PRIVATE_PROFILE_STRING(S_STASH, S_posYPreviousIndexBtn,"-1");
-	posYPreviousIndexBtn = atoi(buffer);
-	GET_PRIVATE_PROFILE_STRING(S_STASH, S_posXNextIndexBtn,"-1");
-	posXNextIndexBtn = atoi(buffer);
-	GET_PRIVATE_PROFILE_STRING(S_STASH, S_posYNextIndexBtn,"-1");
-	posYNextIndexBtn = atoi(buffer);
-	GET_PRIVATE_PROFILE_STRING(S_STASH, S_posXPutGoldBtn,"-1");
-	posXPutGoldBtn = atoi(buffer);
-	GET_PRIVATE_PROFILE_STRING(S_STASH, S_posYPutGoldBtn,"-1");
-	posYPutGoldBtn = atoi(buffer);
-	GET_PRIVATE_PROFILE_STRING(S_STASH, S_posXTakeGoldBtn,"-1");
-	posXTakeGoldBtn = atoi(buffer);
-	GET_PRIVATE_PROFILE_STRING(S_STASH, S_posYTakeGoldBtn,"-1");
-	posYTakeGoldBtn = atoi(buffer);
-
-	log_msg("\t\nButtons Positions: %d %d %d %d %d %d %d %d %d %d\n",posXPreviousBtn,posYPreviousBtn,posXNextBtn,posYNextBtn,posXSharedBtn,posYSharedBtn,posXPreviousIndexBtn,posYPreviousIndexBtn,posXNextIndexBtn,posYNextIndexBtn);
+	// Button positions don't really need to be exposed to the user.
+	const int defaultButtonPositionValue = -1;
+	posXPreviousBtn = defaultButtonPositionValue;
+	posYPreviousBtn = defaultButtonPositionValue;
+	posXNextBtn = defaultButtonPositionValue;
+	posYNextBtn = defaultButtonPositionValue;
+	posXSharedBtn = defaultButtonPositionValue;
+	posYSharedBtn = defaultButtonPositionValue;
+	posXPreviousIndexBtn = defaultButtonPositionValue;
+	posYPreviousIndexBtn = defaultButtonPositionValue;
+	posXNextIndexBtn = defaultButtonPositionValue;
+	posYNextIndexBtn = defaultButtonPositionValue;
+	posXPutGoldBtn = defaultButtonPositionValue;
+	posYPutGoldBtn = defaultButtonPositionValue;
+	posXTakeGoldBtn = defaultButtonPositionValue;
+	posYTakeGoldBtn = defaultButtonPositionValue;
 
 	if (active_sharedStash)
 	{
-		GET_PRIVATE_PROFILE_STRING(S_STASH, S_openSharedStashOnLoading, "0");
-		openSharedStashOnLoading = atoi(buffer) != 0;
-		log_msg("openSharedStashOnLoading\t\t= %u\n", openSharedStashOnLoading);
+		GetValueFromIni(iniFile, S_STASH, S_openSharedStashOnLoading, "0", buffer, maxSize);
+		openSharedStashOnLoading = IsEnabled(buffer);
+		LogParameterBooleanValue(S_openSharedStashOnLoading, openSharedStashOnLoading);
 
-		GET_PRIVATE_PROFILE_STRING(S_STASH, S_maxSharedPages, "0");
-		maxSharedPages = atoi(buffer) - 1;
-		log_msg("maxSharedPages\t\t\t\t= %u\n", maxSharedPages);
+		GetValueFromIni(iniFile, S_STASH, S_maxSharedPages, "-1", buffer, maxSize);
+		maxSharedPages = atoi(buffer);
+		LogParameterIntegerValue(S_maxSharedPages, maxSharedPages);
 
-		GET_PRIVATE_PROFILE_STRING(S_STASH, S_sharedStashFilename, "SharedStashSave");
+		GetValueFromIni(iniFile, S_STASH, S_sharedStashFilename, "SharedStashSave", buffer, maxSize);
 		sharedStashFilename = (char*)D2FogMemAlloc(strlen(buffer)+1,__FILE__,__LINE__,0);
 		strcpy(sharedStashFilename, buffer);
-		log_msg("sharedStashFilename\t\t\t= %s\n", sharedStashFilename);
+		LogParameterStringValue(S_sharedStashFilename, sharedStashFilename);
 
 		// Mixing items between hardcore and softcore is not allowed in the SPF.
 		separateHardSoftStash = true;
 
-		GET_PRIVATE_PROFILE_STRING(S_STASH, S_displaySharedSetItemNameInGreen, "1");
-		displaySharedSetItemNameInGreen = atoi(buffer) != 0;
-		log_msg("displaySharedSetItemNameInGreen\t\t= %u\n", displaySharedSetItemNameInGreen);
+		GetValueFromIni(iniFile, S_STASH, S_displaySharedSetItemNameInGreen, "1", buffer, maxSize);
+		displaySharedSetItemNameInGreen = IsEnabled(buffer);
+		LogParameterBooleanValue(S_displaySharedSetItemNameInGreen, displaySharedSetItemNameInGreen);
 
-		GET_PRIVATE_PROFILE_STRING(S_STASH, S_active_sharedGold, "1");
-		active_sharedGold = atoi(buffer) != 0;
-		log_msg("active_sharedGold\t\t\t= %u\n", active_sharedGold);
+		GetValueFromIni(iniFile, S_STASH, S_active_sharedGold, "1", buffer, maxSize);
+		active_sharedGold = IsEnabled(buffer);
+		LogParameterBooleanValue(S_active_sharedGold, active_sharedGold);
 	}
-
-	log_msg("\n");
 }
 
 void LoadParameters()
 {
-	char buffer[BUFSIZE];
-	int loading=0;
+	char buffer[BUFFER_SIZE];
 	INIFile *iniFile = new INIFile;
-	INIFile *iniFixedFile = new INIFile;
-	INIFile *iniDefaultFile = new INIFile;
 
 	srand((UINT)time(NULL));
 
-	log_msg("***** PARAMETERS *****\n");
-	if (iniFile->InitReadWrite(PARAMETERS_FILENAME, INIFILE_READ, 0))
-	{
-		log_msg("Parameters file is opened.\n\n");
-		loading = 1;
-	}
-	if (iniFixedFile->InitReadWrite(PARAM_FIXED_FILENAME, INIFILE_MPQREAD, 0))
-	{
-		log_msg("Fixed Parameters file is opened.\n\n");
-		loading = 1;
-	}
-	if (iniDefaultFile->InitReadWrite(PARAM_DEFAULT_FILENAME, INIFILE_MPQREAD, 0))
-	{
-		log_msg("Default Parameters file is opened.\n\n");
-		loading = 1;
-	}
+	log_msg("Parameters\n");
+	log_msg("====================================\n");
 
-	if(loading)
+	bool wasFileSuccessfullyOpened = iniFile->InitReadWrite(parametersFileName, INIFILE_READ, 0);
+	if (wasFileSuccessfullyOpened)
 	{
-		log_msg("Reading parameters.\n\n");
-		init_ActivePlugin(iniFile, iniFixedFile, iniDefaultFile, buffer, BUFSIZE);
+		init_ActivePlugin(iniFile, buffer, BUFFER_SIZE);
 		if (active_plugin)
 		{
-			init_General(iniFile, iniFixedFile, iniDefaultFile, buffer, BUFSIZE);
-			init_VersionText(iniFile, iniFixedFile, iniDefaultFile, buffer, BUFSIZE);
-			init_Stash(iniFile, iniFixedFile, iniDefaultFile, buffer, BUFSIZE);
+			init_General(iniFile, buffer, BUFFER_SIZE);
+			init_VersionText(iniFile, buffer, BUFFER_SIZE);
+			init_Stash(iniFile, buffer, BUFFER_SIZE);
 		}
-		log_msg("Reading parameters end.\n\n");
-	} else {
-		log_msg("\nCan't open parameters files: Default values used.\n\n");
+	}
+	else
+	{
+		log_msg("There was an error opening the configuration file. Aborting.\n\n");
 		active_plugin = false;
 	}
 
 	if (iniFile)
+	{
 		iniFile->close();
-	if (iniFixedFile)
-		iniFixedFile->close();
-	if (iniDefaultFile)
-		iniDefaultFile->close();
+	}
 
 	delete iniFile;
-	delete iniDefaultFile;
-	delete iniFixedFile;
 }

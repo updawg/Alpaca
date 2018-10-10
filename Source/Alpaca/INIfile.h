@@ -59,7 +59,6 @@ public:
 	BOOL close();
 	int GetPrivateProfileString(LPCWSTR section, LPCWSTR key, LPCWSTR def, LPWSTR dest, DWORD size);
 	int GetPrivateProfileStringList(LPCWSTR section, LPCWSTR key, DWORD** codes, LPWSTR** values);
-	//BOOL WritePrivateProfileString(char *section, char *key, char *string);
 	LPWSTR m_cache;
 
 private:

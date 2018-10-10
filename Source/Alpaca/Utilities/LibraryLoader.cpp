@@ -19,7 +19,8 @@
 
 void LibraryLoader::Init()
 {
-	log_msg("***** Get D2 Modules address and version *****\n\n");
+	log_msg("Diablo II Modules (Addresses and Versions)\n");
+	log_msg("====================================\n");
 
 	// We need to load the game now so that we have the game version for the rest of the Dlls.
 	Game::Init();
@@ -42,7 +43,8 @@ void LibraryLoader::Init()
 
 void LibraryLoader::HookLibraries()
 {
-	log_msg("***** Unprotect Libraries *****\n");
+	log_msg("Unprotect Libraries\n");
+	log_msg("====================================\n");
 
 	D2Client::HookLibrary();
 	//D2CMP::HookLibrary();
@@ -61,7 +63,8 @@ void LibraryLoader::HookLibraries()
 
 void LibraryLoader::UnhookLibraries()
 {
-	log_msg("***** Reprotect Libraries *****\n");
+	log_msg("Reprotect Libraries\n");
+	log_msg("====================================\n");
 
 	D2Client::UnhookLibrary();
 	//D2CMP::UnhookLibrary();

@@ -20,6 +20,7 @@
 #include <windows.h>
 
 extern DWORD active_logFile;
+extern DWORD active_logFileIniOriginal;
 
 void log_initfile();
 void log_box( const char* pFormat, ... );

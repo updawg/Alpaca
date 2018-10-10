@@ -30,7 +30,7 @@ DWORD __stdcall isModFile (char* filename)
 	if (strstr(filename, modDataDirectory) )
 	{
 		char fileTemp[0x104];
-		log_msg("Load custom file : %s", filename);
+		log_msg("Loading Custom File : %s", filename);
 		strcpy(fileTemp,filename);
 		D2FogGetInstallPath(filename,0x104-strlen(filename));
 		strcat(filename,fileTemp);
