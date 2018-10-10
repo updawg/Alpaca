@@ -113,93 +113,14 @@ bool installPlugY(HANDLE h, LPBYTE addr, char* libraryName, VersionUtility::Vers
 	LPBYTE freeLibraryAddr = addr;
 	LPBYTE getProcAddressAddr = addr;
 
-	switch (version)
-	{
-	case VersionUtility::Versions::V107:
-		loadCallerAddr += 0x3882;
-		freeCallerAddr += 0x3A6C;
-		loadLibraryAddr += 0xC038;
-		freeLibraryAddr += 0xC040;
-		getProcAddressAddr += 0xC034;
-		break;
-	case VersionUtility::Versions::V108:
-	case VersionUtility::Versions::V109:
-	case VersionUtility::Versions::V109b:
-	case VersionUtility::Versions::V109d:
-		loadCallerAddr += 0x389B;
-		freeCallerAddr += 0x3A8C;
-		loadLibraryAddr += 0xC03C;
-		freeLibraryAddr += 0xC044;
-		getProcAddressAddr += 0xC038;
-		break;
-	case VersionUtility::Versions::V110:
-		loadCallerAddr += 0x3870;
-		freeCallerAddr += 0x3A6D;
-		loadLibraryAddr += 0xC040;
-		freeLibraryAddr += 0xC048;
-		getProcAddressAddr += 0xC03C;
-		break;
-	case VersionUtility::Versions::V111:
-		loadCallerAddr += 0x8B23;
-		freeCallerAddr += 0x8ACA;
-		loadLibraryAddr += 0xD11C;
-		freeLibraryAddr += 0xD12C;
-		getProcAddressAddr += 0xD120;
-		break;
-	case VersionUtility::Versions::V111b:
-		loadCallerAddr += 0xB423;
-		freeCallerAddr += 0xB3CA;
-		loadLibraryAddr += 0xD11C;
-		freeLibraryAddr += 0xD12C;
-		getProcAddressAddr += 0xD120;
-		break;
-	case VersionUtility::Versions::V112:
-		loadCallerAddr += 0x8F63;
-		freeCallerAddr += 0x8F0A;
-		loadLibraryAddr += 0xD11C;
-		freeLibraryAddr += 0xD12C;
-		getProcAddressAddr += 0xD120;
-		break;
-	case VersionUtility::Versions::V113c:
-		loadCallerAddr += 0xB423;
-		freeCallerAddr += 0xB3CA;
-		loadLibraryAddr += 0xD11C;
-		freeLibraryAddr += 0xD12C;
-		getProcAddressAddr += 0xD120;
-		break;
-	case VersionUtility::Versions::V113d:
-		loadCallerAddr += 0xAA03;
-		freeCallerAddr += 0xA9AA;
-		loadLibraryAddr += 0xD11C;
-		freeLibraryAddr += 0xD124;
-		getProcAddressAddr += 0xD120;
-		break;
-	case VersionUtility::Versions::V114a:
-		loadCallerAddr += 0x1BCB;// Load advapi.dll
-		freeCallerAddr += 0xF375;// Free dbghelp.dll
-		loadLibraryAddr += 0x2CD118;
-		freeLibraryAddr += 0x2CD120;
-		getProcAddressAddr += 0x2CD11C;
-		break;
-	case VersionUtility::Versions::V114b:
-	case VersionUtility::Versions::V114c:
-		loadCallerAddr += 0x1BCB;// Load advapi.dll
-		freeCallerAddr += 0x6F75;// Free dbghelp.dll
-		loadLibraryAddr += 0x2CD11C;
-		freeLibraryAddr += 0x2CD124;
-		getProcAddressAddr += 0x2CD120;
-		break;
-	case VersionUtility::Versions::V114d:
-		loadCallerAddr += 0x621C;// Load advapi.dll
-		freeCallerAddr += 0xB514;// Free dbghelp.dll
-		loadLibraryAddr += 0x2CC144;
-		freeLibraryAddr += 0x2CC14C;
-		getProcAddressAddr += 0x2CC148;
-		break;
-	default:
-		return false;
-	}
-
+	if (version != VersionUtility::Versions::V109b) return false;
+	
+	loadCallerAddr += 0x389B;
+	freeCallerAddr += 0x3A8C;
+	loadLibraryAddr += 0xC03C;
+	freeLibraryAddr += 0xC044;
+	getProcAddressAddr += 0xC038;
+	
 	BYTE buf[200];
 	DWORD pos = 0;
 	SIZE_T nb = 0;
@@ -208,21 +129,41 @@ bool installPlugY(HANDLE h, LPBYTE addr, char* libraryName, VersionUtility::Vers
 	// Verify if memory are ok.
 	bool alreadyInstalled = false;
 	res = ReadProcessMemory(h, (LPVOID)loadCallerAddr, buf, 6, &nb);
-	if (!res || nb<6) assertion("Alpaca: Read process memory failed.");
-	if (buf[0] != 0xFF || buf[1] != 0x15 || *(LPBYTE*)(buf + 2) != loadLibraryAddr)
-		if (buf[0] != 0xE8 /*|| buf[1]!=0xD8 || buf[2]!=0x19*/ || buf[3] != 0x00 || buf[4] != 0x00 || buf[5] != 0x90)
-			assertion("Alpaca: Read process memory failed.");
-		else
-			alreadyInstalled = true;
-	res = ReadProcessMemory(h, (LPVOID)freeCallerAddr, buf, 6, &nb);
-	if (!res || nb<6) assertion("Alpaca: Read process memory failed.");
-	if (buf[0] != 0xFF || buf[1] != 0x15 || *(LPBYTE*)(buf + 2) != freeLibraryAddr)
-		if (buf[0] != 0xE8 /*|| buf[1]!=0x75 || buf[2]!=0x1A*/ || buf[3] != 0x00 || buf[4] != 0x00 || buf[5] != 0x90)
-			if (!alreadyInstalled)
-				assertion("Alpaca: Read process memory failed.");
+	if (!res || nb < 6)
+	{
+		assertion("Alpaca: Read process memory failed. [1]");
+	}
 
-	if (alreadyInstalled)
-		return true;
+	if (buf[0] != 0xFF || buf[1] != 0x15 || *(LPBYTE*)(buf + 2) != loadLibraryAddr)
+	{
+		if (buf[0] != 0xE8 || buf[3] != 0x00 || buf[4] != 0x00 || buf[5] != 0x90)
+		{
+			assertion("Alpaca: Read process memory failed. [2]");
+		}
+		else
+		{
+			alreadyInstalled = true;
+		}
+	}
+		
+	res = ReadProcessMemory(h, (LPVOID)freeCallerAddr, buf, 6, &nb);
+	if (!res || nb < 6)
+	{
+		assertion("Alpaca: Read process memory failed. [3]");
+	}
+
+	if (buf[0] != 0xFF || buf[1] != 0x15 || *(LPBYTE*)(buf + 2) != freeLibraryAddr)
+	{
+		if (buf[0] != 0xE8 || buf[3] != 0x00 || buf[4] != 0x00 || buf[5] != 0x90)
+		{
+			if (!alreadyInstalled)
+			{
+				assertion("Alpaca: Read process memory failed. [4]");
+			}
+		}
+	}	
+
+	if (alreadyInstalled) return true;
 
 	// Alloc custom memory data.
 	LPBYTE memory =  (LPBYTE)VirtualAllocEx(h, NULL, 200, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
@@ -230,18 +171,27 @@ bool installPlugY(HANDLE h, LPBYTE addr, char* libraryName, VersionUtility::Vers
 	if (!memory)
 	{
 		res = ReadProcessMemory(h, addr, buf, 0x40, &nb);
-		if (!res || nb < 0x40) assertion("Alpaca: Read process memory failed.");
-		DWORD offsetPESignature = *(WORD*)(buf + 0x3C);
+		if (!res || nb < 0x40)
+		{
+			assertion("Alpaca: Read process memory failed. [5]");
+		}
 
+		DWORD offsetPESignature = *(WORD*)(buf + 0x3C);
 		res = ReadProcessMemory(h, addr + offsetPESignature, buf, 0x30, &nb);
-		if (!res || nb < 0x30) assertion("Alpaca: Read process memory failed.");
+
+		if (!res || nb < 0x30)
+		{
+			assertion("Alpaca: Read process memory failed. [6]");
+		}
+
 		DWORD sizeOfCode = *(DWORD*)(buf + 0x1C);
 		DWORD baseOfCode = *(DWORD*)(buf + 0x2C);
 
-		//MessageBox(0, "no memory", "Alpaca.\n", MB_OK|MB_ICONASTERISK);
 		memory = addr + baseOfCode + sizeOfCode - 200;
 		if (!VirtualProtectEx(h, memory, 200, PAGE_EXECUTE_READWRITE, &oldProtect))
+		{
 			assertion("Alpaca: Failed to get memory pool in game thread");
+		}
 	}
 
 	// Make memory data
@@ -310,8 +260,6 @@ bool installPlugY(HANDLE h, LPBYTE addr, char* libraryName, VersionUtility::Vers
 	res = WriteProcessMemory(h, freeCallerAddr, buf, len, &nb);
 	if (!res || (nb != len)) assertion("Alpaca: Write free library in memory failed");
 
-//	if (oldProtect != -1)
-//		VirtualProtectEx(h,(LPVOID)memory, 200, oldProtect, &oldProtect);
 	return true;
 }
 
@@ -327,32 +275,8 @@ bool isD2gfxLoaded(HANDLE hProcess, LPVOID addr)
 	DWORD ImageBase = *(DWORD*)(buf + offsetPESignature + 0x34);
 	DWORD SizeOfImage = *(DWORD*)(buf + offsetPESignature + 0x50);
 	DWORD CheckSum = *(DWORD*)(buf + offsetPESignature + 0x58);
-	if (ImageBase == 0x6FAA0000 && SizeOfImage == 0x00021000 && CheckSum == 0x00000000) return true;// 1.07 - 1.08
-	if (ImageBase == 0x6FA70000 && SizeOfImage == 0x00021000 && CheckSum == 0x00000000) return true;// 1.09 - 1.09b - 1.09d - 1.10
-	if (ImageBase == 0x6FA80000 && SizeOfImage == 0x00021000 && CheckSum == 0x0001743E) return true;// 1.11
-	if (ImageBase == 0x6FA80000 && SizeOfImage == 0x00021000 && CheckSum == 0x0001F6C4) return true;// 1.11b
-	if (ImageBase == 0x6FA80000 && SizeOfImage == 0x00021000 && CheckSum == 0x0001F0B2) return true;// 1.12
-	if (ImageBase == 0x6FA80000 && SizeOfImage == 0x00021000 && CheckSum == 0x0001BE5C) return true;// 1.13c
-	if (ImageBase == 0x6FA80000 && SizeOfImage == 0x00021000 && CheckSum == 0x00018542) return true;// 1.13d
 
-	return false;
-}
-
-bool isGameLoaded(HANDLE hProcess, LPVOID addr)
-{
-	SIZE_T nbRead;
-	BYTE buf[BUF_SIZE];
-	ReadProcessMemory(hProcess, addr, buf, BUF_SIZE, &nbRead);
-	if (nbRead < 0x60) return false;
-	int offsetPESignature = *(DWORD*)(buf + 0x3C);
-	if (offsetPESignature + 0x5C >= BUF_SIZE) return false;
-	DWORD ImageBase = *(DWORD*)(buf + offsetPESignature + 0x34);
-	DWORD SizeOfImage = *(DWORD*)(buf + offsetPESignature + 0x50);
-	DWORD CheckSum = *(DWORD*)(buf + offsetPESignature + 0x58);
-	if (ImageBase == 0x00400000 && SizeOfImage == 0x005A6000 && CheckSum == 0x00371D8F) return true;//1.14a
-	if (ImageBase == 0x00400000 && SizeOfImage == 0x005A6000 && CheckSum == 0x0037645F) return true;//1.14b
-	if (ImageBase == 0x00400000 && SizeOfImage == 0x005A5000 && CheckSum == 0x00374101) return true;//1.14c
-	if (ImageBase == 0x00400000 && SizeOfImage == 0x005BA000 && CheckSum == 0x0037CED2) return true;//1.14d
+	if (ImageBase == 0x6FA70000 && SizeOfImage == 0x00021000 && CheckSum == 0x00000000) return true; // 1.09 - 1.09b - 1.09d - 1.10
 
 	return false;
 }
@@ -399,7 +323,7 @@ bool launchNormal(LPSTR commandLine, LPSTR currentDirectory)
 	ZeroMemory(&si, sizeof(si));
 	si.cb = sizeof(si);
 	ZeroMemory(&pi, sizeof(pi));
-	BOOL success = CreateProcess(NULL, commandLine, NULL, NULL, false, 0, NULL, currentDirectory, &si, &pi);//DEBUG_ONLY_THIS_PROCESS
+	BOOL success = CreateProcess(NULL, commandLine, NULL, NULL, false, 0, NULL, currentDirectory, &si, &pi); //DEBUG_ONLY_THIS_PROCESS
 	return success ? true : false;
 }
 
@@ -410,7 +334,7 @@ bool launchGame98(LPSTR commandLine, LPSTR currentDirectory, LPSTR libraryName, 
 	ZeroMemory(&si, sizeof(si));
 	si.cb = sizeof(si);
 	ZeroMemory(&pi, sizeof(pi));
-	BOOL success = CreateProcess(0, commandLine, 0, 0, false, 0, 0, currentDirectory, &si, &pi);//DEBUG_ONLY_THIS_PROCESS
+	BOOL success = CreateProcess(0, commandLine, 0, 0, false, 0, 0, currentDirectory, &si, &pi); //DEBUG_ONLY_THIS_PROCESS
 	if (!success) return false;
 	DWORD ret;
 
@@ -440,7 +364,6 @@ bool launchGame98(LPSTR commandLine, LPSTR currentDirectory, LPSTR libraryName, 
 			return true;
 		}
 		ResumeThread(pi.hThread);
-		//Sleep(10);
 	}
 	return false;
 }
@@ -452,7 +375,7 @@ bool launchGameXP(LPSTR commandLine, LPSTR currentDirectory, LPSTR libraryName, 
 	ZeroMemory(&si, sizeof(si));
 	si.cb = sizeof(si);
 	ZeroMemory(&pi, sizeof(pi));
-	BOOL success = CreateProcess(0, commandLine, 0, 0, false, DEBUG_PROCESS, 0, currentDirectory, &si, &pi);//DEBUG_ONLY_THIS_PROCESS
+	BOOL success = CreateProcess(0, commandLine, 0, 0, false, DEBUG_PROCESS, 0, currentDirectory, &si, &pi); //DEBUG_ONLY_THIS_PROCESS
 	if (!success) return false;
 	DEBUG_EVENT DebugEvent;
 	DWORD status;
@@ -462,27 +385,20 @@ bool launchGameXP(LPSTR commandLine, LPSTR currentDirectory, LPSTR libraryName, 
 		switch (DebugEvent.dwDebugEventCode)
 		{
 		case CREATE_THREAD_DEBUG_EVENT:
-			CloseHandle(DebugEvent.u.CreateThread.hThread);
-			break;
 		case CREATE_PROCESS_DEBUG_EVENT:
-			if (version >= VersionUtility::Versions::V114a)// && isGameLoaded(pi.hProcess, DebugEvent.u.CreateProcessInfo.lpBaseOfImage))
-			{
-				installPlugY(pi.hProcess, (LPBYTE)DebugEvent.u.CreateProcessInfo.lpBaseOfImage, libraryName, version);
-				CloseHandle(DebugEvent.u.CreateProcessInfo.hFile);
-				CloseHandle(pi.hProcess);
-				CloseHandle(pi.hThread);
-				debugActiveProcessStop(DebugEvent.dwProcessId);
-				return true;
-			}
+			CloseHandle(DebugEvent.u.CreateThread.hThread);
 			break;
 		case EXIT_PROCESS_DEBUG_EVENT:
 			exit(0);
 		case EXCEPTION_DEBUG_EVENT:
 			if (DebugEvent.u.Exception.ExceptionRecord.ExceptionCode == EXCEPTION_ACCESS_VIOLATION)
+			{
 				MessageBox(0, "EXCEPTION_ACCESS_VIOLATION", "Alpaca", MB_OK | MB_ICONASTERISK);
+			}
 			break;
 		case LOAD_DLL_DEBUG_EVENT:
-			if (version <= VersionUtility::Versions::V113d && isD2gfxLoaded(pi.hProcess, DebugEvent.u.LoadDll.lpBaseOfDll))
+			// Only 1.09b is supported.
+			if (version == VersionUtility::Versions::V109b && isD2gfxLoaded(pi.hProcess, DebugEvent.u.LoadDll.lpBaseOfDll))
 			{
 				installPlugY(pi.hProcess, (LPBYTE)DebugEvent.u.LoadDll.lpBaseOfDll, libraryName, version);
 				CloseHandle(DebugEvent.u.LoadDll.hFile);
@@ -492,7 +408,9 @@ bool launchGameXP(LPSTR commandLine, LPSTR currentDirectory, LPSTR libraryName, 
 				return true;
 			}
 			else
+			{
 				CloseHandle(DebugEvent.u.LoadDll.hFile);
+			}
 			break;
 		}
 		ContinueDebugEvent(DebugEvent.dwProcessId, DebugEvent.dwThreadId, status);
@@ -541,13 +459,13 @@ int APIENTRY WinMain (
 	{
 		if (!getRegistryD2Directory(command, MAX_PATH - sizeof(GAMEFILE)))
 		{
-			assertion("D2 install path not found.");
+			assertion("The Diablo II install path was not found.");
 			return 1;
 		}
 		strcat(command, GAMEFILE);
 		if (GetFileAttributes(command) == INVALID_FILE_ATTRIBUTES)
 		{
-			assertion("Game.exe not found.");
+			assertion("Game.exe was not found.");
 			return 1;
 		}
 	}
@@ -598,7 +516,9 @@ int APIENTRY WinMain (
 	{
 		debugActiveProcessStop = (tDebugActiveProcessStop)GetProcAddress(module, "DebugActiveProcessStop");
 		if (debugActiveProcessStop)
+		{
 			return !launchGameXP(command, currrentDirectory, libraryName, version);
+		}
 	}
 	return !launchGame98(command, currrentDirectory, libraryName, version);
 }
