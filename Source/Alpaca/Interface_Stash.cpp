@@ -59,22 +59,22 @@ DWORD	getXPreviousBtn()		{return RX(posXPreviousBtn<0? D2GetResolution()?0x80:0x
 DWORD	getYPreviousBtn()		{return RY(posYPreviousBtn<0 ? 0x40 : posYPreviousBtn);}
 #define	getHPreviousBtn()		32
 
-DWORD	getXNextBtn()			{return RX(posXNextBtn<0 ? D2GetResolution()?0xA0:0xCF :posXNextBtn);}//?169:SEL_X(0x63, 0x63, 0xCF, 0xA0));}
+DWORD	getXNextBtn()			{return RX(posXNextBtn<0 ? D2GetResolution()?0xA0:0xCF :posXNextBtn);}
 #define	getLNextBtn()			32
 DWORD	getYNextBtn()			{return RY(posYNextBtn<0 ? 0x40 : posYNextBtn);}
 #define	getHNextBtn()			32
 
-DWORD	getXSharedBtn()			{return RX(posXSharedBtn<0 ? D2GetResolution()?0x10:0x6F :posXSharedBtn);}//17:SEL_X(0xE3, 0xE3, 0x6F, 0x10));}//0xD8
+DWORD	getXSharedBtn()			{return RX(posXSharedBtn<0 ? D2GetResolution()?0x10:0x6F :posXSharedBtn);}
 #define	getLSharedBtn()			32
 DWORD	getYSharedBtn()			{return RY(posYSharedBtn<0 ? 0x40 : posYSharedBtn);}
 #define	getHSharedBtn()			32
 
-DWORD	getXPreviousIndexBtn()	{return RX(posXPreviousIndexBtn<0 ?  D2GetResolution()?0x60:0x8F :posXPreviousIndexBtn);}//73:SEL_X(0x18, 0x60, 0x8F, 0x60));}
+DWORD	getXPreviousIndexBtn()	{return RX(posXPreviousIndexBtn<0 ?  D2GetResolution()?0x60:0x8F :posXPreviousIndexBtn);}
 #define	getLPreviousIndexBtn()	32
 DWORD	getYPreviousIndexBtn()	{return RY(posYPreviousIndexBtn<0 ? 0x40 : posYPreviousIndexBtn);}
 #define	getHPreviousIndexBtn()	32
 
-DWORD	getXNextIndexBtn()		{return RX(posXNextIndexBtn<0? D2GetResolution()?0xC0:0xEF : posXNextIndexBtn);}//217:SEL_X(0x128, 0xC0, 0xEF, 0xC0));}
+DWORD	getXNextIndexBtn()		{return RX(posXNextIndexBtn<0? D2GetResolution()?0xC0:0xEF : posXNextIndexBtn);}
 #define	getLNextIndexBtn()		32
 DWORD	getYNextIndexBtn()		{return RY(posYNextIndexBtn<0 ? 0x40 : posYNextIndexBtn);}
 #define	getHNextIndexBtn()		32
@@ -89,7 +89,6 @@ DWORD	getXTakeGoldBtn()		{return RX(posXTakeGoldBtn<0? 0x105 : posXTakeGoldBtn);
 DWORD	getYTakeGoldBtn()		{return RY(posYTakeGoldBtn<0 ? 0x1A8 : posYTakeGoldBtn);}
 #define	getHTakeGoldBtn()		32
 
-//closeBtn x: D2C=0x113 LOD=0x110(0->0x28)		y: D2C=0x41 LOD=0x40 (-0x23 -> 5)
 #define isOnButtonNextStash(x,y) isOnRect(x, y, getXNextBtn(), getYNextBtn(), getLNextBtn(), getHNextBtn())
 #define isOnButtonPreviousStash(x,y) isOnRect(x, y, getXPreviousBtn(), getYPreviousBtn(), getLPreviousBtn(), getHPreviousBtn())
 #define isOnButtonToggleSharedStash(x,y) isOnRect(x, y, getXSharedBtn(), getYSharedBtn(), getLSharedBtn(), getHSharedBtn())
@@ -143,31 +142,44 @@ void* __stdcall printBtns()
 
 	D2SetFont(1);
 
-	if (isOnButtonPreviousStash(mx,my)) {
+	if (isOnButtonPreviousStash(mx,my))
+	{
 		lpText = getLocalString(STR_STASH_PREVIOUS_PAGE);
 		D2PrintPopup(lpText, getXPreviousBtn()+getLPreviousBtn()/2, getYPreviousBtn()-getHPreviousBtn(), WHITE, 1);
-
-	} else if (isOnButtonNextStash(mx,my)) {
+	}
+	else if (isOnButtonNextStash(mx,my))
+	{
 		lpText = getLocalString(STR_STASH_NEXT_PAGE);
 		D2PrintPopup(lpText, getXNextBtn()+getLNextBtn()/2, getYNextBtn()-getHNextBtn(), WHITE, 1);
-
-	} else if (active_sharedStash && isOnButtonToggleSharedStash(mx,my)) {
+	} 
+	else if (active_sharedStash && isOnButtonToggleSharedStash(mx,my))
+	{
 		lpText = getLocalString(PCPY->showSharedStash ? STR_TOGGLE_TO_PERSONAL : STR_TOGGLE_TO_SHARED);
 		D2PrintPopup(lpText, getXSharedBtn()+getLSharedBtn()/2, getYSharedBtn()-getHSharedBtn(), WHITE, 1);
-
-	} else if (isOnButtonPreviousIndexStash(mx,my)) {
+	}
+	else if (!active_sharedStash && isOnButtonToggleSharedStash(mx, my))
+	{
+		LPWSTR disabledStash = L"The shared stash is disabled";
+		lpText = disabledStash;
+		D2PrintPopup(lpText, getXSharedBtn() + getLSharedBtn() / 2, getYSharedBtn() - getHSharedBtn(), WHITE, 1);
+	}
+	else if (isOnButtonPreviousIndexStash(mx,my))
+	{
 		_snwprintf(text, sizeof(text), getLocalString(STR_STASH_PREVIOUS_INDEX) ,nbPagesPerIndex,nbPagesPerIndex2);
 		D2PrintPopup(text, getXPreviousIndexBtn()+getLPreviousIndexBtn()/2, getYPreviousIndexBtn()-getHPreviousIndexBtn(), 0, 0);
-
-	} else if (isOnButtonNextIndexStash(mx,my))	{
+	} 
+	else if (isOnButtonNextIndexStash(mx,my))
+	{
 		_snwprintf(text, sizeof(text), getLocalString(STR_STASH_NEXT_INDEX) ,nbPagesPerIndex,nbPagesPerIndex2);
 		D2PrintPopup(text, getXNextIndexBtn()+getLNextIndexBtn()/2, getYNextIndexBtn()-getHNextIndexBtn(), WHITE, 1);
-
-	} else if (active_sharedGold && isOnButtonPutGold(mx,my))	{
+	} 
+	else if (active_sharedGold && isOnButtonPutGold(mx,my))
+	{
 		lpText = getLocalString(STR_PUT_GOLD);
 		D2PrintPopup(lpText, getXPutGoldBtn()+getLPutGoldBtn()/2, getYPutGoldBtn()-getHPutGoldBtn(), WHITE, 1);
-
-	} else if (active_sharedGold && isOnButtonTakeGold(mx,my))	{
+	} 
+	else if (active_sharedGold && isOnButtonTakeGold(mx,my))
+	{
 		lpText = getLocalString(STR_TAKE_GOLD);
 		D2PrintPopup(lpText, getXTakeGoldBtn()+getLTakeGoldBtn()/2, getYTakeGoldBtn()-getHTakeGoldBtn(), WHITE, 1);
 	}
@@ -208,57 +220,71 @@ DWORD __stdcall manageBtnUp(sWinMessage* msg)
 
 	Unit* ptChar = D2GetClientPlayer();
 
-	if (isOnButtonPreviousStash(msg->x,msg->y)) {
+	if (isOnButtonPreviousStash(msg->x,msg->y))
+	{
 		log_msg("push up left button previous\n");
 		if (isDownBtn.previous)
 			if (GetKeyState(VK_SHIFT)<0)
 				updateServer(US_SELECT_PREVIOUS2);
 			else
 				updateServer(US_SELECT_PREVIOUS);
-
-	} else if (isOnButtonNextStash(msg->x,msg->y)) {
+	}
+	else if (isOnButtonNextStash(msg->x,msg->y))
+	{
 		log_msg("push up left button next\n");
 		if (isDownBtn.next)
 			if (GetKeyState(VK_SHIFT)<0)
 				updateServer(US_SELECT_NEXT2);
 			else
 				updateServer(US_SELECT_NEXT);
-
-	} else if (active_sharedStash && isOnButtonToggleSharedStash(msg->x,msg->y)) {
+	}
+	else if (active_sharedStash && isOnButtonToggleSharedStash(msg->x,msg->y))
+	{
 		log_msg("push up left button shared\n");
 		if (isDownBtn.toggleToSharedStash)
 			if (PCPY->showSharedStash)
 				updateServer(US_SELECT_SELF);
 			 else
 				updateServer(US_SELECT_SHARED);
-
-	} else if (isOnButtonPreviousIndexStash(msg->x,msg->y)) {
+	}
+	else if (!active_sharedStash && isOnButtonToggleSharedStash(msg->x, msg->y))
+	{
+		log_msg("push up left button shared but shared stash is disabled.\n");
+	}
+	else if (isOnButtonPreviousIndexStash(msg->x,msg->y))
+	{
 		log_msg("select left button previous index\n");
 		if (isDownBtn.previousIndex)
 			if (GetKeyState(VK_SHIFT)<0)
 				updateServer(US_SELECT_PREVIOUS_INDEX2);
 			else
 				updateServer(US_SELECT_PREVIOUS_INDEX);
-
-	} else if (isOnButtonNextIndexStash(msg->x,msg->y)) {
+	}
+	else if (isOnButtonNextIndexStash(msg->x,msg->y))
+	{
 		log_msg("push up left button next index\n");
 		if (isDownBtn.nextIndex)
 			if (GetKeyState(VK_SHIFT)<0)
 				updateServer(US_SELECT_NEXT_INDEX2);
 			else
 				updateServer(US_SELECT_NEXT_INDEX);
-
-	} else if (active_sharedGold && isOnButtonPutGold(msg->x,msg->y)) {
+	}
+	else if (active_sharedGold && isOnButtonPutGold(msg->x,msg->y))
+	{
 		log_msg("push up left put gold\n");
 		if (isDownBtn.putGold)
 			updateServer(US_PUTGOLD);
-
-	} else if (active_sharedGold && isOnButtonTakeGold(msg->x,msg->y)) {
+	}
+	else if (active_sharedGold && isOnButtonTakeGold(msg->x,msg->y))
+	{
 		log_msg("push up left take gold\n");
 		if (isDownBtn.takeGold)
 			updateServer(US_TAKEGOLD);
-
-	} else return 0;
+	}
+	else
+	{
+		return 0;
+	}
 
 	return 1;
 }
@@ -346,15 +372,20 @@ Unit* __stdcall getNextItemForSet(Unit* ptItem)
 		Unit* ptChar = D2GetClientPlayer();
 		switch (currentSawStash)
 		{
-		case 0: curStash = PCPY->selfStash;
-				currentSawStash = displaySharedSetItemNameInGreen ? 1 : 2;
-				break;
-		case 1: curStash = PCPY->sharedStash;
-				currentSawStash = 2;
-				break;
-		default:return NULL;
+		case 0:
+			curStash = PCPY->selfStash;
+			currentSawStash = displaySharedSetItemNameInGreen ? 1 : 2;
+			break;
+		case 1:
+			curStash = PCPY->sharedStash;
+			currentSawStash = 2;
+			break;
+		default:
+			return NULL;
 		}
-	} else {
+	}
+	else
+	{
 		curStash = curStash->nextStash;
 	}
 	if (curStash)

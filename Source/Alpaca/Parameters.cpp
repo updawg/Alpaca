@@ -239,9 +239,6 @@ void init_Stash(INIFile* iniFile, char* buffer, DWORD maxSize)
 		strcpy(sharedStashFilename, buffer);
 		LogParameterStringValue(S_sharedStashFilename, sharedStashFilename);
 
-		// Mixing items between hardcore and softcore is not allowed in the SPF.
-		separateHardSoftStash = true;
-
 		GetValueFromIni(iniFile, S_STASH, S_displaySharedSetItemNameInGreen, "1", buffer, maxSize);
 		displaySharedSetItemNameInGreen = IsEnabled(buffer);
 		LogParameterBooleanValue(S_displaySharedSetItemNameInGreen, displaySharedSetItemNameInGreen);

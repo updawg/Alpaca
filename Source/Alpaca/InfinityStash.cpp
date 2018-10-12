@@ -27,11 +27,14 @@ DWORD maxSelfPages = -1;
 DWORD maxSharedPages = -1;
 DWORD nbPagesPerIndex = 10;
 DWORD nbPagesPerIndex2 = 100;
+
+char* sharedStashFilename = NULL;
 bool active_multiPageStash = true;
 bool active_sharedStash = false;
-bool separateHardSoftStash = false;
 bool active_sharedGold = false;
-char* sharedStashFilename = NULL;
+
+// Mixing items between hardcore and softcore is not allowed in the SPF.
+bool separateHardSoftStash = true;
 
 typedef int (*TchangeToSelectedStash)(Unit* ptChar, Stash* newStash, DWORD bOnlyItems, DWORD bIsClient);
 

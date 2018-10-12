@@ -148,7 +148,10 @@ extern "C" __declspec(dllexport) void* __stdcall Init(LPSTR IniName)
 	// Thanks to Necrolis @ PhrozenKeep for bringing this trick up.
 	//MessageBox(GetActiveWindow(), (LPCSTR)L"Alpaca is Loaded", (LPCSTR)L"Alpaca", MB_APPLMODAL);
 
-	if (IniName) log_msg("* Alpaca is called from D2Mod.dll\n\n");
+	if (IniName)
+	{
+		log_msg("* Alpaca is called from D2Mod.dll\n\n");
+	}
 
 	static int isInstalled = false;
 	if (isInstalled) return NULL;
