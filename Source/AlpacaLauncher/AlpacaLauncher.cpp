@@ -20,24 +20,20 @@
 #include <stdio.h>
 #include "../Alpaca/Utilities/VersionUtility.h"
 
-#define MAX_LOADSTRING 100
-#define SUBKEY "Software\\Blizzard Entertainment\\Diablo II"
-#define GAMEFILE "Game.exe"
-#define INIFILE "Alpaca.ini"
-#define LAUNCHING "LAUNCHING"
-#define LOD_VERSION "LodVersionFolder"
-#define PARAM "Param"
-#define WINDOWED "Windowed"
-#define ACTIVE_WINDOWED "ActiveWindowed"
-#define LIBRARY_NAME "Library"
-
+const char* LAUNCHING_LABEL = "LAUNCHING";
+const char* LIBRARY_NAME = "Library";
+const char* PARAM_LABEL = "Param";
 const char* PROGRAM_NAME = "Alpaca";
+const char* GAME_EXE_NAME = "Game.exe";
+const char* INI_FILE_NAME = "Alpaca.ini";
+const char* UNABLE_TO_GET_CURRENT_DIR = "Current directory not found.";
+const char* LONG_COMMAND = "The command is too long.";
 
 BYTE loadDll[] = {
 	0xFF,0x74,0x24,0x04,			//PUSH DWORD PTR SS:[ESP+4]
 	0xFF,0x15,0x40,0xC0,0xA7,0x6F,  //CALL DWORD PTR DS:[<&KERNEL32.LoadLibraryA>]      ; kernel32.LoadLibraryA
 	0x50,							//PUSH EAX
-	0x68,0x80,0xBE,0xA7,0x6F,		//PUSH d2gfx.6FA7BE80                               ; ASCII "PlugY.dll"
+	0x68,0x80,0xBE,0xA7,0x6F,		//PUSH d2gfx.6FA7BE80                               ; ASCII "Alpaca.dll"
 	0xFF,0x15,0x40,0xC0,0xA7,0x6F,  //CALL DWORD PTR DS:[<&KERNEL32.LoadLibraryA>]      ; kernel32.LoadLibraryA
 	0xA3,0xFC,0xEF,0xA8,0x6F,		//MOV DWORD PTR DS:[6FA8EFFC],EAX
 	0x85,0xC0,						//TEST EAX,EAX
@@ -105,7 +101,7 @@ void assertion(const char* pFormat, ...)
 	exit(1);
 }
 
-bool installPlugY(HANDLE h, LPBYTE addr, char* libraryName, VersionUtility::Versions version)
+bool InstallAlpaca(HANDLE h, LPBYTE addr, char* libraryName)
 {
 	LPBYTE loadCallerAddr = addr;
 	LPBYTE freeCallerAddr = addr;
@@ -113,8 +109,7 @@ bool installPlugY(HANDLE h, LPBYTE addr, char* libraryName, VersionUtility::Vers
 	LPBYTE freeLibraryAddr = addr;
 	LPBYTE getProcAddressAddr = addr;
 
-	if (version != VersionUtility::Versions::V109b) return false;
-	
+    // 1.09b Offsets
 	loadCallerAddr += 0x389B;
 	freeCallerAddr += 0x3A8C;
 	loadLibraryAddr += 0xC03C;
@@ -263,15 +258,16 @@ bool installPlugY(HANDLE h, LPBYTE addr, char* libraryName, VersionUtility::Vers
 	return true;
 }
 
-#define BUF_SIZE 0x300
 bool isD2gfxLoaded(HANDLE hProcess, LPVOID addr)
 {
+	const int BUFFER_SIZE = 768;
+
 	SIZE_T nbRead;
-	BYTE buf[BUF_SIZE];
-	ReadProcessMemory(hProcess, addr, buf, BUF_SIZE, &nbRead);
+	BYTE buf[BUFFER_SIZE];
+	ReadProcessMemory(hProcess, addr, buf, BUFFER_SIZE, &nbRead);
 	if (nbRead < 0x60) return false;
 	int offsetPESignature = *(DWORD*)(buf + 0x3C);
-	if (offsetPESignature + 0x5C >= BUF_SIZE) return false;
+	if (offsetPESignature + 0x5C >= BUFFER_SIZE) return false;
 	DWORD ImageBase = *(DWORD*)(buf + offsetPESignature + 0x34);
 	DWORD SizeOfImage = *(DWORD*)(buf + offsetPESignature + 0x50);
 	DWORD CheckSum = *(DWORD*)(buf + offsetPESignature + 0x58);
@@ -281,53 +277,7 @@ bool isD2gfxLoaded(HANDLE hProcess, LPVOID addr)
 	return false;
 }
 
-bool getRegistryD2Directory(LPSTR buf, DWORD bufsize)
-{
-	HKEY hKey;
-	DWORD type;
-	int res;
-	DWORD len = bufsize - 1;
-	if (RegOpenKeyEx(HKEY_CURRENT_USER, SUBKEY, 0, KEY_READ, &hKey) == ERROR_SUCCESS)
-	{
-		res = RegQueryValueEx(hKey, "InstallPath", NULL, &type, (LPBYTE)buf, &len);
-		RegCloseKey(hKey);
-		if (res != ERROR_SUCCESS) return false;
-	}
-	else if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, SUBKEY, 0, KEY_READ, &hKey) == ERROR_SUCCESS)
-	{
-		res = RegQueryValueEx(hKey, "InstallPath", NULL, &type, (LPBYTE)buf, &len);
-		RegCloseKey(hKey);
-		if (res != ERROR_SUCCESS) return false;
-	}
-	else
-		return false;
-
-	if (len <= 1)
-		return false;
-	if (buf[len - 1] != NULL)
-		buf[len] = NULL;
-	else
-		len--;
-	if (buf[len - 1] != '\\')
-	{
-		buf[len++] = '\\';
-		buf[len] = NULL;
-	}
-	return true;
-}
-
-bool launchNormal(LPSTR commandLine, LPSTR currentDirectory)
-{
-	STARTUPINFO si;
-	PROCESS_INFORMATION pi;
-	ZeroMemory(&si, sizeof(si));
-	si.cb = sizeof(si);
-	ZeroMemory(&pi, sizeof(pi));
-	BOOL success = CreateProcess(NULL, commandLine, NULL, NULL, false, 0, NULL, currentDirectory, &si, &pi); //DEBUG_ONLY_THIS_PROCESS
-	return success ? true : false;
-}
-
-bool launchGame98(LPSTR commandLine, LPSTR currentDirectory, LPSTR libraryName, VersionUtility::Versions version)
+bool launchGame98(LPSTR commandLine, LPSTR currentDirectory, LPSTR libraryName)
 {
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
@@ -347,19 +297,19 @@ bool launchGame98(LPSTR commandLine, LPSTR currentDirectory, LPSTR libraryName, 
 			exit(0);
 		if (isD2gfxLoaded(pi.hProcess, (LPVOID)0x6FA80000))
 		{
-			installPlugY(pi.hProcess, (LPBYTE)0x6FA80000, libraryName, version);
+			InstallAlpaca(pi.hProcess, (LPBYTE)0x6FA80000, libraryName);
 			ResumeThread(pi.hThread);
 			return true;
 		}
 		if (isD2gfxLoaded(pi.hProcess, (LPVOID)0x6FA70000))
 		{
-			installPlugY(pi.hProcess, (LPBYTE)0x6FA70000, libraryName, version);
+			InstallAlpaca(pi.hProcess, (LPBYTE)0x6FA70000, libraryName);
 			ResumeThread(pi.hThread);
 			return true;
 		}
 		if (isD2gfxLoaded(pi.hProcess, (LPVOID)0x6FAA0000))
 		{
-			installPlugY(pi.hProcess, (LPBYTE)0x6FAA0000, libraryName, version);
+			InstallAlpaca(pi.hProcess, (LPBYTE)0x6FAA0000, libraryName);
 			ResumeThread(pi.hThread);
 			return true;
 		}
@@ -368,7 +318,7 @@ bool launchGame98(LPSTR commandLine, LPSTR currentDirectory, LPSTR libraryName, 
 	return false;
 }
 
-bool launchGameXP(LPSTR commandLine, LPSTR currentDirectory, LPSTR libraryName, VersionUtility::Versions version)
+bool launchGameXP(LPSTR commandLine, LPSTR currentDirectory, LPSTR libraryName)
 {
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
@@ -397,10 +347,9 @@ bool launchGameXP(LPSTR commandLine, LPSTR currentDirectory, LPSTR libraryName, 
 			}
 			break;
 		case LOAD_DLL_DEBUG_EVENT:
-			// Only 1.09b is supported.
-			if (version == VersionUtility::Versions::V109b && isD2gfxLoaded(pi.hProcess, DebugEvent.u.LoadDll.lpBaseOfDll))
+			if (isD2gfxLoaded(pi.hProcess, DebugEvent.u.LoadDll.lpBaseOfDll))
 			{
-				installPlugY(pi.hProcess, (LPBYTE)DebugEvent.u.LoadDll.lpBaseOfDll, libraryName, version);
+				InstallAlpaca(pi.hProcess, (LPBYTE)DebugEvent.u.LoadDll.lpBaseOfDll, libraryName);
 				CloseHandle(DebugEvent.u.LoadDll.hFile);
 				CloseHandle(pi.hProcess);
 				CloseHandle(pi.hThread);
@@ -428,97 +377,95 @@ int APIENTRY WinMain (
     __in int nShowCmd
     )
 {
-	char currrentDirectory[MAX_PATH];
-	char iniFileName[MAX_PATH + sizeof(INIFILE) - 1];
-	char command[MAX_PATH + sizeof(GAMEFILE) + 200];
-	VersionUtility::Versions version;
+	//MessageBox(GetActiveWindow(), "The Alpacas have arrived!", "Alpaca", MB_APPLMODAL);
 
-	// Get Current Directory.
-	if (!GetCurrentDirectory(MAX_PATH - 1, currrentDirectory))
-		assertion("Current directory not found");
+	// Windows has a path length of 260 characters.
+	const int MAX_PATH_LENGTH = MAX_PATH;
 
-	int len = strlen(currrentDirectory);
-	if (len == 0)
-		assertion("Current directory not found");
-
-	if (currrentDirectory[len - 1] != '\\')
+	// Game.exe and Alpaca.exe need to be in the same directory
+	// The Diablo II Root Directory
+	char currentDirectory[MAX_PATH_LENGTH];
+	
+	if (!GetCurrentDirectory(MAX_PATH_LENGTH-1, currentDirectory))
 	{
-		currrentDirectory[len++] = '\\';
-		currrentDirectory[len] = NULL;
+		assertion(UNABLE_TO_GET_CURRENT_DIR);
 	}
+		
+	int len = strlen(currentDirectory);
+	if (len == 0)
+	{
+		assertion(UNABLE_TO_GET_CURRENT_DIR);
+	}
+	
+	strcat(currentDirectory, "\\");
 
-	// Get ini full path name.
-	strcpy(iniFileName, currrentDirectory);
-	strcat(iniFileName, INIFILE);
+	char iniFileName[MAX_PATH_LENGTH + sizeof(INI_FILE_NAME) - 1];
 
-	// Get game.exe path.
-	strcpy(command, currrentDirectory);
-	strcat(command, GAMEFILE);
+	// Alpaca.ini Path
+	strcpy(iniFileName, currentDirectory);
+	strcat(iniFileName, INI_FILE_NAME);
+
+	char command[MAX_PATH_LENGTH + sizeof(GAME_EXE_NAME) + 200];
+
+	// Game.exe Path
+	strcpy(command, currentDirectory);
+	strcat(command, GAME_EXE_NAME);
+
+	// Check that Game.exe is compatible with Alpaca. No point on
+	// doing further processing if it isn't.
+	VersionUtility::SetVersion(VersionUtility::GetVersion(command));
+
+	if (!VersionUtility::IsSupported())
+	{
+		assertion("Alpaca isn't compatible with this version of Diablo II: %s", VersionUtility::GetVersionAsString());
+		return 1;
+	}
 
 	if (GetFileAttributes(command) == INVALID_FILE_ATTRIBUTES)
 	{
-		if (!getRegistryD2Directory(command, MAX_PATH - sizeof(GAMEFILE)))
-		{
-			assertion("The Diablo II install path was not found.");
-			return 1;
-		}
-		strcat(command, GAMEFILE);
-		if (GetFileAttributes(command) == INVALID_FILE_ATTRIBUTES)
-		{
-			assertion("Game.exe was not found.");
-			return 1;
-		}
+		assertion("There is an error with your path or Game.exe was not found: %s", command);
+		return 1;
 	}
-
-	// Get Game.exe version.
-	version = VersionUtility::GetVersion(command);
 
 	// Add params.
 	len = strlen(command);
-	int windowed = GetPrivateProfileInt(WINDOWED, ACTIVE_WINDOWED, 0, iniFileName);
-	if (windowed)
-	{
-		len += 3;
-		if (len > sizeof(command))
-			assertion("Command too long");
-		strcat(command, " -w");
-	}
 	int paramLen = strlen(lpCmdLine);
 	if (paramLen > 0)
 	{
 		len += 1 + paramLen;
 		if (len > sizeof(command))
-			assertion("Command too long");
+		{
+			assertion(LONG_COMMAND);
+		}
 		strcat(command, " ");
 		strcat(command, lpCmdLine);
 	}
 	len++;
 	if (len >= sizeof(command))
-		assertion("Command too long");
-	strcat(command, " ");
-	GetPrivateProfileString(LAUNCHING, PARAM, NULL, command + len, sizeof(command) - len, iniFileName);
-
-	// Check if Alpaca must be started.
-	char libraryName[50];
-	if (!GetPrivateProfileString(LAUNCHING, LIBRARY_NAME, "", libraryName, 50, iniFileName) || !libraryName[0])
-		return !launchNormal(command, currrentDirectory);
-
-	// Check version
-	if (version != VersionUtility::Versions::V109b)
 	{
-		VersionUtility::SetVersion(version);
-		assertion("Alpaca isn't compatible with this version of Diablo II: %s", VersionUtility::GetVersionAsString());
+		assertion(LONG_COMMAND);
+	}
+	strcat(command, " ");
+	GetPrivateProfileString(LAUNCHING_LABEL, PARAM_LABEL, NULL, command + len, sizeof(command) - len, iniFileName);
+
+	// Retrieve the library name to load from the config file
+	char libraryName[50];
+	if (!GetPrivateProfileString(LAUNCHING_LABEL, LIBRARY_NAME, "", libraryName, 50, iniFileName) || !libraryName[0])
+	{
+		assertion("There was an error with finding the library name in the following config file: %s", iniFileName);
+		return 1;
 	}
 
-	// Launch LoD and install PlugY
+	// Install Alpaca and Launch Diablo II
 	HMODULE module = GetModuleHandle("Kernel32.dll");
 	if (module)
 	{
 		debugActiveProcessStop = (tDebugActiveProcessStop)GetProcAddress(module, "DebugActiveProcessStop");
 		if (debugActiveProcessStop)
 		{
-			return !launchGameXP(command, currrentDirectory, libraryName, version);
+			return !launchGameXP(command, currentDirectory, libraryName);
 		}
 	}
-	return !launchGame98(command, currrentDirectory, libraryName, version);
+
+	return !launchGame98(command, currentDirectory, libraryName);
 }

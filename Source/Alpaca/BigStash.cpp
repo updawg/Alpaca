@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#include "plugYFiles.h"		// Install_PlugYFiles()
+#include "AlpacaFiles.h"
 #include "common.h"
 
 bool active_bigStash = true;
@@ -76,7 +76,7 @@ void Install_BigStash()
 	static int isInstalled = false;
 	if (isInstalled) return;
 
-	Install_PlugYFiles();
+	Install_AlpacaFiles();
 
 	log_msg("[Patch] D2Common & D2Client for make 10x10 squares in the stash. (BigStash)\n");
 

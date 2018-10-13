@@ -7,6 +7,11 @@ Alpaca.ini
 
 Double click Alpaca.exe and Enjoy!
 
+NOTE: If your Diablo II is installed in a protected directory (C:\Program Files (x86)\),
+you will most likely need to run it in Admin Mode. I have my Diablo II installed
+in "D:\Games\Diablo II\" in Windows 10 and no Admin Mode is needed since that folder
+isn't protected by the OS.
+
 Troubleshooting
 =============
 
@@ -18,6 +23,6 @@ convenience in the "Other" directory.
 
 Nothing happens when I start the game
 -----------
-This could occur for many reasons. On some systems you will need to run Alpaca.exe
+This could occur for many reasons as well. On some systems you will need to run Alpaca.exe
 in Admin Mode. You should also make sure that your video settings are properly
 configured for D2 (Either Direct 3D or Glide).

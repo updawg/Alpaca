@@ -130,7 +130,7 @@
     <ClCompile Include="ModifMemory.cpp" />
     <ClCompile Include="Parameters.cpp" />
     <ClCompile Include="PlayerCustomData.cpp" />
-    <ClCompile Include="PlugYFiles.cpp" />
+    <ClCompile Include="AlpacaFiles.cpp" />
     <ClCompile Include="SavePlayerData.cpp" />
     <ClCompile Include="SharedSaveFile.cpp" />
     <ClCompile Include="Storm.cpp" />
@@ -175,7 +175,7 @@
     <ClInclude Include="modifMemory.h" />
     <ClInclude Include="parameters.h" />
     <ClInclude Include="playerCustomData.h" />
-    <ClInclude Include="plugYFiles.h" />
+    <ClInclude Include="AlpacaFiles.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="savePath.h" />
     <ClInclude Include="savePlayerData.h" />

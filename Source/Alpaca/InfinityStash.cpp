@@ -31,7 +31,6 @@ DWORD nbPagesPerIndex2 = 100;
 char* sharedStashFilename = NULL;
 bool active_multiPageStash = true;
 bool active_sharedStash = false;
-bool active_sharedGold = false;
 
 // Mixing items between hardcore and softcore is not allowed in the SPF.
 bool separateHardSoftStash = true;

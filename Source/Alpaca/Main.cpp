@@ -146,26 +146,10 @@ extern "C" __declspec(dllexport) void* __stdcall Init(LPSTR IniName)
 	// fully starts, thus by the time you can attach your debugger to Game.exe,
 	// all of this code already finished. So we can use the MessageBox trick.
 	// Thanks to Necrolis @ PhrozenKeep for bringing this trick up.
-	//MessageBox(GetActiveWindow(), (LPCSTR)L"Alpaca is Loaded", (LPCSTR)L"Alpaca", MB_APPLMODAL);
-
-	if (IniName)
-	{
-		log_msg("* Alpaca is called from D2Mod.dll\n\n");
-	}
-
-	static int isInstalled = false;
-	if (isInstalled) return NULL;
-	isInstalled=true;
+	//MessageBox(GetActiveWindow(), "The Alpacas have arrived!", "Alpaca", MB_APPLMODAL);
 
 	// Initialize/Load Libraries
 	LibraryLoader::Init();
-
-	if (!VersionUtility::IsSupported())
-	{
-		log_box("Alpaca isn't compatible with this version : %s\n", VersionUtility::GetVersionAsString());
-		Release();
-		exit(0);
-	}
 
 	InitializeDiabloFunctions();
 	LoadParameters();

@@ -18,7 +18,7 @@
 #include "interface_Stash.h"
 #include "updateServer.h"
 #include "infinityStash.h"
-#include "plugYFiles.h"	
+#include "AlpacaFiles.h"	
 #include "common.h"
 #include <stdio.h>
 
@@ -39,20 +39,23 @@ static struct
 } isDownBtn;
 
 bool displaySharedSetItemNameInGreen = true;
-int posXPreviousBtn=-1;
-int posYPreviousBtn=-1;
-int posXNextBtn=-1;
-int posYNextBtn=-1;
-int posXSharedBtn=-1;
-int posYSharedBtn=-1;
-int posXPreviousIndexBtn=-1;
-int posYPreviousIndexBtn=-1;
-int posXNextIndexBtn=-1;
-int posYNextIndexBtn=-1;
-int posXPutGoldBtn=-1;
-int posYPutGoldBtn=-1;
-int posXTakeGoldBtn=-1;
-int posYTakeGoldBtn=-1;
+
+const int defaultButtonPositionValue = -1;
+
+const int posXPreviousBtn = defaultButtonPositionValue;
+const int posYPreviousBtn = defaultButtonPositionValue;
+const int posXNextBtn = defaultButtonPositionValue;
+const int posYNextBtn = defaultButtonPositionValue;
+const int posXSharedBtn = defaultButtonPositionValue;
+const int posYSharedBtn = defaultButtonPositionValue;
+const int posXPreviousIndexBtn = defaultButtonPositionValue;
+const int posYPreviousIndexBtn = defaultButtonPositionValue;
+const int posXNextIndexBtn = defaultButtonPositionValue;
+const int posYNextIndexBtn = defaultButtonPositionValue;
+const int posXPutGoldBtn = defaultButtonPositionValue;
+const int posYPutGoldBtn = defaultButtonPositionValue;
+const int posXTakeGoldBtn = defaultButtonPositionValue;
+const int posYTakeGoldBtn = defaultButtonPositionValue;
 
 DWORD	getXPreviousBtn()		{return RX(posXPreviousBtn<0? D2GetResolution()?0x80:0xAF : posXPreviousBtn);}
 #define	getLPreviousBtn()		32
@@ -125,7 +128,7 @@ void* __stdcall printBtns()
 	setFrame(&data, 10 + isDownBtn.nextIndex);
 	D2PrintImage(&data, getXNextIndexBtn(), getYNextIndexBtn(), -1, 5, 0);
 
-	if (active_sharedGold)
+	if (active_sharedStash)
 	{
 		setImage(&data, sharedGoldBtnsImages);
 		setFrame(&data, 0 + isDownBtn.putGold);
@@ -159,8 +162,7 @@ void* __stdcall printBtns()
 	}
 	else if (!active_sharedStash && isOnButtonToggleSharedStash(mx, my))
 	{
-		LPWSTR disabledStash = L"The shared stash is disabled";
-		lpText = disabledStash;
+		lpText = getLocalString(STR_STASH_SHARED_DISABLED);
 		D2PrintPopup(lpText, getXSharedBtn() + getLSharedBtn() / 2, getYSharedBtn() - getHSharedBtn(), WHITE, 1);
 	}
 	else if (isOnButtonPreviousIndexStash(mx,my))
@@ -173,12 +175,12 @@ void* __stdcall printBtns()
 		_snwprintf(text, sizeof(text), getLocalString(STR_STASH_NEXT_INDEX) ,nbPagesPerIndex,nbPagesPerIndex2);
 		D2PrintPopup(text, getXNextIndexBtn()+getLNextIndexBtn()/2, getYNextIndexBtn()-getHNextIndexBtn(), WHITE, 1);
 	} 
-	else if (active_sharedGold && isOnButtonPutGold(mx,my))
+	else if (active_sharedStash && isOnButtonPutGold(mx,my))
 	{
 		lpText = getLocalString(STR_PUT_GOLD);
 		D2PrintPopup(lpText, getXPutGoldBtn()+getLPutGoldBtn()/2, getYPutGoldBtn()-getHPutGoldBtn(), WHITE, 1);
 	} 
-	else if (active_sharedGold && isOnButtonTakeGold(mx,my))
+	else if (active_sharedStash && isOnButtonTakeGold(mx,my))
 	{
 		lpText = getLocalString(STR_TAKE_GOLD);
 		D2PrintPopup(lpText, getXTakeGoldBtn()+getLTakeGoldBtn()/2, getYTakeGoldBtn()-getHTakeGoldBtn(), WHITE, 1);
@@ -202,9 +204,9 @@ DWORD __stdcall manageBtnDown(sWinMessage* msg)
 		isDownBtn.previousIndex = 1;
 	else if (isOnButtonNextIndexStash(msg->x,msg->y))
 		isDownBtn.nextIndex = 1;
-	else if (active_sharedGold && isOnButtonPutGold(msg->x,msg->y))
+	else if (active_sharedStash && isOnButtonPutGold(msg->x,msg->y))
 		isDownBtn.putGold = 1;
-	else if (active_sharedGold && isOnButtonTakeGold(msg->x,msg->y))
+	else if (active_sharedStash && isOnButtonTakeGold(msg->x,msg->y))
 		isDownBtn.takeGold = 1;
 	else return 0;
 
@@ -269,13 +271,13 @@ DWORD __stdcall manageBtnUp(sWinMessage* msg)
 			else
 				updateServer(US_SELECT_NEXT_INDEX);
 	}
-	else if (active_sharedGold && isOnButtonPutGold(msg->x,msg->y))
+	else if (active_sharedStash && isOnButtonPutGold(msg->x,msg->y))
 	{
 		log_msg("push up left put gold\n");
 		if (isDownBtn.putGold)
 			updateServer(US_PUTGOLD);
 	}
-	else if (active_sharedGold && isOnButtonTakeGold(msg->x,msg->y))
+	else if (active_sharedStash && isOnButtonTakeGold(msg->x,msg->y))
 	{
 		log_msg("push up left take gold\n");
 		if (isDownBtn.takeGold)
@@ -348,7 +350,7 @@ void __fastcall printPageNumber(LPWSTR maxGoldText, DWORD x, DWORD y, DWORD colo
 	DWORD my = D2GetMouseY();
 	if ((RX(0x5E) < mx) && (mx < RX(0xF8)) && (RY(0x1C8) < my) && (my < RY(0x1B6)) )
 	{
-		if (active_sharedGold)
+		if (active_sharedStash)
 		{
 			_snwprintf(popupText, sizeof(popupText), L"%s\n%s: %u", maxGoldText, getLocalString(STR_SHARED_GOLD_QUANTITY), PCPY->sharedGold);
 			DWORD x = D2GetPixelLen(maxGoldText);
@@ -462,7 +464,7 @@ void Install_InterfaceStash()
 	if (isInstalled) return;
 
 	Install_UpdateServer();
-	Install_PlugYImagesFiles();
+	Install_AlpacaImagesFiles();
 
 	log_msg("[Patch] D2Client for stash interface. (InterfaceStash)\n");
 

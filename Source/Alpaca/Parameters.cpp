@@ -31,7 +31,6 @@
 char* modDataDirectory = "Alpaca";
 bool active_plugin = true;
 bool active_CheckMemory = true;
-bool active_D2Mod = false;
 char* dllFilenames;
 char* parametersFileName = "Alpaca.ini";
 
@@ -57,27 +56,11 @@ const char* S_STASH = "STASH";
 const char* S_maxSelfPages = "MaxPersonalPages";
 const char* S_nbPagesPerIndex = "NbPagesPerIndex";
 const char* S_nbPagesPerIndex2 = "NbPagesPerIndex2";
-const char* S_active_sharedStash = "ActiveSharedStash";
+const char* S_active_sharedStash = "SoloSelfFound";
 const char* S_openSharedStashOnLoading = "OpenSharedStashOnLoading";
 const char* S_maxSharedPages = "MaxSharedPages";
 const char* S_sharedStashFilename = "SharedStashFilename";
 const char* S_displaySharedSetItemNameInGreen = "DisplaySharedSetItemNameInGreen";
-const char* S_active_sharedGold = "ActiveSharedGold";
-
-const char* S_posXPreviousBtn = "PosXPreviousBtn";
-const char* S_posYPreviousBtn = "PosYPreviousBtn";
-const char* S_posXNextBtn = "PosXNextBtn";
-const char* S_posYNextBtn = "PosYNextBtn";
-const char* S_posXSharedBtn = "PosXSharedBtn";
-const char* S_posYSharedBtn = "PosYSharedBtn";
-const char* S_posXPreviousIndexBtn = "PosXPreviousIndexBtn";
-const char* S_posYPreviousIndexBtn = "PosYPreviousIndexBtn";
-const char* S_posXNextIndexBtn = "PosXNextIndexBtn";
-const char* S_posYNextIndexBtn = "PosYNextIndexBtn";
-const char* S_posXPutGoldBtn = "PosXPutGoldBtn";
-const char* S_posYPutGoldBtn = "PosYPutGoldBtn";
-const char* S_posXTakeGoldBtn = "PosXTakeGoldBtn";
-const char* S_posYTakeGoldBtn = "PosYTakeGoldBtn";
 
 // Convert 4 char code in a DWORD code
 #define BIN(A,B,C,D) ((DWORD)A) + (((DWORD)B) << 8) + (((DWORD)C) << 16) + (((DWORD)D) << 24)
@@ -85,6 +68,11 @@ const char* S_posYTakeGoldBtn = "PosYTakeGoldBtn";
 bool IsEnabled(char* symbol)
 {
 	return atoi(symbol) != 0;
+}
+
+bool IsDisabled(char* symbol)
+{
+	return atoi(symbol) == 0;
 }
 
 void GetValueFromIni(INIFile* iniFile, const char* areaName, const char* optionName, const char* defaultValue, char* buffer, DWORD maxSize)
@@ -203,26 +191,13 @@ void init_Stash(INIFile* iniFile, char* buffer, DWORD maxSize)
 	if (!nbPagesPerIndex2) nbPagesPerIndex2 = 100;
 	LogParameterIntegerValue(S_nbPagesPerIndex2, nbPagesPerIndex2);
 
-	GetValueFromIni(iniFile, S_STASH, S_active_sharedStash, "0", buffer, maxSize);
-	active_sharedStash = IsEnabled(buffer);
-	LogParameterBooleanValue(S_active_sharedStash, active_sharedStash);
-
-	// Button positions don't really need to be exposed to the user.
-	const int defaultButtonPositionValue = -1;
-	posXPreviousBtn = defaultButtonPositionValue;
-	posYPreviousBtn = defaultButtonPositionValue;
-	posXNextBtn = defaultButtonPositionValue;
-	posYNextBtn = defaultButtonPositionValue;
-	posXSharedBtn = defaultButtonPositionValue;
-	posYSharedBtn = defaultButtonPositionValue;
-	posXPreviousIndexBtn = defaultButtonPositionValue;
-	posYPreviousIndexBtn = defaultButtonPositionValue;
-	posXNextIndexBtn = defaultButtonPositionValue;
-	posYNextIndexBtn = defaultButtonPositionValue;
-	posXPutGoldBtn = defaultButtonPositionValue;
-	posYPutGoldBtn = defaultButtonPositionValue;
-	posXTakeGoldBtn = defaultButtonPositionValue;
-	posYTakeGoldBtn = defaultButtonPositionValue;
+	GetValueFromIni(iniFile, S_STASH, S_active_sharedStash, "1", buffer, maxSize);
+	// If Solo Self Found Is Disabled, then Shared Is Enabled.
+	// It's a bit confusing but I'm doing this so I can leave the existing code
+	// path checks for shared stash to true. If I don't do this, I would need
+	// to negate everything.
+	active_sharedStash = IsDisabled(buffer); 
+	LogParameterBooleanValue(S_active_sharedStash, !active_sharedStash);
 
 	if (active_sharedStash)
 	{
@@ -242,10 +217,6 @@ void init_Stash(INIFile* iniFile, char* buffer, DWORD maxSize)
 		GetValueFromIni(iniFile, S_STASH, S_displaySharedSetItemNameInGreen, "1", buffer, maxSize);
 		displaySharedSetItemNameInGreen = IsEnabled(buffer);
 		LogParameterBooleanValue(S_displaySharedSetItemNameInGreen, displaySharedSetItemNameInGreen);
-
-		GetValueFromIni(iniFile, S_STASH, S_active_sharedGold, "1", buffer, maxSize);
-		active_sharedGold = IsEnabled(buffer);
-		LogParameterBooleanValue(S_active_sharedGold, active_sharedGold);
 	}
 }
 

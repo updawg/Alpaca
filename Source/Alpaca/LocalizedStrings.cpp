@@ -274,13 +274,14 @@ void LoadLocalizedStrings()
 	// Load localized type string
 	nbLocalizedTypeString = GetPrivateProfileStringList(iniFile->m_cache, L"TYPE_", key);
 
-	// PlugY localized string
+	// Alpaca localized string
 	LOAD(STR_STATS_UNASSIGN_WITH_LIMIT);
 	LOAD(STR_STATS_UNASSIGN_WITHOUT_LIMIT);
 	LOAD(STR_STATS_BASE_MIN);
 	LOAD(STR_SKILLS_UNASSIGN);
 	LOAD(STR_STASH_PREVIOUS_PAGE);
 	LOAD(STR_STASH_NEXT_PAGE);
+	LOAD(STR_STASH_SHARED_DISABLED);
 	LOAD(STR_TOGGLE_TO_PERSONAL);
 	LOAD(STR_TOGGLE_TO_SHARED);
 	LOAD(STR_STASH_PREVIOUS_INDEX);

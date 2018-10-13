@@ -18,10 +18,10 @@
 #pragma once
 
 #define PROGRAM_NAME "Alpaca"
-#define PROGRAM_VERSION "1.4.0.99"
+#define PROGRAM_VERSION "1.4.1"
 #define PROGRAM_AUTHOR_NAME "Jonathan Vasquez"
 #define PROGRAM_AUTHOR_ALIAS "fearedbliss"
-#define PROGRAM_BUILD_DATE "October 12, 2018 @ 08:12 ET"
+#define PROGRAM_BUILD_DATE "October 12, 2018 @ 23:44 ET"
 
 enum TargetMod
 {
@@ -33,7 +33,6 @@ extern char* modDataDirectory;
 extern bool active_plugin;
 extern bool active_CheckMemory;
 extern char* dllFilenames;
-extern bool active_D2Mod;
 extern TargetMod selectModParam;
 
 void LoadParameters();

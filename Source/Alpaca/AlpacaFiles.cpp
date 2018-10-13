@@ -15,12 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#include "plugYFiles.h"
+#include "AlpacaFiles.h"
 #include "common.h"
 #include <stdio.h>
 
 extern bool active_multiPageStash;
-extern bool active_sharedGold;
+extern bool active_sharedStash;
 
 void* stashBtnsImages = NULL;
 void* sharedGoldBtnsImages = NULL;
@@ -60,7 +60,7 @@ ISNOTMODDATA:
 	JMP DWORD PTR CS:[LeaveCriticalSection]
 }}
 
-void Install_PlugYFiles()
+void Install_AlpacaFiles()
 {
 	static int isInstalled = false;
 	if (isInstalled) return;
@@ -100,7 +100,7 @@ void loadImagesFile(void** images, const char* name)
 void __stdcall loadCustomImages()
 {
 	if ( active_multiPageStash ) loadImagesFile(&stashBtnsImages, "StashBtns");
-	if ( active_sharedGold)		 loadImagesFile(&sharedGoldBtnsImages, "SharedGoldBtns");
+	if ( active_sharedStash)		 loadImagesFile(&sharedGoldBtnsImages, "SharedGoldBtns");
 }
 
 #define freeImagesFile(I) if(I) {D2FreeImage(I);I=NULL;}
@@ -123,12 +123,12 @@ FCT_ASM ( caller_freeCustomImages )
 	RETN
 }}
 
-void Install_PlugYImagesFiles()
+void Install_AlpacaImagesFiles()
 {
 	static int isInstalled = false;
 	if (isInstalled) return;
 
-	Install_PlugYFiles();
+	Install_AlpacaFiles();
 
 	log_msg("[Patch] D2Client to load/free custom images. (AlpacaImagesFiles)\n");
 

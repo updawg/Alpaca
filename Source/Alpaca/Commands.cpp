@@ -47,7 +47,7 @@ void maxGold(Unit* ptChar)
 	} else {
 		D2AddPlayerStat( ptChar, STATS_GOLD,	 100000, 0 );
 	}
-	if (active_sharedGold)
+	if (active_sharedStash)
 	{
 		PCPY->sharedGold = 0xFFFFFFFF;
 		updateClient(ptChar, UC_SHARED_GOLD, PCPY->sharedGold, 0, 0);
@@ -56,7 +56,7 @@ void maxGold(Unit* ptChar)
 
 void putGold(Unit* ptChar, DWORD amount)
 {
-	if (!active_sharedGold) return;
+	if (!active_sharedStash) return;
 	log_msg("putGold : %d\n", amount);
 
 	DWORD playerGold = D2GetPlayerStat(ptChar, STATS_GOLD, 0);
@@ -72,7 +72,7 @@ void putGold(Unit* ptChar, DWORD amount)
 
 void takeGold(Unit* ptChar, DWORD amount)
 {
-	if (!active_sharedGold) return;
+	if (!active_sharedStash) return;
 	log_msg("takeGold : %d\n", amount);
 
 	DWORD maxGold =     D2GetMaxGold(ptChar) - D2GetPlayerStat(ptChar, STATS_GOLD, 0);

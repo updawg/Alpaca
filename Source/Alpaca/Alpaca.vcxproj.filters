@@ -75,9 +75,6 @@
     <ClCompile Include="PlayerCustomData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PlugYFiles.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SavePlayerData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -138,6 +135,9 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AlpacaFiles.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bigStash.h">
@@ -183,9 +183,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="playerCustomData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="plugYFiles.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
@@ -277,6 +274,9 @@
     </ClInclude>
     <ClInclude Include="Library.h">
       <Filter>Header Files\Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="AlpacaFiles.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

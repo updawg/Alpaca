@@ -25,12 +25,24 @@ extern DWORD nbPagesPerIndex;
 extern DWORD nbPagesPerIndex2;
 extern bool active_multiPageStash;
 extern bool active_sharedStash;
-extern bool active_sharedGold;
 extern bool separateHardSoftStash;
 extern char* sharedStashFilename;
 
 extern bool displaySharedSetItemNameInGreen;
-extern int posXPreviousBtn,posYPreviousBtn,posXNextBtn,posYNextBtn,posXSharedBtn,posYSharedBtn,posXPreviousIndexBtn,posYPreviousIndexBtn,posXNextIndexBtn,posYNextIndexBtn,posXPutGoldBtn,posYPutGoldBtn,posXTakeGoldBtn,posYTakeGoldBtn;
+extern const int posXPreviousBtn;
+extern const int posYPreviousBtn;
+extern const int posXNextBtn;
+extern const int posYNextBtn;
+extern const int posXSharedBtn;
+extern const int posYSharedBtn;
+extern const int posXPreviousIndexBtn;
+extern const int posYPreviousIndexBtn;
+extern const int posXNextIndexBtn;
+extern const int posYNextIndexBtn;
+extern const int posXPutGoldBtn;
+extern const int posYPutGoldBtn;
+extern const int posXTakeGoldBtn;
+extern const int posYTakeGoldBtn;
 
 void toggleToSharedStash(Unit* ptChar);
 void toggleToSelfStash(Unit* ptChar);

@@ -105,5 +105,5 @@ TableDesc[i].lookup = (void*)(L); i++
 
 #define BUILD_BIN( T,V,N,F ) V = (T*)D2CompileTxtFile(mempool, F, TableDesc, (DWORD*)&nbStatsInterface, sizeof(T));
 
-void Install_PlugYFiles();
-void Install_PlugYImagesFiles();
+void Install_AlpacaFiles();
+void Install_AlpacaImagesFiles();

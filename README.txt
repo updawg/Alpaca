@@ -1,6 +1,6 @@
-Alpaca 1.4.0 [1.09b]
+Alpaca 1.4.1 [1.09b]
 By Jonathan Vasquez (fearedbliss)
-Released on Tuesday, October 9, 2018
+Released on Friday, October 12, 2018
 ----------------------------------------
 
 Synopsis
@@ -24,8 +24,6 @@ etc, you can use my version switcher to easily do this. When using Alpaca with
 Cactus, Simply point your Cactus profile to the "Alpaca.exe" when launching.
 Cactus also automatically isolates your character save files and their stashes
 as well (Including the Alpaca Stashes).
-
-Cactus Project Page - https://github.com/fearedbliss/Cactus
 
 Requirements
 =============
@@ -64,3 +62,10 @@ Concerns
   Since the stashes aren't automatically in-sync with each other, the last player to exit
   the game will be the stash that gets saved. Only use your personal stashes in LAN games
   if you don't want to lose any items.
+  
+Links
+=============
+Discord - https://discord.gg/B59qDKy
+Cactus - https://github.com/fearedbliss/Cactus
+Succulent - https://github.com/fearedbliss/Succulent
+Bliss Complete Collection - https://xyinn.org/diablo/Bliss_Complete_Collection.7z
