@@ -24,6 +24,9 @@
     <ClInclude Include="..\Alpaca\Utilities\VersionUtility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\Alpaca\Utilities\Utility.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Alpaca.ico">
@@ -35,6 +38,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AlpacaLauncher.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Alpaca\Utilities\Utility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

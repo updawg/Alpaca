@@ -34,7 +34,6 @@ public:
 	typedef DWORD(__fastcall *TD2MPQReadFile) (void* mpqfile, BYTE* buffer, DWORD nbToRead, DWORD* nbRead, DWORD, DWORD, DWORD);
 	typedef DWORD(__fastcall *TD2MPQGetSizeFile) (void* mpqfile, DWORD* toReset);
 	typedef void(__fastcall *TD2FogGetSavePath) (char* ptPath, DWORD maxsize);
-	typedef void(__fastcall *TD2FogGetInstallPath) (char* ptPath, DWORD maxsize);
 
 	static TD2FogAssertOld D2FogAssertOld;
 	static TD2FogMemAlloc D2FogMemAlloc;
@@ -46,7 +45,6 @@ public:
 	static TD2MPQReadFile D2MPQReadFile;
 	static TD2MPQGetSizeFile D2MPQGetSizeFile;
 	static TD2FogGetSavePath D2FogGetSavePath;
-	static TD2FogGetInstallPath D2FogGetInstallPath;
 private:
 	static void SetFunctions();
 };

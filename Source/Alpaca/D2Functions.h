@@ -113,7 +113,6 @@ extern Fog::TD2MPQCloseFile D2MPQCloseFile;
 extern Fog::TD2MPQReadFile D2MPQReadFile;
 extern Fog::TD2MPQGetSizeFile D2MPQGetSizeFile;
 extern Fog::TD2FogGetSavePath D2FogGetSavePath;
-extern Fog::TD2FogGetInstallPath D2FogGetInstallPath;
 
 // D2Lang
 extern D2Lang::TD2GetStringFromString D2GetStringFromString;

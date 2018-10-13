@@ -137,6 +137,7 @@
     <ClCompile Include="UpdateClient.cpp" />
     <ClCompile Include="UpdateServer.cpp" />
     <ClCompile Include="Utilities\LibraryLoader.cpp" />
+    <ClCompile Include="Utilities\Utility.cpp" />
     <ClCompile Include="Utilities\VersionUtility.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -185,6 +186,7 @@
     <ClInclude Include="updateClient.h" />
     <ClInclude Include="updateServer.h" />
     <ClInclude Include="Utilities\LibraryLoader.h" />
+    <ClInclude Include="Utilities\Utility.h" />
     <ClInclude Include="Utilities\VersionUtility.h" />
   </ItemGroup>
   <ItemGroup>

@@ -90,7 +90,6 @@ Fog::TD2MPQCloseFile D2MPQCloseFile;
 Fog::TD2MPQReadFile D2MPQReadFile;
 Fog::TD2MPQGetSizeFile D2MPQGetSizeFile;
 Fog::TD2FogGetSavePath D2FogGetSavePath;
-Fog::TD2FogGetInstallPath D2FogGetInstallPath;
 
 // D2Lang
 D2Lang::TD2GetStringFromString D2GetStringFromString;
@@ -180,7 +179,6 @@ void InitializeDiabloFunctions()
 	D2MPQReadFile = Fog::D2MPQReadFile;
 	D2MPQGetSizeFile = Fog::D2MPQGetSizeFile;
 	D2FogGetSavePath = Fog::D2FogGetSavePath;
-	D2FogGetInstallPath = Fog::D2FogGetInstallPath;
 
 	// D2Lang
 	D2GetStringFromString = D2Lang::D2GetStringFromString;

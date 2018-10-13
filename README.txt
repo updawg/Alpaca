@@ -1,6 +1,6 @@
-Alpaca 1.4.1 [1.09b]
+Alpaca 1.4.2 [1.09b]
 By Jonathan Vasquez (fearedbliss)
-Released on Friday, October 12, 2018
+Released on Saturday, October 13, 2018
 ----------------------------------------
 
 Synopsis

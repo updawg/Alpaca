@@ -18,6 +18,7 @@
 #include "AlpacaFiles.h"
 #include "common.h"
 #include <stdio.h>
+#include "Utilities/Utility.h"
 
 extern bool active_multiPageStash;
 extern bool active_sharedStash;
@@ -27,20 +28,25 @@ void* sharedGoldBtnsImages = NULL;
 
 DWORD __stdcall isModFile (char* filename)
 {
-	if (strstr(filename, modDataDirectory) )
+	if (strstr(filename, modDataDirectory))
 	{
-		char fileTemp[0x104];
-		log_msg("Loading Custom File : %s", filename);
-		strcpy(fileTemp,filename);
-		D2FogGetInstallPath(filename,0x104-strlen(filename));
-		strcat(filename,fileTemp);
-		log_msg("-> %s\n\n", filename);
-		if ((GetFileAttributesA(filename) & 0x10) == 0)
-			return true;
+		log_msg("Loading Custom File: %s", filename);
+
+		char currentDirectory[MAX_PATH];
+		Utility::GetAlpacaDirectory(currentDirectory);
+
+		char pathToFile[MAX_PATH];
+		strcat(pathToFile, currentDirectory);
+		strcat(pathToFile, "\\");
+		strcat(pathToFile, filename);
+
+		log_msg(" -> %s\n\n", pathToFile);
+
+		if ((GetFileAttributesA(pathToFile) & 0x10) == 0) return true;
 	}
+
 	return false;
 }
-
 
 FCT_ASM ( caller_isModFile )
 	TEST ESI,ESI

@@ -19,6 +19,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "../Alpaca/Utilities/VersionUtility.h"
+#include "../Alpaca/Utilities/Utility.h"
 
 const char* LAUNCHING_LABEL = "LAUNCHING";
 const char* LIBRARY_NAME = "Library";
@@ -26,7 +27,6 @@ const char* PARAM_LABEL = "Param";
 const char* PROGRAM_NAME = "Alpaca";
 const char* GAME_EXE_NAME = "Game.exe";
 const char* INI_FILE_NAME = "Alpaca.ini";
-const char* UNABLE_TO_GET_CURRENT_DIR = "Current directory not found.";
 const char* LONG_COMMAND = "The command is too long.";
 
 BYTE loadDll[] = {
@@ -379,33 +379,18 @@ int APIENTRY WinMain (
 {
 	//MessageBox(GetActiveWindow(), "The Alpacas have arrived!", "Alpaca", MB_APPLMODAL);
 
-	// Windows has a path length of 260 characters.
-	const int MAX_PATH_LENGTH = MAX_PATH;
+	char currentDirectory[MAX_PATH];
+	Utility::GetAlpacaDirectory(currentDirectory);
 
-	// Game.exe and Alpaca.exe need to be in the same directory
-	// The Diablo II Root Directory
-	char currentDirectory[MAX_PATH_LENGTH];
-	
-	if (!GetCurrentDirectory(MAX_PATH_LENGTH-1, currentDirectory))
-	{
-		assertion(UNABLE_TO_GET_CURRENT_DIR);
-	}
-		
-	int len = strlen(currentDirectory);
-	if (len == 0)
-	{
-		assertion(UNABLE_TO_GET_CURRENT_DIR);
-	}
-	
 	strcat(currentDirectory, "\\");
 
-	char iniFileName[MAX_PATH_LENGTH + sizeof(INI_FILE_NAME) - 1];
+	char iniFileName[MAX_PATH + sizeof(INI_FILE_NAME) - 1];
 
 	// Alpaca.ini Path
 	strcpy(iniFileName, currentDirectory);
 	strcat(iniFileName, INI_FILE_NAME);
 
-	char command[MAX_PATH_LENGTH + sizeof(GAME_EXE_NAME) + 200];
+	char command[MAX_PATH + sizeof(GAME_EXE_NAME) + 200];
 
 	// Game.exe Path
 	strcpy(command, currentDirectory);
@@ -428,7 +413,7 @@ int APIENTRY WinMain (
 	}
 
 	// Add params.
-	len = strlen(command);
+	int len = strlen(command);
 	int paramLen = strlen(lpCmdLine);
 	if (paramLen > 0)
 	{

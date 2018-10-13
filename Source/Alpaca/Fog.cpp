@@ -36,7 +36,6 @@ void Fog::SetFunctions()
 	D2MPQReadFile = (TD2MPQReadFile)GetOffsetByProc(10104);
 	D2MPQGetSizeFile = (TD2MPQGetSizeFile)GetOffsetByProc(10105);
 	D2FogGetSavePath = (TD2FogGetSavePath)GetOffsetByProc(10115);
-	D2FogGetInstallPath = (TD2FogGetInstallPath)GetOffsetByProc(10116);
 }
 
 Fog::TD2FogAssertOld Fog::D2FogAssertOld;
@@ -49,4 +48,3 @@ Fog::TD2MPQCloseFile Fog::D2MPQCloseFile;
 Fog::TD2MPQReadFile Fog::D2MPQReadFile;
 Fog::TD2MPQGetSizeFile Fog::D2MPQGetSizeFile;
 Fog::TD2FogGetSavePath Fog::D2FogGetSavePath;
-Fog::TD2FogGetInstallPath Fog::D2FogGetInstallPath;

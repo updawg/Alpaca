@@ -16,23 +16,15 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
+#include <windows.h>
 
-#define PROGRAM_NAME "Alpaca"
-#define PROGRAM_VERSION "1.4.2"
-#define PROGRAM_AUTHOR_NAME "Jonathan Vasquez"
-#define PROGRAM_AUTHOR_ALIAS "fearedbliss"
-#define PROGRAM_BUILD_DATE "October 13, 2018 @ 14:18 ET"
-
-enum TargetMod
+class Utility
 {
-	MOD_NO = 0,
+public:
+	// Retrieves the current directory (There one where Alpaca.exe is in).
+	// Alpaca.exe needs to be in the same folder as Game.exe and the rest of the files.
+	// alpacaDirectory = output parameter
+	static void GetAlpacaDirectory(char* alpacaDirectory);
+
+	static void Assertion(const char* pFormat, ...);
 };
-
-// Global variable (user parameters)
-extern char* modDataDirectory;
-extern bool active_plugin;
-extern bool active_CheckMemory;
-extern char* dllFilenames;
-extern TargetMod selectModParam;
-
-void LoadParameters();
