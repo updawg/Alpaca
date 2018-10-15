@@ -1,6 +1,6 @@
-Alpaca 1.4.2 [1.09b]
+Alpaca 1.4.3 [1.09b]
 By Jonathan Vasquez (fearedbliss)
-Released on Saturday, October 13, 2018
+Released on Monday, October 15, 2018
 ----------------------------------------
 
 Synopsis
@@ -50,6 +50,7 @@ Stash Management Commands
 /setmain : Marks the current stash page as the main index.
 /insert : Inserts a new page after the current page.
 /delete : Deletes the current stash page if empty.
+/page <page #> : Takes you to the corresponding page.
 /swap <page #> : Swaps the content of the current page with the content of the target page.
 /toggle <page #> : Swaps the content of the current page with the content of
                    the target page in the opposing shared/personal stash.

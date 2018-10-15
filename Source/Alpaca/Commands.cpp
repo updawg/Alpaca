@@ -24,14 +24,15 @@
 
 bool active_Commands = true;
 
-const char * CMD_REPAGE_NAME = "/rename";
-const char * CMD_SET_INDEX = "/set";
-const char * CMD_UNSET_INDEX = "/unset";
-const char * CMD_SET_MAIN_INDEX = "/setmain";
-const char * CMD_INSERT_PAGE = "/insert";
-const char * CMD_DELETE_PAGE = "/delete";
-const char * CMD_SWAP = "/swap";
-const char * CMD_TOGGLE = "/toggle";
+const char* CMD_REPAGE_NAME = "/rename";
+const char* CMD_SET_INDEX = "/set";
+const char* CMD_UNSET_INDEX = "/unset";
+const char* CMD_SET_MAIN_INDEX = "/setmain";
+const char* CMD_INSERT_PAGE = "/insert";
+const char* CMD_DELETE_PAGE = "/delete";
+const char* CMD_SELECT_PAGE = "/page";
+const char* CMD_SWAP = "/swap";
+const char* CMD_TOGGLE = "/toggle";
 
 void maxGold(Unit* ptChar)
 {
@@ -168,6 +169,19 @@ int __stdcall commands(char* ptText)
 		if (!active_multiPageStash) return 1;
 		if (deleteStash(ptChar, true))
 			updateServer(US_DELETE_PAGE);
+		return 0;
+	}
+
+	if (!strncmp(command, CMD_SELECT_PAGE, strlen(CMD_SELECT_PAGE)))
+	{
+		if (!active_multiPageStash) return 1;
+		int page = atoi(&command[strlen(CMD_SELECT_PAGE)]) - 1;
+		if (page < 0)
+			return 1;
+		updateServer(US_SELECT_PAGE3 + ((page & 0xFF000000) >> 16));
+		updateServer(US_SELECT_PAGE2 + ((page & 0xFF0000) >> 8));
+		updateServer(US_SELECT_PAGE1 + (page & 0xFF00));
+		updateServer(US_SELECT_PAGE + ((page & 0xFF) << 8));
 		return 0;
 	}
 

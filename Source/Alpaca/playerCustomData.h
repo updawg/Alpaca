@@ -47,9 +47,9 @@ struct PYPlayerData
 	union {
 		DWORD flags; 
 		struct { 
-			DWORD selfStashIsOpened:1;	//
-			DWORD sharedStashIsOpened:1;//
-			DWORD showSharedStash:1;	//
+			DWORD selfStashIsOpened : 1;
+			DWORD sharedStashIsOpened : 1;
+			DWORD showSharedStash : 1;
 		}; 
 	};
 	DWORD	sharedGold;
@@ -58,6 +58,8 @@ struct PYPlayerData
 	Stash*	currentStash;
 	Stash*	selfStash;
 	Stash*	sharedStash;
+	Stash* lastSelectedSelfStash;
+	Stash* lastSelectedSharedStash;
 };
 
 void Install_PlayerCustomData();

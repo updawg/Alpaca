@@ -46,6 +46,8 @@ extern const int posYTakeGoldBtn;
 
 void toggleToSharedStash(Unit* ptChar);
 void toggleToSelfStash(Unit* ptChar);
+void toggleAndSelectStash(Unit* ptChar, Stash* selectedStash, bool showSharedStash);
+
 void setCurrentStashIndex(Unit* ptChar, int index);
 void selectPreviousStash(Unit* ptChar);
 void selectNextStash(Unit* ptChar);
@@ -55,17 +57,22 @@ void selectPrevious2Stash(Unit* ptChar);
 void selectNext2Stash(Unit* ptChar);
 void selectPreviousIndex2Stash(Unit* ptChar);
 void selectNextIndex2Stash(Unit* ptChar);
-void swapStash(Unit* ptChar, DWORD page, bool toggle);
+
+void swapStash(Unit* ptChar, DWORD targetPageIndex, bool toggle);
 void renameCurrentStash(Unit* ptChar, char* name);
 void insertStash(Unit* ptChar);
 bool deleteStash(Unit* ptChar, bool isClient);
-
-void selectStash(Unit* ptChar, Stash* newStash);
+void jumpToPage(Unit* ptChar, DWORD targetPageIndex);
+void rememberLastSelectedStash(Unit* ptChar, Stash* selectedStash, bool isRunningDuringInit);
+void selectStash(Unit* ptChar, Stash* newStash, bool isRunningDuringInit = false);
 void setSelectedStashClient(DWORD stashId, DWORD stashFlags, DWORD flags, bool bOnlyItems);
 
 Stash* addStash(Unit* ptChar, bool isShared);
 DWORD loadStashList(Unit* ptChar, BYTE* data, DWORD maxSize, DWORD* curSize, bool isShared);
 void saveStashList(Unit* ptChar, Stash* ptStash, BYTE** data, DWORD* maxSize, DWORD* curSize);
+
+Stash* getCorrespondingFirstStash(Unit* ptChar, bool isFlipped = false);
+Stash* createStashesUpToPageIndex(Unit* ptChar, Stash* currentStash, DWORD targetPageIndex);
 
 void Install_MultiPageStash();
 

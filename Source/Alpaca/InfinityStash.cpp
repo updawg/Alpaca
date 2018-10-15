@@ -32,7 +32,7 @@ char* sharedStashFilename = NULL;
 bool active_multiPageStash = true;
 bool active_sharedStash = false;
 
-// Mixing items between hardcore and softcore is not allowed in the SPF.
+// Let's keep hardcore and softcore shared stashes separate.
 bool separateHardSoftStash = true;
 
 typedef int (*TchangeToSelectedStash)(Unit* ptChar, Stash* newStash, DWORD bOnlyItems, DWORD bIsClient);
@@ -60,6 +60,20 @@ DWORD endStashList(Unit* ptChar, Stash* ptStash)
 		stash = stash->nextStash;
 	}
 	return 1;
+}
+
+// Gets the first stash for the corresponding stash (Personal or Shared)
+// If you pass true to isFlipped, it will return the alternate first stash.
+Stash* getCorrespondingFirstStash(Unit* ptChar, bool isFlipped)
+{
+	if (!isFlipped)
+	{
+		return PCPY->currentStash->isShared ? PCPY->sharedStash : PCPY->selfStash;
+	}
+	else
+	{
+		return PCPY->currentStash->isShared ? PCPY->selfStash : PCPY->sharedStash;
+	}
 }
 
 Stash* getLastStash(Stash* ptStash)
@@ -118,7 +132,7 @@ Stash* getStash(Unit* ptChar, DWORD isShared, DWORD id)
 {
 	Stash* ptStash = isShared ? PCPY->sharedStash : PCPY->selfStash;
 
-	while(ptStash)
+	while (ptStash)
 	{
 		if (ptStash->id == id) return ptStash;
 		ptStash = ptStash->nextStash;
@@ -364,32 +378,82 @@ void setSelectedStashClient(DWORD stashId, DWORD stashFlags, DWORD flags, bool b
 	PCPY->flags = flags;
 }
 
-void selectStash(Unit* ptChar, Stash* newStash)
+void selectStash(Unit* ptChar, Stash* newStash, bool isRunningDuringInit)
 {
-	if (!newStash)
-		return;
+	if (!newStash) return;
 	changeToSelectedStash(ptChar, newStash, 0, 0);
 	updateSelectedStashClient(ptChar);
+	rememberLastSelectedStash(ptChar, newStash, isRunningDuringInit);
+}
+
+// Jumps to the target page
+void jumpToPage(Unit* ptChar, DWORD targetPageIndex)
+{
+	bool isShared = PCPY->currentStash->isShared;
+	Stash* targetStash = getStash(ptChar, isShared, targetPageIndex);
+
+	if (targetStash == NULL)
+	{
+		targetStash = createStashesUpToPageIndex(ptChar, getCorrespondingFirstStash(ptChar), targetPageIndex);
+	}
+
+	selectStash(ptChar, targetStash);
+}
+
+// Creates all the pages up to a page index
+Stash* createStashesUpToPageIndex(Unit* ptChar, Stash* currentStash, DWORD targetPageIndex)
+{
+	for (DWORD currentPageIndex = 0; currentPageIndex < targetPageIndex; currentPageIndex++)
+	{
+		if (currentStash->nextStash == NULL)
+		{
+			addStash(ptChar, currentStash->isShared);
+		}
+		currentStash = currentStash->nextStash;
+	}
+
+	return currentStash;
 }
 
 ///// public functions
 void toggleToSelfStash(Unit* ptChar)
 {
-	Stash* selStash = PCPY->selfStash;
-	if (selStash && (selStash != PCPY->currentStash))
+	Stash* selStash;
+	
+	if (PCPY->lastSelectedSelfStash != NULL)
 	{
-		PCPY->showSharedStash = false;
-		selectStash(ptChar, selStash);
+		selStash = PCPY->lastSelectedSelfStash;
 	}
+	else
+	{
+		selStash = PCPY->selfStash;
+	}
+
+	toggleAndSelectStash(ptChar, selStash, false);
 }
 
 void toggleToSharedStash(Unit* ptChar)
 {
-	Stash* selStash = PCPY->sharedStash;
-	if (selStash && (selStash != PCPY->currentStash))
+	Stash* selStash;
+
+	if (PCPY->lastSelectedSharedStash != NULL)
 	{
-		PCPY->showSharedStash = true;
-		selectStash(ptChar, selStash);
+		selStash = PCPY->lastSelectedSharedStash;
+	}
+	else
+	{
+		selStash = PCPY->sharedStash;
+	}
+
+	toggleAndSelectStash(ptChar, selStash, true);
+}
+
+void toggleAndSelectStash(Unit* ptChar, Stash* selectedStash, bool showSharedStash)
+{
+	if (selectedStash && (selectedStash != PCPY->currentStash))
+	{
+		PCPY->showSharedStash = showSharedStash;
+		selectStash(ptChar, selectedStash);
 	}
 }
 
@@ -409,17 +473,23 @@ void toggleStash(Unit* ptChar, DWORD page)
 	swapStash(ptChar, curStash, swpStash);
 }
 
-void swapStash(Unit* ptChar, DWORD page, bool toggle)
+void swapStash(Unit* ptChar, DWORD targetPageIndex, bool toggle)
 {
-	log_msg("swap stash page = %u\n", page);
+	log_msg("swap stash page = %u\n", targetPageIndex);
+
+	// Get the current stash
 	Stash* curStash = PCPY->currentStash;
-	Stash* swpStash = curStash->isShared == toggle ? PCPY->selfStash : PCPY->sharedStash;
-	for (DWORD i = 0; i < page; i++)
-	{
-		if (curStash->nextStash == NULL)
-			addStash(ptChar, swpStash->isShared);
-		swpStash = swpStash->nextStash;
-	}
+
+	// Get the stash we want to swap to (on the opposite type), the reference starts at id 0 (aka Page 1).
+	Stash* swpStash = getCorrespondingFirstStash(ptChar, toggle);
+
+	// Loop through each page until we get up to the page we want to toggle our items into
+	// in the opposite stash type, each stash in between needs to be allocated so that our
+	// pointer to the next stash can point to the correct location.
+	swpStash = createStashesUpToPageIndex(ptChar, swpStash, targetPageIndex);
+
+	// Now that we've arrived at stash page we want to switch our
+	// items to in the opposite stash type, go ahead and do the swap.
 	swapStash(ptChar, curStash, swpStash);
 }
 
@@ -506,7 +576,9 @@ void selectPreviousStash(Unit* ptChar)
 {
 	Stash* selStash = PCPY->currentStash->previousStash;
 	if (selStash && (selStash != PCPY->currentStash))
+	{
 		selectStash(ptChar, selStash);
+	}
 }
 
 void selectPrevious2Stash(Unit* ptChar)// Select first stash
@@ -525,9 +597,31 @@ void selectNextStash(Unit* ptChar)
 	selStash = selStash->nextStash ? selStash->nextStash : addStash(ptChar, PCPY->showSharedStash);
 
 	if (selStash && (selStash != PCPY->currentStash))
+	{
 		selectStash(ptChar, selStash);
+	}
 }
 
+// Remembers the last selected stash for the particular stash type
+// for the duration of the game session.
+void rememberLastSelectedStash(Unit* ptChar, Stash* selectedStash, bool isRunningDuringInit)
+{
+	// It seems the code at the moment while scan all the stashes until it reaches the last stash
+	// during game initialization. For this case, we don't want to update it since then the user
+	// would see the item in the last page when they open their stash. We want to start on the
+	// first pages of both (personal/shared), and only remember the pages within the user's
+	// game session.
+	if (isRunningDuringInit) return;
+
+	if (selectedStash->isShared)
+	{
+		PCPY->lastSelectedSharedStash = selectedStash;
+	}
+	else
+	{
+		PCPY->lastSelectedSelfStash = selectedStash;
+	}
+}
 
 void selectNext2Stash(Unit* ptChar)//select last stash
 {

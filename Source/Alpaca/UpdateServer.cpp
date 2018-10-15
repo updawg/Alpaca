@@ -23,6 +23,7 @@
 int renameIndex = 0;
 char renameString[16];
 DWORD PageSwap;
+DWORD PageSelect;
 
 int __stdcall handleServerUpdate(Unit* ptChar, WORD param)
 {
@@ -46,7 +47,10 @@ int __stdcall handleServerUpdate(Unit* ptChar, WORD param)
 		case US_SELECT_NEXT_INDEX2 :	selectNextIndex2Stash( ptChar ); return 1;
 		case US_INSERT_PAGE:			insertStash(ptChar); selectNextStash(ptChar); return 1;
 		case US_DELETE_PAGE:			deleteStash(ptChar, false); return 1;
-
+		case US_SELECT_PAGE3:			PageSelect = arg << 24; return 1;
+		case US_SELECT_PAGE2:			PageSelect |= arg << 16; return 1;
+		case US_SELECT_PAGE1:			PageSelect |= arg << 8; return 1;
+		case US_SELECT_PAGE:			jumpToPage(ptChar, PageSelect | arg); PageSelect = 0; return 1;
 		case US_MAXGOLD :				maxGold(ptChar); return 1;
 		case US_PUTGOLD :				putGold(ptChar, 0); return 1;
 		case US_TAKEGOLD :				takeGold(ptChar, 0); return 1;
@@ -55,19 +59,6 @@ int __stdcall handleServerUpdate(Unit* ptChar, WORD param)
 		case US_SWAP1 :					PageSwap |= arg << 8; return 1;
 		case US_SWAP0:					swapStash(ptChar, PageSwap | arg, false); PageSwap = 0; return 1;
 		case US_SWAP0_TOGGLE :			swapStash(ptChar, PageSwap | arg, true); PageSwap = 0; return 1;
-		case US_RENAME :
-				if (renameIndex == 0)
-					for (int i = 0; i < 16; i++)
-						renameString[i] = 0;
-				renameString[renameIndex++] = (char)arg;
-				if (arg == 0)
-				{
-					renameIndex = 0;
-					log_msg("Rename on Server : %s -> %s\n", ptChar->ptPlayerData->name, renameString);
-					strcpy(ptChar->ptPlayerData->name, renameString);
-					strcpy(ptChar->ptPlayerData->ptNetClient->name, renameString);
-				}
-			return 1;
 		case US_PAGENAME:
 			if (renameIndex == 0)
 				for (int i = 0; i < 16; i++)

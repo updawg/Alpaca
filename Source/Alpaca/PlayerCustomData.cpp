@@ -65,7 +65,7 @@ Unit* __fastcall updateItem(GameStruct* ptGame, DWORD type, DWORD itemNum, Unit*
 	{
 		Stash* ptStash = getStashFromItem(ptChar, ptItem);
 		if (!ptStash) return NULL;
-		selectStash(ptChar, ptStash);
+		selectStash(ptChar, ptStash, true);
 	}
 	return ptItem;
 }
@@ -156,16 +156,6 @@ Unit* __stdcall getNextItemToFree(Unit* ptChar, Unit* ptItem)
 	}
 
 	return NULL;
-}
-
-void __fastcall updateItem_111(Unit* ptItem, Unit* ptChar)
-{
-	if (PCGame->isLODGame && (D2ItemGetPage(ptItem) == 4))
-	{
-		Stash* ptStash = getStashFromItem(ptChar, ptItem);
-		if (ptStash)
-			selectStash(ptChar, ptStash);
-	}
 }
 
 FCT_ASM ( caller_updateItem_9 )
