@@ -29,21 +29,20 @@
 #include "commands.h"
 
 char* modDataDirectory = "Alpaca";
-bool active_plugin = true;
-bool active_CheckMemory = true;
-char* dllFilenames;
 char* parametersFileName = "Alpaca.ini";
+bool active_plugin = true;
+
+// Active Check Memory is on by default. It should only be disabled by a developer.
+// Users should report bugs and/or the users environment/configuration should be inspected.
+bool active_CheckMemory = true;
 
 const int BUFFER_SIZE = 1024;
 
 TargetMod selectModParam = MOD_NO;
 
 const char* S_GENERAL = "GENERAL";
-const char* S_dllFilenames = "DllToLoad";
-const char* S_dllFilenames2 = "DllToLoad2";
 const char* S_active_plugin = "ActivePlugin";
 const char* S_active_logFile = "ActiveLogFile";
-const char* S_active_CheckMemory = "ActiveCheckMemory";
 
 const char* S_MAIN_SCREEN = "MAIN SCREEN";
 const char* S_active_DiabloVersionTextChange = "ActiveDiabloVersionTextChange";
@@ -54,8 +53,8 @@ const char* S_AlpacaVersionColor = "ColorOfAlpacaVersionText";
 
 const char* S_STASH = "STASH";
 const char* S_maxSelfPages = "MaxPersonalPages";
-const char* S_nbPagesPerIndex = "NbPagesPerIndex";
-const char* S_nbPagesPerIndex2 = "NbPagesPerIndex2";
+const char* S_nbPagesPerIndex = "NumberOfPagesPerIndex";
+const char* S_nbPagesPerIndex2 = "NumberOfPagesPerIndexWhenShiftPressed";
 const char* S_active_sharedStash = "SoloSelfFound";
 const char* S_openSharedStashOnLoading = "OpenSharedStashOnLoading";
 const char* S_maxSharedPages = "MaxSharedPages";
@@ -114,24 +113,6 @@ void init_General(INIFile* iniFile, char* buffer, DWORD maxSize)
 	active_logFileIniOriginal = IsEnabled(buffer);
 
 	LogParameterIntegerValue(S_active_logFile, active_logFileIniOriginal);
-
-	GetValueFromIni(iniFile, S_GENERAL, S_active_CheckMemory, "1", buffer, maxSize);
-	active_CheckMemory = IsEnabled(buffer);
-	LogParameterIntegerValue(S_active_CheckMemory, active_CheckMemory);
-
-	GetValueFromIni(iniFile, S_GENERAL, S_dllFilenames, "", buffer, maxSize);
-	strcat(buffer,"|");
-	char* buf = &buffer[strlen(buffer)];
-
-	if (!iniFile->GetPrivateProfileString(S_GENERAL, S_dllFilenames2, NULL, buf, maxSize))
-	{
-		log_msg("No DLL filenames retrieved from configuration file ...");
-	}
-
-	dllFilenames = (char*)D2FogMemAlloc(strlen(buffer)+1,__FILE__,__LINE__,0);
-	strcpy(dllFilenames, buffer);
-
-	LogParameterStringValue(S_dllFilenames, dllFilenames);
 }
 
 void init_VersionText(INIFile* iniFile, char* buffer, DWORD maxSize)
@@ -218,6 +199,8 @@ void init_Stash(INIFile* iniFile, char* buffer, DWORD maxSize)
 		displaySharedSetItemNameInGreen = IsEnabled(buffer);
 		LogParameterBooleanValue(S_displaySharedSetItemNameInGreen, displaySharedSetItemNameInGreen);
 	}
+
+	log_msg("\n");
 }
 
 void LoadParameters()
@@ -243,7 +226,7 @@ void LoadParameters()
 	}
 	else
 	{
-		log_msg("There was an error opening the configuration file. Aborting.\n\n");
+		log_box("There was an error opening the configuration file. Aborting.\n\n");
 		active_plugin = false;
 	}
 

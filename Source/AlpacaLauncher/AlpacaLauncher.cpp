@@ -22,10 +22,10 @@
 #include "../Alpaca/Utilities/Utility.h"
 
 const char* LAUNCHING_LABEL = "LAUNCHING";
-const char* LIBRARY_NAME = "Library";
 const char* PARAM_LABEL = "Param";
 const char* PROGRAM_NAME = "Alpaca";
 const char* GAME_EXE_NAME = "Game.exe";
+const LPSTR ALPACA_DLL_NAME = "Alpaca.dll";
 const char* INI_FILE_NAME = "Alpaca.ini";
 const char* LONG_COMMAND = "The command is too long.";
 
@@ -101,6 +101,24 @@ void assertion(const char* pFormat, ...)
 	exit(1);
 }
 
+bool isMemoryAlreadyCorrect(DWORD currentByte1, DWORD currentByte2, DWORD currentByte3, DWORD currentByte4, DWORD currentByte5, LPBYTE currentLibraryAddress, LPBYTE expectedLibraryAddress)
+{
+	const DWORD expectedByte1 = 0xFF;
+	const DWORD expectedByte2 = 0x15;
+	const DWORD expectedByte3 = 0xC0;
+	const DWORD expectedByte4 = 0xA7;
+	const DWORD expectedByte5 = 0x6F;
+
+	bool isAlreadyCorrect = currentByte1 == expectedByte1 &&
+							currentByte2 == expectedByte2 &&
+							currentByte3 == expectedByte3 &&
+							currentByte4 == expectedByte4 &&
+							currentByte5 == expectedByte5 &&
+							currentLibraryAddress == expectedLibraryAddress;
+
+	return isAlreadyCorrect;
+}
+
 bool InstallAlpaca(HANDLE h, LPBYTE addr, char* libraryName)
 {
 	LPBYTE loadCallerAddr = addr;
@@ -129,34 +147,57 @@ bool InstallAlpaca(HANDLE h, LPBYTE addr, char* libraryName)
 		assertion("Alpaca: Read process memory failed. [1]");
 	}
 
-	if (buf[0] != 0xFF || buf[1] != 0x15 || *(LPBYTE*)(buf + 2) != loadLibraryAddr)
+	// Lets try some experimental stuff (Check if all the values are expected, and if not then we can fall
+	// back to the original behavior so we can keep debugging:
+	LPBYTE currentLibraryAddress = *(LPBYTE*)(buf + 2);
+	LPBYTE expectedLibraryAddress = loadLibraryAddr;
+	bool isAlreadyCorrect = isMemoryAlreadyCorrect(buf[0], buf[1], buf[3], buf[4], buf[5], currentLibraryAddress, expectedLibraryAddress);
+	if (!isAlreadyCorrect)
 	{
-		if (buf[0] != 0xE8 || buf[3] != 0x00 || buf[4] != 0x00 || buf[5] != 0x90)
+		if (buf[0] != 0xFF || buf[1] != 0x15 || currentLibraryAddress != expectedLibraryAddress)
 		{
-			assertion("Alpaca: Read process memory failed. [2]");
-		}
-		else
-		{
-			alreadyInstalled = true;
+			if (buf[0] != 0xE8 || buf[3] != 0x00 || buf[4] != 0x00 || buf[5] != 0x90)
+			{
+				assertion("Alpaca: Read process memory failed. [2] (%08X, %08X, %08X, %08X, %08X, %08X, %08X)",
+					currentLibraryAddress, expectedLibraryAddress, buf[0], buf[1], buf[3], buf[4], buf[5]);
+			}
+			else
+			{
+				alreadyInstalled = true;
+			}
 		}
 	}
-		
+	
+	// Reset stuff for safety
+	isAlreadyCorrect = false;
+	currentLibraryAddress = NULL;
+	expectedLibraryAddress = NULL;
+
+	// Let's continue ;D
 	res = ReadProcessMemory(h, (LPVOID)freeCallerAddr, buf, 6, &nb);
 	if (!res || nb < 6)
 	{
 		assertion("Alpaca: Read process memory failed. [3]");
 	}
 
-	if (buf[0] != 0xFF || buf[1] != 0x15 || *(LPBYTE*)(buf + 2) != freeLibraryAddr)
+	// Try my experimental thing here as well
+	currentLibraryAddress = *(LPBYTE*)(buf + 2);
+	expectedLibraryAddress = freeLibraryAddr;
+	isAlreadyCorrect = isMemoryAlreadyCorrect(buf[0], buf[1], buf[3], buf[4], buf[5], currentLibraryAddress, expectedLibraryAddress);
+	if (!isAlreadyCorrect)
 	{
-		if (buf[0] != 0xE8 || buf[3] != 0x00 || buf[4] != 0x00 || buf[5] != 0x90)
+		if (buf[0] != 0xFF || buf[1] != 0x15 || *(LPBYTE*)(buf + 2) != freeLibraryAddr)
 		{
-			if (!alreadyInstalled)
+			if (buf[0] != 0xE8 || buf[3] != 0x00 || buf[4] != 0x00 || buf[5] != 0x90)
 			{
-				assertion("Alpaca: Read process memory failed. [4]");
+				if (!alreadyInstalled)
+				{
+					assertion("Alpaca: Read process memory failed. [4] (%08X, %08X, %08X, %08X, %08X, %08X, %08X)",
+						currentLibraryAddress, expectedLibraryAddress, buf[0], buf[1], buf[3], buf[4], buf[5]);
+				}
 			}
 		}
-	}	
+	}
 
 	if (alreadyInstalled) return true;
 
@@ -197,21 +238,21 @@ bool InstallAlpaca(HANDLE h, LPBYTE addr, char* libraryName)
 	LPBYTE dllNameAddr = memory + pos;
 	len = strlen(libraryName) + 1;
 	res = WriteProcessMemory(h, dllNameAddr, libraryName, len, &nb);
-	if (!res || (nb != len)) assertion("Alpaca: Write custom data in memory failed");
+	if (!res || (nb != len)) assertion("Alpaca: Write custom data in memory failed. [1]");
 	pos += pos % 16 ? len + 16 - pos % 16 : len;
 
 	// Init name
 	LPBYTE initNameAddr = memory + pos;
 	len = strlen(initFctName) + 1;
 	res = WriteProcessMemory(h, initNameAddr, initFctName, len, &nb);
-	if (!res || (nb != len)) assertion("Alpaca: Write custom data in memory failed");
+	if (!res || (nb != len)) assertion("Alpaca: Write custom data in memory failed. [2]");
 	pos += pos % 16 ? len + 16 - pos % 16 : len;
 
 	// Release name
 	LPBYTE releaseNameAddr = memory + pos;
 	len = strlen(releaseFctName) + 1;
 	res = WriteProcessMemory(h, releaseNameAddr, releaseFctName, len, &nb);
-	if (!res || (nb != len)) assertion("Alpaca: Write custom data in memory failed");
+	if (!res || (nb != len)) assertion("Alpaca: Write custom data in memory failed. [3]");
 	pos += pos % 16 ? len + 16 - pos % 16 : len;
 
 	// Load fct
@@ -226,7 +267,7 @@ bool InstallAlpaca(HANDLE h, LPBYTE addr, char* libraryName)
 	*(LPBYTE*)&loadDll[63] = getProcAddressAddr;
 	len = sizeof(loadDll);
 	res = WriteProcessMemory(h, loadDllAddr, loadDll, len, &nb);
-	if (!res || (nb != len)) assertion("Alpaca: Write custom data in memory failed");
+	if (!res || (nb != len)) assertion("Alpaca: Write custom data in memory failed. [4]");
 	pos += pos % 16 ? len + 16 - pos % 16 : len;
 
 	// Free fct
@@ -239,7 +280,7 @@ bool InstallAlpaca(HANDLE h, LPBYTE addr, char* libraryName)
 	*(LPBYTE*)&freeDll[60] = freeLibraryAddr;
 	len = sizeof(freeDll);
 	res = WriteProcessMemory(h, freeDllAddr, freeDll, len, &nb);
-	if (!res || (nb != len)) assertion("Alpaca: Write custom data in memory failed");
+	if (!res || (nb != len)) assertion("Alpaca: Write custom data in memory failed. [5]");
 	pos += pos % 16 ? len + 16 - pos % 16 : len;
 
 	// Patch load library
@@ -277,48 +318,7 @@ bool isD2gfxLoaded(HANDLE hProcess, LPVOID addr)
 	return false;
 }
 
-bool launchGame98(LPSTR commandLine, LPSTR currentDirectory, LPSTR libraryName)
-{
-	STARTUPINFO si;
-	PROCESS_INFORMATION pi;
-	ZeroMemory(&si, sizeof(si));
-	si.cb = sizeof(si);
-	ZeroMemory(&pi, sizeof(pi));
-	BOOL success = CreateProcess(0, commandLine, 0, 0, false, 0, 0, currentDirectory, &si, &pi); //DEBUG_ONLY_THIS_PROCESS
-	if (!success) return false;
-	DWORD ret;
-
-	Sleep(10);
-	while (true)
-	{
-		SuspendThread(pi.hThread);
-
-		if (!GetExitCodeProcess(pi.hProcess, &ret) || (ret != STILL_ACTIVE))
-			exit(0);
-		if (isD2gfxLoaded(pi.hProcess, (LPVOID)0x6FA80000))
-		{
-			InstallAlpaca(pi.hProcess, (LPBYTE)0x6FA80000, libraryName);
-			ResumeThread(pi.hThread);
-			return true;
-		}
-		if (isD2gfxLoaded(pi.hProcess, (LPVOID)0x6FA70000))
-		{
-			InstallAlpaca(pi.hProcess, (LPBYTE)0x6FA70000, libraryName);
-			ResumeThread(pi.hThread);
-			return true;
-		}
-		if (isD2gfxLoaded(pi.hProcess, (LPVOID)0x6FAA0000))
-		{
-			InstallAlpaca(pi.hProcess, (LPBYTE)0x6FAA0000, libraryName);
-			ResumeThread(pi.hThread);
-			return true;
-		}
-		ResumeThread(pi.hThread);
-	}
-	return false;
-}
-
-bool launchGameXP(LPSTR commandLine, LPSTR currentDirectory, LPSTR libraryName)
+bool launchGame(LPSTR commandLine, LPSTR currentDirectory, LPSTR libraryName)
 {
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
@@ -433,14 +433,6 @@ int APIENTRY WinMain (
 	strcat(command, " ");
 	GetPrivateProfileString(LAUNCHING_LABEL, PARAM_LABEL, NULL, command + len, sizeof(command) - len, iniFileName);
 
-	// Retrieve the library name to load from the config file
-	char libraryName[50];
-	if (!GetPrivateProfileString(LAUNCHING_LABEL, LIBRARY_NAME, "", libraryName, 50, iniFileName) || !libraryName[0])
-	{
-		assertion("There was an error with finding the library name in the following config file: %s", iniFileName);
-		return 1;
-	}
-
 	// Install Alpaca and Launch Diablo II
 	HMODULE module = GetModuleHandle("Kernel32.dll");
 	if (module)
@@ -448,9 +440,9 @@ int APIENTRY WinMain (
 		debugActiveProcessStop = (tDebugActiveProcessStop)GetProcAddress(module, "DebugActiveProcessStop");
 		if (debugActiveProcessStop)
 		{
-			return !launchGameXP(command, currentDirectory, libraryName);
+			return !launchGame(command, currentDirectory, ALPACA_DLL_NAME);
 		}
 	}
 
-	return !launchGame98(command, currentDirectory, libraryName);
+	assertion("The game was attempted to be launched, no errors occurred, but was unable to be launched. Exiting.");
 }

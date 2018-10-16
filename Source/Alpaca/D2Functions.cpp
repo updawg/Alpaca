@@ -91,9 +91,6 @@ Fog::TD2MPQReadFile D2MPQReadFile;
 Fog::TD2MPQGetSizeFile D2MPQGetSizeFile;
 Fog::TD2FogGetSavePath D2FogGetSavePath;
 
-// D2Lang
-D2Lang::TD2GetStringFromString D2GetStringFromString;
-
 // Storm
 Storm::TD2StormMPQOpenFile D2StormMPQOpenFile;
 Storm::TD2FreeWinMessage D2FreeWinMessage;
@@ -111,8 +108,8 @@ D2Win::TD2SetFont D2SetFont;
 D2Win::TD2PrintPopup D2PrintPopup;
 D2Win::TD2CreateTextBox D2CreateTextBox;
 
-void setImage(sDrawImageInfo* data, void* image){((void**)data)[shifting.ptImage/4]=image;}//0x4 0x8 0x3C
-void setFrame(sDrawImageInfo* data, DWORD frame){((DWORD*)data)[shifting.ptFrame/4]=frame;}//0x8 0x44 0x40
+void setImage(sDrawImageInfo* data, void* image){((void**)data)[shifting.ptImage/4]=image;} //0x4 0x8 0x3C
+void setFrame(sDrawImageInfo* data, DWORD frame){((DWORD*)data)[shifting.ptFrame/4]=frame;} //0x8 0x44 0x40
 
 void InitializeDiabloFunctions()
 {
@@ -179,9 +176,6 @@ void InitializeDiabloFunctions()
 	D2MPQReadFile = Fog::D2MPQReadFile;
 	D2MPQGetSizeFile = Fog::D2MPQGetSizeFile;
 	D2FogGetSavePath = Fog::D2FogGetSavePath;
-
-	// D2Lang
-	D2GetStringFromString = D2Lang::D2GetStringFromString;
 
 	// Storm
 	D2StormMPQOpenFile = Storm::D2StormMPQOpenFile;

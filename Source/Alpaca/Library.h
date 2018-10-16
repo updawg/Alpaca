@@ -49,7 +49,7 @@ public:
 			log_msg("Failed to load library : %s\n", Name);
 			exit(-1);
 		}
-		log_msg("%s loaded at:\t%08X (%s)\n", Name, proposedOffset, VersionUtility::GetVersionAsString());
+		log_msg("%s successfully loaded. (%08X) - %s\n", Name, proposedOffset, VersionUtility::GetVersionAsString());
 		return proposedOffset;
 	}
 

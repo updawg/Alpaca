@@ -17,17 +17,13 @@
 
 #include "sharedSaveFile.h"
 #include "infinityStash.h"
-#include "customLibraries.h"
 #include "common.h"
 #include <stdio.h>
 
-#define FILE_SHAREDSTASH 0x00535353	//"SSS "
+#define FILE_SHAREDSTASH 0x00535353	// "SSS"
 #define BUFFER_SIZE 0x4000
-#define FILE_VERSION 0x3230			//"02"
+#define FILE_VERSION 0x3230			// "02"
 
-//6FC8CE8A  |. E8 A16BFAFF    CALL D2Game.6FC33A30
-//$+C0     >            1F 00 00 00 03 00 00 06                  .....
-// 28  0010 1000
 BYTE* readSharedSaveFile(char* name, DWORD* size)
 {
 	char filename[512];
@@ -50,7 +46,7 @@ BYTE* readSharedSaveFile(char* name, DWORD* size)
 			fclose(file);
 			file=NULL;
 		}
-		log_msg("%s is a HardCore character = %d\n",name,isHardCore);
+		log_msg("%s is a Hardcore character = %d\n",name,isHardCore);
 	}
 
 	if (active_sharedStash)
@@ -82,14 +78,7 @@ BYTE* readSharedSaveFile(char* name, DWORD* size)
 		*((DWORD *)&data[0]) = FILE_SHAREDSTASH;
 		*((WORD *)&data[4]) = FILE_VERSION;
 		*((DWORD *)&data[6]) = 0;
-		*((DWORD *)&data[10]) = 0;// number of stash
-
-		TCustomDll* currentDll = customDlls;
-		while (currentDll)
-		{
-			currentDll->initSharedSaveFile(&data, &maxSize, size);
-			currentDll=currentDll->nextDll;
-		}
+		*((DWORD *)&data[10]) = 0; // number of stash
 	}
 
 	return data;
@@ -124,18 +113,9 @@ int loadSharedSaveFile(Unit* ptChar, BYTE data[], DWORD maxSize)
 	}
 
 	int ret = loadStashList(ptChar, data, maxSize, &curSize, true);
-
-	TCustomDll* currentDll = customDlls;
-	while (!ret && currentDll)
-	{
-		ret = currentDll->loadSharedSaveFile(ptChar, data, maxSize, &curSize);
-		currentDll=currentDll->nextDll;
-	}
-
 	PCPY->sharedStashIsOpened = true;
 	return ret;
 }
-
 
 void writeSharedSaveFile(char* name, BYTE* data, DWORD size, bool isHardcore)
 {
@@ -161,7 +141,6 @@ void writeSharedSaveFile(char* name, BYTE* data, DWORD size, bool isHardcore)
 	strcat(szSaveName,".sss");
 	log_msg("Shared file for saving : %s\n", szSaveName);
 
-//	if (!MoveFileEx(szTempName, szSaveName, MOVEFILE_WRITE_THROUGH|MOVEFILE_REPLACE_EXISTING)) 
 	DeleteFile(szSaveName);
 	if (!MoveFile(szTempName, szSaveName))
 		log_box("Could not create the shared save file.");
@@ -217,13 +196,6 @@ void saveSharedSaveFile(Unit* ptChar, BYTE** data, DWORD* maxSize, DWORD* curSiz
 		*curSize += 2;
 	}
 	saveStashList(ptChar, PCPY->sharedStash, data, maxSize, curSize);
-
-	TCustomDll* currentDll = customDlls;
-	while (currentDll)
-	{
-		currentDll->saveSharedSaveFile(ptChar, data, maxSize, curSize);
-		currentDll=currentDll->nextDll;
-	}
 }
 
 

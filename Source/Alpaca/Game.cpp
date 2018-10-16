@@ -22,7 +22,7 @@ void Game::Init()
 	Name = "Game.exe";
 	Offset = (DWORD)GetModuleHandle(NULL);
 	VersionUtility::SetVersion(VersionUtility::GetVersion(Name));
-	log_msg("Game.exe loaded at:\t%08X (%s)\n", Offset, VersionUtility::GetVersionAsString());
+	log_msg("%s successfully loaded. (%08X) - %s\n", Name, Offset, VersionUtility::GetVersionAsString());
 }
 
 void Game::SetFunctions()

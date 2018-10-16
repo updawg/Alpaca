@@ -27,11 +27,9 @@ void LibraryLoader::Init()
 
 	// Initialize static class variables
 	D2Client::Init();
-	D2CMP::Init();
 	D2Common::Init();
 	D2Game::Init();
 	D2gfx::Init();
-	D2Lang::Init();
 	D2Launch::Init();
 	D2Net::Init();
 	D2Win::Init();
@@ -47,14 +45,11 @@ void LibraryLoader::HookLibraries()
 	log_msg("====================================\n");
 
 	D2Client::HookLibrary();
-	//D2CMP::HookLibrary();
 	D2Common::HookLibrary();
 	D2Game::HookLibrary();
 	D2gfx::HookLibrary();
-	D2Lang::HookLibrary();
 	D2Launch::HookLibrary();
-	//D2Net::HookLibrary();
-	//D2Win::HookLibrary();
+	D2Win::HookLibrary();
 	Fog::HookLibrary();
 	Storm::HookLibrary();
 	
@@ -67,14 +62,11 @@ void LibraryLoader::UnhookLibraries()
 	log_msg("====================================\n");
 
 	D2Client::UnhookLibrary();
-	//D2CMP::UnhookLibrary();
 	D2Common::UnhookLibrary();
 	D2Game::UnhookLibrary();
 	D2gfx::UnhookLibrary();
-	D2Lang::UnhookLibrary();
 	D2Launch::UnhookLibrary();
-	//D2Net::UnhookLibrary();
-	//D2Win::UnhookLibrary();
+	D2Win::UnhookLibrary();
 	Fog::UnhookLibrary();
 	Storm::UnhookLibrary();
 

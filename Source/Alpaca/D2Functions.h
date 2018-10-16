@@ -64,8 +64,6 @@ extern D2Common::TD2ItemGetPage D2ItemGetPage;
 extern D2Common::TD2SetAnim D2SetAnim;
 extern D2Common::TD2SaveItem D2SaveItem;
 extern D2Common::TD2ReadFile D2ReadFile;
-
-// D2Common: Only 1.09
 extern D2Common::TD2Common10581 D2Common10581;
 extern D2Common::TD2Common10598 D2Common10598;
 extern D2Common::TD2Common10673 D2Common10673;
@@ -75,8 +73,6 @@ extern D2Client::TD2LoadImage D2LoadImage;
 extern D2Client::TD2FreeImage D2FreeImage;
 extern D2Client::TD2PlaySound D2PlaySound;
 extern D2Client::TD2LoadBuySelBtn D2LoadBuySelBtn;
-
-// D2Client: Only 1.10
 extern D2Client::TD2isLODGame D2isLODGame;
 extern D2Client::TD2GetMouseX D2GetMouseX;
 extern D2Client::TD2GetMouseY D2GetMouseY;
@@ -91,8 +87,6 @@ extern DWORD* ptWindowStartX;
 extern D2Game::TD2SendPacket D2SendPacket;
 extern D2Game::TD2LoadInventory D2LoadInventory;
 extern D2Game::TD2GameGetObject D2GameGetObject;
-
-// D2Game: Only 1.10
 extern D2Game::TD2GetClient D2GetClient;
 
 // D2Game: Variables
@@ -113,9 +107,6 @@ extern Fog::TD2MPQCloseFile D2MPQCloseFile;
 extern Fog::TD2MPQReadFile D2MPQReadFile;
 extern Fog::TD2MPQGetSizeFile D2MPQGetSizeFile;
 extern Fog::TD2FogGetSavePath D2FogGetSavePath;
-
-// D2Lang
-extern D2Lang::TD2GetStringFromString D2GetStringFromString;
 
 // Storm
 extern Storm::TD2StormMPQOpenFile D2StormMPQOpenFile;

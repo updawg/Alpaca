@@ -21,11 +21,9 @@
 
 #include "../Game.h"
 #include "../D2Client.h"
-#include "../D2CMP.h"
 #include "../D2Common.h"
 #include "../D2Game.h"
 #include "../D2gfx.h"
-#include "../D2Lang.h"
 #include "../D2Launch.h"
 #include "../D2Net.h"
 #include "../D2Win.h"

@@ -36,7 +36,6 @@
 #include "Utilities\VersionUtility.h"
 
 #include "D2Functions.h"
-#include "LocalizedStrings.h"
 
 bool isOnRect(DWORD x, DWORD y, DWORD x0, DWORD y0, DWORD l, DWORD h);
 void freeMessage(sWinMessage* msg);

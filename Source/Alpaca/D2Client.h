@@ -36,8 +36,6 @@ public:
 	typedef void(__fastcall *TD2SendToServerXX) (DWORD size, BYTE * data);
 	typedef void* (__stdcall *TD2LoadBuySelBtn) ();
 	typedef DWORD(__fastcall *TD2isLODGame) ();
-
-	// Until 1.10
 	typedef DWORD(__stdcall *TD2GetMouseX) ();
 	typedef DWORD(__stdcall *TD2GetMouseY) ();
 	typedef Unit* (__stdcall *TD2GetClientPlayer) ();

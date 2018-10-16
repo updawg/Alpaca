@@ -20,7 +20,6 @@
 #include "common.h"
 
 extern bool active_bigStash;
-extern bool active_bigStash_tested;
 
 void Install_BigStash();
 

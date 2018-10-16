@@ -17,7 +17,6 @@
 
 #include "extendedSaveFile.h"
 #include "infinityStash.h"
-#include "customLibraries.h"
 #include "common.h"
 #include <stdio.h>
 
@@ -54,18 +53,11 @@ BYTE * readExtendedSaveFile(char* name, DWORD* size)//WORKS
 		*((DWORD*)&data[0])  = FILE_EXTENDED; //"CSTM"
 		*((WORD *)&data[4])  = FILE_VERSION;
 		*((DWORD*)&data[10]) = 0;// number of stash
-
-		TCustomDll* currentDll = customDlls;
-		while (currentDll)
-		{
-			currentDll->initExtendedSaveFile(&data, &maxSize, size);
-			currentDll=currentDll->nextDll;
-		}
 	}
 	return data;
 }
 
-int loadExtendedSaveFile(Unit* ptChar, BYTE data[], DWORD maxSize)//WORKS
+int loadExtendedSaveFile(Unit* ptChar, BYTE data[], DWORD maxSize)
 {
 	if (!ptChar || !PCPY || !data) return 0;
 
@@ -90,14 +82,6 @@ int loadExtendedSaveFile(Unit* ptChar, BYTE data[], DWORD maxSize)//WORKS
 	curSize += 3;
 
 	int ret = loadStashList(ptChar, data, maxSize, &curSize, false);
-
-	TCustomDll* currentDll = customDlls;
-	while (!ret && currentDll)
-	{
-		ret = currentDll->loadExtendedSaveFile(ptChar, data, maxSize, &curSize);
-		currentDll=currentDll->nextDll;
-	}
-
 
 	PCPY->selfStashIsOpened = true;
 	return ret;
@@ -156,12 +140,5 @@ void saveExtendedSaveFile(Unit* ptChar, BYTE** data, DWORD* maxSize, DWORD* curS
 	*curSize += 4;
 
 	saveStashList(ptChar, PCPY->selfStash, data, maxSize, curSize);
-
-	TCustomDll* currentDll = customDlls;
-	while (currentDll)
-	{
-		currentDll->saveExtendedSaveFile(ptChar, data, maxSize, curSize);
-		currentDll=currentDll->nextDll;
-	}
 }
 

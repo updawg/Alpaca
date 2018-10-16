@@ -36,12 +36,11 @@ DWORD __stdcall isModFile (char* filename)
 		Utility::GetAlpacaDirectory(currentDirectory);
 
 		char pathToFile[MAX_PATH];
-		strcat(pathToFile, currentDirectory);
+		strcpy(pathToFile, currentDirectory);
 		strcat(pathToFile, "\\");
 		strcat(pathToFile, filename);
 
-		log_msg(" -> %s\n\n", pathToFile);
-
+		log_msg(" -> %s\n", pathToFile);
 		if ((GetFileAttributesA(pathToFile) & 0x10) == 0) return true;
 	}
 
@@ -81,7 +80,7 @@ void Install_AlpacaFiles()
 	memt_byte(0x15, 0xE8);
 	MEMD_REF4(LeaveCriticalSection, caller_isModFile);
 
-	log_msg("\n" );
+	log_msg("\n");
 
 	isInstalled = true;
 }
@@ -92,12 +91,18 @@ void loadImagesFile(void** images, const char* name)
 	if(!*images)
 	{
 		char buffer[MAX_PATH];
-		sprintf(buffer, "%s\\%s", modDataDirectory, name);
 
-		*images = D2LoadImage(buffer,0);
+		// The path to the .dc6 is relative here, however, D2LoadImage will eventually call our custom
+		// "isModFile" function that returns checks the absolute path from the Alpaca.exe into the Alpaca
+		// directory that is in the same level as the Alpaca.exe.
+		strcpy(buffer, modDataDirectory);
+		strcat(buffer, "\\");
+		strcat(buffer, name);
+
+		*images = D2LoadImage(buffer, 0);
 		if (!*images)
 		{
-			sprintf(buffer, "Don't find Buttons Images File : %s.dc6", name);
+			sprintf(buffer, "Unable to find image file: %s.dc6", name);
 			d2_assert(!*images, buffer, __FILE__, __LINE__);
 		}
 	}
@@ -105,8 +110,18 @@ void loadImagesFile(void** images, const char* name)
 
 void __stdcall loadCustomImages()
 {
-	if ( active_multiPageStash ) loadImagesFile(&stashBtnsImages, "StashBtns");
-	if ( active_sharedStash)		 loadImagesFile(&sharedGoldBtnsImages, "SharedGoldBtns");
+	const char* stashBtnsFile = "StashBtns";
+	const char* sharedGoldBtnsFile = "SharedGoldBtns";
+
+	if (active_multiPageStash)
+	{
+		loadImagesFile(&stashBtnsImages, stashBtnsFile);
+	}
+
+	if (active_sharedStash)
+	{
+		loadImagesFile(&sharedGoldBtnsImages, sharedGoldBtnsFile);
+	}
 }
 
 #define freeImagesFile(I) if(I) {D2FreeImage(I);I=NULL;}

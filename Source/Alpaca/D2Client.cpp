@@ -17,7 +17,6 @@
 
 #include "D2Client.h"
 #include "D2Common.h"
-#include "D2CMP.h"
 #include "Fog.h"
 
 void D2Client::Init()

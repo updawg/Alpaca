@@ -105,14 +105,11 @@
     <ClCompile Include="BigStash.cpp" />
     <ClCompile Include="Commands.cpp" />
     <ClCompile Include="Common.cpp" />
-    <ClCompile Include="CustomLibraries.cpp" />
     <ClCompile Include="D2Client.cpp" />
-    <ClCompile Include="D2CMP.cpp" />
     <ClCompile Include="D2Common.cpp" />
     <ClCompile Include="D2Functions.cpp" />
     <ClCompile Include="D2Game.cpp" />
     <ClCompile Include="D2gfx.cpp" />
-    <ClCompile Include="D2Lang.cpp" />
     <ClCompile Include="D2Launch.cpp" />
     <ClCompile Include="D2Net.cpp" />
     <ClCompile Include="D2Win.cpp" />
@@ -125,7 +122,6 @@
     <ClCompile Include="INIfile.cpp" />
     <ClCompile Include="Interface_Stash.cpp" />
     <ClCompile Include="LoadPlayerData.cpp" />
-    <ClCompile Include="LocalizedStrings.cpp" />
     <ClCompile Include="MainScreen.cpp" />
     <ClCompile Include="ModifMemory.cpp" />
     <ClCompile Include="Parameters.cpp" />
@@ -151,14 +147,11 @@
     <ClInclude Include="commands.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="customData.h" />
-    <ClInclude Include="customLibraries.h" />
     <ClInclude Include="D2Client.h" />
-    <ClInclude Include="D2CMP.h" />
     <ClInclude Include="D2Common.h" />
     <ClInclude Include="D2Functions.h" />
     <ClInclude Include="D2Game.h" />
     <ClInclude Include="D2gfx.h" />
-    <ClInclude Include="D2Lang.h" />
     <ClInclude Include="D2Launch.h" />
     <ClInclude Include="D2Net.h" />
     <ClInclude Include="D2Win.h" />
@@ -171,7 +164,6 @@
     <ClInclude Include="interface_Stash.h" />
     <ClInclude Include="Library.h" />
     <ClInclude Include="loadPlayerData.h" />
-    <ClInclude Include="LocalizedStrings.h" />
     <ClInclude Include="mainScreen.h" />
     <ClInclude Include="modifMemory.h" />
     <ClInclude Include="parameters.h" />

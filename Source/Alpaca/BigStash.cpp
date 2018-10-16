@@ -19,7 +19,6 @@
 #include "common.h"
 
 bool active_bigStash = true;
-bool active_bigStash_tested = false;
 
 const char* tradeStash_RefFile= "%s\\TradeStash";
 const BYTE gridX_BB = 10;
@@ -31,7 +30,6 @@ const DWORD gridbottom_BB = 371;
 
 InventoryBIN* __stdcall modifStashGrid(InventoryBIN* ptInventoryBin)
 {
-	active_bigStash_tested = true;
 	if (!active_bigStash) return ptInventoryBin;
 
 	InventoryBIN* inventory=ptInventoryBin+12;
@@ -62,9 +60,9 @@ FCT_ASM ( caller_modifStashGrid )
 }}
 
 FCT_ASM ( caller_changeTradeStash )
-	MOV EAX,modDataDirectory
+	MOV EAX, modDataDirectory
 	MOV DWORD PTR SS:[ESP+0x8],EAX
-	MOV EAX,tradeStash_RefFile
+	MOV EAX, tradeStash_RefFile
 	MOV DWORD PTR SS:[ESP+0x4],EAX
 	POP EAX
 	PUSH 0x104
