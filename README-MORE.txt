@@ -11,6 +11,7 @@ Compiled with Visual Studio 2017.
 
 Tips for working with Alpaca (in Visual Studio 2017)
 =============
+- All development is done with "Release" mode configuration.
 - Don't release "Debug" builds to the public since most people
   don't have the the debugging DLLs installed. Only use the "Release"
   builds since those DLLs will be provided by the Microsoft Redistributables.
@@ -22,7 +23,7 @@ Tips for working with Alpaca (in Visual Studio 2017)
 - Use static classes and pointer to static functions in static classes
   if attempting to put naked functions in a class. C++ ISO standards
   does not support getting a function pointer to a instanced class function
-  and calling it.
+  and calling it. When in doubt, just stick with regular C.
 
 The reason for the above is because since the code uses a lot of
 naked functions, there are times when the code directly maybe cause

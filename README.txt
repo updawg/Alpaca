@@ -57,12 +57,13 @@ Stash Management Commands
 
 Concerns
 =============
-- This isn't a bug but it is a warning, when playing a LAN game, you should
-  avoid the use of the Shared Stash. This is because both players are essentially seeing
-  a copy of the shared stash at the point that they joined the multi-player game.
-  Since the stashes aren't automatically in-sync with each other, the last player to exit
-  the game will be the stash that gets saved. Only use your personal stashes in LAN games
-  if you don't want to lose any items.
+- This isn't a bug but it is a warning specifically related to if you are playing LAN
+  with two of your own characters, you should avoid the use of the Shared Stash.
+  This is because both of those characters are essentially seeing a copy of the shared
+  stash at the point in time when they joined the LAN game. Since the stashes aren't
+  automatically in-sync with each other, the last character to exit the game will be
+  the stash that gets saved. Only use your personal stashes in LAN games if you don't
+  want to lose any items.
   
 Links
 =============
