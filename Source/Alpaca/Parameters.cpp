@@ -28,6 +28,8 @@
 #include "infinityStash.h"
 #include "commands.h"
 
+const int BUFFER_SIZE = 1024;
+
 char* modDataDirectory = "Alpaca";
 char* parametersFileName = "Alpaca.ini";
 bool active_plugin = true;
@@ -36,42 +38,22 @@ bool active_plugin = true;
 // Users should report bugs and/or the users environment/configuration should be inspected.
 bool active_CheckMemory = true;
 
-const int BUFFER_SIZE = 1024;
-
 TargetMod selectModParam = MOD_NO;
 
 const char* S_GENERAL = "GENERAL";
-const char* S_active_plugin = "ActivePlugin";
 const char* S_active_logFile = "ActiveLogFile";
 
-const char* S_MAIN_SCREEN = "MAIN SCREEN";
-const char* S_active_DiabloVersionTextChange = "ActiveDiabloVersionTextChange";
-const char* S_DiabloVersionText = "DiabloVersionText";
-const char* S_active_PrintAlpacaVersion = "ActivePrintAlpacaVersion";
-const char* S_DiabloVersionColor = "ColorOfDiabloVersionText";
-const char* S_AlpacaVersionColor = "ColorOfAlpacaVersionText";
-
 const char* S_STASH = "STASH";
-const char* S_maxSelfPages = "MaxPersonalPages";
 const char* S_nbPagesPerIndex = "NumberOfPagesPerIndex";
 const char* S_nbPagesPerIndex2 = "NumberOfPagesPerIndexWhenShiftPressed";
-const char* S_active_sharedStash = "SoloSelfFound";
 const char* S_openSharedStashOnLoading = "OpenSharedStashOnLoading";
-const char* S_maxSharedPages = "MaxSharedPages";
-const char* S_sharedStashFilename = "SharedStashFilename";
-const char* S_displaySharedSetItemNameInGreen = "DisplaySharedSetItemNameInGreen";
 
 // Convert 4 char code in a DWORD code
 #define BIN(A,B,C,D) ((DWORD)A) + (((DWORD)B) << 8) + (((DWORD)C) << 16) + (((DWORD)D) << 24)
 
 bool IsEnabled(char* symbol)
 {
-	return atoi(symbol) != 0;
-}
-
-bool IsDisabled(char* symbol)
-{
-	return atoi(symbol) == 0;
+	return atoi(symbol) == 1;
 }
 
 void GetValueFromIni(INIFile* iniFile, const char* areaName, const char* optionName, const char* defaultValue, char* buffer, DWORD maxSize)
@@ -92,18 +74,6 @@ void LogParameterIntegerValue(const char* parameterName, DWORD parameterValue)
 	log_msg("%s = %d\n", parameterName, parameterValue);
 }
 
-void LogParameterStringValue(const char* parameterName, const char* parameterValue)
-{
-	log_msg("%s = %s\n", parameterName, parameterValue);
-}
-
-void init_ActivePlugin(INIFile* iniFile, char* buffer, DWORD maxSize)
-{
-	GetValueFromIni(iniFile, S_GENERAL, S_active_plugin, "0", buffer, maxSize);
-	active_plugin = IsEnabled(buffer);
-	LogParameterBooleanValue(S_active_plugin, active_plugin);
-}
-
 void init_General(INIFile* iniFile, char* buffer, DWORD maxSize)
 {
 	GetValueFromIni(iniFile, S_GENERAL, S_active_logFile, "0", buffer, maxSize);
@@ -112,93 +82,22 @@ void init_General(INIFile* iniFile, char* buffer, DWORD maxSize)
 	// during initialization. We will turn off logging at the end before we go into D2 if needed.
 	active_logFileIniOriginal = IsEnabled(buffer);
 
-	LogParameterIntegerValue(S_active_logFile, active_logFileIniOriginal);
-}
-
-void init_VersionText(INIFile* iniFile, char* buffer, DWORD maxSize)
-{
-	GetValueFromIni(iniFile, S_MAIN_SCREEN, S_active_DiabloVersionTextChange, "0", buffer, maxSize);
-	active_DiabloVersionTextChange = IsEnabled(buffer);
-	LogParameterBooleanValue(S_active_DiabloVersionTextChange, active_DiabloVersionTextChange);
-
-	if (active_DiabloVersionTextChange)
-	{
-		GetValueFromIni(iniFile, S_MAIN_SCREEN, S_DiabloVersionText, DiabloVersionText, buffer, maxSize);
-		if (!buffer[0])
-		{
-			if (active_DiabloVersionTextChange == 1)
-			{
-				strcpy(buffer, "v ");
-				strcat(buffer, VersionUtility::GetVersionAsString());
-			}
-		}
-
-		DiabloVersionText = (char*)D2FogMemAlloc(strlen(buffer)+1,__FILE__,__LINE__,0);
-		strcpy(DiabloVersionText, buffer);
-		LogParameterStringValue(S_DiabloVersionText, DiabloVersionText);
-
-		GetValueFromIni(iniFile, S_MAIN_SCREEN, S_DiabloVersionColor, "0", buffer, maxSize);
-		DiabloVersionColor = atoi(buffer);
-		LogParameterIntegerValue(S_DiabloVersionColor, DiabloVersionColor);
-	}
-
-	GetValueFromIni(iniFile, S_MAIN_SCREEN, S_active_PrintAlpacaVersion, "1", buffer, maxSize);
-	active_PrintAlpacaVersion = IsEnabled(buffer);
-	LogParameterBooleanValue(S_active_PrintAlpacaVersion, active_PrintAlpacaVersion);
-
-	if (active_PrintAlpacaVersion)
-	{
-		GetValueFromIni(iniFile, S_MAIN_SCREEN, S_AlpacaVersionColor, "4", buffer, maxSize);
-		AlpacaVersionColor = atoi(buffer);
-		LogParameterIntegerValue(S_AlpacaVersionColor, AlpacaVersionColor);
-	}
+	LogParameterBooleanValue(S_active_logFile, active_logFileIniOriginal);
 }
 
 void init_Stash(INIFile* iniFile, char* buffer, DWORD maxSize)
 {
-	active_PlayerCustomData = true;
-
-	GetValueFromIni(iniFile, S_STASH, S_maxSelfPages, "-1", buffer, maxSize);
-	maxSelfPages = atoi(buffer);
-	LogParameterIntegerValue(S_maxSelfPages, maxSelfPages);
-
 	GetValueFromIni(iniFile, S_STASH, S_nbPagesPerIndex, "10", buffer, maxSize);
 	nbPagesPerIndex = atoi(buffer);
-	if (!nbPagesPerIndex) nbPagesPerIndex = 10;
 	LogParameterIntegerValue(S_nbPagesPerIndex, nbPagesPerIndex);
 
 	GetValueFromIni(iniFile, S_STASH, S_nbPagesPerIndex2, "100", buffer, maxSize);
 	nbPagesPerIndex2 = atoi(buffer);
-	if (!nbPagesPerIndex2) nbPagesPerIndex2 = 100;
 	LogParameterIntegerValue(S_nbPagesPerIndex2, nbPagesPerIndex2);
 
-	GetValueFromIni(iniFile, S_STASH, S_active_sharedStash, "1", buffer, maxSize);
-	// If Solo Self Found Is Disabled, then Shared Is Enabled.
-	// It's a bit confusing but I'm doing this so I can leave the existing code
-	// path checks for shared stash to true. If I don't do this, I would need
-	// to negate everything.
-	active_sharedStash = IsDisabled(buffer); 
-	LogParameterBooleanValue(S_active_sharedStash, !active_sharedStash);
-
-	if (active_sharedStash)
-	{
-		GetValueFromIni(iniFile, S_STASH, S_openSharedStashOnLoading, "0", buffer, maxSize);
-		openSharedStashOnLoading = IsEnabled(buffer);
-		LogParameterBooleanValue(S_openSharedStashOnLoading, openSharedStashOnLoading);
-
-		GetValueFromIni(iniFile, S_STASH, S_maxSharedPages, "-1", buffer, maxSize);
-		maxSharedPages = atoi(buffer);
-		LogParameterIntegerValue(S_maxSharedPages, maxSharedPages);
-
-		GetValueFromIni(iniFile, S_STASH, S_sharedStashFilename, "SharedStashSave", buffer, maxSize);
-		sharedStashFilename = (char*)D2FogMemAlloc(strlen(buffer)+1,__FILE__,__LINE__,0);
-		strcpy(sharedStashFilename, buffer);
-		LogParameterStringValue(S_sharedStashFilename, sharedStashFilename);
-
-		GetValueFromIni(iniFile, S_STASH, S_displaySharedSetItemNameInGreen, "1", buffer, maxSize);
-		displaySharedSetItemNameInGreen = IsEnabled(buffer);
-		LogParameterBooleanValue(S_displaySharedSetItemNameInGreen, displaySharedSetItemNameInGreen);
-	}
+	GetValueFromIni(iniFile, S_STASH, S_openSharedStashOnLoading, "0", buffer, maxSize);
+	openSharedStashOnLoading = IsEnabled(buffer);
+	LogParameterBooleanValue(S_openSharedStashOnLoading, openSharedStashOnLoading);
 
 	log_msg("\n");
 }
@@ -206,7 +105,7 @@ void init_Stash(INIFile* iniFile, char* buffer, DWORD maxSize)
 void LoadParameters()
 {
 	char buffer[BUFFER_SIZE];
-	INIFile *iniFile = new INIFile;
+	INIFile* iniFile = new INIFile;
 
 	srand((UINT)time(NULL));
 
@@ -214,20 +113,15 @@ void LoadParameters()
 	log_msg("====================================\n");
 
 	bool wasFileSuccessfullyOpened = iniFile->InitReadWrite(parametersFileName, INIFILE_READ, 0);
+
 	if (wasFileSuccessfullyOpened)
 	{
-		init_ActivePlugin(iniFile, buffer, BUFFER_SIZE);
-		if (active_plugin)
-		{
-			init_General(iniFile, buffer, BUFFER_SIZE);
-			init_VersionText(iniFile, buffer, BUFFER_SIZE);
-			init_Stash(iniFile, buffer, BUFFER_SIZE);
-		}
+		init_General(iniFile, buffer, BUFFER_SIZE);
+		init_Stash(iniFile, buffer, BUFFER_SIZE);
 	}
 	else
 	{
-		log_box("There was an error opening the configuration file. Aborting.\n\n");
-		active_plugin = false;
+		log_msg("There was an error opening the config file. The game will run with the Alpaca Defaults!\n\n");
 	}
 
 	if (iniFile)

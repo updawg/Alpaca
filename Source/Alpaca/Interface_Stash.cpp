@@ -38,6 +38,11 @@ static struct
 	};
 } isDownBtn;
 
+// Display Set Item Names In Green
+// This is so that if you have a set item in your personal stash
+// or shared stash, the game will be able to see your set items
+// (and show you that you have the set item), anywhere in any of
+// of your stashes.
 bool displaySharedSetItemNameInGreen = true;
 
 const int defaultButtonPositionValue = -1;
@@ -62,11 +67,10 @@ WCHAR* STR_STASH_PREVIOUS_PAGE = L"Previous Page (+Shift: First Page)";
 WCHAR* STR_STASH_NEXT_PAGE = L"Next Page (+Shift: Last not empty Page)";
 WCHAR* STR_TOGGLE_TO_PERSONAL = L"Switch to Personal Stash";
 WCHAR* STR_TOGGLE_TO_SHARED = L"Switch to Shared Stash";
-WCHAR* STR_STASH_SHARED_DISABLED = L"Solo Self Found is Enabled. Good Luck!";
 WCHAR* STR_STASH_PREVIOUS_INDEX = L"Previous Index : By %d Pages (+Shift: %d)";
 WCHAR* STR_STASH_NEXT_INDEX = L"Next Index : By %d Pages (+Shift: %d)";
-WCHAR* STR_PUT_GOLD = L"Put Gold";
-WCHAR* STR_TAKE_GOLD = L"Take Gold";
+WCHAR* STR_DEPOSIT_GOLD = L"Deposit";
+WCHAR* STR_WITHDRAW_GOLD = L"Withdraw";
 WCHAR* STR_SHARED_PAGE_NUMBER = L"Shared Page [%u]";
 WCHAR* STR_PERSONAL_PAGE_NUMBER = L"Personal Page [%u]";
 WCHAR* STR_SHARED_GOLD_QUANTITY = L"Shared Gold";
@@ -175,11 +179,6 @@ void* __stdcall printBtns()
 		lpText = PCPY->showSharedStash ? STR_TOGGLE_TO_PERSONAL : STR_TOGGLE_TO_SHARED;
 		D2PrintPopup(lpText, getXSharedBtn() + getLSharedBtn() / 2, getYSharedBtn() - getHSharedBtn(), WHITE, 1);
 	}
-	else if (!active_sharedStash && isOnButtonToggleSharedStash(mx, my))
-	{
-		lpText = STR_STASH_SHARED_DISABLED;
-		D2PrintPopup(lpText, getXSharedBtn() + getLSharedBtn() / 2, getYSharedBtn() - getHSharedBtn(), WHITE, 1);
-	}
 	else if (isOnButtonPreviousIndexStash(mx, my))
 	{
 		_snwprintf(text, sizeof(text), STR_STASH_PREVIOUS_INDEX, nbPagesPerIndex, nbPagesPerIndex2);
@@ -192,12 +191,12 @@ void* __stdcall printBtns()
 	}
 	else if (active_sharedStash && isOnButtonPutGold(mx, my))
 	{
-		lpText = STR_PUT_GOLD;
+		lpText = STR_DEPOSIT_GOLD;
 		D2PrintPopup(lpText, getXPutGoldBtn() + getLPutGoldBtn() / 2, getYPutGoldBtn() - getHPutGoldBtn(), WHITE, 1);
 	}
 	else if (active_sharedStash && isOnButtonTakeGold(mx, my))
 	{
-		lpText = STR_TAKE_GOLD;
+		lpText = STR_WITHDRAW_GOLD;
 		D2PrintPopup(lpText, getXTakeGoldBtn() + getLTakeGoldBtn() / 2, getYTakeGoldBtn() - getHTakeGoldBtn(), WHITE, 1);
 	}
 
@@ -522,8 +521,7 @@ void Install_InterfaceStash()
 	mem_seek(GreenSetItemNextSearchOffset);
 	MEMJ_REF4(D2Common::D2UnitGetNextItem, getNextItemForSet);
 
-	log_msg("\n");
-
+	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;
 }
 

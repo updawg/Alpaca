@@ -28,9 +28,9 @@ DWORD maxSharedPages = -1;
 DWORD nbPagesPerIndex = 10;
 DWORD nbPagesPerIndex2 = 100;
 
-char* sharedStashFilename = NULL;
+char* sharedStashFilename = "SharedStashSave";
 bool active_multiPageStash = true;
-bool active_sharedStash = false;
+bool active_sharedStash = true;
 
 // Let's keep hardcore and softcore shared stashes separate.
 bool separateHardSoftStash = true;

@@ -95,8 +95,6 @@ void Install_UpdateClient()
 	mem_seek(ExecuteOurPacketsOnlyOffset);
 	MEMT_REF4(0xD6, caller_handleClientUpdate);
 
-	log_msg("\n");
-
+	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;
 }
-

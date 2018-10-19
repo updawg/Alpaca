@@ -428,8 +428,7 @@ void Install_LoadPlayerData()
 	
 	customPackID -= 3;
 
-	log_msg("\n");
-
+	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;
 }
 

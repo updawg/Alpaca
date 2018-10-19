@@ -80,8 +80,7 @@ void Install_AlpacaFiles()
 	memt_byte(0x15, 0xE8);
 	MEMD_REF4(LeaveCriticalSection, caller_isModFile);
 
-	log_msg("\n");
-
+	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;
 }
 
@@ -166,7 +165,6 @@ void Install_AlpacaImagesFiles()
 	memt_byte(0xB9, 0xE8);
 	MEMT_REF4(0xC, caller_freeCustomImages);
 
-	log_msg("\n");
-
+	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;
 }

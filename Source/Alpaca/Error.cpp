@@ -23,13 +23,9 @@
 #include <string.h>
 #include <direct.h>
 
-DWORD active_logFile = 1;
-
-// This value is just used in order to decide whether or
-// not we will keep logging enable since logging will be
-// stopped if we log and then read the ini file with a disabled
-// logging value.
-DWORD active_logFileIniOriginal = 0;
+bool active_logFile = true;
+bool active_logFileIniOriginal = false;
+bool active_logFileMemory = false;
 
 static char log_file[MAX_PATH] = "";
 static bool log_init = false;

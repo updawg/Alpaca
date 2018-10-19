@@ -1,6 +1,6 @@
-Alpaca 1.5.0 [1.09b]
+Alpaca 1.5.1 [1.09b]
 By Jonathan Vasquez (fearedbliss)
-Released on Monday, October 15, 2018
+Released on Thursday, October 18, 2018
 ----------------------------------------
 
 Synopsis
@@ -31,8 +31,8 @@ Requirements
 
 License
 =============
-All code is licensed under the GPLv3+ since that was the license that Yohann
-released PlugY 11.02 under.
+All code is licensed under the GPLv3+ since that was the license
+that Yohann released PlugY 11.02 under.
 
 Features
 =============

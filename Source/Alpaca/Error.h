@@ -19,8 +19,17 @@
 
 #include <windows.h>
 
-extern DWORD active_logFile;
-extern DWORD active_logFileIniOriginal;
+extern bool active_logFile;
+
+// This value is just used in order to decide whether or
+// not we will keep logging enable since logging will be
+// stopped if we log and then read the ini file with a disabled
+// logging value.
+extern bool active_logFileIniOriginal;
+
+// Developers: If you want to print out memory writes in the log when doing patching,
+// you can enable this option.
+extern bool active_logFileMemory;
 
 void log_initfile();
 void log_box( const char* pFormat, ... );

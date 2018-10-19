@@ -110,7 +110,6 @@ void Install_UpdateServer()
 	MEMT_REF4(0x508B66D2, caller_handleServerUpdate_9);
 	memt_byte(0x01, 0x90);
 	
-	log_msg("\n");
+	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;
 }
-

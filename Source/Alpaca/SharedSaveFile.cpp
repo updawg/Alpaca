@@ -33,7 +33,7 @@ BYTE* readSharedSaveFile(char* name, DWORD* size)
 
 	if (separateHardSoftStash)//Get hardcore flag
 	{
-		D2FogGetSavePath( filename, 512-strlen(name)-5);
+		D2FogGetSavePath(filename, 512-strlen(name)-5);
 		strcat(filename,name);
 		strcat(filename,".d2s");
 		log_msg("Normal file to read if it's hardcore character : %s\n",filename);
@@ -49,18 +49,15 @@ BYTE* readSharedSaveFile(char* name, DWORD* size)
 		log_msg("%s is a Hardcore character = %d\n",name,isHardCore);
 	}
 
-	if (active_sharedStash)
-	{
-		D2FogGetSavePath( filename, 512-strlen("_LOD_HC_SharedStashSave")-5);
-		strcat(filename,isHardCore? "_LOD_HC_" : "_LOD_");
-		strcat(filename, sharedStashFilename);
-		strcat(filename,".sss");
+	D2FogGetSavePath(filename, 512-strlen("_LOD_HC_SharedStashSave")-5);
+	strcat(filename,isHardCore? "_LOD_HC_" : "_LOD_");
+	strcat(filename, sharedStashFilename);
+	strcat(filename,".sss");
 
-		log_msg("Shared file to read : %s\n",filename);
+	log_msg("Shared file to read : %s\n",filename);
 
-		file = fopen(filename, "rb");
-	}
-
+	file = fopen(filename, "rb");
+	
 	if (file)
 	{
 		fseek(file, 0, SEEK_END);

@@ -49,7 +49,7 @@ void InstallAlpacaFunctions();
 
 extern "C" __declspec(dllexport) bool __stdcall Release()
 {
-	active_logFile = 1;
+	active_logFile = true;
 
 	log_msg("\nExiting Diablo II\n");
 	log_msg("====================================\n");
@@ -74,8 +74,6 @@ extern "C" __declspec(dllexport) void* __stdcall Init(LPSTR IniName)
 	InitializeDiabloFunctions();
 	LoadParameters();
 
-	if (!active_plugin)	return NULL;
-
 	InstallAlpacaFunctions();
 
 	log_msg("Entering Diablo II\n");
@@ -94,17 +92,12 @@ void InstallAlpacaFunctions()
 	log_msg("====================================\n");
 
 	Install_Commands();
-
-	if (active_DiabloVersionTextChange)
-		Install_VersionChange();
-
-	if (active_PrintAlpacaVersion)
-		Install_PrintVersion();
-
+	Install_VersionChange();
+	Install_PrintVersion();
 	Install_BigStash();
 	Install_MultiPageStash();
 
-	log_msg("DLL patched sucessfully.\n\n");
+	log_msg("\n");
 
 	LibraryLoader::UnhookLibraries();
 }

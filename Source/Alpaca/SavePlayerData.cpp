@@ -438,7 +438,7 @@ void Install_SavePlayerData()
 	MEMT_REF4(0x04518B01, caller_SaveMPPlayerCustomData);
 	
 	customPackID = 0xAB;
-	log_msg("\n");
+
+	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;
 }
-

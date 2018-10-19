@@ -79,7 +79,11 @@ void memt_byte(BYTE old, BYTE val)
 	BYTE current = getMemory1(currentMemoryPos);
 	if ( current == val)
 	{
-		log_msg("Warning : BYTE %02X is already set at memory %08X\n", val, currentMemoryPos);
+		if (active_logFileMemory)
+		{
+			log_msg("Warning: BYTE %02X is already set at memory %08X\n", val, currentMemoryPos);
+		}
+		
 		currentMemoryPos = (LPVOID)((DWORD)currentMemoryPos + 1);
 		return;
 	}
@@ -91,7 +95,10 @@ void memt_byte(BYTE old, BYTE val)
 			exit(1);
 		} else log_msg(ERROR_TESTING1, old, current, currentMemoryPos);
 	}
-	log_msg("BYTE\t%08X : %02X->%02X\n", currentMemoryPos, old, val);
+	if (active_logFileMemory)
+	{
+		log_msg("BYTE\t%08X : %02X->%02X\n", currentMemoryPos, old, val);
+	}
 	patchMemory1(val);
 }
 
@@ -99,7 +106,10 @@ bool testIfAlreadySet(DWORD current, DWORD wanted)
 {
 	if (current == wanted)
 	{
-		log_msg("Warning : DWORD %08X is already set at memory %08X\n", wanted, currentMemoryPos);
+		if (active_logFileMemory)
+		{
+			log_msg("Warning: DWORD %08X is already set at memory %08X\n", wanted, currentMemoryPos);
+		}
 		currentMemoryPos = (LPVOID)((DWORD)currentMemoryPos + 4);
 		return true;
 	}
@@ -122,7 +132,10 @@ void memt_dword(DWORD old, DWORD val)
 	DWORD wanted = val;
 	if (testIfAlreadySet(current, wanted)) return;
 	testMemory4(old, current);
-	log_msg("DWORD\t%08X : %08X->%08X\n", currentMemoryPos, old, wanted);
+	if (active_logFileMemory)
+	{
+		log_msg("DWORD\t%08X : %08X->%08X\n", currentMemoryPos, old, wanted);
+	}
 	patchMemory4(wanted);
 }
 
@@ -132,7 +145,10 @@ void memt_ref4(DWORD old, DWORD ref)
 	DWORD wanted = ref-(DWORD)currentMemoryPos-4;
 	if (testIfAlreadySet(current, wanted)) return;
 	testMemory4(old, current);
-	log_msg("DWORD\t%08X : %08X->%08X\n", currentMemoryPos, old, wanted);
+	if (active_logFileMemory)
+	{
+		log_msg("DWORD\t%08X : %08X->%08X\n", currentMemoryPos, old, wanted);
+	}
 	patchMemory4(wanted);
 }
 
@@ -142,7 +158,10 @@ void memc_ref4(DWORD old, DWORD ref)
 	DWORD wanted = ref-(DWORD)currentMemoryPos-4;
 	if (testIfAlreadySet(current, wanted)) return;
 	testMemory4(old, current + (DWORD)currentMemoryPos + 4);
-	log_msg("DWORD\t%08X : %08X->%08X\n", currentMemoryPos, old, wanted);
+	if (active_logFileMemory)
+	{
+		log_msg("DWORD\t%08X : %08X->%08X\n", currentMemoryPos, old, wanted);
+	}
 	patchMemory4(wanted);
 }
 
@@ -152,7 +171,10 @@ void memj_ref4(DWORD old, DWORD ref)
 	DWORD wanted = ref-(DWORD)currentMemoryPos-4;
 	if (testIfAlreadySet(current, wanted)) return;
 	testMemory4(old, getMemory4((LPVOID)getMemory4((LPVOID)(current + (DWORD)currentMemoryPos + 6))));
-	log_msg("DWORD\t%08X : %08X->%08X\n", currentMemoryPos, old, wanted);
+	if (active_logFileMemory)
+	{
+		log_msg("DWORD\t%08X : %08X->%08X\n", currentMemoryPos, old, wanted);
+	}
 	patchMemory4(wanted);
 }
 
@@ -162,6 +184,9 @@ void memd_ref4(DWORD old, DWORD ref)
 	DWORD wanted = ref-(DWORD)currentMemoryPos-4;
 	if (testIfAlreadySet(current, wanted)) return;
 	testMemory4(old, getMemory4((LPVOID)current));
-	log_msg("DWORD\t%08X : %08X->%08X\n", currentMemoryPos, old, wanted);
+	if (active_logFileMemory)
+	{
+		log_msg("DWORD\t%08X : %08X->%08X\n", currentMemoryPos, old, wanted);
+	}
 	patchMemory4(wanted);
 }

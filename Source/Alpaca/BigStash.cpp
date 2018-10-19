@@ -90,8 +90,7 @@ void Install_BigStash()
 	memt_byte(0x68, 0xE8);
 	MEMT_REF4(0x00000104, caller_changeTradeStash);
 
-	log_msg("\n");
-
+	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;
 }
 

@@ -27,7 +27,6 @@ extern bool active_multiPageStash;
 extern bool active_sharedStash;
 extern bool separateHardSoftStash;
 extern char* sharedStashFilename;
-
 extern bool displaySharedSetItemNameInGreen;
 extern const int posXPreviousBtn;
 extern const int posYPreviousBtn;

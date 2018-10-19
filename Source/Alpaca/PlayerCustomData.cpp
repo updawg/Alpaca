@@ -17,8 +17,8 @@
 
 #include "updateClient.h"
 #include "infinityStash.h"
-#include "savePlayerData.h" //Install_SavePlayerData()
-#include "loadPlayerData.h" //Install_LoadPlayerData()
+#include "savePlayerData.h"
+#include "loadPlayerData.h"
 #include "common.h"
 
 bool active_PlayerCustomData = true;
@@ -253,8 +253,6 @@ void Install_PlayerCustomData()
 	memt_byte(0x74, 0x90);
 	memt_byte(0x6F, 0x90);
 
-	log_msg("\n");
-
+	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;
 }
-

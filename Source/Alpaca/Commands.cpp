@@ -228,7 +228,6 @@ MANAGESOUNDCHAOSDEBUG:
 	RETN 8
 }}
 
-// [Patch]
 void Install_Commands()
 {
 	static int isInstalled = false;
@@ -245,8 +244,6 @@ void Install_Commands()
 	memt_byte(0x83, 0xE8); 
 	MEMT_REF4(0xC08508C4, caller_Commands);
 
-	log_msg("\n");
-
+	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;
 }
-

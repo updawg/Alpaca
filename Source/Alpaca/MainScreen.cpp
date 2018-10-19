@@ -17,25 +17,20 @@
 
 #include "common.h"
 
-char* DiabloVersionText = "";
-bool active_DiabloVersionTextChange = 0;
+char* DiabloVersionText = "v 1.09b";
 BYTE DiabloVersionColor = 0;
-bool active_PrintAlpacaVersion = 1;
 BYTE AlpacaVersionColor = 4;
 
 DWORD newTextBoxData[]={4,0x237,0x243,0xC8,0x14,0,0,0,0,0,0,2}; //type,x,y,l,h,?,?,?,?,?,?,?(0,257,C8,28)
 
 void __stdcall PrintVersion(void** childrens, DWORD* sgnNumChildren)
 {
-	if (active_PrintAlpacaVersion)
-	{
-		char buf[30];
-		void* textbox = D2CreateTextBox(newTextBoxData);
-		childrens[*sgnNumChildren] = textbox;
-		d2_assert((*sgnNumChildren)++ >= 40, "sgnNumChildren < MAX_CHILDREN", __FILE__, __LINE__);
-		sprintf(buf, "%s %s", PROGRAM_NAME, PROGRAM_VERSION);
-		D2PrintLineOnTextBox(textbox, buf, AlpacaVersionColor);
-	}
+	char buf[30];
+	void* textbox = D2CreateTextBox(newTextBoxData);
+	childrens[*sgnNumChildren] = textbox;
+	d2_assert((*sgnNumChildren)++ >= 40, "sgnNumChildren < MAX_CHILDREN", __FILE__, __LINE__);
+	sprintf(buf, "%s %s", PROGRAM_NAME, PROGRAM_VERSION);
+	D2PrintLineOnTextBox(textbox, buf, AlpacaVersionColor);
 }
 
 FCT_ASM ( caller_PrintVersion )
@@ -59,8 +54,7 @@ void Install_PrintVersion()
 	mem_seek(PrintVersionOffset);
 	MEMJ_REF4(D2Win::D2CreateTextBox, caller_PrintVersion);
 
-	log_msg("\n");
-
+	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;
 }
 
@@ -82,9 +76,6 @@ void Install_VersionChange()
 	mem_seek(PrintLodModVersionOffset);
 	MEMJ_REF4(D2Win::D2PrintLineOnTextBox, versionChange);
 	
-	log_msg("\n");
-
+	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;
 }
-
-
