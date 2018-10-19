@@ -1,0 +1,5 @@
+- Credits to Yohann Nicolas from PhrozenKeep (D2Mods). Without him, none of this would be possible.
+- Alpaca Icon made by Freepik from www.flaticon.com.
+- Credits to Necrolis from PhrozenKeep for tips on how to debug/attach the Gardenia DLL in Visual Studio (and debug early init).
+- Credits to PhrozenKeep for always allowing hackers to prosper and learn.
+  - [PhrozenKeep](http://d2mods.info/)
