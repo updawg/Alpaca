@@ -19,7 +19,6 @@
 
 #include "Utilities\LibraryLoader.h"
 
-// Conversion to 1.09
 struct s_shifting {
 	DWORD ptInventory;
 	DWORD ptSpecificData;
@@ -35,25 +34,22 @@ extern s_shifting shifting;
 #define FCT_ASM(N) __declspec(naked) void N() {__asm{
 #define RANDOM(V) ((int)(rand()/(RAND_MAX+1.0)*(V)))
 
-#define PCPlayerData (*(PlayerData**)((DWORD)(ptChar)+shifting.ptSpecificData)) //->ptPlayerData
-#define PCGame (*(GameStruct**)((DWORD)(ptChar)+shifting.ptGame)) //->ptGame
-#define PClientGame (*(GameStruct**)((DWORD)(ptClient)+shifting.ptClientGame)) //ptClient->ptGame
-#define PCInventory (*(Inventory**)((DWORD)(ptChar)+shifting.ptInventory)) //->ptInventory
-#define PCPY ((PYPlayerData*)((DWORD)PCPlayerData+shifting.ptPYPlayerData)) //->ptPYPlayerData
-#define PCSkills (*(Skills**)((DWORD)(ptChar)+shifting.ptSkills)) //->ptSkills
+#define PCPlayerData (*(PlayerData**)((DWORD)(ptChar)+shifting.ptSpecificData))
+#define PCGame (*(GameStruct**)((DWORD)(ptChar)+shifting.ptGame))
+#define PClientGame (*(GameStruct**)((DWORD)(ptClient)+shifting.ptClientGame))
+#define PCInventory (*(Inventory**)((DWORD)(ptChar)+shifting.ptInventory))
+#define PCPY ((PYPlayerData*)((DWORD)PCPlayerData+shifting.ptPYPlayerData))
+#define PCSkills (*(Skills**)((DWORD)(ptChar)+shifting.ptSkills))
 
 #define RX(v) (*ptWindowStartX + (v))
 #define RY(v) (D2Client::ResolutionY() + *ptNegWindowStartY - (v))
 
 // D2Common
-extern D2Common::TD2Common10242 D2Common10242;
 extern D2Common::TD2InvAddItem D2InvAddItem;
-extern D2Common::TD2Common10250 D2Common10250;
+extern D2Common::TD2InvRemoveItem D2InvRemoveItem;
 extern D2Common::TD2InventoryGetFirstItem D2InventoryGetFirstItem;
 extern D2Common::TD2UnitGetNextItem D2UnitGetNextItem;
 extern D2Common::TD2GetRealItem D2GetRealItem;
-extern D2Common::TD2GetPosX D2GetPosX;
-extern D2Common::TD2GetPosY D2GetPosY;
 extern D2Common::TD2GetMaxGoldBank D2GetMaxGoldBank;
 extern D2Common::TD2InitPlayerData D2InitPlayerData;
 extern D2Common::TD2GetMaxGold D2GetMaxGold;
@@ -61,12 +57,8 @@ extern D2Common::TD2AddPlayerStat D2AddPlayerStat;
 extern D2Common::TD2GetPlayerStat D2GetPlayerStat;
 extern D2Common::TD2CompileTxtFile D2CompileTxtFileDirect;
 extern D2Common::TD2ItemGetPage D2ItemGetPage;
-extern D2Common::TD2SetAnim D2SetAnim;
 extern D2Common::TD2SaveItem D2SaveItem;
 extern D2Common::TD2ReadFile D2ReadFile;
-extern D2Common::TD2Common10581 D2Common10581;
-extern D2Common::TD2Common10598 D2Common10598;
-extern D2Common::TD2Common10673 D2Common10673;
 
 // D2Client
 extern D2Client::TD2LoadImage D2LoadImage;
@@ -78,6 +70,7 @@ extern D2Client::TD2GetMouseX D2GetMouseX;
 extern D2Client::TD2GetMouseY D2GetMouseY;
 extern D2Client::TD2GetClientPlayer D2GetClientPlayer;
 extern D2Client::TD2SendToServer3 D2SendToServer3;
+extern D2Client::TD2ClickOnStashButton D2ClickOnStashButton;
 
 // D2Client: Variables
 extern DWORD* ptNegWindowStartY;
@@ -88,6 +81,7 @@ extern D2Game::TD2SendPacket D2SendPacket;
 extern D2Game::TD2LoadInventory D2LoadInventory;
 extern D2Game::TD2GameGetObject D2GameGetObject;
 extern D2Game::TD2GetClient D2GetClient;
+extern D2Game::TD2SaveGame D2SaveGame;
 
 // D2Game: Variables
 extern NetClient** ptClientTable;
@@ -97,7 +91,6 @@ extern D2Net::TD2SendToServer D2SendToServer;
 extern D2Net::TD2SendToClient D2SendToClient;
 
 // Fog
-extern Fog::TD2FogAssertOld D2FogAssertOld;
 extern Fog::TD2FogMemAlloc D2FogMemAlloc;
 extern Fog::TD2FogMemDeAlloc D2FogMemDeAlloc;
 extern Fog::TD2AllocMem D2AllocMem;

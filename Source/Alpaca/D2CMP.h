@@ -1,6 +1,6 @@
 // Copyright (C) 2004-2017 Yohann Nicolas
 // Copyright (C) 2017 L'Autour
-// Copyright (C) 2017 Jonathan Vasquez <jon@xyinn.org>
+// Copyright (C) 2017-2018 Jonathan Vasquez <jon@xyinn.org>
 //
 // This program is free software : you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,14 +17,16 @@
 
 #pragma once
 
-#define PROGRAM_NAME "Alpaca"
-#define PROGRAM_VERSION "2.0.0"
-#define PROGRAM_AUTHOR_NAME "Jonathan Vasquez"
-#define PROGRAM_AUTHOR_ALIAS "fearedbliss"
-#define PROGRAM_BUILD_DATE "October 21, 2018 @ 01:00 ET"
+#include "Library.h"
 
-extern char* modDataDirectory;
-extern bool active_plugin;
-extern bool active_CheckMemory;
+class D2CMP : public Library<D2CMP>
+{
+public:
+	static void Init();
 
-void LoadParameters();
+	typedef DWORD(__stdcall *TD2CMP10014) (void* image);
+
+	static TD2CMP10014 D2CMP10014;
+private:
+	static void SetFunctions();
+};

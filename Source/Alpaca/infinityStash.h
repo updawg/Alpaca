@@ -23,8 +23,6 @@ extern DWORD maxSelfPages;
 extern DWORD maxSharedPages;
 extern DWORD nbPagesPerIndex;
 extern DWORD nbPagesPerIndex2;
-extern bool active_multiPageStash;
-extern bool active_sharedStash;
 extern bool separateHardSoftStash;
 extern char* sharedStashFilename;
 extern bool displaySharedSetItemNameInGreen;

@@ -37,8 +37,8 @@ int __stdcall handleServerUpdate(Unit* ptChar, WORD param)
 		case US_SET_MAIN_INDEX:			setCurrentStashIndex(ptChar, 2); return 1;
 		case US_SELECT_PREVIOUS :		selectPreviousStash( ptChar ); return 1;
 		case US_SELECT_NEXT :			selectNextStash( ptChar ); return 1;
-		case US_SELECT_SELF :			if (active_sharedStash) toggleToSelfStash( ptChar ); return 1;
-		case US_SELECT_SHARED :			if (active_sharedStash) toggleToSharedStash( ptChar ); return 1;
+		case US_SELECT_SELF :			toggleToSelfStash( ptChar ); return 1;
+		case US_SELECT_SHARED :			toggleToSharedStash( ptChar ); return 1;
 		case US_SELECT_PREVIOUS_INDEX :	selectPreviousIndexStash( ptChar ); return 1;
 		case US_SELECT_NEXT_INDEX :		selectNextIndexStash( ptChar ); return 1;
 		case US_SELECT_PREVIOUS2 :		selectPrevious2Stash( ptChar ); return 1;
@@ -47,6 +47,7 @@ int __stdcall handleServerUpdate(Unit* ptChar, WORD param)
 		case US_SELECT_NEXT_INDEX2 :	selectNextIndex2Stash( ptChar ); return 1;
 		case US_INSERT_PAGE:			insertStash(ptChar); selectNextStash(ptChar); return 1;
 		case US_DELETE_PAGE:			deleteStash(ptChar, false); return 1;
+		case US_SAVE:					savePlayers(ptChar); return 1;
 		case US_SELECT_PAGE3:			PageSelect = arg << 24; return 1;
 		case US_SELECT_PAGE2:			PageSelect |= arg << 16; return 1;
 		case US_SELECT_PAGE1:			PageSelect |= arg << 8; return 1;
@@ -76,23 +77,24 @@ int __stdcall handleServerUpdate(Unit* ptChar, WORD param)
 	}
 }
 
-FCT_ASM( caller_handleServerUpdate_9)
-	XOR EDX,EDX
-	MOV DX,WORD PTR DS:[EAX+1]
-	PUSH ECX
-	PUSH EDX
-	PUSH EDX
-	PUSH ECX
-	CALL handleServerUpdate
-	POP EDX
-	POP ECX
-	TEST EAX,EAX
-	JNZ END_RCM
-	RETN
-END_RCM:
-	POP EAX
-	XOR EAX,EAX
-	RETN 8
+FCT_ASM(caller_handleServerUpdate)
+PUSH ESI
+PUSH EBX
+CALL handleServerUpdate
+TEST EAX, EAX
+JNZ END_RCM
+MOV EAX, ESI
+AND EAX, 0xFF
+SHR ESI, 8
+MOV EDI, EAX
+RETN
+END_RCM :
+ADD ESP, 4
+POP EDI
+POP ESI
+XOR EAX, EAX
+POP EBX
+RETN 8
 }}
 
 void Install_UpdateServer()
@@ -102,13 +104,13 @@ void Install_UpdateServer()
 
 	log_msg("[Patch] D2Game for received button click message. (UpdateServer)\n");
 
-	DWORD ManageButtonClickMessageFromClientOffset = D2Game::GetOffsetByAddition(0x4A702);
+	DWORD ManageButtonClickMessageFromClientOffset = D2Game::GetOffsetByAddition(0x676C3);
 
 	// manage button click message from Client.
 	mem_seek(ManageButtonClickMessageFromClientOffset);
-	memt_byte(0x33, 0xE8);
-	MEMT_REF4(0x508B66D2, caller_handleServerUpdate_9);
-	memt_byte(0x01, 0x90);
+	memt_byte(0xC1, 0x57);
+	memt_byte(0xEE, 0xE8);
+	MEMT_REF4(0xF88B5708, caller_handleServerUpdate);
 	
 	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;

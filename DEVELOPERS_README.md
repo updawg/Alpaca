@@ -54,4 +54,11 @@ continue to reduce the code base and test it properly.
 - Even with all the offsets updated, there is probably going to be custom ASM code that
   you will need to write for the particular version you want to port for.
 
+and here are a few more tips:
+
+1. Upgrade AlpacaLauncher offsets to the new version
+2. Upgrade all DLL offsets to new version (D2Client.cpp/.h, Etc)
+3. Upgrade all "[Patch]" sections to new version (Search solution for [Patch])
+4. Upgrade any remaining traces of independent offsets that may still exist in the code.
+
 Good Luck!

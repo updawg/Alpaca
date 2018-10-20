@@ -22,9 +22,11 @@
 
 #define MAX_CMD_SIZE 200
 
-bool active_Commands = true;
+// Regular Commands
+const char* CMD_SAVE = "/save";
 
-const char* CMD_REPAGE_NAME = "/rename";
+// Stash Management Commands
+const char* CMD_RENAME_PAGE = "/rename";
 const char* CMD_SET_INDEX = "/set";
 const char* CMD_UNSET_INDEX = "/unset";
 const char* CMD_SET_MAIN_INDEX = "/setmain";
@@ -33,6 +35,11 @@ const char* CMD_DELETE_PAGE = "/delete";
 const char* CMD_SELECT_PAGE = "/page";
 const char* CMD_SWAP = "/swap";
 const char* CMD_TOGGLE = "/toggle";
+
+void savePlayers(Unit* ptChar)
+{
+	D2SaveGame(PCGame);
+}
 
 void maxGold(Unit* ptChar)
 {
@@ -48,16 +55,13 @@ void maxGold(Unit* ptChar)
 	} else {
 		D2AddPlayerStat( ptChar, STATS_GOLD,	 100000, 0 );
 	}
-	if (active_sharedStash)
-	{
-		PCPY->sharedGold = 0xFFFFFFFF;
-		updateClient(ptChar, UC_SHARED_GOLD, PCPY->sharedGold, 0, 0);
-	}
+
+	PCPY->sharedGold = 0xFFFFFFFF;
+	updateClient(ptChar, UC_SHARED_GOLD, PCPY->sharedGold, 0, 0);
 }
 
 void putGold(Unit* ptChar, DWORD amount)
 {
-	if (!active_sharedStash) return;
 	log_msg("putGold : %d\n", amount);
 
 	DWORD playerGold = D2GetPlayerStat(ptChar, STATS_GOLD, 0);
@@ -73,7 +77,6 @@ void putGold(Unit* ptChar, DWORD amount)
 
 void takeGold(Unit* ptChar, DWORD amount)
 {
-	if (!active_sharedStash) return;
 	log_msg("takeGold : %d\n", amount);
 
 	DWORD maxGold =     D2GetMaxGold(ptChar) - D2GetPlayerStat(ptChar, STATS_GOLD, 0);
@@ -102,10 +105,13 @@ int __stdcall commands(char* ptText)
 	strncpy(command, ptText, MAX_CMD_SIZE - 1);
 	_strlwr(command);
 
-	if (!strncmp(command, CMD_REPAGE_NAME,strlen(CMD_REPAGE_NAME)))
+	// The order matters here in terms of the rename commands because
+	// the code currently checks to see if the string matches a string
+	// up to a certain point. Thus /rename##### will match the first match.
+	// Just keep this in mind.
+	if (!strncmp(command, CMD_RENAME_PAGE, strlen(CMD_RENAME_PAGE)))
 	{
-		if (!active_multiPageStash) return 1;
-		char* param = &ptText[strlen(CMD_REPAGE_NAME)];
+		char* param = &ptText[strlen(CMD_RENAME_PAGE)];
 		Stash* ptStash = PCPY->currentStash;
 		if (!ptStash) return 0;
 
@@ -135,30 +141,32 @@ int __stdcall commands(char* ptText)
 		return 0;
 	}
 
+	if (!strcmp(command, CMD_SAVE))
+	{
+		updateServer(US_SAVE);
+		return 0;
+	}
+
 	if (!strcmp(command, CMD_SET_INDEX))
 	{
-		if (!active_multiPageStash) return 1;
 		updateServer(US_SET_INDEX);
 		return 0;
 	}
 
 	if (!strcmp(command, CMD_SET_MAIN_INDEX))
 	{
-		if (!active_multiPageStash) return 1;
 		updateServer(US_SET_MAIN_INDEX);
 		return 0;
 	}
 
 	if (!strcmp(command, CMD_UNSET_INDEX))
 	{
-		if (!active_multiPageStash) return 1;
 		updateServer(US_UNSET_INDEX);
 		return 0;
 	}
 
 	if (!strcmp(command, CMD_INSERT_PAGE))
 	{
-		if (!active_multiPageStash) return 1;
 		insertStash(ptChar);
 		updateServer(US_INSERT_PAGE);
 		return 0;
@@ -166,7 +174,6 @@ int __stdcall commands(char* ptText)
 
 	if (!strcmp(command, CMD_DELETE_PAGE))
 	{
-		if (!active_multiPageStash) return 1;
 		if (deleteStash(ptChar, true))
 			updateServer(US_DELETE_PAGE);
 		return 0;
@@ -174,7 +181,6 @@ int __stdcall commands(char* ptText)
 
 	if (!strncmp(command, CMD_SELECT_PAGE, strlen(CMD_SELECT_PAGE)))
 	{
-		if (!active_multiPageStash) return 1;
 		int page = atoi(&command[strlen(CMD_SELECT_PAGE)]) - 1;
 		if (page < 0)
 			return 1;
@@ -187,7 +193,6 @@ int __stdcall commands(char* ptText)
 
 	if (!strncmp(command, CMD_SWAP, strlen(CMD_SWAP)))
 	{
-		if (!active_multiPageStash) return 1;
 		int page = atoi(&command[strlen(CMD_SWAP)]) - 1;
 		if (page < 0 && PCPY->currentStash->nextStash)
 			page = PCPY->currentStash->nextStash->id;
@@ -202,7 +207,6 @@ int __stdcall commands(char* ptText)
 
 	if (!strncmp(command, CMD_TOGGLE, strlen(CMD_TOGGLE)))
 	{
-		if (!active_sharedStash) return 1;
 		int page = atoi(&command[strlen(CMD_TOGGLE)]) - 1;
 		if (page < 0)
 			return 1;
@@ -216,15 +220,15 @@ int __stdcall commands(char* ptText)
 	return 1;
 }
 
-FCT_ASM ( caller_Commands )
-	TEST EAX,EAX
-	JE MANAGESOUNDCHAOSDEBUG
-	PUSH DWORD PTR SS:[ESP+0x1C]
-	CALL commands
-	TEST EAX,EAX
-	JNZ MANAGESOUNDCHAOSDEBUG
-	ADD DWORD PTR SS:[ESP],7
-MANAGESOUNDCHAOSDEBUG:
+FCT_ASM(caller_Commands_111)
+TEST EAX, EAX
+JE MANAGESOUNDCHAOSDEBUG
+PUSH EDI
+CALL commands
+TEST EAX, EAX
+JNZ MANAGESOUNDCHAOSDEBUG
+ADD DWORD PTR SS : [ESP], 7
+MANAGESOUNDCHAOSDEBUG :
 	RETN 8
 }}
 
@@ -237,12 +241,12 @@ void Install_Commands()
 
 	log_msg("[Patch] D2Client for install commands. (Commands)\n");
 
-	DWORD CustomCommandOffset = D2Client::GetOffsetByAddition(0x2C120);
+	DWORD CustomCommandOffset = D2Client::GetOffsetByAddition(0xB1FD6);
 
 	// Run custom commmand
 	mem_seek(CustomCommandOffset);
 	memt_byte(0x83, 0xE8); 
-	MEMT_REF4(0xC08508C4, caller_Commands);
+	MEMT_REF4(0xC08508C4, caller_Commands_111);
 
 	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;

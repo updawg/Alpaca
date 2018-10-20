@@ -17,7 +17,7 @@
 
 #include "common.h"
 
-char* DiabloVersionText = "v 1.09b";
+char* DiabloVersionText = "v 1.13d";
 BYTE DiabloVersionColor = 0;
 BYTE AlpacaVersionColor = 4;
 
@@ -49,7 +49,7 @@ void Install_PrintVersion()
 
 	log_msg("[Patch] D2Launch to print Alpaca version. (PrintVersion)\n");
 
-	DWORD PrintVersionOffset = D2Launch::GetOffsetByAddition(0x7F5D);
+	DWORD PrintVersionOffset = D2Launch::GetOffsetByAddition(0x10A11);
 
 	mem_seek(PrintVersionOffset);
 	MEMJ_REF4(D2Win::D2CreateTextBox, caller_PrintVersion);
@@ -58,10 +58,13 @@ void Install_PrintVersion()
 	isInstalled = true;
 }
 
-void __fastcall versionChange(void* screen, char* text, DWORD color)
-{
-	D2PrintLineOnTextBox(screen, DiabloVersionText, DiabloVersionColor);
-}
+FCT_ASM(caller_VersionChange_10)
+MOV CL, BYTE PTR DS : [DiabloVersionColor]
+MOV BYTE PTR SS : [ESP + 4], CL
+MOV EDX, DiabloVersionText
+MOV ECX, EDI
+RETN
+}}
 
 void Install_VersionChange()
 {
@@ -70,11 +73,13 @@ void Install_VersionChange()
 
 	log_msg("[Patch] D2Launch to print Mod version. (VersionChange)\n");
 
-	DWORD PrintLodModVersionOffset = D2Launch::GetOffsetByAddition(0x801B);
+	DWORD PrintLodModVersionOffset = D2Launch::GetOffsetByAddition(0x10AE4);
 
 	// Print LoD/Mod version.
 	mem_seek(PrintLodModVersionOffset);
-	MEMJ_REF4(D2Win::D2PrintLineOnTextBox, versionChange);
+	memt_byte(0x8D, 0xE8);
+	MEMT_REF4(0x8B102454, caller_VersionChange_10);
+	memt_byte(0xCF, 0x90);
 	
 	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;

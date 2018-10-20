@@ -37,7 +37,7 @@ void __stdcall SaveSPPlayerCustomData(Unit* ptChar)
 		D2FreeMem(PCGame->memoryPool, dataExt,__FILE__,__LINE__,0);
 	}
 
-	if (active_sharedStash && PCPY->sharedStashIsOpened)
+	if (PCPY->sharedStashIsOpened)
 	{
 		DWORD curSizeShr = 0;
 		DWORD maxSizeShr = 0x4000;
@@ -52,13 +52,6 @@ void __stdcall SaveSPPlayerCustomData(Unit* ptChar)
 
 	log_msg("End saving.\n\n");
 }
-
-FCT_ASM ( caller_SaveSPPlayerCustomData_9 )
-	CALL D2FogGetSavePath
-	PUSH ESI
-	CALL SaveSPPlayerCustomData
-	RETN
-}}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -88,8 +81,6 @@ struct s_MPSaveFile
 };
 static s_MPSaveFile receivedSaveFiles;
 static BYTE customPackID = 0xB2;
-//static s_MPSaveFile* receivedSaveFiles = NULL;
-
 
 struct s_dataToSend
 {
@@ -105,35 +96,8 @@ struct s_dataToSend
 };
 s_dataToSend* ptDataToSend=NULL;
 
-/*
-void sendDataToSave(DWORD clientID, BYTE* data, DWORD size, bool isShared)
-{
-	t_rcvMsg pack;
-	d2_assert(size >= 0x40000000, "size of file > 0x40000000", __FILE__, __LINE__);
-
-	pack.packID = customPackID;
-	pack.init = !isShared;
-	pack.finalSize = size;
-	pack.type = isShared ? TC_SAVE_SHARED : TC_SAVE_PERSONAL;
-	pack.isCustom = true;
-
-	DWORD sended = 0;
-	while (sended < size)
-	{
-		pack.packSize = (BYTE) (size - sended > 0xFE ? 0xFE : size - sended);
-		CopyMemory(pack.data,  &data[sended], pack.packSize);
-		log_msg("send: ID=%02X\tsize=%02X\tinit=%02X\ttotalsize=%08X\ttype=%d\n", pack.packID, pack.init, pack.packSize, pack.finalSize, pack.type);
-		pack.packSize++;
-		D2SendToClient(0, clientID, (BYTE*)&pack, pack.packSize+7);
-		pack.init = false;
-		sended += pack.packSize -1;
-	}
-	log_msg("\n");
-}*/
-
 void __stdcall SendSaveFilesToSave( Unit* ptChar )
 {
-//	if (!D2isLODGame()) return;
 	log_msg("\n--- Start SendSaveFilesToSave ---\n");
 
 	DWORD curSizeExt = 0;
@@ -149,7 +113,7 @@ void __stdcall SendSaveFilesToSave( Unit* ptChar )
 		saveExtendedSaveFile(ptChar, &dataExt, &maxSizeExt, &curSizeExt);
 	}
 
-	if (active_sharedStash && PCPY->sharedStashIsOpened)
+	if (PCPY->sharedStashIsOpened)
 	{
 		DWORD maxSizeShr = 0x4000;
 		dataShr = (BYTE *)D2AllocMem(PCGame->memoryPool, maxSizeShr,__FILE__,__LINE__,0);
@@ -183,7 +147,6 @@ void __stdcall SendSaveFilesToSave( Unit* ptChar )
 
 	log_msg("End SendSaveFilesToSave.\n\n");
 }
-
 
 DWORD __stdcall ManageNextPacketToSend(NetClient* ptClient)
 {
@@ -320,8 +283,7 @@ void __stdcall SaveMPPlayerCustomData(BYTE* dataD2Savefile )
 		{
 			writeExtendedSaveFile(PCPlayerData->name, receivedSaveFiles.dataExtended, receivedSaveFiles.sizeExtended);
 			D2FogMemDeAlloc(receivedSaveFiles.dataExtended,__FILE__,__LINE__,0);
-			if (active_sharedStash)
-				writeSharedSaveFile(PCPlayerData->name, receivedSaveFiles.dataShared, receivedSaveFiles.sizeShared, (dataD2Savefile[0x24] & 4) == 4);//6FBAB9A4-6FAA0000
+			writeSharedSaveFile(PCPlayerData->name, receivedSaveFiles.dataShared, receivedSaveFiles.sizeShared, (dataD2Savefile[0x24] & 4) == 4);
 			D2FogMemDeAlloc(receivedSaveFiles.dataShared,__FILE__,__LINE__,0);
 			ZeroMemory(&receivedSaveFiles,sizeof(receivedSaveFiles));
 		}
@@ -338,20 +300,6 @@ void __stdcall SaveMPPlayerCustomData(BYTE* dataD2Savefile )
 	log_msg("--- End SaveMPPlayerCustomData. ---\n\n");
 }
 
-FCT_ASM( caller_ManageNextPacketToSend_9 )
-	PUSH ESI
-	CALL ManageNextPacketToSend
-	TEST EAX,EAX
-	JNZ end_caller_ManageNextPacketToSend_9
-	MOV DWORD PTR DS:[ESI+0x14C],5
-	POP ESI
-	POP ESI
-	RETN
-end_caller_ManageNextPacketToSend_9:
-	MOV EAX,DWORD PTR DS:[ESI+0x150]
-	RETN
-}}
-
 FCT_ASM( caller_SendSaveFilesToSave )
 	PUSH EDI
 	CALL SendSaveFilesToSave
@@ -360,42 +308,55 @@ FCT_ASM( caller_SendSaveFilesToSave )
 	RETN
 }}
 
-FCT_ASM( caller_SendSaveFilesToSave_9 )
-	PUSH ESI
-	CALL SendSaveFilesToSave
-	MOV ESI,DWORD PTR SS:[ESP+0x14]
-	TEST ESI,ESI
-	RETN
+FCT_ASM(caller_SaveSPPlayerCustomData_111)
+CALL D2FogGetSavePath
+PUSH DWORD PTR SS : [ESP + 0x2608]
+CALL SaveSPPlayerCustomData
+RETN
 }}
 
-FCT_ASM ( caller_ReceivedSaveFilesToSave )
-	CMP EDX,-1
-	JE continue_rcvFct
-	PUSH ECX
-	PUSH EDX
-	PUSH ECX
-	CALL ReceiveSaveFilesToSave
-	POP EDX
-	POP ECX
-	TEST EAX,EAX
-	JE continue_rcvFct
-	XOR EAX,EAX
-	ADD ESP,4
-	RETN
-continue_rcvFct:
-	POP EAX
-	SUB ESP,0x5F4//5F4
-	JMP EAX
+FCT_ASM(caller_SendSaveFilesToSave_111)
+PUSH DWORD PTR SS : [ESP + 0x2014]
+CALL SendSaveFilesToSave
+MOV EAX, DWORD PTR SS : [ESP + 0x8]
+TEST EAX, EAX
+RETN
 }}
 
-FCT_ASM ( caller_SaveMPPlayerCustomData )
-	PUSH ECX
-	PUSH ECX
-	CALL SaveMPPlayerCustomData
-	POP ECX
-	MOV EAX,DWORD PTR DS:[ECX]
-	MOV EDX,DWORD PTR DS:[ECX+4]
-	RETN
+FCT_ASM(caller_ManageNextPacketToSend)
+PUSH ESI
+CALL ManageNextPacketToSend
+TEST EAX, EAX
+JNZ end_caller_ManageNextPacketToSend
+XOR ECX, ECX
+RETN
+end_caller_ManageNextPacketToSend :
+MOV ECX, DWORD PTR DS : [ESI + 0x17C]
+RETN
+}}
+
+FCT_ASM(caller_ReceivedSaveFilesToSave_111)
+LEA EAX, DWORD PTR SS : [ESP + 0x10]
+PUSH EAX
+CALL ReceiveSaveFilesToSave
+TEST EAX, EAX
+JE continue_rcvFct
+ADD DWORD PTR SS : [ESP], 0x3D
+RETN
+continue_rcvFct :
+MOVZX EAX, BYTE PTR SS : [ESP + 0x10]
+RETN
+}}
+
+FCT_ASM(caller_SaveMPPlayerCustomData_111)
+PUSH EAX
+PUSH ECX
+PUSH EAX
+CALL SaveMPPlayerCustomData
+POP ECX
+POP EAX
+CMP ECX, 0xAA55AA55
+RETN
 }}
 
 void Install_SavePlayerData()
@@ -405,39 +366,39 @@ void Install_SavePlayerData()
 
 	log_msg("[Patch] D2Game & D2Client for save Player's custom data. (SavePlayerData)\n");
 
-	DWORD SaveSinglePlayerCustomDataOffset = D2Game::GetOffsetByAddition(0x4DF04);
-	DWORD SendSaveFilesOffset1 = D2Game::GetOffsetByAddition(0x4DFFA);
-	DWORD SendSaveFilesOffset2 = D2Game::GetOffsetByAddition(0x7993);
-	DWORD ReceivedSaveFilesOffset = D2Client::GetOffsetByAddition(0x116F0);
-	DWORD SaveMultiplayerPlayerCustomDataOffset = D2Client::GetOffsetByAddition(0x117FC);
+	DWORD SaveSinglePlayerCustomDataOffset = D2Game::GetOffsetByAddition(0x39835);
+	DWORD SendSaveFilesOffset1 = D2Game::GetOffsetByAddition(0x397AB);
+	DWORD SendSaveFilesOffset2 = D2Game::GetOffsetByAddition(0xBEDD3);
+	DWORD ReceivedSaveFilesOffset = D2Client::GetOffsetByAddition(0x448E6);
+	DWORD SaveMultiplayerPlayerCustomDataOffset = D2Client::GetOffsetByAddition(0x829C2);
 
 	//Save single player custom data.
 	mem_seek(SaveSinglePlayerCustomDataOffset);
-	MEMJ_REF4(Fog::D2FogGetSavePath, caller_SaveSPPlayerCustomData_9);
+	MEMJ_REF4(Fog::D2FogGetSavePath, caller_SaveSPPlayerCustomData_111);
 
 	//Send SaveFiles
 	mem_seek(SendSaveFilesOffset1);
 	memt_byte(0x8B, 0x90);
-	memt_byte(0x74, 0xE8);
-	MEMT_REF4(0xF6851024, caller_SendSaveFilesToSave_9);
+	memt_byte(0x44, 0xE8);
+	MEMT_REF4(0xC0850424, caller_SendSaveFilesToSave_111);
 
 	mem_seek(SendSaveFilesOffset2);
 	memt_byte(0x8B, 0x90);
-	memt_byte(0x86, 0xE8);
-	MEMT_REF4(0x150, caller_ManageNextPacketToSend_9);
+	memt_byte(0x8E, 0xE8);
+	MEMT_REF4(0x17C, caller_ManageNextPacketToSend);
 	
-	// Received SaveFiles
+	//Received SaveFiles
 	mem_seek(ReceivedSaveFilesOffset);
-	memt_byte(0x81, 0x90);
-	memt_byte(0xEC, 0xE8);
-	MEMT_REF4(0x5F4, caller_ReceivedSaveFilesToSave);
+	memt_byte(0x0F, 0xE8);
+	MEMT_REF4(0x0C2444B6, caller_ReceivedSaveFilesToSave_111);
 
 	// Save multiplayer player custom data.
 	mem_seek(SaveMultiplayerPlayerCustomDataOffset);
-	memt_byte(0x8B, 0xE8);
-	MEMT_REF4(0x04518B01, caller_SaveMPPlayerCustomData);
-	
-	customPackID = 0xAB;
+	memt_byte(0x81, 0xE8);
+	MEMT_REF4(0x55AA55F9, caller_SaveMPPlayerCustomData_111);
+	memt_byte(0xAA, 0x90);
+
+	customPackID++;
 
 	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;

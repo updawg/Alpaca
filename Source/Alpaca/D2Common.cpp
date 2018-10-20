@@ -27,104 +27,83 @@ void D2Common::Init()
 
 void D2Common::SetFunctions()
 {
-	D2Common10242 = (TD2Common10242)GetOffsetByProc(10242);
-	D2InvAddItem = (TD2InvAddItem)GetOffsetByProc(10249);
-	D2Common10250 = (TD2Common10250)GetOffsetByProc(10250);
-	D2InventoryGetFirstItem = (TD2InventoryGetFirstItem)GetOffsetByProc(10277);
-	D2UnitGetNextItem = (TD2UnitGetNextItem)GetOffsetByProc(10304);
-	D2GetPosX = (TD2GetPosX)GetOffsetByProc(10326);
-	D2GetPosY = (TD2GetPosY)GetOffsetByProc(10329);
-	D2GetMaxGoldBank = (TD2GetMaxGoldBank)GetOffsetByProc(10339);
-	D2InitPlayerData = (TD2InitPlayerData)GetOffsetByProc(10420);
-	D2GetMaxGold = (TD2GetMaxGold)GetOffsetByProc(10439);
-	D2ItemGetPage = (TD2ItemGetPage)GetOffsetByProc(10719);
-	D2SetAnim = (TD2SetAnim)GetOffsetByProc(10734);
-	D2SaveItem = (TD2SaveItem)GetOffsetByProc(10881);
-	D2ReadFile = (TD2ReadFile)GetOffsetByAddition(0x738A4);
-	D2Common10581 = (TD2Common10581)GetOffsetByProc(10581);
-	D2Common10598 = (TD2Common10598)GetOffsetByProc(10598);
-	D2Common10673 = (TD2Common10673)GetOffsetByProc(10673);
-	D2CompileTxtFile = (TD2CompileTxtFile)compileTxtFile_9;
-	D2AddPlayerStat = (TD2AddPlayerStat)D2AddPlayerStat_9;
-	D2GetPlayerStat = (TD2GetPlayerStat)D2GetPlayerStat_9;
-	D2GetRealItem = (TD2GetRealItem)GetOffsetByProc(10305);
+	D2InvAddItem = (TD2InvAddItem)GetOffsetByProc(10963);
+	D2InvRemoveItem = (TD2InvRemoveItem)GetOffsetByProc(10490);
+	D2InventoryGetFirstItem = (TD2InventoryGetFirstItem)GetOffsetByProc(11040);
+	D2UnitGetNextItem = (TD2UnitGetNextItem)GetOffsetByProc(10879);
+	D2GetMaxGoldBank = (TD2GetMaxGoldBank)GetOffsetByProc(11025);
+	D2InitPlayerData = (TD2InitPlayerData)GetOffsetByProc(10404);
+	D2GetPlayerData = (TD2GetPlayerData)GetOffsetByProc(11103);
+	D2GetMaxGold = (TD2GetMaxGold)GetOffsetByProc(11159);
+	D2ItemGetPage = (TD2ItemGetPage)GetOffsetByProc(10810);
+	D2SaveItem = (TD2SaveItem)GetOffsetByProc(10665);
+	D2ReadFile = (TD2ReadFile)GetOffsetByAddition(0xB5E0);
 
-	D2CompileTxtFileDirect = (TD2CompileTxtFile)GetOffsetByProc(10578);
-	D2AddPlayerStatDirect = (TD2AddPlayerStat)GetOffsetByProc(10518);
-	D2GetPlayerStatDirect = (TD2GetPlayerStat)GetOffsetByProc(10519);
+	D2CompileTxtFile = (TD2CompileTxtFile)compileTxtFile_111;
+	D2AddPlayerStat = (TD2AddPlayerStat)GetOffsetByProc(10645);
+	D2GetPlayerStat = (TD2GetPlayerStat)GetOffsetByProc(10550);
+	
+	D2GetRealItem = (TD2GetRealItem)D2GetRealItem_111;
 
-	ptPYPlayerDataOffset = 0x5D;
-	ptSpecificDataOffset = 0x70;
-	ptGameOffset = 0xA4;
-	ptClientGameOffset = 0x170;
-	ptInventoryOffset = 0x84;
-	ptSkillsOffset = 0xCC;
-	ptImageOffset = 0x04;
-	ptFrameOffset = 0x08;
+	D2CompileTxtFileDirect = (TD2CompileTxtFile)GetOffsetByProc(10037);
+	D2AddPlayerStatDirect = (TD2AddPlayerStat)GetOffsetByProc(10645);
+	D2GetPlayerStatDirect = (TD2GetPlayerStat)GetOffsetByProc(10550);
+
+	ptPYPlayerDataOffset = 0x49;
+	ptSpecificDataOffset = 0x14;
+	ptGameOffset = 0x80;
+	ptClientGameOffset = 0x1A8;
+	ptInventoryOffset = 0x60;
+	ptSkillsOffset = 0xA8;
+	ptImageOffset = 0x34;
+	ptFrameOffset = 0x0;
 }
 
 char* D2Common::CompileTxtFileName = "D2CompileTxtFile";
 char* D2Common::ErrorReadTxtFileName = "pbData";
 
-__declspec(naked) void* __stdcall D2Common::compileTxtFile_9(DWORD unused, const char* filename, BINField* ptFields, DWORD* ptRecordCount, DWORD recordLength)
+__declspec(naked) void* __stdcall D2Common::compileTxtFile_111(DWORD unused, const char* filename, BINField* ptFields, DWORD* ptRecordCount, DWORD recordLength)
 {
 	_asm {
-		SUB ESP, 0x210
+		SUB ESP, 0x20C
 		PUSH EBX
 		PUSH EBP
 		PUSH ESI
 		PUSH EDI
-		MOV ESI, DWORD PTR SS : [ESP + 0x228]
 		MOV DWORD PTR SS : [ESP + 0x10], 0
+		MOV EBX, DWORD PTR SS : [ESP + 0x224]
 
-		MOV EDI, wsprintf
-		PUSH ESI
-		LEA EAX, DWORD PTR SS : [ESP + 0x20]
+		PUSH EBX
+		LEA EAX, DWORD PTR SS : [ESP + 0x1C]
 		PUSH EAX
-		CALL EDI
+		CALL DWORD PTR SS : [wsprintf]
+		MOV EDX, DWORD PTR SS : [ESP + 0x228]
 		ADD ESP, 8
-
 		LEA EDX, DWORD PTR SS : [ESP + 0x10]
-		PUSH 0
-		PUSH CompileTxtFileName
 		PUSH EDX
-		MOV ECX, DWORD PTR SS : [ESP + 0x230]
-		LEA EDX, DWORD PTR SS : [ESP + 0x28]
+		PUSH EAX
+		LEA EAX, DWORD PTR SS : [ESP + 0x20]
 		CALL D2ReadFile
 		TEST EAX, EAX
 		JNZ continue_compileTxtFile
-		PUSH 0
-		PUSH CompileTxtFileName
+		PUSH __LINE__
+		CALL Fog::D2GetInstructionPointer
+		PUSH EAX
 		PUSH ErrorReadTxtFileName
-		CALL Fog::D2FogAssertOld
+		CALL Fog::D2FogAssert
+		ADD ESP, 0xC
 		PUSH - 1
 		CALL exit
 		continue_compileTxtFile :
 		MOV ECX, D2CompileTxtFileDirect
-		ADD ECX, 0x305
-		JMP ECX
+			ADD ECX, 0x1EC
+			JMP ECX
 	}
 }
 
-__declspec(naked) void D2Common::D2AddPlayerStat_9()
+Unit* __stdcall	D2Common::D2GetRealItem_111(Unit* ptItem)
 {
-	__asm {
-		PUSH DWORD PTR SS : [ESP + 0xC]
-		PUSH DWORD PTR SS : [ESP + 0xC]
-		PUSH DWORD PTR SS : [ESP + 0xC]
-		CALL D2AddPlayerStatDirect
-		RETN 0x10
-	}
-}
-
-__declspec(naked) void D2Common::D2GetPlayerStat_9()
-{
-	__asm {
-		PUSH DWORD PTR SS : [ESP + 0x8]
-		PUSH DWORD PTR SS : [ESP + 0x8]
-		CALL D2GetPlayerStatDirect
-		RETN 0x0C
-	}
+	return ptItem;
 }
 
 D2Common::TD2CompileTxtFile D2Common::D2CompileTxtFile;
@@ -141,25 +120,18 @@ DWORD D2Common::ptSkillsOffset;
 DWORD D2Common::ptImageOffset;
 DWORD D2Common::ptFrameOffset;
 
-D2Common::TD2Common10242 D2Common::D2Common10242;
 D2Common::TD2InvAddItem D2Common::D2InvAddItem;
-D2Common::TD2Common10250 D2Common::D2Common10250;
+D2Common::TD2InvRemoveItem D2Common::D2InvRemoveItem;
 D2Common::TD2InventoryGetFirstItem D2Common::D2InventoryGetFirstItem;
 D2Common::TD2UnitGetNextItem D2Common::D2UnitGetNextItem;
-D2Common::TD2GetPosX D2Common::D2GetPosX;
-D2Common::TD2GetPosY D2Common::D2GetPosY;
 D2Common::TD2GetMaxGoldBank D2Common::D2GetMaxGoldBank;
 D2Common::TD2InitPlayerData D2Common::D2InitPlayerData;
+D2Common::TD2GetPlayerData D2Common::D2GetPlayerData;
 D2Common::TD2GetMaxGold D2Common::D2GetMaxGold;
 D2Common::TD2CompileTxtFile D2Common::D2CompileTxtFileDirect;
 D2Common::TD2ItemGetPage D2Common::D2ItemGetPage;
-D2Common::TD2SetAnim D2Common::D2SetAnim;
 D2Common::TD2SaveItem D2Common::D2SaveItem;
 D2Common::TD2ReadFile D2Common::D2ReadFile;
-
-D2Common::TD2Common10581 D2Common::D2Common10581;
-D2Common::TD2Common10598 D2Common::D2Common10598;
-D2Common::TD2Common10673 D2Common::D2Common10673;
 
 D2Common::TD2AddPlayerStat D2Common::D2AddPlayerStatDirect;
 D2Common::TD2GetPlayerStat D2Common::D2GetPlayerStatDirect;

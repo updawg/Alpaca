@@ -38,8 +38,6 @@ bool active_plugin = true;
 // Users should report bugs and/or the users environment/configuration should be inspected.
 bool active_CheckMemory = true;
 
-TargetMod selectModParam = MOD_NO;
-
 const char* S_GENERAL = "GENERAL";
 const char* S_active_logFile = "ActiveLogFile";
 

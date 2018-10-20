@@ -106,6 +106,7 @@
     <ClCompile Include="Commands.cpp" />
     <ClCompile Include="Common.cpp" />
     <ClCompile Include="D2Client.cpp" />
+    <ClCompile Include="D2CMP.cpp" />
     <ClCompile Include="D2Common.cpp" />
     <ClCompile Include="D2Functions.cpp" />
     <ClCompile Include="D2Game.cpp" />
@@ -148,6 +149,7 @@
     <ClInclude Include="common.h" />
     <ClInclude Include="customData.h" />
     <ClInclude Include="D2Client.h" />
+    <ClInclude Include="D2CMP.h" />
     <ClInclude Include="D2Common.h" />
     <ClInclude Include="D2Functions.h" />
     <ClInclude Include="D2Game.h" />

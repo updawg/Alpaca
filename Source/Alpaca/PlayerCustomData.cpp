@@ -138,7 +138,7 @@ Unit* __stdcall getNextItemToFree(Unit* ptChar, Unit* ptItem)
 		{
 			item = curStash->ptListItem;
 			curStash->ptListItem = NULL;
-			return item;//->nUnitType == 4 ? item : NULL;
+			return item;
 		}
 		curStash = curStash->nextStash;
 	}	
@@ -158,10 +158,48 @@ Unit* __stdcall getNextItemToFree(Unit* ptChar, Unit* ptItem)
 	return NULL;
 }
 
-FCT_ASM ( caller_updateItem_9 )
+void __fastcall updateItem_111(Unit* ptItem, Unit* ptChar)
+{
+	if (PCGame->isLODGame && (D2ItemGetPage(ptItem) == 4))
+	{
+		Stash* ptStash = getStashFromItem(ptChar, ptItem);
+		if (ptStash)
+		{
+			selectStash(ptChar, ptStash, true);
+		}
+	}
+}
+
+FCT_ASM(caller_updateItem_111)
+	MOV ECX, ESI
+	MOV EDX, EBP
+	CALL updateItem_111
+	POP EAX
+	MOV EDX, DWORD PTR SS : [ESP + 0x18]
+	PUSH EDX
+	JMP EAX
+}}
+
+FCT_ASM(caller_updateItemB_111)
+	MOV EDX, EBP
+	CALL updateItem_111
+	POP EAX
+	MOV EDX, DWORD PTR SS : [ESP + 0x18]
+	PUSH EDX
+	JMP EAX
+}}
+
+FCT_ASM(callerServer_getNextItemToFree_111)
+	PUSH DWORD PTR SS : [ESP + 4]
+	PUSH DWORD PTR SS : [ESP + 0x30]
+	CALL getNextItemToFree
+	RETN 4
+}}
+
+FCT_ASM(callerClient_getNextItemToFree_111)
+	PUSH DWORD PTR SS : [ESP + 4]
 	PUSH EBX
-	PUSH DWORD PTR SS:[ESP+0x8]
-	CALL updateItem
+	CALL getNextItemToFree
 	RETN 4
 }}
 
@@ -176,20 +214,6 @@ FCT_ASM ( caller_updateClientPlayerOnLoading )
 	JMP ECX
 }}
 
-FCT_ASM ( callerServer_getNextItemToFree_9 )
-	PUSH DWORD PTR SS:[ESP+4]
-	PUSH DWORD PTR SS:[ESP+0x1C]
-	CALL getNextItemToFree
-	RETN 4
-}}
-
-FCT_ASM ( callerClient_getNextItemToFree_9 )
-	PUSH DWORD PTR SS:[ESP+4]
-	PUSH DWORD PTR SS:[ESP+0x28]
-	CALL getNextItemToFree
-	RETN 4
-}}
-
 void Install_PlayerCustomData()
 {
 	static int isInstalled = false;
@@ -201,16 +225,14 @@ void Install_PlayerCustomData()
 
 	log_msg("[Patch] D2Game & D2Client & D2Common for Player's custom data. (PlayerCustomData)\n");
 
-	DWORD InitializeCustomDataOffset = D2Common::GetOffsetByAddition(0x70462);
-	DWORD UpdateItemOffset1 = D2Game::GetOffsetByAddition(0x10933);
-	DWORD UpdateItemOffset2 = D2Game::GetOffsetByAddition(0x1097B);
-	DWORD UpdateClientOnLoadingOffset = D2Game::GetOffsetByAddition(0x23EB);
-	DWORD FreeCustomDataOffset = D2Common::GetOffsetByAddition(0x7055C);
-	DWORD FreeItemInStashServerSideOffset = D2Game::GetOffsetByAddition(0x7D12B);
-	DWORD FreeItemInStashClientSideOffset = D2Client::GetOffsetByAddition(0x8EF8F);
-	DWORD AdditionalOffset1 = D2Game::GetOffsetByAddition(0x7D176);
-	DWORD AdditionalOffset2 = D2Client::GetOffsetByAddition(0x8F0CA);
-	DWORD AdditionalOffset3 = D2Client::GetOffsetByAddition(0x8F13C);
+	DWORD InitializeCustomDataOffset = D2Common::GetOffsetByAddition(0x170DE);
+	DWORD UpdateItemOffset1 = D2Game::GetOffsetByAddition(0x75C81);
+	DWORD UpdateItemOffset2 = D2Game::GetOffsetByAddition(0x75CE1);
+	DWORD UpdateClientOnLoadingOffset = D2Game::GetOffsetByAddition(0xE7548);
+	DWORD FreeCustomDataOffset = D2Common::GetOffsetByAddition(0x1705D);
+	DWORD FreeItemInStashServerSideOffset = D2Game::GetOffsetByAddition(0x6F7C2);
+	DWORD FreeItemInStashClientSideOffset = D2Client::GetOffsetByAddition(0x621E4);
+	DWORD TestIfAlreadyRemovedFromInventoryOffset = D2Common::GetOffsetByAddition(0x3B393);
 
 	// Initialize custom data.
 	mem_seek(InitializeCustomDataOffset);
@@ -218,10 +240,14 @@ void Install_PlayerCustomData()
 
 	// update item
 	mem_seek(UpdateItemOffset1);
-	MEMC_REF4(D2GameGetObject, caller_updateItem_9);
+	memt_byte(0x8B, 0xE8);
+	MEMT_REF4(0x52182454, caller_updateItem_111);
 
+	// TODO: Not sure if this variable is actually needed since I haven't been able to get a breakpoint to hit this.
+	// Will do more testing at a future date.
 	mem_seek(UpdateItemOffset2);
-	MEMC_REF4(D2GameGetObject, caller_updateItem_9);
+	memt_byte(0x8B, 0xE8);
+	MEMT_REF4(0x52182454, caller_updateItemB_111);
 	
 	// Update client on loading
 	mem_seek(UpdateClientOnLoadingOffset);
@@ -234,24 +260,15 @@ void Install_PlayerCustomData()
 
 	// Free item in Stash (Server-side)
 	mem_seek(FreeItemInStashServerSideOffset);
-	MEMJ_REF4(D2Common::D2UnitGetNextItem, callerServer_getNextItemToFree_9);
+	MEMJ_REF4(D2Common::D2UnitGetNextItem, callerServer_getNextItemToFree_111);
 
 	// Free item in Stash (Client-side)
 	mem_seek(FreeItemInStashClientSideOffset);
-	MEMJ_REF4(D2Common::D2UnitGetNextItem, callerClient_getNextItemToFree_9);
+	MEMJ_REF4(D2Common::D2UnitGetNextItem, callerClient_getNextItemToFree_111);
 
-	mem_seek(AdditionalOffset1);
-	memt_byte(0x74, 0x90);
-	memt_byte(0x35, 0x90);
-
-	mem_seek(AdditionalOffset2);
-	memt_byte(0x0F, 0x90);
-	memt_byte(0x84, 0x90);
-	memt_dword(0xBF, 0x90909090);
-
-	mem_seek(AdditionalOffset3);
-	memt_byte(0x74, 0x90);
-	memt_byte(0x6F, 0x90);
+	// Test if it's already removed from inventory
+	mem_seek(TestIfAlreadyRemovedFromInventoryOffset);
+	memt_byte(0x0D, 0x07);
 
 	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;

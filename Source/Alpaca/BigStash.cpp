@@ -78,8 +78,8 @@ void Install_BigStash()
 
 	log_msg("[Patch] D2Common & D2Client for make 10x10 squares in the stash. (BigStash)\n");
 
-	DWORD StashGridOffset = D2Common::GetOffsetByAddition(0xC9F3);
-	DWORD StashBackgroundOffset = D2Client::GetOffsetByAddition(0x45B1C);
+	DWORD StashGridOffset = D2Common::GetOffsetByAddition(0x6CC25);
+	DWORD StashBackgroundOffset = D2Client::GetOffsetByAddition(0x943FC);
 
 	// Modification of stash grid
 	mem_seek(StashGridOffset);

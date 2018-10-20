@@ -1,6 +1,6 @@
 // Copyright (C) 2004-2017 Yohann Nicolas
 // Copyright (C) 2017 L'Autour
-// Copyright (C) 2017 Jonathan Vasquez <jon@xyinn.org>
+// Copyright (C) 2017-2018 Jonathan Vasquez <jon@xyinn.org>
 //
 // This program is free software : you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,16 +15,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include "D2CMP.h"
 
-#define PROGRAM_NAME "Alpaca"
-#define PROGRAM_VERSION "2.0.0"
-#define PROGRAM_AUTHOR_NAME "Jonathan Vasquez"
-#define PROGRAM_AUTHOR_ALIAS "fearedbliss"
-#define PROGRAM_BUILD_DATE "October 21, 2018 @ 01:00 ET"
+void D2CMP::Init()
+{
+	Name = "D2CMP.dll";
+	Offset = LoadDiabloLibrary();
+	SetFunctions();
+}
 
-extern char* modDataDirectory;
-extern bool active_plugin;
-extern bool active_CheckMemory;
+void D2CMP::SetFunctions()
+{
+	D2CMP10014 = (TD2CMP10014)GetOffsetByProc(0x2724);
+}
 
-void LoadParameters();
+D2CMP::TD2CMP10014 D2CMP::D2CMP10014;

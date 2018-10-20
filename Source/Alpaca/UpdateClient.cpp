@@ -75,11 +75,14 @@ DWORD __fastcall handleClientUpdate(DataPacket* packet)
 	}
 }
 
-FCT_ASM ( caller_handleClientUpdate )
-	LEA ECX,DWORD PTR SS:[ESP]
-	CALL handleClientUpdate
-	ADD ESP,0x104
-	RETN
+FCT_ASM(caller_handleClientUpdate_111)
+LEA ECX, DWORD PTR SS : [ESP + 8]
+CALL handleClientUpdate
+POP EDI
+POP ESI
+MOV ESP, EBP
+POP EBP
+RETN
 }}
 
 void Install_UpdateClient()
@@ -89,11 +92,11 @@ void Install_UpdateClient()
 	
 	log_msg("[Patch] D2Client for received item packet. (UpdateClient)\n");
 
-	DWORD ExecuteOurPacketsOnlyOffset = D2Client::GetOffsetByAddition(0x14236);
+	DWORD ExecuteOurPacketsOnlyOffset = D2Client::GetOffsetByAddition(0x84D96);
 
 	// execute if it's our packet else continue
 	mem_seek(ExecuteOurPacketsOnlyOffset);
-	MEMT_REF4(0xD6, caller_handleClientUpdate);
+	MEMT_REF4(0xCF, caller_handleClientUpdate_111);
 
 	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;

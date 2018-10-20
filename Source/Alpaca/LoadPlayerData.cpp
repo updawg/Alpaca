@@ -339,51 +339,39 @@ DWORD __stdcall LoadMPCustomData(Unit* ptChar)
 	return ret;
 }
 
-FCT_ASM ( caller_LoadMPPlayerCustomData_9 )
-	PUSH DWORD PTR SS:[EDI]
-	CALL LoadMPCustomData
-	TEST EAX,EAX
-	JNZ JMP_LoadMPlayerCustomData
-	CMP DWORD PTR DS:[EDI],0
-	JNZ Continue_LoadMP
-	ADD DWORD PTR SS:[ESP],0x1D
-Continue_LoadMP:
+FCT_ASM(caller_LoadMPPlayerCustomData_111)
+PUSH DWORD PTR SS : [EBX]
+CALL LoadMPCustomData
+TEST EAX, EAX
+JNZ JMP_LoadMPlayerCustomData
+CMP DWORD PTR DS : [EBX], 0
+JNZ Continue_LoadMP
+ADD DWORD PTR SS : [ESP], 0x21
+Continue_LoadMP :
 	RETN
-JMP_LoadMPlayerCustomData:
-	SUB DWORD PTR SS:[ESP],0x13
-	RETN
+	JMP_LoadMPlayerCustomData :
+SUB DWORD PTR SS : [ESP], 0x12
+RETN
 }}
 
-FCT_ASM ( caller_SendSaveFiles )
-	POP EAX
-	PUSH DWORD PTR CS:[EAX+0x0F] //"name"
-	PUSH EAX
-	JMP SendSaveFiles
+FCT_ASM(caller_SendSaveFiles_111)
+POP EAX
+PUSH DWORD PTR CS : [EAX + 0x01] //"name"
+PUSH EAX
+JMP SendSaveFiles
 }}
 
-FCT_ASM ( caller_ReceiveSaveFiles )
-	PUSH ECX
-	PUSH EDX
-	LEA EDI,DWORD PTR DS:[ESI+4]
-	PUSH EDI		//Message
-	MOV EDI,DWORD PTR DS:[ESI]
-	PUSH EDI		//ID client
-	CALL ReceiveSaveFiles
-	POP EDX
-	POP ECX
-	RETN
-}}
-
-FCT_ASM ( caller_BugFix109b )
-	MOV EAX,DWORD PTR DS:[EDI+0xBD0]
-	TEST EAX,EAX
-	JE go_to_default
-	MOV EAX,DWORD PTR SS:[ESP+0x20]
-	MOV DWORD PTR SS:[ESP+0x24],EAX
-	RETN
-go_to_default:
-	SUB DWORD PTR SS:[ESP],0x4B
-	RETN
+FCT_ASM(caller_ReceiveSaveFiles_111)
+PUSH ECX
+PUSH EDX
+LEA EBX, DWORD PTR DS : [EBP + 4]
+PUSH EBX		//Message
+MOV EBX, DWORD PTR SS : [EBP]
+PUSH EBX		//ID client
+CALL ReceiveSaveFiles
+POP EDX
+POP ECX
+RETN
 }}
 
 void Install_LoadPlayerData()
@@ -393,11 +381,10 @@ void Install_LoadPlayerData()
 
 	log_msg("[Patch] D2Game & D2Client for load Player's custom data. (LoadPlayerData)\n");
 
-	DWORD LoadSinglePlayerCustomDataOffset = D2Game::GetOffsetByAddition(0x5046F);
-	DWORD LoadMultiPlayerCustomDataOffset = D2Game::GetOffsetByAddition(0x50790);
-	DWORD SendSaveFilesToServerOffset = D2Client::GetOffsetByAddition(0xCF42);
-	DWORD ReceiveSaveFilesFromClientOffset = D2Game::GetOffsetByAddition(0x183A);
-	DWORD BugFix109bOffset = Fog::GetOffsetByAddition(0x47DE);
+	DWORD LoadSinglePlayerCustomDataOffset = D2Game::GetOffsetByAddition(0x3BCCD);
+	DWORD LoadMultiPlayerCustomDataOffset = D2Game::GetOffsetByAddition(0x3BB57);
+	DWORD SendSaveFilesToServerOffset = D2Client::GetOffsetByAddition(0xB638C);
+	DWORD ReceiveSaveFilesFromClientOffset = D2Game::GetOffsetByAddition(0xD53E9);
 
 	// Load SP player custom data.
 	mem_seek(LoadSinglePlayerCustomDataOffset);
@@ -408,25 +395,18 @@ void Install_LoadPlayerData()
 	// Load MP player custom data.
 	mem_seek(LoadMultiPlayerCustomDataOffset);
 	memt_byte(0x83, 0xE8);
-	MEMT_REF4(0x1D74003F, caller_LoadMPPlayerCustomData_9);
+	MEMT_REF4(0x2174003B, caller_LoadMPPlayerCustomData_111);
 
 	// Send save files to Server.
 	mem_seek(SendSaveFilesToServerOffset);
-	MEMJ_REF4(Fog::D2FogGetSavePath, caller_SendSaveFiles);
+	MEMJ_REF4(Fog::D2FogGetSavePath, caller_SendSaveFiles_111);
 
 	// Receive save files from client.
 	mem_seek(ReceiveSaveFilesFromClientOffset);
 	memt_byte(0x8B, 0xE8);
-	MEMT_REF4(0x04468A3E, caller_ReceiveSaveFiles);
-	
-	mem_seek(BugFix109bOffset);
-	memt_byte(0x8B, 0xE8);
-	MEMT_REF4(0x891C2444, caller_BugFix109b);
-	memt_byte(0x44 ,0x90);
-	memt_byte(0x24 ,0x90);
-	memt_byte(0x20 ,0x90);
-	
-	customPackID -= 3;
+	MEMT_REF4(0xB60F005D, caller_ReceiveSaveFiles_111);
+	memt_byte(0x45, 0x90);
+	memt_byte(0x04, 0x90);
 
 	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;

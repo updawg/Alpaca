@@ -127,12 +127,12 @@ bool InstallAlpaca(HANDLE h, LPBYTE addr, char* libraryName)
 	LPBYTE freeLibraryAddr = addr;
 	LPBYTE getProcAddressAddr = addr;
 
-    // 1.09b Offsets
-	loadCallerAddr += 0x389B;
-	freeCallerAddr += 0x3A8C;
-	loadLibraryAddr += 0xC03C;
-	freeLibraryAddr += 0xC044;
-	getProcAddressAddr += 0xC038;
+	// [1.13d]
+	loadCallerAddr += 0xAA03;
+	freeCallerAddr += 0xA9AA;
+	loadLibraryAddr += 0xD11C;
+	freeLibraryAddr += 0xD124;
+	getProcAddressAddr += 0xD120;
 	
 	BYTE buf[200];
 	DWORD pos = 0;
@@ -313,8 +313,8 @@ bool isD2gfxLoaded(HANDLE hProcess, LPVOID addr)
 	DWORD SizeOfImage = *(DWORD*)(buf + offsetPESignature + 0x50);
 	DWORD CheckSum = *(DWORD*)(buf + offsetPESignature + 0x58);
 
-	if (ImageBase == 0x6FA70000 && SizeOfImage == 0x00021000 && CheckSum == 0x00000000) return true; // 1.09 - 1.09b - 1.09d - 1.10
-
+	//[1.13d]
+	if (ImageBase == 0x6FA80000 && SizeOfImage == 0x00021000 && CheckSum == 0x00018542) return true;// 1.13d
 	return false;
 }
 

@@ -26,7 +26,7 @@ void Fog::Init()
 
 void Fog::SetFunctions()
 {
-	D2FogAssertOld = (TD2FogAssertOld)GetOffsetByProc(10023);
+	D2FogAssert = (TD2FogAssert)GetOffsetByProc(10024);
 	D2FogMemAlloc = (TD2FogMemAlloc)GetOffsetByProc(10042);
 	D2FogMemDeAlloc = (TD2FogMemDeAlloc)GetOffsetByProc(10043);
 	D2AllocMem = (TD2AllocMem)GetOffsetByProc(10045);
@@ -36,9 +36,10 @@ void Fog::SetFunctions()
 	D2MPQReadFile = (TD2MPQReadFile)GetOffsetByProc(10104);
 	D2MPQGetSizeFile = (TD2MPQGetSizeFile)GetOffsetByProc(10105);
 	D2FogGetSavePath = (TD2FogGetSavePath)GetOffsetByProc(10115);
+	D2GetInstructionPointer = (TD2GetInstructionPointer)GetOffsetByProc(10265);
 }
 
-Fog::TD2FogAssertOld Fog::D2FogAssertOld;
+Fog::TD2FogAssert Fog::D2FogAssert;
 Fog::TD2FogMemAlloc Fog::D2FogMemAlloc;
 Fog::TD2FogMemDeAlloc Fog::D2FogMemDeAlloc;
 Fog::TD2AllocMem Fog::D2AllocMem;
@@ -48,3 +49,4 @@ Fog::TD2MPQCloseFile Fog::D2MPQCloseFile;
 Fog::TD2MPQReadFile Fog::D2MPQReadFile;
 Fog::TD2MPQGetSizeFile Fog::D2MPQGetSizeFile;
 Fog::TD2FogGetSavePath Fog::D2FogGetSavePath;
+Fog::TD2GetInstructionPointer Fog::D2GetInstructionPointer;

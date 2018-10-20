@@ -28,14 +28,11 @@
 s_shifting shifting;
 
 // D2Common
-D2Common::TD2Common10242 D2Common10242;
 D2Common::TD2InvAddItem D2InvAddItem;
-D2Common::TD2Common10250 D2Common10250;
+D2Common::TD2InvRemoveItem D2InvRemoveItem;
 D2Common::TD2InventoryGetFirstItem D2InventoryGetFirstItem;
 D2Common::TD2UnitGetNextItem D2UnitGetNextItem;
 D2Common::TD2GetRealItem D2GetRealItem;
-D2Common::TD2GetPosX D2GetPosX;
-D2Common::TD2GetPosY D2GetPosY;
 D2Common::TD2GetMaxGoldBank D2GetMaxGoldBank;
 D2Common::TD2InitPlayerData D2InitPlayerData;
 D2Common::TD2GetMaxGold D2GetMaxGold;
@@ -44,12 +41,8 @@ D2Common::TD2GetPlayerStat D2GetPlayerStat;
 D2Common::TD2CompileTxtFile D2CompileTxtFileDirect;
 D2Common::TD2CompileTxtFile D2CompileTxtFile;
 D2Common::TD2ItemGetPage D2ItemGetPage;
-D2Common::TD2SetAnim D2SetAnim;
 D2Common::TD2SaveItem D2SaveItem;
 D2Common::TD2ReadFile D2ReadFile;
-D2Common::TD2Common10581 D2Common10581;
-D2Common::TD2Common10598 D2Common10598;
-D2Common::TD2Common10673 D2Common10673;
 
 // D2Client
 D2Client::TD2LoadImage D2LoadImage;
@@ -61,6 +54,7 @@ D2Client::TD2GetMouseX D2GetMouseX;
 D2Client::TD2GetMouseY D2GetMouseY;
 D2Client::TD2GetClientPlayer D2GetClientPlayer;
 D2Client::TD2SendToServer3 D2SendToServer3;
+D2Client::TD2ClickOnStashButton D2ClickOnStashButton;
 
 // D2Client: Variables
 DWORD* ptNegWindowStartY;
@@ -71,6 +65,7 @@ D2Game::TD2SendPacket D2SendPacket;
 D2Game::TD2LoadInventory D2LoadInventory;
 D2Game::TD2GameGetObject D2GameGetObject;
 D2Game::TD2GetClient D2GetClient;
+D2Game::TD2SaveGame D2SaveGame;
 
 // D2Game: Variables
 NetClient** ptClientTable;
@@ -80,7 +75,6 @@ D2Net::TD2SendToServer D2SendToServer;
 D2Net::TD2SendToClient D2SendToClient;
 
 // Fog
-Fog::TD2FogAssertOld D2FogAssertOld;
 Fog::TD2FogMemAlloc D2FogMemAlloc;
 Fog::TD2FogMemDeAlloc D2FogMemDeAlloc;
 Fog::TD2AllocMem D2AllocMem;
@@ -114,14 +108,11 @@ void setFrame(sDrawImageInfo* data, DWORD frame){((DWORD*)data)[shifting.ptFrame
 void InitializeDiabloFunctions()
 {
 	// D2Common
-	D2Common10242 = D2Common::D2Common10242;
 	D2InvAddItem = D2Common::D2InvAddItem;
-	D2Common10250 = D2Common::D2Common10250;
+	D2InvRemoveItem = D2Common::D2InvRemoveItem;
 	D2InventoryGetFirstItem = D2Common::D2InventoryGetFirstItem;
 	D2UnitGetNextItem = D2Common::D2UnitGetNextItem;
 	D2GetRealItem = D2Common::D2GetRealItem;
-	D2GetPosX = D2Common::D2GetPosX;
-	D2GetPosY = D2Common::D2GetPosY;
 	D2GetMaxGoldBank = D2Common::D2GetMaxGoldBank;
 	D2InitPlayerData = D2Common::D2InitPlayerData;
 	D2GetMaxGold = D2Common::D2GetMaxGold;
@@ -130,12 +121,8 @@ void InitializeDiabloFunctions()
 	D2CompileTxtFileDirect = D2Common::D2CompileTxtFileDirect;
 	D2CompileTxtFile = D2Common::D2CompileTxtFile;
 	D2ItemGetPage = D2Common::D2ItemGetPage;
-	D2SetAnim = D2Common::D2SetAnim;
 	D2SaveItem = D2Common::D2SaveItem;
 	D2ReadFile = D2Common::D2ReadFile;
-	D2Common10581 = D2Common::D2Common10581;
-	D2Common10598 = D2Common::D2Common10598;
-	D2Common10673 = D2Common::D2Common10673;
 
 	// D2Client
 	D2LoadImage = D2Client::D2LoadImage;
@@ -147,6 +134,7 @@ void InitializeDiabloFunctions()
 	D2GetMouseY = D2Client::D2GetMouseY;
 	D2GetClientPlayer = D2Client::D2GetClientPlayer;
 	D2SendToServer3 = D2Client::D2SendToServer3;
+	D2ClickOnStashButton = D2Client::D2ClickOnStashButton;
 
 	// D2Client: Variables
 	ptNegWindowStartY = D2Client::ptNegWindowStartY;
@@ -157,6 +145,7 @@ void InitializeDiabloFunctions()
 	D2LoadInventory = D2Game::D2LoadInventory;
 	D2GameGetObject = D2Game::D2GameGetObject;
 	D2GetClient = D2Game::D2GetClient;
+	D2SaveGame = D2Game::D2SaveGame;
 
 	// D2Game: Variables
 	ptClientTable = D2Game::ptClientTable;
@@ -166,7 +155,6 @@ void InitializeDiabloFunctions()
 	D2SendToClient = D2Net::D2SendToClient;
 
 	// Fog
-	D2FogAssertOld = Fog::D2FogAssertOld;
 	D2FogMemAlloc = Fog::D2FogMemAlloc;
 	D2FogMemDeAlloc = Fog::D2FogMemDeAlloc;
 	D2AllocMem = Fog::D2AllocMem;

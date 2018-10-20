@@ -20,9 +20,6 @@
 #include <stdio.h>
 #include "Utilities/Utility.h"
 
-extern bool active_multiPageStash;
-extern bool active_sharedStash;
-
 void* stashBtnsImages = NULL;
 void* sharedGoldBtnsImages = NULL;
 
@@ -47,22 +44,23 @@ DWORD __stdcall isModFile (char* filename)
 	return false;
 }
 
-FCT_ASM ( caller_isModFile )
-	TEST ESI,ESI
-	JNZ ISNOTMODDATA
-	MOV EBP, DWORD PTR SS:[ESP+0x140]
-	PUSH EBP
-	CALL isModFile
-	TEST EAX,EAX
-	JE ISNOTMODDATA
-	MOV BL, BYTE PTR SS:[ESP+0x144]
-	POP EAX
-	POP EAX
-	MOV EAX,D2StormMPQOpenFile
-	ADD EAX,0x9A
-	JMP EAX
-ISNOTMODDATA:
-	JMP DWORD PTR CS:[LeaveCriticalSection]
+FCT_ASM(caller_isModFile_111)
+TEST EDI, EDI
+JNZ ISNOTMODDATA
+MOV ESI, DWORD PTR SS : [ESP + 0x130]
+PUSH ESI
+CALL isModFile
+TEST EAX, EAX
+JE ISNOTMODDATA
+MOV BL, BYTE PTR SS : [ESP + 0x134]
+POP EAX
+POP EAX
+MOV EAX, D2StormMPQOpenFile
+ADD EAX, 0xBD
+MOV EBP, GetFileAttributesA
+JMP EAX
+ISNOTMODDATA :
+JMP DWORD PTR CS : [LeaveCriticalSection]
 }}
 
 void Install_AlpacaFiles()
@@ -72,13 +70,13 @@ void Install_AlpacaFiles()
 
 	log_msg("[Patch] Storm to find custom file. (AlpacaFiles)\n");
 
-	DWORD FindCustomFileOffset = Storm::GetOffsetByAddition(0x192C6);
+	DWORD FindCustomFileOffset = Storm::GetOffsetByAddition(0x2DA79);
 
 	// Try in Diablo II\Alpaca\ if file not found
 	mem_seek(FindCustomFileOffset);
 	memt_byte(0xFF, 0x90);
 	memt_byte(0x15, 0xE8);
-	MEMD_REF4(LeaveCriticalSection, caller_isModFile);
+	MEMD_REF4(LeaveCriticalSection, caller_isModFile_111);
 
 	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;
@@ -112,15 +110,8 @@ void __stdcall loadCustomImages()
 	const char* stashBtnsFile = "StashBtns";
 	const char* sharedGoldBtnsFile = "SharedGoldBtns";
 
-	if (active_multiPageStash)
-	{
-		loadImagesFile(&stashBtnsImages, stashBtnsFile);
-	}
-
-	if (active_sharedStash)
-	{
-		loadImagesFile(&sharedGoldBtnsImages, sharedGoldBtnsFile);
-	}
+	loadImagesFile(&stashBtnsImages, stashBtnsFile);
+	loadImagesFile(&sharedGoldBtnsImages, sharedGoldBtnsFile);
 }
 
 #define freeImagesFile(I) if(I) {D2FreeImage(I);I=NULL;}
@@ -152,8 +143,8 @@ void Install_AlpacaImagesFiles()
 
 	log_msg("[Patch] D2Client to load/free custom images. (AlpacaImagesFiles)\n");
 
-	DWORD LoadCustomImageOffset = D2Client::GetOffsetByAddition(0x57E21);
-	DWORD FreeCustomImageOffset = D2Client::GetOffsetByAddition(0x57FA9);
+	DWORD LoadCustomImageOffset = D2Client::GetOffsetByAddition(0x6E0BE);
+	DWORD FreeCustomImageOffset = D2Client::GetOffsetByAddition(0x6D07D);
 
 	// Load custom images
 	mem_seek(LoadCustomImageOffset);

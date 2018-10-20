@@ -29,13 +29,12 @@ DWORD nbPagesPerIndex = 10;
 DWORD nbPagesPerIndex2 = 100;
 
 char* sharedStashFilename = "SharedStashSave";
-bool active_multiPageStash = true;
-bool active_sharedStash = true;
 
 // Let's keep hardcore and softcore shared stashes separate.
 bool separateHardSoftStash = true;
 
 typedef int (*TchangeToSelectedStash)(Unit* ptChar, Stash* newStash, DWORD bOnlyItems, DWORD bIsClient);
+TchangeToSelectedStash changeToSelectedStash;
 
 Unit* firstClassicStashItem(Unit* ptChar)
 {
@@ -141,8 +140,7 @@ Stash* getStash(Unit* ptChar, DWORD isShared, DWORD id)
 	return NULL;
 }
 
-
-int changeToSelectedStash_9(Unit* ptChar, Stash* newStash, DWORD bOnlyItems, DWORD bIsClient)
+int changeToSelectedStash_10(Unit* ptChar, Stash* newStash, DWORD bOnlyItems, DWORD bIsClient)
 {
 	if (!newStash) return 0;
 
@@ -151,36 +149,25 @@ int changeToSelectedStash_9(Unit* ptChar, Stash* newStash, DWORD bOnlyItems, DWO
 	Stash* currentStash = PCPY->currentStash;
 	if (currentStash == newStash) return 0;
 
-	d2_assert( currentStash && currentStash->ptListItem, "ERROR : currentStash isn't empty (ptListItem != NULL)",__FILE__,__LINE__);
+	d2_assert(currentStash && currentStash->ptListItem, "ERROR : currentStash isn't empty (ptListItem != NULL)", __FILE__, __LINE__);
 
-	// collect items to remove
-	Inventory* ptInventory = PCInventory;
+	// Remove items from current page
 	Unit* ptNextItem;
-	Unit* ptPrevItem = NULL;
-	Unit* ptItem = D2InventoryGetFirstItem(ptInventory);
+	Unit* ptItem = D2InventoryGetFirstItem(PCInventory);
 	while (ptItem)
 	{
 		ptNextItem = D2UnitGetNextItem(ptItem);
-		if (D2ItemGetPage(D2GetRealItem(ptItem)) == 4)
+		if (D2ItemGetPage(ptItem) == 4)
 		{
-			D2SetAnim(D2GetRealItem(ptItem),-1);
-			if (ptPrevItem)	{
-				ptPrevItem->CurrentAnim = (DWORD)ptNextItem;//is ptPrevItem->nextNode = ptNextItem;
-			} else {
-				ptInventory->currentUsedSocket = (DWORD)ptNextItem;//is ptInventory->ptListItem = ptNextItem;
-			}
-			if (!ptNextItem)
-				ptInventory->Inventory2C = (DWORD)ptPrevItem;
-
-			ptInventory->Inventory30 = ptInventory->Inventory30 - 1;
-			D2Common10250(__FILE__,__LINE__,ptInventory, D2GetPosX(D2GetRealItem(ptItem)), D2GetPosY(D2GetRealItem(ptItem)), 0xC, bIsClient, 4);
-
+			BYTE tmp = ptItem->ptItemData->ItemData2;
+			ptItem = D2InvRemoveItem(PCInventory, ptItem);
+			ptItem->ptItemData->ItemData2 = tmp;
 			if (currentStash)
 			{
-				ptItem->CurrentAnim = (DWORD)currentStash->ptListItem;//is ptItem->nextNode = ptListItem
+				ptItem->ptItemData->ptNextItem = currentStash->ptListItem;
 				currentStash->ptListItem = ptItem;
-			};
-		} else ptPrevItem = ptItem;
+			}
+		}
 		ptItem = ptNextItem;
 	}
 
@@ -188,8 +175,7 @@ int changeToSelectedStash_9(Unit* ptChar, Stash* newStash, DWORD bOnlyItems, DWO
 	ptItem = newStash->ptListItem;
 	while (ptItem)
 	{
-		D2InvAddItem(PCInventory, D2GetRealItem(ptItem), D2GetPosX(D2GetRealItem(ptItem)), D2GetPosY(D2GetRealItem(ptItem)), 0xC, bIsClient, 4);
-		D2Common10242(PCInventory, D2GetRealItem(ptItem), 1);
+		D2InvAddItem(PCInventory, ptItem, ptItem->path->x, ptItem->path->y, 0xC, bIsClient, 4);
 		ptItem = D2UnitGetNextItem(ptItem);
 	}
 	if (bOnlyItems)
@@ -200,8 +186,6 @@ int changeToSelectedStash_9(Unit* ptChar, Stash* newStash, DWORD bOnlyItems, DWO
 
 	return 1;
 }
-
-TchangeToSelectedStash changeToSelectedStash;
 
 DWORD loadStash(Unit* ptChar, Stash* ptStash, BYTE data[], DWORD startSize, DWORD maxSize, DWORD* retSize)
 {
@@ -785,7 +769,7 @@ void Install_MultiPageStash()
 	Install_PlayerCustomData();
 	Install_InterfaceStash();
 
-	changeToSelectedStash = changeToSelectedStash_9;
+	changeToSelectedStash = changeToSelectedStash_10;
 
 	isInstalled = true;
 }

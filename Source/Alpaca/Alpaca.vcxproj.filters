@@ -129,6 +129,9 @@
     <ClCompile Include="Utilities\Utility.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
+    <ClCompile Include="D2CMP.cpp">
+      <Filter>Source Files\Libraries</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bigStash.h">
@@ -259,6 +262,9 @@
     </ClInclude>
     <ClInclude Include="Utilities\Utility.h">
       <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="D2CMP.h">
+      <Filter>Header Files\Libraries</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

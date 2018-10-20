@@ -27,6 +27,7 @@ void LibraryLoader::Init()
 
 	// Initialize static class variables
 	D2Client::Init();
+	D2CMP::Init();
 	D2Common::Init();
 	D2Game::Init();
 	D2gfx::Init();

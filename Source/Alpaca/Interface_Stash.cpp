@@ -135,28 +135,22 @@ void* __stdcall printBtns()
 	setFrame(&data, 2 + isDownBtn.next);
 	D2PrintImage(&data, getXNextBtn(), getYNextBtn(), -1, 5, 0);
 
-	if (active_sharedStash)
-	{
-		setFrame(&data, 4 + isDownBtn.toggleToSharedStash + (PCPY->showSharedStash ? 2 : 0));
-		D2PrintImage(&data, getXSharedBtn(), getYSharedBtn(), -1, 5, 0);
-	}
-
+	setFrame(&data, 4 + isDownBtn.toggleToSharedStash + (PCPY->showSharedStash ? 2 : 0));
+	D2PrintImage(&data, getXSharedBtn(), getYSharedBtn(), -1, 5, 0);
+	
 	setFrame(&data, 8 + isDownBtn.previousIndex);
 	D2PrintImage(&data, getXPreviousIndexBtn(), getYPreviousIndexBtn(), -1, 5, 0);
 
 	setFrame(&data, 10 + isDownBtn.nextIndex);
 	D2PrintImage(&data, getXNextIndexBtn(), getYNextIndexBtn(), -1, 5, 0);
 
-	if (active_sharedStash)
-	{
-		setImage(&data, sharedGoldBtnsImages);
-		setFrame(&data, 0 + isDownBtn.putGold);
-		D2PrintImage(&data, getXPutGoldBtn(), getYPutGoldBtn(), -1, 5, 0);
+	setImage(&data, sharedGoldBtnsImages);
+	setFrame(&data, 0 + isDownBtn.putGold);
+	D2PrintImage(&data, getXPutGoldBtn(), getYPutGoldBtn(), -1, 5, 0);
 
-		setFrame(&data, 2 + isDownBtn.takeGold);
-		D2PrintImage(&data, getXTakeGoldBtn(), getYTakeGoldBtn(), -1, 5, 0);
-	}
-
+	setFrame(&data, 2 + isDownBtn.takeGold);
+	D2PrintImage(&data, getXTakeGoldBtn(), getYTakeGoldBtn(), -1, 5, 0);
+	
 	LPWSTR lpText;
 	WCHAR text[100];
 	DWORD mx = D2GetMouseX();
@@ -174,7 +168,7 @@ void* __stdcall printBtns()
 		lpText = STR_STASH_NEXT_PAGE;
 		D2PrintPopup(lpText, getXNextBtn() + getLNextBtn() / 2, getYNextBtn() - getHNextBtn(), WHITE, 1);
 	}
-	else if (active_sharedStash && isOnButtonToggleSharedStash(mx, my))
+	else if (isOnButtonToggleSharedStash(mx, my))
 	{
 		lpText = PCPY->showSharedStash ? STR_TOGGLE_TO_PERSONAL : STR_TOGGLE_TO_SHARED;
 		D2PrintPopup(lpText, getXSharedBtn() + getLSharedBtn() / 2, getYSharedBtn() - getHSharedBtn(), WHITE, 1);
@@ -189,12 +183,12 @@ void* __stdcall printBtns()
 		_snwprintf(text, sizeof(text), STR_STASH_NEXT_INDEX, nbPagesPerIndex, nbPagesPerIndex2);
 		D2PrintPopup(text, getXNextIndexBtn() + getLNextIndexBtn() / 2, getYNextIndexBtn() - getHNextIndexBtn(), WHITE, 1);
 	}
-	else if (active_sharedStash && isOnButtonPutGold(mx, my))
+	else if (isOnButtonPutGold(mx, my))
 	{
 		lpText = STR_DEPOSIT_GOLD;
 		D2PrintPopup(lpText, getXPutGoldBtn() + getLPutGoldBtn() / 2, getYPutGoldBtn() - getHPutGoldBtn(), WHITE, 1);
 	}
-	else if (active_sharedStash && isOnButtonTakeGold(mx, my))
+	else if (isOnButtonTakeGold(mx, my))
 	{
 		lpText = STR_WITHDRAW_GOLD;
 		D2PrintPopup(lpText, getXTakeGoldBtn() + getLTakeGoldBtn() / 2, getYTakeGoldBtn() - getHTakeGoldBtn(), WHITE, 1);
@@ -211,15 +205,15 @@ DWORD __stdcall manageBtnDown(sWinMessage* msg)
 		isDownBtn.previous = 1;
 	else if (isOnButtonNextStash(msg->x,msg->y))
 		isDownBtn.next = 1;
-	else if (active_sharedStash && isOnButtonToggleSharedStash(msg->x,msg->y))
+	else if (isOnButtonToggleSharedStash(msg->x,msg->y))
 		isDownBtn.toggleToSharedStash = 1;
 	else if (isOnButtonPreviousIndexStash(msg->x,msg->y))
 		isDownBtn.previousIndex = 1;
 	else if (isOnButtonNextIndexStash(msg->x,msg->y))
 		isDownBtn.nextIndex = 1;
-	else if (active_sharedStash && isOnButtonPutGold(msg->x,msg->y))
+	else if (isOnButtonPutGold(msg->x,msg->y))
 		isDownBtn.putGold = 1;
-	else if (active_sharedStash && isOnButtonTakeGold(msg->x,msg->y))
+	else if (isOnButtonTakeGold(msg->x,msg->y))
 		isDownBtn.takeGold = 1;
 	else return 0;
 
@@ -252,7 +246,7 @@ DWORD __stdcall manageBtnUp(sWinMessage* msg)
 			else
 				updateServer(US_SELECT_NEXT);
 	}
-	else if (active_sharedStash && isOnButtonToggleSharedStash(msg->x,msg->y))
+	else if (isOnButtonToggleSharedStash(msg->x,msg->y))
 	{
 		log_msg("push up left button shared\n");
 		if (isDownBtn.toggleToSharedStash)
@@ -260,10 +254,6 @@ DWORD __stdcall manageBtnUp(sWinMessage* msg)
 				updateServer(US_SELECT_SELF);
 			 else
 				updateServer(US_SELECT_SHARED);
-	}
-	else if (!active_sharedStash && isOnButtonToggleSharedStash(msg->x, msg->y))
-	{
-		log_msg("push up left button shared but shared stash is disabled.\n");
 	}
 	else if (isOnButtonPreviousIndexStash(msg->x,msg->y))
 	{
@@ -283,13 +273,13 @@ DWORD __stdcall manageBtnUp(sWinMessage* msg)
 			else
 				updateServer(US_SELECT_NEXT_INDEX);
 	}
-	else if (active_sharedStash && isOnButtonPutGold(msg->x,msg->y))
+	else if (isOnButtonPutGold(msg->x,msg->y))
 	{
 		log_msg("push up left put gold\n");
 		if (isDownBtn.putGold)
 			updateServer(US_PUTGOLD);
 	}
-	else if (active_sharedStash && isOnButtonTakeGold(msg->x,msg->y))
+	else if (isOnButtonTakeGold(msg->x,msg->y))
 	{
 		log_msg("push up left take gold\n");
 		if (isDownBtn.takeGold)
@@ -362,17 +352,10 @@ void __fastcall printPageNumber(LPWSTR maxGoldText, DWORD x, DWORD y, DWORD colo
 	DWORD my = D2GetMouseY();
 	if ((RX(0x5E) < mx) && (mx < RX(0xF8)) && (RY(0x1C8) < my) && (my < RY(0x1B6)) )
 	{
-		if (active_sharedStash)
-		{
-			_snwprintf(popupText, sizeof(popupText), L"%s\n%s: %u", maxGoldText, STR_SHARED_GOLD_QUANTITY, PCPY->sharedGold);
-			DWORD x = D2GetPixelLen(maxGoldText);
-			DWORD x2 = D2GetPixelLen(popupText) - x;
-			D2PrintPopup(popupText, RX(0xA8-max(x,x2)/2), RY(0x1CA), WHITE, 0);
-		}
-		else
-		{
-			D2PrintPopup(maxGoldText, RX(0xA8), RY(0x1CA), WHITE, 1);
-		}
+		_snwprintf(popupText, sizeof(popupText), L"%s\n%s: %u", maxGoldText, STR_SHARED_GOLD_QUANTITY, PCPY->sharedGold);
+		DWORD x = D2GetPixelLen(maxGoldText);
+		DWORD x2 = D2GetPixelLen(popupText) - x;
+		D2PrintPopup(popupText, RX(0xA8-max(x,x2)/2), RY(0x1CA), WHITE, 0);
 	}
 }
 
@@ -426,45 +409,46 @@ Unit* __stdcall initGetNextItemForSet(Inventory* ptInventory)
 	return getNextItemForSet(item);
 }
 
-FCT_ASM( caller_manageBtnDown )
-	PUSH EDI
-	CALL manageBtnDown
-	TEST EAX,EAX
-	JE IS_NOT_ON_BUTTON
-	POP EDX
-	MOV EDX, DWORD PTR DS:[EDX+0xF3]
-	MOV DWORD PTR DS:[EDX],1
-	POP EDI
-	POP ESI
-	POP EBP
-	POP EBX
-	RETN 4
-IS_NOT_ON_BUTTON:
-	JMP D2isLODGame
+FCT_ASM(caller_manageBtnDown_111)
+PUSH EBP
+CALL manageBtnDown
+TEST EAX, EAX
+JE IS_NOT_ON_BUTTON
+POP EDX
+MOV EDX, DWORD PTR DS : [EDX + 0x10]
+MOV DWORD PTR DS : [EDX], 1
+POP EDI
+POP ESI
+POP EBP
+POP EBX
+RETN 4
+IS_NOT_ON_BUTTON :
+	JMP D2ClickOnStashButton
 }}
 
-FCT_ASM( caller_manageBtnUp )
-	PUSH EBP
-	CALL manageBtnUp
-	MOV isDownBtn.all,0
-	TEST EAX,EAX
-	JE IS_NOT_ON_BUTTON
-	POP EDX
-	MOV EDX, DWORD PTR DS:[EDX+0xEA]
-	MOV DWORD PTR DS:[EDX],0
-	SUB EDX,8
-	MOV DWORD PTR DS:[EDX],0
-	ADD EDX,4
-	MOV DWORD PTR DS:[EDX],0
-	ADD EDX,0x68
-	MOV DWORD PTR DS:[EDX],0
-	POP EDI
-	POP ESI
-	POP EBP
-	POP EBX
-	RETN 4
+FCT_ASM(caller_manageBtnUp_111)
+PUSH EBX
+CALL manageBtnUp
+MOV isDownBtn.all, 0
+TEST EAX, EAX
+JE IS_NOT_ON_BUTTON
+POP EDX
+MOV EDX, DWORD PTR DS : [EDX + 0x1A]
+MOV DWORD PTR DS : [EDX], 0
+SUB EDX, 8
+MOV DWORD PTR DS : [EDX], 0
+ADD EDX, 4
+MOV DWORD PTR DS : [EDX], 0
+ADD EDX, 0x68
+MOV DWORD PTR DS : [EDX], 0
+POP EDI
+POP ESI
+POP EBP
+POP EBX
+POP ECX
+RETN 4
 IS_NOT_ON_BUTTON:
-	JMP D2isLODGame
+JMP D2ClickOnStashButton
 }}
 
 FCT_ASM ( initBtnsStates )
@@ -483,13 +467,13 @@ void Install_InterfaceStash()
 
 	log_msg("[Patch] D2Client for stash interface. (InterfaceStash)\n");
 
-	DWORD ButtonImagesOffset = D2Client::GetOffsetByAddition(0x39060);
-	DWORD PageNumberOffset = D2Client::GetOffsetByAddition(0x3903C);
-	DWORD MouseDownSoundOffset = D2Client::GetOffsetByAddition(0x45091);
-	DWORD MouseUpSoundOffset = D2Client::GetOffsetByAddition(0x455F9);
-	DWORD OpenStashPageInitStateOffset = D2Client::GetOffsetByAddition(0x45B3A);
-	DWORD GreenSetItemSearchOffset = D2Client::GetOffsetByAddition(0x3F098);
-	DWORD GreenSetItemNextSearchOffset = D2Client::GetOffsetByAddition(0x3F0FA);
+	DWORD ButtonImagesOffset = D2Client::GetOffsetByAddition(0x9DE26);
+	DWORD PageNumberOffset = D2Client::GetOffsetByAddition(0x9DE03);
+	DWORD MouseDownSoundOffset = D2Client::GetOffsetByAddition(0x9FC76);
+	DWORD MouseUpSoundOffset = D2Client::GetOffsetByAddition(0x9FAA9);
+	DWORD OpenStashPageInitStateOffset = D2Client::GetOffsetByAddition(0x9441A);
+	DWORD GreenSetItemSearchOffset = D2Client::GetOffsetByAddition(0x91A24);
+	DWORD GreenSetItemNextSearchOffset = D2Client::GetOffsetByAddition(0x91ABB);
 	
 	// Print button images
 	mem_seek(ButtonImagesOffset);
@@ -501,11 +485,11 @@ void Install_InterfaceStash()
 
 	// Manage mouse down (Play sound)
 	mem_seek(MouseDownSoundOffset);
-	MEMC_REF4((DWORD)D2isLODGame, caller_manageBtnDown);
+	MEMC_REF4((DWORD)D2ClickOnStashButton, caller_manageBtnDown_111);
 
 	// Manage mouse up
 	mem_seek(MouseUpSoundOffset);
-	MEMC_REF4((DWORD)D2isLODGame, caller_manageBtnUp);
+	MEMC_REF4((DWORD)D2ClickOnStashButton, caller_manageBtnUp_111);
 
 	// init state of button on open stash page
 	mem_seek(OpenStashPageInitStateOffset);
