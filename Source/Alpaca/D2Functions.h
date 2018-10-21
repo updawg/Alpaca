@@ -123,7 +123,4 @@ void setImage(sDrawImageInfo* data, void* image);
 void setFrame(sDrawImageInfo* data, DWORD frame);
 void __inline fillRect(DWORD x, DWORD y, DWORD Width, DWORD Height, DWORD color, DWORD transTbl){D2FillArea(x,y,x+Width,y+Height,color,transTbl);};
 
-#define GameTypeMode (*ptGameTypeMode)
-#define ClientTable (*ptClientTable)
-
 void InitializeDiabloFunctions();

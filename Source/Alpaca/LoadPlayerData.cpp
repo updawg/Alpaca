@@ -155,7 +155,6 @@ void freeCurrentCF(DWORD memoryPool, s_MPSaveFile** curSF)
 	*curSF = NULL;
 }
 
-
 void sendData(BYTE* data, DWORD size, bool isShared)
 {
 	t_rcvMsg pack;
@@ -185,9 +184,6 @@ static BYTE*	dataShared;
 
 void __fastcall SendSaveFiles (char* ptPath, DWORD maxsize, char* name)
 {
-//	DWORD size;
-//	BYTE* data;
-
 	D2FogGetSavePath(ptPath,maxsize);
 
 	log_msg("\n--- Start SendSaveFiles ---\n");
@@ -208,8 +204,6 @@ void __fastcall SendSaveFiles (char* ptPath, DWORD maxsize, char* name)
 	log_msg("End SendSaveFiles.\n\n");
 }
 
-
-
 DWORD __stdcall ReceiveSaveFiles (DWORD clientID, t_rcvMsg* msg)
 {
 	if( (msg->packID != customPackID) || !msg->isCustom) return msg->packID;
@@ -220,12 +214,19 @@ DWORD __stdcall ReceiveSaveFiles (DWORD clientID, t_rcvMsg* msg)
 
 	switch (msg->type)
 	{
-	case TS_SAVE_PERSONAL :	isShared = false;break;
-	case TS_SAVE_SHARED :	isShared = true;break;
-	default: return 0;//return msg->packID;
+	case TS_SAVE_PERSONAL:	isShared = false; break;
+	case TS_SAVE_SHARED:	isShared = true; break;
+	default: return 0;
 	}
 
 	NetClient* ptClient = ptClientTable[clientID & 0xFF];
+
+	// If the client is unable to be retrieved, then abort because we will crash.
+	// This will happen if the player tries to join the same LAN game with the same char.
+	// PlugY 11.02 in this situation seems to still retrieve the client and not crash,
+	// even though at the end of the day the game won't allow the player to join.
+	// Returning here as a permanent fix (unless we need to change)
+	if (!ptClient) return 0;
 
 	s_MPSaveFile* curSF = receivedSaveFiles;
 	while (curSF && (clientID != curSF->clientID) )
