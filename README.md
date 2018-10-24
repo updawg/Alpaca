@@ -1,6 +1,6 @@
-## Alpaca 2.0.1 [1.13d]
+## Alpaca 2.0.2 [1.13d]
 ##### By Jonathan Vasquez (fearedbliss)
-##### Released on Sunday, October 21, 2018
+##### Released on Wednesday, October 24, 2018
 
 ## Synopsis
 
@@ -55,18 +55,6 @@ All code is licensed under the GPLv3+ since that was the license that Yohann rel
 - `/swap <page #>` : Swaps the content of the current page with the content of the target page.
 - `/toggle <page #>` : Swaps the content of the current page with the content of
                        the target page in the opposing shared/personal stash.
-
-## Concerns
-
-### Using shared stash in a LAN game when two of your characters are in the same game
-
-This isn't a bug but it is a warning specifically related to if you are playing LAN
-with two of your own characters, you should avoid the use of the Shared Stash.
-This is because both of those characters are essentially seeing a copy of the shared
-stash at the point in time when they joined the LAN game. Since the stashes aren't
-automatically in-sync with each other, the last character to exit the game will be
-the stash that gets saved. Only use your personal stashes in LAN games if you don't
-want to lose any items.
 
 ## Limitations
 

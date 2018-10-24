@@ -165,7 +165,7 @@
     <ClInclude Include="INIfile.h" />
     <ClInclude Include="interface_Stash.h" />
     <ClInclude Include="Library.h" />
-    <ClInclude Include="loadPlayerData.h" />
+    <ClInclude Include="LoadPlayerData.h" />
     <ClInclude Include="mainScreen.h" />
     <ClInclude Include="modifMemory.h" />
     <ClInclude Include="parameters.h" />

@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+#include "LoadPlayerData.h"
 #include "infinityStash.h"
 #include "extendedSaveFile.h"
 #include "sharedSaveFile.h"
@@ -106,9 +107,7 @@ return value :
 1B:unknow failure
 */
 enum {
-	TS_SAVE_PERSONAL=0,
-	TS_SAVE_SHARED,
-	TS_PUTGOLD,
+	TS_PUTGOLD=0,
 	TS_TAKEGOLD
 };
 
@@ -144,7 +143,8 @@ void freeCurrentCF(DWORD memoryPool, s_MPSaveFile** curSF)
 {
 	if (*curSF == NULL) return;
 	D2FreeMem(memoryPool, (*curSF)->dataExtended,__FILE__,__LINE__,0);
-	D2FreeMem(memoryPool, (*curSF)->dataShared,__FILE__,__LINE__,0);
+	D2FreeMem(memoryPool, (*curSF)->dataShared, __FILE__, __LINE__, 0);
+
 	if ((*curSF)->next)
 		(*curSF)->next->prev = (*curSF)->prev;
 	if ((*curSF)->prev)
@@ -155,22 +155,20 @@ void freeCurrentCF(DWORD memoryPool, s_MPSaveFile** curSF)
 	*curSF = NULL;
 }
 
-void sendData(BYTE* data, DWORD size, bool isShared)
+void sendData(BYTE* data, DWORD size)
 {
 	t_rcvMsg pack;
-//	d2_assert(size >= 0x40000000, "size of file > 0x40000000", __FILE__, __LINE__);
 
 	pack.packID = customPackID;
 	pack.finalSize = size;
 	pack.isCustom = true;
-	pack.type = isShared ? TS_SAVE_SHARED : TS_SAVE_PERSONAL;
 
 	DWORD sended = 0;
 	while (sended < size)
 	{
 		pack.packSize = (BYTE) (size - sended > 0xFE ? 0xFF : size - sended + 1);
 		CopyMemory(pack.data, &data[sended], pack.packSize);
-		log_msg("Loading Send Packet: \ttype=%X\t finalSize=%X\t packSize=%02X\t data=%08X\n", pack.type, pack.finalSize, pack.packSize, pack.data);
+		log_msg("Loading Send Packet: \t finalSize=%X\t packSize=%02X\t data=%08X\n", pack.finalSize, pack.packSize, pack.data);
 		D2SendToServer(pack.packSize+7, 0, &pack);
 		sended += pack.packSize -1;
 	}
@@ -182,7 +180,7 @@ static BYTE*	dataExtended;
 static DWORD	sizeShared;
 static BYTE*	dataShared;
 
-void __fastcall SendSaveFiles (char* ptPath, DWORD maxsize, char* name)
+void __fastcall SendSaveFiles(char* ptPath, DWORD maxsize, char* name)
 {
 	D2FogGetSavePath(ptPath,maxsize);
 
@@ -191,14 +189,8 @@ void __fastcall SendSaveFiles (char* ptPath, DWORD maxsize, char* name)
 	// Send Extended Save File
 	log_msg("Send Extended Save File\n");
 	dataExtended = readExtendedSaveFile(name, &sizeExtended);
-	sendData(dataExtended, sizeExtended, false);
+	sendData(dataExtended, sizeExtended);
 	D2FogMemDeAlloc(dataExtended,__FILE__,__LINE__,0);
-
-	// Send Shared Save File
-	log_msg("Send Shared Save File\n");
-	dataShared = readSharedSaveFile(name, &sizeShared);
-	sendData(dataShared, sizeShared, true);
-	D2FogMemDeAlloc(dataShared,__FILE__,__LINE__,0);
 
 	// Ending load
 	log_msg("End SendSaveFiles.\n\n");
@@ -208,16 +200,7 @@ DWORD __stdcall ReceiveSaveFiles (DWORD clientID, t_rcvMsg* msg)
 {
 	if( (msg->packID != customPackID) || !msg->isCustom) return msg->packID;
 
-	log_msg("Loading Receive Packet: clientID=%d\t type=%X\t finalSize=%X\t packSize=%02X\t data=%08X\n", clientID, msg->type, msg->finalSize, msg->packSize, msg->data);
-
-	bool isShared;
-
-	switch (msg->type)
-	{
-	case TS_SAVE_PERSONAL:	isShared = false; break;
-	case TS_SAVE_SHARED:	isShared = true; break;
-	default: return 0;
-	}
+	log_msg("Loading Receive Packet: clientID=%d\t finalSize=%X\t packSize=%02X\t data=%08X\n", clientID, msg->finalSize, msg->packSize, msg->data);
 
 	NetClient* ptClient = ptClientTable[clientID & 0xFF];
 
@@ -247,34 +230,25 @@ DWORD __stdcall ReceiveSaveFiles (DWORD clientID, t_rcvMsg* msg)
 
 	log_msg("curSF = %08X\tcurSF->completed = %d\n", curSF, curSF->completed);
 
-
 	DWORD size = msg->packSize - 1;
-	if (isShared)
+	
+	// Only the personal stash is loaded in LAN games.
+	if (curSF->sizeExtended == 0)
 	{
-		if (curSF->sizeShared == 0)
-			curSF->sizeShared = msg->finalSize;
-		d2_assert(curSF->sizeShared != msg->finalSize, "Size of shared file has change", __FILE__, __LINE__);
-
-		if (!curSF->dataShared)
-			curSF->dataShared = (BYTE *)D2AllocMem(0 * PClientGame->memoryPool, curSF->sizeShared,__FILE__,__LINE__,0);//		d2_assert(!curSF->dataShared, "Can't malloc data", __FILE__, __LINE__);
-
-		CopyMemory(&curSF->dataShared[curSF->curShared], msg->data, size);
-		curSF->curShared += size;
-
-	} else {
-
-		if (curSF->sizeExtended == 0)
-			curSF->sizeExtended = msg->finalSize;
-		d2_assert(curSF->sizeExtended != msg->finalSize, "Size of extented file has change", __FILE__, __LINE__);
-
-		if (!curSF->dataExtended)
-			curSF->dataExtended = (BYTE *)D2AllocMem( 0 * PClientGame->memoryPool, curSF->sizeExtended,__FILE__,__LINE__,0);//		d2_assert(!curSF->dataExtended, "Can't malloc data", __FILE__, __LINE__);
-
-		CopyMemory(&curSF->dataExtended[curSF->curExtended], msg->data, size);
-		curSF->curExtended += size;
+		curSF->sizeExtended = msg->finalSize;
 	}
 
-	if( curSF->sizeExtended && (curSF->sizeExtended == curSF->curExtended) && curSF->sizeShared && (curSF->sizeShared == curSF->curShared) )
+	d2_assert(curSF->sizeExtended != msg->finalSize, "Size of extented file has change", __FILE__, __LINE__);
+
+	if (!curSF->dataExtended)
+	{
+		curSF->dataExtended = (BYTE *)D2AllocMem(0 * PClientGame->memoryPool, curSF->sizeExtended, __FILE__, __LINE__, 0);
+	}
+
+	CopyMemory(&curSF->dataExtended[curSF->curExtended], msg->data, size);
+	curSF->curExtended += size;
+	
+	if(curSF->sizeExtended && (curSF->sizeExtended == curSF->curExtended))
 	{
 		curSF->completed = true;
 		log_msg("ReceiveSaveFiles completed.\n");
@@ -326,10 +300,12 @@ DWORD __stdcall LoadMPCustomData(Unit* ptChar)
 	{
 		log_msg("is LOD Game\n");
 		if (!ret)
+		{
 			ret = loadExtendedSaveFile(ptChar, curSF->dataExtended, curSF->sizeExtended);
-		if (!ret)
-			ret = loadSharedSaveFile(ptChar, curSF->dataShared, curSF->sizeShared);
-	} else {
+		}
+	}
+	else
+	{
 		log_msg("is not LOD Game\n");
 	}
 

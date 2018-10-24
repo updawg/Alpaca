@@ -18,6 +18,7 @@
 #include "updateServer.h"
 #include "updateClient.h"
 #include "infinityStash.h"
+#include "interface_Stash.h"
 #include "common.h"
 
 #define MAX_CMD_SIZE 200
@@ -70,7 +71,7 @@ void putGold(Unit* ptChar, DWORD amount)
 		toAdd = playerGold;
 	if (amount && (toAdd > amount))
 		toAdd = amount;
-	D2AddPlayerStat(ptChar, STATS_GOLD, 0-toAdd, 0);
+	D2AddPlayerStat(ptChar, STATS_GOLD, 0 - toAdd, 0);
 	PCPY->sharedGold += toAdd;
 	updateClient(ptChar, UC_SHARED_GOLD, PCPY->sharedGold, 0, 0);
 }
@@ -79,11 +80,11 @@ void takeGold(Unit* ptChar, DWORD amount)
 {
 	log_msg("takeGold : %d\n", amount);
 
-	DWORD maxGold =     D2GetMaxGold(ptChar) - D2GetPlayerStat(ptChar, STATS_GOLD, 0);
+	DWORD maxGold = D2GetMaxGold(ptChar) - D2GetPlayerStat(ptChar, STATS_GOLD, 0);
 	DWORD toAdd = maxGold < PCPY->sharedGold ? maxGold : PCPY->sharedGold;
 	if (amount && (toAdd > amount))
 		toAdd = amount;
-	D2AddPlayerStat( ptChar, STATS_GOLD, toAdd, 0 );
+	D2AddPlayerStat(ptChar, STATS_GOLD, toAdd, 0);
 	PCPY->sharedGold -= toAdd;
 	updateClient(ptChar, UC_SHARED_GOLD, PCPY->sharedGold, 0, 0);
 }
@@ -204,17 +205,20 @@ int __stdcall commands(char* ptText)
 		updateServer(US_SWAP0 + ((page & 0xFF) << 8));
 		return 0;
 	}
-
+	
 	if (!strncmp(command, CMD_TOGGLE, strlen(CMD_TOGGLE)))
 	{
-		int page = atoi(&command[strlen(CMD_TOGGLE)]) - 1;
-		if (page < 0)
-			return 1;
-		updateServer(US_SWAP3 + ((page & 0xFF000000) >> 16));
-		updateServer(US_SWAP2 + ((page & 0xFF0000) >> 8));
-		updateServer(US_SWAP1 + (page & 0xFF00));
-		updateServer(US_SWAP0_TOGGLE + ((page & 0xFF) << 8));
-		return 0;
+		if (!inMultiplayerGame())
+		{
+			int page = atoi(&command[strlen(CMD_TOGGLE)]) - 1;
+			if (page < 0)
+				return 1;
+			updateServer(US_SWAP3 + ((page & 0xFF000000) >> 16));
+			updateServer(US_SWAP2 + ((page & 0xFF0000) >> 8));
+			updateServer(US_SWAP1 + (page & 0xFF00));
+			updateServer(US_SWAP0_TOGGLE + ((page & 0xFF) << 8));
+			return 0;
+		}
 	}
 
 	return 1;

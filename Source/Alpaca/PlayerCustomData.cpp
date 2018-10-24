@@ -17,6 +17,7 @@
 
 #include "updateClient.h"
 #include "infinityStash.h"
+#include "interface_Stash.h"
 #include "savePlayerData.h"
 #include "loadPlayerData.h"
 #include "common.h"
@@ -73,15 +74,20 @@ Unit* __fastcall updateItem(GameStruct* ptGame, DWORD type, DWORD itemNum, Unit*
 
 void __stdcall updateClientPlayerOnLoading(Unit* ptChar)
 {
-	log_msg("--- Start updateClientPlayerOnLoading ---\n");
+	log_msg("--- Start update client on loading ---\n");
 	if (PCGame->isLODGame)
 	{
-		PCPY->showSharedStash = openSharedStashOnLoading;
-		selectStash(ptChar, openSharedStashOnLoading ? PCPY->sharedStash : PCPY->selfStash);
+		// The shared stash option is disabled in multiplayer. Thus override parameter if needed.
+		bool actuallyOpenSharedStashOnLoading = !inMultiplayerGame(ptChar) ? openSharedStashOnLoading : 0;
+		PCPY->showSharedStash = actuallyOpenSharedStashOnLoading;
 
-		log_msg("End update client on loading.\n\n");
+		selectStash(ptChar, actuallyOpenSharedStashOnLoading ? PCPY->sharedStash : PCPY->selfStash);
 	}
-	updateClient(ptChar, UC_SHARED_GOLD, PCPY->sharedGold, 0, 0);
+	if (!inMultiplayerGame(ptChar))
+	{
+		updateClient(ptChar, UC_SHARED_GOLD, PCPY->sharedGold, 0, 0);
+	}
+	log_msg("--- End update client on loading ---\n\n");
 }
 
 PlayerData* __fastcall init_PlayerCustomData(DWORD p1, DWORD size, LPCSTR file, DWORD line, DWORD p5)

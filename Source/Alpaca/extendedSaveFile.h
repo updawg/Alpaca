@@ -24,6 +24,3 @@ void writeExtendedSaveFile(char* name, BYTE* data, DWORD size);
 
 int loadExtendedSaveFile(Unit* ptChar, BYTE* data, DWORD maxSize);
 void saveExtendedSaveFile(Unit* ptChar, BYTE** data, DWORD* maxSize, DWORD* curSize);
-
-void backupExtendedSaveFile(char* name);
-

@@ -24,6 +24,3 @@ void writeSharedSaveFile(char* name, BYTE* data, DWORD size, bool isHardcore);
 
 int loadSharedSaveFile(Unit* ptChar, BYTE* data, DWORD maxSize);
 void saveSharedSaveFile(Unit* ptChar, BYTE** data, DWORD* maxSize, DWORD* curSize);
-
-void backupSharedSaveFile();
-

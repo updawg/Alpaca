@@ -16,7 +16,6 @@ and no Admin Mode is needed.
 
 ## Troubleshooting
 
-
 ### MSVCP140.dll is Missing
 
 If you get this error message, ensure you have the VC++ 2017 Redistributable

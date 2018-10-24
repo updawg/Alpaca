@@ -20,4 +20,3 @@
 #include "common.h"
 
 void Install_SavePlayerData();
-

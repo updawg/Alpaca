@@ -143,40 +143,6 @@ void writeSharedSaveFile(char* name, BYTE* data, DWORD size, bool isHardcore)
 		log_box("Could not create the shared save file.");
 }
 
-void backupSharedSaveFile()
-{
-	char szBackupName[MAX_PATH];
-	char szSaveName[MAX_PATH];
-
-	D2FogGetSavePath( szSaveName, MAX_PATH-30);
-	strcat(szSaveName, "_LOD_");
-	strcat(szSaveName, sharedStashFilename);
-	strcat(szSaveName,".sss");
-
-	D2FogGetSavePath( szBackupName, MAX_PATH-30);
-	strcat(szBackupName, "_LOD_");
-	strcat(szBackupName, sharedStashFilename);
-	strcat(szBackupName,".sss.backup");
-
-	CopyFile(szSaveName, szBackupName, true);
-
-	if (separateHardSoftStash)
-	{
-		D2FogGetSavePath( szSaveName, MAX_PATH-30);
-		strcat(szSaveName, "_LOD_HC_");
-		strcat(szSaveName, sharedStashFilename);
-		strcat(szSaveName,".sss");
-
-		D2FogGetSavePath( szBackupName, MAX_PATH-30);
-		strcat(szBackupName, "_LOD_HC_");
-		strcat(szBackupName, sharedStashFilename);
-		strcat(szBackupName,".sss.backup");
-
-		CopyFile(szSaveName, szBackupName, true);
-	}
-}
-
-
 void saveSharedSaveFile(Unit* ptChar, BYTE** data, DWORD* maxSize, DWORD* curSize)
 {
 	*(DWORD *)(*data + *curSize) = FILE_SHAREDSTASH;
