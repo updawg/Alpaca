@@ -120,16 +120,18 @@ DWORD	getYTakeGoldBtn()		{return RY(posYTakeGoldBtn<0 ? 0x1A8 : posYTakeGoldBtn)
 #define isOnButtonPutGold(x,y) isOnRect(x, y, getXPutGoldBtn(), getYPutGoldBtn(), getLPutGoldBtn(), getHPutGoldBtn())
 #define isOnButtonTakeGold(x,y) isOnRect(x, y, getXTakeGoldBtn(), getYTakeGoldBtn(), getLTakeGoldBtn(), getHTakeGoldBtn())
 
-// This is hacky but it's the easiest way to prevent people
-// in multiplayer from placing items/gold inside of their shared stash.
-// So, only if we have a shared stash, do we allow this. This will be the
-// easy way that we will determine if we are in a "LAN" game. In LAN
-// games, the shared stash will not be sent/receive/loaded, so it will always
-// be NULL.
+// Checks to see if the user is in a multiplayer game. This is a hacky way to do
+// it but it's pretty reliable and a simple implementation. Our "sharedStashIsOpened"
+// value only gets set to true when a single player game loads. Thus by checking this
+// boolean, we can determine whether or not we should disable sharing features in the stash.
+// Stash sharing features are disabled in order to prevent data loss when two characters
+// on the same machine join a MP game (and thus have access to the same shared stash object
+// loaded in memory). There are implementations that people could do in order to still allow
+// sharing in LAN games, but it would require a bit work and I would rather not have them.
 bool inMultiplayerGame(Unit* character)
 {
 	Unit* ptChar = character ? character : D2GetClientPlayer();
-	return PCPY->sharedStash == NULL;
+	return !PCPY->sharedStashIsOpened;
 }
 
 void* __stdcall printBtns()

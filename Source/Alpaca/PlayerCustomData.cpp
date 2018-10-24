@@ -80,7 +80,6 @@ void __stdcall updateClientPlayerOnLoading(Unit* ptChar)
 		// The shared stash option is disabled in multiplayer. Thus override parameter if needed.
 		bool actuallyOpenSharedStashOnLoading = !inMultiplayerGame(ptChar) ? openSharedStashOnLoading : 0;
 		PCPY->showSharedStash = actuallyOpenSharedStashOnLoading;
-
 		selectStash(ptChar, actuallyOpenSharedStashOnLoading ? PCPY->sharedStash : PCPY->selfStash);
 	}
 	if (!inMultiplayerGame(ptChar))

@@ -19,7 +19,7 @@
 
 void LibraryLoader::Init()
 {
-	log_msg("Diablo II Modules (Addresses and Versions)\n");
+	log_msg("Diablo II Modules\n");
 	log_msg("====================================\n");
 
 	// We need to load the game now so that we have the game version for the rest of the Dlls.

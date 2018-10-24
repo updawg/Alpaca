@@ -402,7 +402,7 @@ Stash* createStashesUpToPageIndex(Unit* ptChar, Stash* currentStash, DWORD targe
 ///// public functions
 void toggleToSelfStash(Unit* ptChar)
 {
-	Stash* selStash;
+	Stash* selStash = NULL;
 	
 	if (PCPY->lastSelectedSelfStash != NULL)
 	{
@@ -418,7 +418,7 @@ void toggleToSelfStash(Unit* ptChar)
 
 void toggleToSharedStash(Unit* ptChar)
 {
-	Stash* selStash;
+	Stash* selStash = NULL;
 
 	if (PCPY->lastSelectedSharedStash != NULL)
 	{
