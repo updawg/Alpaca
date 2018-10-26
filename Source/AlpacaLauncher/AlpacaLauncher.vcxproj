@@ -97,10 +97,10 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\Alpaca\Utilities\Utility.h" />
-    <ClInclude Include="..\Alpaca\Utilities\VersionUtility.h" />
+    <ClInclude Include="..\Alpaca\Utility.h" />
+    <ClInclude Include="..\Alpaca\VersionUtility.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="targetver.h" />
+    <ClInclude Include="TargetVer.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Alpaca.ico" />
@@ -109,8 +109,8 @@
     <ResourceCompile Include="AlpacaLauncher.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Alpaca\Utilities\Utility.cpp" />
-    <ClCompile Include="..\Alpaca\Utilities\VersionUtility.cpp" />
+    <ClCompile Include="..\Alpaca\Utility.cpp" />
+    <ClCompile Include="..\Alpaca\VersionUtility.cpp" />
     <ClCompile Include="AlpacaLauncher.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

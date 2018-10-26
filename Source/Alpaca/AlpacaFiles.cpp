@@ -1,6 +1,5 @@
 // Copyright (C) 2004-2017 Yohann Nicolas
-// Copyright (C) 2017 L'Autour
-// Copyright (C) 2017 Jonathan Vasquez <jon@xyinn.org>
+// Copyright (C) 2017-2018 Jonathan Vasquez <jon@xyinn.org>
 //
 // This program is free software : you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,10 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#include "AlpacaFiles.h"
-#include "common.h"
 #include <stdio.h>
-#include "Utilities/Utility.h"
+
+#include "AlpacaFiles.h"
+#include "Common.h"
+#include "Utility.h"
 
 void* stashBtnsImages = NULL;
 void* sharedGoldBtnsImages = NULL;
@@ -70,7 +70,7 @@ void Install_AlpacaFiles()
 
 	log_msg("[Patch] Storm to find custom file. (AlpacaFiles)\n");
 
-	DWORD FindCustomFileOffset = Storm::GetOffsetByAddition(0x2DA79);
+	DWORD FindCustomFileOffset = Storm::GetAddress(0x2DA79);
 
 	// Try in Diablo II\Alpaca\ if file not found
 	mem_seek(FindCustomFileOffset);
@@ -143,8 +143,8 @@ void Install_AlpacaImagesFiles()
 
 	log_msg("[Patch] D2Client to load/free custom images. (AlpacaImagesFiles)\n");
 
-	DWORD LoadCustomImageOffset = D2Client::GetOffsetByAddition(0x6E0BE);
-	DWORD FreeCustomImageOffset = D2Client::GetOffsetByAddition(0x6D07D);
+	DWORD LoadCustomImageOffset = D2Client::GetAddress(0x6E0BE);
+	DWORD FreeCustomImageOffset = D2Client::GetAddress(0x6D07D);
 
 	// Load custom images
 	mem_seek(LoadCustomImageOffset);

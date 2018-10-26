@@ -1,6 +1,5 @@
 // Copyright (C) 2004-2017 Yohann Nicolas
-// Copyright (C) 2017 L'Autour
-// Copyright (C) 2017 Jonathan Vasquez <jon@xyinn.org>
+// Copyright (C) 2017-2018 Jonathan Vasquez <jon@xyinn.org>
 //
 // This program is free software : you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -31,12 +30,12 @@ void D2Game::SetFunctions()
 	D2SendPacket = (TD2SendPacket)D2SendPacket_111;
 	D2LoadInventory = (TD2LoadInventory)D2LoadInventory_111;
 	D2GameGetObject = (TD2GameGetObject)D2GameGetObject_111;
-	D2SaveGame = (TD2SaveGame)GetOffsetByAddition(0xBE660);
-	ptClientTable = (NetClient**)GetOffsetByAddition(0x1105E0);
+	D2SaveGame = (TD2SaveGame)GetAddress(0xBE660);
+	ptClientTable = (NetClient**)GetAddress(0x1105E0);
 
-	D2SendPacketDirect = (TD2SendPacket)GetOffsetByAddition(0xDB780);
-	D2LoadInventoryDirect = (TD2LoadInventory)GetOffsetByAddition(0x3A4C0);
-	D2GameGetObjectDirect = (TD2GameGetObject)GetOffsetByAddition(0x6DC40);
+	D2SendPacketDirect = (TD2SendPacket)GetAddress(0xDB780);
+	D2LoadInventoryDirect = (TD2LoadInventory)GetAddress(0x3A4C0);
+	D2GameGetObjectDirect = (TD2GameGetObject)GetAddress(0x6DC40);
 }
 
 __declspec (naked) void D2Game::D2GetClient_111()

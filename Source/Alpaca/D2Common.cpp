@@ -1,6 +1,5 @@
 // Copyright (C) 2004-2017 Yohann Nicolas
-// Copyright (C) 2017 L'Autour
-// Copyright (C) 2017 Jonathan Vasquez <jon@xyinn.org>
+// Copyright (C) 2017-2018 Jonathan Vasquez <jon@xyinn.org>
 //
 // This program is free software : you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -27,28 +26,27 @@ void D2Common::Init()
 
 void D2Common::SetFunctions()
 {
-	D2InvAddItem = (TD2InvAddItem)GetOffsetByProc(10963);
-	D2InvRemoveItem = (TD2InvRemoveItem)GetOffsetByProc(10490);
-	D2InventoryGetFirstItem = (TD2InventoryGetFirstItem)GetOffsetByProc(11040);
-	D2UnitGetNextItem = (TD2UnitGetNextItem)GetOffsetByProc(10879);
-	D2GetMaxGoldBank = (TD2GetMaxGoldBank)GetOffsetByProc(11025);
-	D2InitPlayerData = (TD2InitPlayerData)GetOffsetByProc(10404);
-	D2GetPlayerData = (TD2GetPlayerData)GetOffsetByProc(11103);
-	D2GetMaxGold = (TD2GetMaxGold)GetOffsetByProc(11159);
-	D2ItemGetPage = (TD2ItemGetPage)GetOffsetByProc(10810);
-	D2SaveItem = (TD2SaveItem)GetOffsetByProc(10665);
-	D2ReadFile = (TD2ReadFile)GetOffsetByAddition(0xB5E0);
+	D2InvAddItem = (TD2InvAddItem)GetAddress(0x3B640);
+	D2InvRemoveItem = (TD2InvRemoveItem)GetAddress(0x3B370);
+	D2InventoryGetFirstItem = (TD2InventoryGetFirstItem)GetAddress(0x37A00);
+	D2UnitGetNextItem = (TD2UnitGetNextItem)GetAddress(0x38160);
+	D2GetMaxGoldBank = (TD2GetMaxGoldBank)GetAddress(0x15220);
+	D2InitPlayerData = (TD2InitPlayerData)GetAddress(0x17090);
+	D2GetPlayerData = (TD2GetPlayerData)GetAddress(0x153D0);
+	D2GetMaxGold = (TD2GetMaxGold)GetAddress(0x181E0);
+	D2ItemGetPage = (TD2ItemGetPage)GetAddress(0x42080);
+	D2SaveItem = (TD2SaveItem)GetAddress(0x485C0);
+	D2ReadFile = (TD2ReadFile)GetAddress(0xB5E0);
 
 	D2CompileTxtFile = (TD2CompileTxtFile)compileTxtFile_111;
-	D2AddPlayerStat = (TD2AddPlayerStat)GetOffsetByProc(10645);
-	D2GetPlayerStat = (TD2GetPlayerStat)GetOffsetByProc(10550);
+	D2AddPlayerStat = (TD2AddPlayerStat)GetAddress(0x5A080);
+	D2GetPlayerStat = (TD2GetPlayerStat)GetAddress(0x584E0);
 	
 	D2GetRealItem = (TD2GetRealItem)D2GetRealItem_111;
 
-	D2CompileTxtFileDirect = (TD2CompileTxtFile)GetOffsetByProc(10037);
-	D2AddPlayerStatDirect = (TD2AddPlayerStat)GetOffsetByProc(10645);
-	D2GetPlayerStatDirect = (TD2GetPlayerStat)GetOffsetByProc(10550);
+	D2CompileTxtFileDirect = (TD2CompileTxtFile)GetAddress(0xCAE0);
 
+	// Variables: Structure Management [Offset]
 	ptPYPlayerDataOffset = 0x49;
 	ptSpecificDataOffset = 0x14;
 	ptGameOffset = 0x80;

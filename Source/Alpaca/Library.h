@@ -1,6 +1,5 @@
 // Copyright (C) 2004-2017 Yohann Nicolas
-// Copyright (C) 2017 L'Autour
-// Copyright (C) 2017 Jonathan Vasquez <jon@xyinn.org>
+// Copyright (C) 2017-2018 Jonathan Vasquez <jon@xyinn.org>
 //
 // This program is free software : you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,17 +17,13 @@
 #pragma once
 
 #include <windows.h>
-#include <map>
+
 #include "Error.h"
-#include "Utilities/VersionUtility.h"
-
-#include "../Commons/D2UnitStruct.h"
-#include "../Commons/d2BinFile.h"
-#include "../Commons/d2Struct.h"
-
-#include "modifMemory.h"
-
-using VersionOffsets = std::map<VersionUtility::Versions, DWORD>;
+#include "VersionUtility.h"
+#include "D2UnitStruct.h"
+#include "D2BinFile.h"
+#include "D2Struct.h"
+#include "Memory.h"
 
 template <class Child>
 class Library
@@ -43,13 +38,12 @@ public:
 	static DWORD LoadDiabloLibrary()
 	{
 		DWORD proposedOffset = (DWORD)LoadLibrary(Name);
-
 		if (proposedOffset == NULL)
 		{
-			log_msg("Failed to load library : %s\n", Name);
+			log_msg("Failed to load library: %s\n", Name);
 			exit(-1);
 		}
-		log_msg("%s successfully loaded. (%08X)\n", Name, proposedOffset);
+		log_msg("%s successfully loaded.\n", Name);
 		return proposedOffset;
 	}
 
@@ -61,10 +55,10 @@ public:
 		BYTE* baseOfCode = Offset + *(BYTE**)(offsetPESignature + 0x2C);
 		if (!VirtualProtect(baseOfCode, sizeOfCode, PAGE_EXECUTE_READWRITE, &dw))
 		{
-			log_msg("Failed to hook library : %s. (%08X,%08X)\n", Name, baseOfCode, sizeOfCode);
+			log_msg("Failed to hook library: %s.\n", Name);
 			exit(-1);
 		}
-		log_msg("%s successfully hooked. (%08X,%08X)\n", Name, baseOfCode, sizeOfCode);
+		log_msg("%s successfully hooked.\n", Name);
 	}
 
 	static void UnhookLibrary()
@@ -74,44 +68,17 @@ public:
 		DWORD sizeOfCode = *(DWORD*)(offsetPESignature + 0x1C);
 		BYTE* baseOfCode = Offset + *(BYTE**)(offsetPESignature + 0x2C);
 		if (!VirtualProtect(baseOfCode, sizeOfCode, PAGE_EXECUTE_READ, &dw))
-			log_msg("Failed to unhook library : %s. (%08X,%08X)\n", Name, baseOfCode, sizeOfCode);
+			log_msg("Failed to unhook library: %s.\n", Name);
 		else
-			log_msg("%s successfully unhooked. (%08X,%08X)\n", Name, baseOfCode, sizeOfCode);
-	}
-
-	// Retrieves the address by using GetProcAddress
-	static DWORD GetOffsetByProc(const DWORD offset)
-	{
-		return GetFunctionAddress((LPCSTR)offset);
+			log_msg("%s successfully unhooked.\n", Name);
 	}
 
 	// Retrieves the address by adding the DLLs base offset to the recorded offset
-	static DWORD GetOffsetByAddition(const DWORD offset)
+	static DWORD GetAddress(const DWORD offset)
 	{
 		DWORD proposedOffset = Offset + offset;
-		//log_msg("Retrieving %s function for offset %08X (%i) by Addition (on base %08X) ... SUCCESS. Located at %08X.\n", Name, offset, offset, Offset, proposedOffset);
+		//log_msg("Address by Addition: (%08X + %08X @ %08X)\n", Offset, offset, proposedOffset);
 		return proposedOffset;
-	}
-protected:
-	// Retrieves the address using GetProcAddress
-	static DWORD GetFunctionAddress(LPCSTR offset)
-	{
-		HMODULE module = (HMODULE)Offset;
-		//log_msg("Retrieving %s function for offset %08X (%i) by Proc ...", Name, offset, offset);
-
-		DWORD locatedAddress = (DWORD)GetProcAddress(module, offset);
-		//if (!locatedAddress)
-		//{
-		//	// Don't exit here cause apparently the plugin still works even if some functions aren't found.
-		//	//log_msg("FAILED.\n");
-		//	log_msg("Failed to retrieve %s function for offset %08X (%i) by Proc ... Returning %08X\n", Name, offset, offset, locatedAddress);
-		//}
-		/*else
-		{
-		log_msg("SUCCESS. Located at %08X.\n", locatedAddress);
-		}*/
-
-		return locatedAddress;
 	}
 };
 

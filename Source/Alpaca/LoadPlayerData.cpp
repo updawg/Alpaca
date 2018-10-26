@@ -1,6 +1,5 @@
 // Copyright (C) 2004-2017 Yohann Nicolas
-// Copyright (C) 2017 L'Autour
-// Copyright (C) 2017 Jonathan Vasquez <jon@xyinn.org>
+// Copyright (C) 2017-2018 Jonathan Vasquez <jon@xyinn.org>
 //
 // This program is free software : you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,10 +15,10 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "LoadPlayerData.h"
-#include "infinityStash.h"
-#include "extendedSaveFile.h"
-#include "sharedSaveFile.h"
-#include "common.h"
+#include "InfinityStash.h"
+#include "ExtendedSaveFile.h"
+#include "SharedSaveFile.h"
+#include "Common.h"
 
 DWORD __stdcall LoadSPCustomData(Unit* ptChar)
 {
@@ -358,10 +357,10 @@ void Install_LoadPlayerData()
 
 	log_msg("[Patch] D2Game & D2Client for load Player's custom data. (LoadPlayerData)\n");
 
-	DWORD LoadSinglePlayerCustomDataOffset = D2Game::GetOffsetByAddition(0x3BCCD);
-	DWORD LoadMultiPlayerCustomDataOffset = D2Game::GetOffsetByAddition(0x3BB57);
-	DWORD SendSaveFilesToServerOffset = D2Client::GetOffsetByAddition(0xB638C);
-	DWORD ReceiveSaveFilesFromClientOffset = D2Game::GetOffsetByAddition(0xD53E9);
+	DWORD LoadSinglePlayerCustomDataOffset = D2Game::GetAddress(0x3BCCD);
+	DWORD LoadMultiPlayerCustomDataOffset = D2Game::GetAddress(0x3BB57);
+	DWORD SendSaveFilesToServerOffset = D2Client::GetAddress(0xB638C);
+	DWORD ReceiveSaveFilesFromClientOffset = D2Game::GetAddress(0xD53E9);
 
 	// Load SP player custom data.
 	mem_seek(LoadSinglePlayerCustomDataOffset);

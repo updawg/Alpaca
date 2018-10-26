@@ -1,5 +1,4 @@
 // Copyright (C) 2004-2017 Yohann Nicolas
-// Copyright (C) 2017 L'Autour
 // Copyright (C) 2017-2018 Jonathan Vasquez <jon@xyinn.org>
 //
 // This program is free software : you can redistribute it and/or modify
@@ -18,8 +17,8 @@
 #include "Resource.h"
 #include <stdlib.h>
 #include <stdio.h>
-#include "../Alpaca/Utilities/VersionUtility.h"
-#include "../Alpaca/Utilities/Utility.h"
+#include "../Alpaca/VersionUtility.h"
+#include "../Alpaca/Utility.h"
 
 const char* LAUNCHING_LABEL = "LAUNCHING";
 const char* PARAM_LABEL = "Param";
@@ -133,7 +132,7 @@ bool InstallAlpaca(HANDLE h, LPBYTE addr, char* libraryName)
 	loadLibraryAddr += 0xD11C;
 	freeLibraryAddr += 0xD124;
 	getProcAddressAddr += 0xD120;
-	
+
 	BYTE buf[200];
 	DWORD pos = 0;
 	SIZE_T nb = 0;
@@ -313,8 +312,8 @@ bool isD2gfxLoaded(HANDLE hProcess, LPVOID addr)
 	DWORD SizeOfImage = *(DWORD*)(buf + offsetPESignature + 0x50);
 	DWORD CheckSum = *(DWORD*)(buf + offsetPESignature + 0x58);
 
-	//[1.13d]
-	if (ImageBase == 0x6FA80000 && SizeOfImage == 0x00021000 && CheckSum == 0x00018542) return true;// 1.13d
+	// [1.13d]
+	if (ImageBase == 0x6FA80000 && SizeOfImage == 0x00021000 && CheckSum == 0x00018542) return true;
 	return false;
 }
 

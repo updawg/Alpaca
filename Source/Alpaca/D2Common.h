@@ -1,6 +1,5 @@
 // Copyright (C) 2004-2017 Yohann Nicolas
-// Copyright (C) 2017 L'Autour
-// Copyright (C) 2017 Jonathan Vasquez <jon@xyinn.org>
+// Copyright (C) 2017-2018 Jonathan Vasquez <jon@xyinn.org>
 //
 // This program is free software : you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -23,16 +22,6 @@ class D2Common : public Library<D2Common>
 {
 public:
 	static void Init();
-
-	// Structure Management
-	static DWORD ptPYPlayerDataOffset;
-	static DWORD ptSpecificDataOffset;
-	static DWORD ptGameOffset;
-	static DWORD ptClientGameOffset;
-	static DWORD ptInventoryOffset;
-	static DWORD ptSkillsOffset;
-	static DWORD ptImageOffset;
-	static DWORD ptFrameOffset;
 
 	typedef Unit* (__stdcall *TD2InvRemoveItem) (Inventory* ptInventory, Unit* ptItem);
 	typedef DWORD(__stdcall *TD2InvAddItem) (Inventory* ptInventory, Unit* ptItem, DWORD posX, DWORD posY, DWORD vValueC, DWORD bIsClient, BYTE page);
@@ -71,6 +60,16 @@ public:
 	static TD2ItemGetPage D2ItemGetPage;
 	static TD2SaveItem D2SaveItem;
 	static TD2ReadFile D2ReadFile;
+
+	// Variables: Structure Management
+	static DWORD ptPYPlayerDataOffset;
+	static DWORD ptSpecificDataOffset;
+	static DWORD ptGameOffset;
+	static DWORD ptClientGameOffset;
+	static DWORD ptInventoryOffset;
+	static DWORD ptSkillsOffset;
+	static DWORD ptImageOffset;
+	static DWORD ptFrameOffset;
 private:
 	static void SetFunctions();
 

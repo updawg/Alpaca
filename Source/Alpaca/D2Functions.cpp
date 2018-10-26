@@ -1,6 +1,5 @@
 // Copyright (C) 2004-2017 Yohann Nicolas
-// Copyright (C) 2017 L'Autour
-// Copyright (C) 2017 Jonathan Vasquez <jon@xyinn.org>
+// Copyright (C) 2017-2018 Jonathan Vasquez <jon@xyinn.org>
 //
 // This program is free software : you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -23,7 +22,7 @@
 //    redirected library function will cause the application to crash or lead to unintended behavior.
 // If you really want to use the library function directly (ideally we would), you should make sure
 // that nothing breaks.
-#include "common.h"
+#include "Common.h"
 
 s_shifting shifting;
 

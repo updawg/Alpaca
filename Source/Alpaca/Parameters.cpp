@@ -1,6 +1,5 @@
 // Copyright (C) 2004-2017 Yohann Nicolas
-// Copyright (C) 2017 L'Autour
-// Copyright (C) 2017 Jonathan Vasquez <jon@xyinn.org>
+// Copyright (C) 2017-2018 Jonathan Vasquez <jon@xyinn.org>
 //
 // This program is free software : you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,17 +15,17 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "Error.h"
-#include "INIfile.h"
-#include "parameters.h"
+#include "IniFile.h"
+#include "Parameters.h"
 
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
 
-#include "mainScreen.h"
-#include "bigStash.h"
-#include "infinityStash.h"
-#include "commands.h"
+#include "MainScreen.h"
+#include "BigStash.h"
+#include "InfinityStash.h"
+#include "Commands.h"
 
 const int BUFFER_SIZE = 1024;
 

@@ -1,6 +1,5 @@
 // Copyright (C) 2004-2017 Yohann Nicolas
-// Copyright (C) 2017 L'Autour
-// Copyright (C) 2017 Jonathan Vasquez <jon@xyinn.org>
+// Copyright (C) 2017-2018 Jonathan Vasquez <jon@xyinn.org>
 //
 // This program is free software : you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,9 +15,7 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "AlpacaFiles.h"
-#include "common.h"
-
-bool active_bigStash = true;
+#include "Common.h"
 
 const char* tradeStash_RefFile= "%s\\TradeStash";
 const BYTE gridX_BB = 10;
@@ -30,8 +27,6 @@ const DWORD gridbottom_BB = 371;
 
 InventoryBIN* __stdcall modifStashGrid(InventoryBIN* ptInventoryBin)
 {
-	if (!active_bigStash) return ptInventoryBin;
-
 	InventoryBIN* inventory=ptInventoryBin+12;
 	inventory->gridX = gridX_BB;
 	inventory->gridY = gridY_BB;
@@ -78,8 +73,8 @@ void Install_BigStash()
 
 	log_msg("[Patch] D2Common & D2Client for make 10x10 squares in the stash. (BigStash)\n");
 
-	DWORD StashGridOffset = D2Common::GetOffsetByAddition(0x6CC25);
-	DWORD StashBackgroundOffset = D2Client::GetOffsetByAddition(0x943FC);
+	DWORD StashGridOffset = D2Common::GetAddress(0x6CC25);
+	DWORD StashBackgroundOffset = D2Client::GetAddress(0x943FC);
 
 	// Modification of stash grid
 	mem_seek(StashGridOffset);

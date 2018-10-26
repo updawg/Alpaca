@@ -1,6 +1,5 @@
 // Copyright (C) 2004-2017 Yohann Nicolas
-// Copyright (C) 2017 L'Autour
-// Copyright (C) 2017 Jonathan Vasquez <jon@xyinn.org>
+// Copyright (C) 2017-2018 Jonathan Vasquez <jon@xyinn.org>
 //
 // This program is free software : you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -26,9 +25,9 @@ void D2gfx::Init()
 
 void D2gfx::SetFunctions()
 {
-	D2GetResolution = (TD2GetResolution)GetOffsetByProc(10012);
-	D2FillArea = (TD2FillArea)GetOffsetByProc(10028);
-	D2PrintImage = (TD2PrintImage)GetOffsetByProc(10042);
+	D2GetResolution = (TD2GetResolution)GetAddress(0xA940);
+	D2FillArea = (TD2FillArea)GetAddress(0x8210);
+	D2PrintImage = (TD2PrintImage)GetAddress(0x7E60);
 }
 
 D2gfx::TD2GetResolution D2gfx::D2GetResolution;

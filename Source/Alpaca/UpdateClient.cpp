@@ -1,6 +1,5 @@
 // Copyright (C) 2004-2017 Yohann Nicolas
-// Copyright (C) 2017 L'Autour
-// Copyright (C) 2017 Jonathan Vasquez <jon@xyinn.org>
+// Copyright (C) 2017-2018 Jonathan Vasquez <jon@xyinn.org>
 //
 // This program is free software : you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,10 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#include "updateClient.h"
-#include "infinityStash.h"
-#include "commands.h"
-#include "common.h"
+#include "UpdateClient.h"
+#include "InfinityStash.h"
+#include "Commands.h"
+#include "Common.h"
 
 void updateClient(Unit* ptChar, DWORD mFunc, DWORD p1, DWORD p2, DWORD p3)
 {
@@ -92,7 +91,7 @@ void Install_UpdateClient()
 	
 	log_msg("[Patch] D2Client for received item packet. (UpdateClient)\n");
 
-	DWORD ExecuteOurPacketsOnlyOffset = D2Client::GetOffsetByAddition(0x84D96);
+	DWORD ExecuteOurPacketsOnlyOffset = D2Client::GetAddress(0x84D96);
 
 	// execute if it's our packet else continue
 	mem_seek(ExecuteOurPacketsOnlyOffset);

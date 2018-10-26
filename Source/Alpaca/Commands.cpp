@@ -1,6 +1,5 @@
 // Copyright (C) 2004-2017 Yohann Nicolas
-// Copyright (C) 2017 L'Autour
-// Copyright (C) 2017 Jonathan Vasquez <jon@xyinn.org>
+// Copyright (C) 2017-2018 Jonathan Vasquez <jon@xyinn.org>
 //
 // This program is free software : you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,11 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#include "updateServer.h"
-#include "updateClient.h"
-#include "infinityStash.h"
-#include "interface_Stash.h"
-#include "common.h"
+#include "UpdateServer.h"
+#include "UpdateClient.h"
+#include "InfinityStash.h"
+#include "InterfaceStash.h"
+#include "Common.h"
 
 #define MAX_CMD_SIZE 200
 
@@ -245,7 +244,7 @@ void Install_Commands()
 
 	log_msg("[Patch] D2Client for install commands. (Commands)\n");
 
-	DWORD CustomCommandOffset = D2Client::GetOffsetByAddition(0xB1FD6);
+	DWORD CustomCommandOffset = D2Client::GetAddress(0xB1FD6);
 
 	// Run custom commmand
 	mem_seek(CustomCommandOffset);

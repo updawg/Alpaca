@@ -1,6 +1,5 @@
 // Copyright (C) 2004-2017 Yohann Nicolas
-// Copyright (C) 2017 L'Autour
-// Copyright (C) 2017 Jonathan Vasquez <jon@xyinn.org>
+// Copyright (C) 2017-2018 Jonathan Vasquez <jon@xyinn.org>
 //
 // This program is free software : you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -26,17 +25,17 @@ void Fog::Init()
 
 void Fog::SetFunctions()
 {
-	D2FogAssert = (TD2FogAssert)GetOffsetByProc(10024);
-	D2FogMemAlloc = (TD2FogMemAlloc)GetOffsetByProc(10042);
-	D2FogMemDeAlloc = (TD2FogMemDeAlloc)GetOffsetByProc(10043);
-	D2AllocMem = (TD2AllocMem)GetOffsetByProc(10045);
-	D2FreeMem = (TD2FreeMem)GetOffsetByProc(10046);
-	D2MPQOpenFile = (TD2MPQOpenFile)GetOffsetByProc(10102);
-	D2MPQCloseFile = (TD2MPQCloseFile)GetOffsetByProc(10103);
-	D2MPQReadFile = (TD2MPQReadFile)GetOffsetByProc(10104);
-	D2MPQGetSizeFile = (TD2MPQGetSizeFile)GetOffsetByProc(10105);
-	D2FogGetSavePath = (TD2FogGetSavePath)GetOffsetByProc(10115);
-	D2GetInstructionPointer = (TD2GetInstructionPointer)GetOffsetByProc(10265);
+	D2FogAssert = (TD2FogAssert)GetAddress(0xE410);
+	D2FogMemAlloc = (TD2FogMemAlloc)GetAddress(0x1B370);
+	D2FogMemDeAlloc = (TD2FogMemDeAlloc)GetAddress(0x1B350);
+	D2AllocMem = (TD2AllocMem)GetAddress(0x1B3B0);
+	D2FreeMem = (TD2FreeMem)GetAddress(0x1B320);
+	D2MPQOpenFile = (TD2MPQOpenFile)GetAddress(0x1E000);
+	D2MPQCloseFile = (TD2MPQCloseFile)GetAddress(0x1DFF0);
+	D2MPQReadFile = (TD2MPQReadFile)GetAddress(0x1DFC0);
+	D2MPQGetSizeFile = (TD2MPQGetSizeFile)GetAddress(0x1DFB0);
+	D2FogGetSavePath = (TD2FogGetSavePath)GetAddress(0x1E120);
+	D2GetInstructionPointer = (TD2GetInstructionPointer)GetAddress(0xCD70);
 }
 
 Fog::TD2FogAssert Fog::D2FogAssert;

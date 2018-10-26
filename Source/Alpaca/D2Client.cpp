@@ -1,6 +1,5 @@
 // Copyright (C) 2004-2017 Yohann Nicolas
-// Copyright (C) 2017 L'Autour
-// Copyright (C) 2017 Jonathan Vasquez <jon@xyinn.org>
+// Copyright (C) 2017-2018 Jonathan Vasquez <jon@xyinn.org>
 //
 // This program is free software : you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -29,29 +28,29 @@ void D2Client::Init()
 
 void D2Client::SetFunctions()
 {
-	D2LoadBuySelBtn = (TD2LoadBuySelBtn)GetOffsetByAddition(0x18AA0);
+	D2LoadBuySelBtn = (TD2LoadBuySelBtn)GetAddress(0x18AA0);
 	D2GetClientPlayer = (TD2GetClientPlayer)D2GetClientPlayer_111;
 	D2LoadImage = (TD2LoadImage)D2LoadImage_111;
 	D2PlaySound = (TD2PlaySound)D2PlaySound_111;
 	IsExpansion = (TD2isLODGame)D2isLODGame_111;
 	D2FreeImage = (TD2FreeImage)D2FreeImage_111;
-	D2SendToServerXX = (TD2SendToServerXX)GetOffsetByAddition(0xB61F0);
+	D2SendToServerXX = (TD2SendToServerXX)GetAddress(0xB61F0);
 	D2SendToServer3 = (TD2SendToServer3)D2SendToServer3_111;
-	D2ClickOnStashButton = (TD2ClickOnStashButton)GetOffsetByAddition(0x90C10);
+	D2ClickOnStashButton = (TD2ClickOnStashButton)GetAddress(0x90C10);
 	D2GetMouseX = (TD2GetMouseX)D2GetMouseX_111;
 	D2GetMouseY = (TD2GetMouseY)D2GetMouseY_111;
 
-	D2LoadImageDirect = (TD2LoadImage)GetOffsetByAddition(0xA9480);
-	D2PlaySoundDirect = (TD2PlaySound)GetOffsetByAddition(0x26270);
+	D2LoadImageDirect = (TD2LoadImage)GetAddress(0xA9480);
+	D2PlaySoundDirect = (TD2PlaySound)GetAddress(0x26270);
 
-	// Variables
-	ptResolutionY = (DWORD*)GetOffsetByAddition(0xF7038);
-	ptResolutionX = (DWORD*)GetOffsetByAddition(0xF7034);
-	ptNegWindowStartY = (DWORD*)GetOffsetByAddition(0x11D358);
-	ptWindowStartX = (DWORD*)GetOffsetByAddition(0x11D354);
-	ptptClientChar = (Unit**)GetOffsetByAddition(0x11D050);
-	ptMouseY = (DWORD*)GetOffsetByAddition(0x11C94C);
-	ptMouseX = (DWORD*)GetOffsetByAddition(0x11C950);
+	// Variables [Offset]
+	ptResolutionY = (DWORD*)GetAddress(0xF7038);
+	ptResolutionX = (DWORD*)GetAddress(0xF7034);
+	ptNegWindowStartY = (DWORD*)GetAddress(0x11D358);
+	ptWindowStartX = (DWORD*)GetAddress(0x11D354);
+	ptptClientChar = (Unit**)GetAddress(0x11D050);
+	ptMouseY = (DWORD*)GetAddress(0x11C94C);
+	ptMouseX = (DWORD*)GetAddress(0x11C950);
 }
 
 Unit* __stdcall	D2Client::D2GetClientPlayer_111()
@@ -61,7 +60,7 @@ Unit* __stdcall	D2Client::D2GetClientPlayer_111()
 
 DWORD __fastcall D2Client::D2isLODGame_111()
 {
-	DWORD* func = (DWORD*)GetOffsetByAddition(0x1087B4);
+	DWORD* func = (DWORD*)GetAddress(0x1087B4);
 	return *func;
 }
 

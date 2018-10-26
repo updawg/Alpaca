@@ -1,6 +1,5 @@
 // Copyright (C) 2004-2017 Yohann Nicolas
-// Copyright (C) 2017 L'Autour
-// Copyright (C) 2017 Jonathan Vasquez <jon@xyinn.org>
+// Copyright (C) 2017-2018 Jonathan Vasquez <jon@xyinn.org>
 //
 // This program is free software : you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,12 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#include "updateClient.h"
-#include "infinityStash.h"
-#include "interface_Stash.h"
-#include "savePlayerData.h"
+#include "UpdateClient.h"
+#include "InfinityStash.h"
+#include "InterfaceStash.h"
+#include "SavePlayerData.h"
 #include "loadPlayerData.h"
-#include "common.h"
+#include "Common.h"
 
 bool active_PlayerCustomData = true;
 bool openSharedStashOnLoading = false;
@@ -230,14 +229,14 @@ void Install_PlayerCustomData()
 
 	log_msg("[Patch] D2Game & D2Client & D2Common for Player's custom data. (PlayerCustomData)\n");
 
-	DWORD InitializeCustomDataOffset = D2Common::GetOffsetByAddition(0x170DE);
-	DWORD UpdateItemOffset1 = D2Game::GetOffsetByAddition(0x75C81);
-	DWORD UpdateItemOffset2 = D2Game::GetOffsetByAddition(0x75CE1);
-	DWORD UpdateClientOnLoadingOffset = D2Game::GetOffsetByAddition(0xE7548);
-	DWORD FreeCustomDataOffset = D2Common::GetOffsetByAddition(0x1705D);
-	DWORD FreeItemInStashServerSideOffset = D2Game::GetOffsetByAddition(0x6F7C2);
-	DWORD FreeItemInStashClientSideOffset = D2Client::GetOffsetByAddition(0x621E4);
-	DWORD TestIfAlreadyRemovedFromInventoryOffset = D2Common::GetOffsetByAddition(0x3B393);
+	DWORD InitializeCustomDataOffset = D2Common::GetAddress(0x170DE);
+	DWORD UpdateItemOffset1 = D2Game::GetAddress(0x75C81);
+	DWORD UpdateItemOffset2 = D2Game::GetAddress(0x75CE1);
+	DWORD UpdateClientOnLoadingOffset = D2Game::GetAddress(0xE7548);
+	DWORD FreeCustomDataOffset = D2Common::GetAddress(0x1705D);
+	DWORD FreeItemInStashServerSideOffset = D2Game::GetAddress(0x6F7C2);
+	DWORD FreeItemInStashClientSideOffset = D2Client::GetAddress(0x621E4);
+	DWORD TestIfAlreadyRemovedFromInventoryOffset = D2Common::GetAddress(0x3B393);
 
 	// Initialize custom data.
 	mem_seek(InitializeCustomDataOffset);

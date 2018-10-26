@@ -1,6 +1,5 @@
 // Copyright (C) 2004-2017 Yohann Nicolas
-// Copyright (C) 2017 L'Autour
-// Copyright (C) 2017 Jonathan Vasquez <jon@xyinn.org>
+// Copyright (C) 2017-2018 Jonathan Vasquez <jon@xyinn.org>
 //
 // This program is free software : you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,13 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#include "common.h"
+#include <stdio.h>
+#include "Common.h"
 
 char* DiabloVersionText = "v 1.13d";
 BYTE DiabloVersionColor = 0;
 BYTE AlpacaVersionColor = 4;
 
-DWORD newTextBoxData[]={4,0x237,0x243,0xC8,0x14,0,0,0,0,0,0,2}; //type,x,y,l,h,?,?,?,?,?,?,?(0,257,C8,28)
+DWORD newTextBoxData[]={4, 0x237, 0x243, 0xC8, 0x14, 0, 0, 0, 0, 0, 0, 2};
 
 void __stdcall PrintVersion(void** childrens, DWORD* sgnNumChildren)
 {
@@ -49,7 +49,7 @@ void Install_PrintVersion()
 
 	log_msg("[Patch] D2Launch to print Alpaca version. (PrintVersion)\n");
 
-	DWORD PrintVersionOffset = D2Launch::GetOffsetByAddition(0x10A11);
+	DWORD PrintVersionOffset = D2Launch::GetAddress(0x10A11);
 
 	mem_seek(PrintVersionOffset);
 	MEMJ_REF4(D2Win::D2CreateTextBox, caller_PrintVersion);
@@ -73,7 +73,7 @@ void Install_VersionChange()
 
 	log_msg("[Patch] D2Launch to print Mod version. (VersionChange)\n");
 
-	DWORD PrintLodModVersionOffset = D2Launch::GetOffsetByAddition(0x10AE4);
+	DWORD PrintLodModVersionOffset = D2Launch::GetAddress(0x10AE4);
 
 	// Print LoD/Mod version.
 	mem_seek(PrintLodModVersionOffset);

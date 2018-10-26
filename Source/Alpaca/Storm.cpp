@@ -1,6 +1,5 @@
 // Copyright (C) 2004-2017 Yohann Nicolas
-// Copyright (C) 2017 L'Autour
-// Copyright (C) 2017 Jonathan Vasquez <jon@xyinn.org>
+// Copyright (C) 2017-2018 Jonathan Vasquez <jon@xyinn.org>
 //
 // This program is free software : you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -26,8 +25,8 @@ void Storm::Init()
 
 void Storm::SetFunctions()
 {
-	D2StormMPQOpenFile = (TD2StormMPQOpenFile)GetOffsetByProc(268);
-	D2FreeWinMessage = (TD2FreeWinMessage)GetOffsetByProc(511);
+	D2StormMPQOpenFile = (TD2StormMPQOpenFile)GetAddress(0x2D650);
+	D2FreeWinMessage = (TD2FreeWinMessage)GetAddress(0x25D70);
 }
 
 Storm::TD2StormMPQOpenFile Storm::D2StormMPQOpenFile;

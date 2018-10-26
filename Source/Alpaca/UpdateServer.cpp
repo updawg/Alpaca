@@ -1,6 +1,5 @@
 // Copyright (C) 2004-2017 Yohann Nicolas
-// Copyright (C) 2017 L'Autour
-// Copyright (C) 2017 Jonathan Vasquez <jon@xyinn.org>
+// Copyright (C) 2017-2018 Jonathan Vasquez <jon@xyinn.org>
 //
 // This program is free software : you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,10 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#include "updateServer.h"
-#include "infinityStash.h"
-#include "commands.h"
-#include "common.h"
+#include "UpdateServer.h"
+#include "InfinityStash.h"
+#include "Commands.h"
+#include "Common.h"
 
 int renameIndex = 0;
 char renameString[16];
@@ -104,7 +103,7 @@ void Install_UpdateServer()
 
 	log_msg("[Patch] D2Game for received button click message. (UpdateServer)\n");
 
-	DWORD ManageButtonClickMessageFromClientOffset = D2Game::GetOffsetByAddition(0x676C3);
+	DWORD ManageButtonClickMessageFromClientOffset = D2Game::GetAddress(0x676C3);
 
 	// manage button click message from Client.
 	mem_seek(ManageButtonClickMessageFromClientOffset);

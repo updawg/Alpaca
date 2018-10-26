@@ -1,6 +1,5 @@
 // Copyright (C) 2004-2017 Yohann Nicolas
-// Copyright (C) 2017 L'Autour
-// Copyright (C) 2017 Jonathan Vasquez <jon@xyinn.org>
+// Copyright (C) 2017-2018 Jonathan Vasquez <jon@xyinn.org>
 //
 // This program is free software : you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -22,7 +21,8 @@ void Game::Init()
 	Name = "Game.exe";
 	Offset = (DWORD)GetModuleHandle(NULL);
 	VersionUtility::SetVersion(VersionUtility::GetVersion(Name));
-	log_msg("%s successfully loaded. (%08X)\n", Name, Offset);
+	log_msg("%s successfully loaded.\n", Name);
+	SetFunctions();
 }
 
 void Game::SetFunctions()

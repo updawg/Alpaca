@@ -1,6 +1,5 @@
 // Copyright (C) 2004-2017 Yohann Nicolas
-// Copyright (C) 2017 L'Autour
-// Copyright (C) 2017 Jonathan Vasquez <jon@xyinn.org>
+// Copyright (C) 2017-2018 Jonathan Vasquez <jon@xyinn.org>
 //
 // This program is free software : you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -26,12 +25,12 @@ void D2Win::Init()
 
 void D2Win::SetFunctions()
 {
-	D2PrintLineOnTextBox = (TD2PrintLineOnTextBox)GetOffsetByProc(10051);
-	D2PrintString = (TD2PrintString)GetOffsetByProc(10076);
-	D2GetPixelLen = (TD2GetPixelLen)GetOffsetByProc(10150);
-	D2SetFont = (TD2SetFont)GetOffsetByProc(10047);
-	D2PrintPopup = (TD2PrintPopup)GetOffsetByProc(10137);
-	D2CreateTextBox = (TD2CreateTextBox)GetOffsetByProc(10164);
+	D2PrintLineOnTextBox = (TD2PrintLineOnTextBox)GetAddress(0x17320);
+	D2PrintString = (TD2PrintString)GetAddress(0x13B30);
+	D2GetPixelLen = (TD2GetPixelLen)GetAddress(0x136B0);
+	D2SetFont = (TD2SetFont)GetAddress(0x13B70);
+	D2PrintPopup = (TD2PrintPopup)GetAddress(0x12480);
+	D2CreateTextBox = (TD2CreateTextBox)GetAddress(0xE8B0);
 }
 
 D2Win::TD2PrintLineOnTextBox D2Win::D2PrintLineOnTextBox;

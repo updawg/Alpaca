@@ -1,6 +1,5 @@
 // Copyright (C) 2004-2017 Yohann Nicolas
-// Copyright (C) 2017 L'Autour
-// Copyright (C) 2017 Jonathan Vasquez <jon@xyinn.org>
+// Copyright (C) 2017-2018 Jonathan Vasquez <jon@xyinn.org>
 //
 // This program is free software : you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -26,8 +25,8 @@ void D2Net::Init()
 
 void D2Net::SetFunctions()
 {
-	D2SendToServer = (TD2SendToServer)GetOffsetByProc(0x271F);
-	D2SendToClient = (TD2SendToClient)GetOffsetByProc(0x271C);
+	D2SendToServer = (TD2SendToServer)GetAddress(0x6F20);
+	D2SendToClient = (TD2SendToClient)GetAddress(0x7470);
 }
 
 D2Net::TD2SendToServer D2Net::D2SendToServer;

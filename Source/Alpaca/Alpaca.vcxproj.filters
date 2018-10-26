@@ -9,9 +9,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Header Files\Commons">
-      <UniqueIdentifier>{59fc684e-37a3-4e41-b5d0-20e94b097455}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
@@ -48,19 +45,10 @@
     <ClCompile Include="InfinityStash.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="INIfile.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Interface_Stash.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="LoadPlayerData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MainScreen.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ModifMemory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Parameters.cpp">
@@ -81,14 +69,8 @@
     <ClCompile Include="UpdateServer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Utilities\VersionUtility.cpp">
-      <Filter>Source Files\Utilities</Filter>
-    </ClCompile>
     <ClCompile Include="D2Functions.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Utilities\LibraryLoader.cpp">
-      <Filter>Source Files\Utilities</Filter>
     </ClCompile>
     <ClCompile Include="D2Launch.cpp">
       <Filter>Source Files\Libraries</Filter>
@@ -126,100 +108,34 @@
     <ClCompile Include="AlpacaFiles.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Utilities\Utility.cpp">
-      <Filter>Source Files\Utilities</Filter>
-    </ClCompile>
     <ClCompile Include="D2CMP.cpp">
       <Filter>Source Files\Libraries</Filter>
     </ClCompile>
+    <ClCompile Include="IniFile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InterfaceStash.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LibraryLoader.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="VersionUtility.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="bigStash.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="commands.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="customData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="extendedSaveFile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="infinityStash.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="INIfile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="interface_Stash.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="mainScreen.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="modifMemory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="parameters.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="playerCustomData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="savePlayerData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="sharedSaveFile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="updateClient.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="updateServer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Commons\d2BinFile.h">
-      <Filter>Header Files\Commons</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Commons\d2StringTblStruct.h">
-      <Filter>Header Files\Commons</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Commons\d2Struct.h">
-      <Filter>Header Files\Commons</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Commons\D2UnitStruct.h">
-      <Filter>Header Files\Commons</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Commons\updatingConst.h">
-      <Filter>Header Files\Commons</Filter>
-    </ClInclude>
-    <ClInclude Include="Utilities\VersionUtility.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Commons\D2Constants.h">
-      <Filter>Header Files\Commons</Filter>
-    </ClInclude>
     <ClInclude Include="Error.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="D2Functions.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="savePath.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Utilities\LibraryLoader.h">
-      <Filter>Header Files\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="D2Launch.h">
       <Filter>Header Files\Libraries</Filter>
@@ -257,14 +173,89 @@
     <ClInclude Include="AlpacaFiles.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Utilities\Utility.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
     <ClInclude Include="D2CMP.h">
       <Filter>Header Files\Libraries</Filter>
     </ClInclude>
     <ClInclude Include="LoadPlayerData.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Parameters.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BigStash.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ExtendedSaveFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IniFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InfinityStash.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InterfaceStash.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MainScreen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerCustomData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SavePlayerData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SharedSaveFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UpdateClient.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UpdateServer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LibraryLoader.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="VersionUtility.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="D2BinFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D2StringTblStruct.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D2Struct.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D2UnitStruct.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D2Constants.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="UpdatingConst.h">
+      <Filter>Header Files\Utilities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

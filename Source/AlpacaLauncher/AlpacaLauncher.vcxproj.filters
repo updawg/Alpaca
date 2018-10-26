@@ -18,13 +18,13 @@
     <ClInclude Include="Resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="targetver.h">
+    <ClInclude Include="TargetVer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Alpaca\Utilities\VersionUtility.h">
+    <ClInclude Include="..\Alpaca\Utility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Alpaca\Utilities\Utility.h">
+    <ClInclude Include="..\Alpaca\VersionUtility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -34,13 +34,13 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Alpaca\Utilities\VersionUtility.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AlpacaLauncher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Alpaca\Utilities\Utility.cpp">
+    <ClCompile Include="..\Alpaca\Utility.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Alpaca\VersionUtility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,6 +1,5 @@
 // Copyright (C) 2004-2017 Yohann Nicolas
-// Copyright (C) 2017 L'Autour
-// Copyright (C) 2017 Jonathan Vasquez <jon@xyinn.org>
+// Copyright (C) 2017-2018 Jonathan Vasquez <jon@xyinn.org>
 //
 // This program is free software : you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,11 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#include "commands.h"
-#include "mainScreen.h"
-#include "bigStash.h"
-#include "infinityStash.h"
-#include "common.h"
+#include "Commands.h"
+#include "MainScreen.h"
+#include "BigStash.h"
+#include "InfinityStash.h"
+#include "Common.h"
 
 void freeLibrary(DWORD library)
 {
@@ -68,12 +67,10 @@ extern "C" __declspec(dllexport) void* __stdcall Init(LPSTR IniName)
 	// Thanks to Necrolis @ PhrozenKeep for bringing this trick up.
 	//MessageBox(GetActiveWindow(), "The Alpacas have arrived!", "Alpaca", MB_APPLMODAL);
 
-	// Initialize/Load Libraries
-	LibraryLoader::Init();
-
-	InitializeDiabloFunctions();
 	LoadParameters();
 
+	LibraryLoader::Init();
+	InitializeDiabloFunctions();
 	InstallAlpacaFunctions();
 
 	log_msg("Entering Diablo II\n");
