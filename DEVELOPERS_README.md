@@ -52,6 +52,13 @@ This is not supported. Even if you forward the character with Vanilla D2 (and ar
 play the char with Vanilla D2), the char will not open with this mod. Patches are welcomed
 if you really want to support this.
 
+NOTE: I tested making a new 1.09b, 1.10f, 1.13d, and 1.14d character and attempted
+      to open them up in 1.13d w/ Alpaca. In this situation the characters all opened
+      up fine. So it seems that maybe there is a problem during migration when the character
+      has already acquired gear and that gear is being migrated over.. or somewhere around
+      that code. I'm guessing there might be some Alpaca hook somewhere that is effecting
+      the migration code and causing the "bad generic file" message to appear.
+
 ## Tips for updating to a new version of Diablo II
 
 - Look at each of the library header files and see what types of functions they declare.
