@@ -135,7 +135,7 @@ bool inMultiplayerGame(Unit* character)
 
 void* __stdcall printBtns()
 {
-	if (!D2isLODGame()) return D2LoadBuySelBtn();
+	if (!D2Client::IsExpansion()) return D2LoadBuySelBtn();
 
 	Unit* ptChar = D2GetClientPlayer();
 
@@ -232,7 +232,7 @@ void* __stdcall printBtns()
 
 DWORD __stdcall manageBtnDown(sWinMessage* msg)
 {
-	if (!D2isLODGame()) return 0;
+	if (!D2Client::IsExpansion()) return 0;
 
 	bool shouldBlockSoundIfOnLan = false;
 
@@ -290,7 +290,7 @@ DWORD __stdcall manageBtnDown(sWinMessage* msg)
 
 DWORD __stdcall manageBtnUp(sWinMessage* msg)
 {
-	if (!D2isLODGame()) return 0;
+	if (!D2Client::IsExpansion()) return 0;
 
 	Unit* ptChar = D2GetClientPlayer();
 
@@ -376,7 +376,7 @@ DWORD __stdcall manageBtnUp(sWinMessage* msg)
 
 void __fastcall printPageNumber(LPWSTR maxGoldText, DWORD x, DWORD y, DWORD color, DWORD bfalse)
 {
-	if (!D2isLODGame() )
+	if (!D2Client::IsExpansion())
 	{
 		D2PrintString(maxGoldText,x,y,color,bfalse);
 		return;

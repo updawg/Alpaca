@@ -64,7 +64,6 @@ extern D2Client::TD2LoadImage D2LoadImage;
 extern D2Client::TD2FreeImage D2FreeImage;
 extern D2Client::TD2PlaySound D2PlaySound;
 extern D2Client::TD2LoadBuySelBtn D2LoadBuySelBtn;
-extern D2Client::TD2isLODGame D2isLODGame;
 extern D2Client::TD2GetMouseX D2GetMouseX;
 extern D2Client::TD2GetMouseY D2GetMouseY;
 extern D2Client::TD2GetClientPlayer D2GetClientPlayer;

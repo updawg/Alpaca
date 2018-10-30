@@ -61,7 +61,7 @@ Stash* getStashFromItem(Unit* ptChar, Unit* ptItem)
 Unit* __fastcall updateItem(GameStruct* ptGame, DWORD type, DWORD itemNum, Unit* ptChar)
 {
 	Unit* ptItem = D2GameGetObject(ptGame, type, itemNum);
-	if (ptGame->isLODGame && (D2ItemGetPage(ptItem) == 4))
+	if (D2Client::IsExpansion() && (D2ItemGetPage(ptItem) == 4))
 	{
 		Stash* ptStash = getStashFromItem(ptChar, ptItem);
 		if (!ptStash) return NULL;
@@ -74,13 +74,13 @@ Unit* __fastcall updateItem(GameStruct* ptGame, DWORD type, DWORD itemNum, Unit*
 void __stdcall updateClientPlayerOnLoading(Unit* ptChar)
 {
 	log_msg("--- Start update client on loading ---\n");
-	if (PCGame->isLODGame)
-	{
-		// The shared stash option is disabled in multiplayer. Thus override parameter if needed.
-		bool actuallyOpenSharedStashOnLoading = !inMultiplayerGame(ptChar) ? openSharedStashOnLoading : 0;
-		PCPY->showSharedStash = actuallyOpenSharedStashOnLoading;
-		selectStash(ptChar, actuallyOpenSharedStashOnLoading ? PCPY->sharedStash : PCPY->selfStash);
-	}
+	if (!D2Client::IsExpansion()) return;
+	
+	// The shared stash option is disabled in multiplayer. Thus override parameter if needed.
+	bool actuallyOpenSharedStashOnLoading = !inMultiplayerGame(ptChar) ? openSharedStashOnLoading : 0;
+	PCPY->showSharedStash = actuallyOpenSharedStashOnLoading;
+	selectStash(ptChar, actuallyOpenSharedStashOnLoading ? PCPY->sharedStash : PCPY->selfStash);
+	
 	if (!inMultiplayerGame(ptChar))
 	{
 		updateClient(ptChar, UC_SHARED_GOLD, PCPY->sharedGold, 0, 0);
@@ -164,7 +164,7 @@ Unit* __stdcall getNextItemToFree(Unit* ptChar, Unit* ptItem)
 
 void __fastcall updateItem_111(Unit* ptItem, Unit* ptChar)
 {
-	if (PCGame->isLODGame && (D2ItemGetPage(ptItem) == 4))
+	if (D2Client::IsExpansion() && (D2ItemGetPage(ptItem) == 4))
 	{
 		Stash* ptStash = getStashFromItem(ptChar, ptItem);
 		if (ptStash)

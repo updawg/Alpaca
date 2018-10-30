@@ -37,7 +37,7 @@ DWORD __stdcall LoadSPCustomData(Unit* ptChar)
 		{log_msg("LoadSPCustomData : PCGame == NULL\n");return 0x1B;}//Unknow failure
 
 	DWORD ret=0;
-	if (PCGame->isLODGame)
+	if (D2Client::IsExpansion())
 	{
 		log_msg("is LOD Game\n");
 		data = readExtendedSaveFile(PCPlayerData->name, &size);
@@ -260,7 +260,7 @@ DWORD __stdcall ReceiveSaveFiles (DWORD clientID, t_rcvMsg* msg)
 DWORD __stdcall LoadMPCustomData(Unit* ptChar)
 {
 	log_msg("Start LoadMPCustomData\n");
-
+	if (!D2Client::IsExpansion()) return 0;
 	if (!ptChar) return NULL;
 	if (!ptChar)
 		{log_msg("LoadMPCustomData : ptChar == NULL\n");return 0x1B;}//Unknow failure
@@ -280,34 +280,26 @@ DWORD __stdcall LoadMPCustomData(Unit* ptChar)
 	if (!curSF)
 	{
 		log_msg("Server has received no data from extra save files of character %s\n", PCPlayerData->name);
-		ret = 0xE;//Unable to enter game, generic bad file
+		ret = 0xE; //Unable to enter game, generic bad file
 	}
 
 	if (!ret && !curSF->completed)
 	{
 		log_msg("Server hasn't receive all data from extra save files of character %s\n",PCPlayerData->name);
-		ret = 0xE;//Unable to enter game, generic bad file
+		ret = 0xE; //Unable to enter game, generic bad file
 	}
 
 	if (!ret && !PCGame)
 	{
 		log_msg("LoadMPCustomData : PCGame == NULL\n");
-		ret = 0x1B;//Unknow failure
+		ret = 0x1B; //Unknown failure
 	}
 
-	if (PCGame->isLODGame)
+	if (!ret)
 	{
-		log_msg("is LOD Game\n");
-		if (!ret)
-		{
-			ret = loadExtendedSaveFile(ptChar, curSF->dataExtended, curSF->sizeExtended);
-		}
+		ret = loadExtendedSaveFile(ptChar, curSF->dataExtended, curSF->sizeExtended);
 	}
-	else
-	{
-		log_msg("is not LOD Game\n");
-	}
-
+	
 	freeCurrentCF(PCGame->memoryPool, &curSF);
 
 	log_msg("--- End LoadMPCustomData. ---\n\n");

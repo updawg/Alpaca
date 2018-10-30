@@ -21,7 +21,7 @@
 
 void __stdcall SaveSPPlayerCustomData(Unit* ptChar)
 {
-	if (!D2isLODGame()) return; //D2Game but in SP so np
+	if (!D2Client::IsExpansion()) return;
 
 	log_msg("\n--- Start SaveSPPlayerCustomData ---\n");
 
@@ -98,6 +98,7 @@ s_dataToSend* ptDataToSend=NULL;
 void __stdcall SendSaveFilesToSave( Unit* ptChar )
 {
 	log_msg("\n--- Start SendSaveFilesToSave ---\n");
+	if (!D2Client::IsExpansion()) return;
 
 	DWORD curSizeExt = 0;
 	BYTE* dataExt = NULL;
@@ -223,6 +224,7 @@ DWORD __stdcall ReceiveSaveFilesToSave(t_rcvMsg* msg)
 void __stdcall SaveMPPlayerCustomData(BYTE* dataD2Savefile)
 {
 	log_msg("[SaveMPPlayerCustomData] Function Started\n");
+	if (!D2Client::IsExpansion()) return;
 
 	Unit* ptChar = D2GetClientPlayer();
 	if (ptChar)

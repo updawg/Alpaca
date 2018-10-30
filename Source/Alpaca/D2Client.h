@@ -34,7 +34,7 @@ public:
 	typedef DWORD(__fastcall *TD2PlaySound) (DWORD id, DWORD, DWORD, DWORD, DWORD);
 	typedef void(__fastcall *TD2SendToServerXX) (DWORD size, BYTE * data);
 	typedef void* (__stdcall *TD2LoadBuySelBtn) ();
-	typedef DWORD(__fastcall *TD2isLODGame) ();
+	typedef DWORD(__fastcall *TD2IsExpansion) ();
 	typedef void(__fastcall *TD2ClickOnStashButton) (DWORD x, DWORD y);
 	typedef DWORD(__stdcall *TD2GetMouseX) ();
 	typedef DWORD(__stdcall *TD2GetMouseY) ();
@@ -46,7 +46,7 @@ public:
 	static TD2PlaySound D2PlaySound;
 	static TD2SendToServerXX D2SendToServerXX;
 	static TD2LoadBuySelBtn D2LoadBuySelBtn;
-	static TD2isLODGame IsExpansion;
+	static TD2IsExpansion IsExpansion;
 	static TD2GetMouseX D2GetMouseX;
 	static TD2GetMouseY D2GetMouseY;
 	static TD2GetClientPlayer D2GetClientPlayer;

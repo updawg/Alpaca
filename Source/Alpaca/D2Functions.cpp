@@ -48,7 +48,6 @@ D2Client::TD2LoadImage D2LoadImage;
 D2Client::TD2FreeImage D2FreeImage;
 D2Client::TD2PlaySound D2PlaySound;
 D2Client::TD2LoadBuySelBtn D2LoadBuySelBtn;
-D2Client::TD2isLODGame D2isLODGame;
 D2Client::TD2GetMouseX D2GetMouseX;
 D2Client::TD2GetMouseY D2GetMouseY;
 D2Client::TD2GetClientPlayer D2GetClientPlayer;
@@ -128,7 +127,6 @@ void InitializeDiabloFunctions()
 	D2FreeImage = D2Client::D2FreeImage;
 	D2PlaySound = D2Client::D2PlaySound;
 	D2LoadBuySelBtn = D2Client::D2LoadBuySelBtn;
-	D2isLODGame = D2Client::IsExpansion;
 	D2GetMouseX = D2Client::D2GetMouseX;
 	D2GetMouseY = D2Client::D2GetMouseY;
 	D2GetClientPlayer = D2Client::D2GetClientPlayer;

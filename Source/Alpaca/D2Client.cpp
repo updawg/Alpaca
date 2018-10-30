@@ -32,7 +32,7 @@ void D2Client::SetFunctions()
 	D2GetClientPlayer = (TD2GetClientPlayer)D2GetClientPlayer_111;
 	D2LoadImage = (TD2LoadImage)D2LoadImage_111;
 	D2PlaySound = (TD2PlaySound)D2PlaySound_111;
-	IsExpansion = (TD2isLODGame)D2isLODGame_111;
+	IsExpansion = (TD2IsExpansion)D2isLODGame_111;
 	D2FreeImage = (TD2FreeImage)D2FreeImage_111;
 	D2SendToServerXX = (TD2SendToServerXX)GetAddress(0xB61F0);
 	D2SendToServer3 = (TD2SendToServer3)D2SendToServer3_111;
@@ -147,7 +147,7 @@ __declspec(naked) void D2Client::D2PlaySound_111()
 	}
 }
 
-D2Client::TD2isLODGame D2Client::IsExpansion;
+D2Client::TD2IsExpansion D2Client::IsExpansion;
 D2Client::TD2LoadImage D2Client::D2LoadImage;
 D2Client::TD2FreeImage D2Client::D2FreeImage;
 D2Client::TD2PlaySound D2Client::D2PlaySound;
