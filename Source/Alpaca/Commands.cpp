@@ -18,6 +18,7 @@
 #include "updateServer.h"
 #include "updateClient.h"
 #include "infinityStash.h"
+#include "interface_Stash.h"
 #include "common.h"
 
 #define MAX_CMD_SIZE 200
@@ -48,16 +49,12 @@ void maxGold(Unit* ptChar)
 	} else {
 		D2AddPlayerStat( ptChar, STATS_GOLD,	 100000, 0 );
 	}
-	if (active_sharedStash)
-	{
-		PCPY->sharedGold = 0xFFFFFFFF;
-		updateClient(ptChar, UC_SHARED_GOLD, PCPY->sharedGold, 0, 0);
-	}
+	PCPY->sharedGold = 0xFFFFFFFF;
+	updateClient(ptChar, UC_SHARED_GOLD, PCPY->sharedGold, 0, 0);
 }
 
 void putGold(Unit* ptChar, DWORD amount)
 {
-	if (!active_sharedStash) return;
 	log_msg("putGold : %d\n", amount);
 
 	DWORD playerGold = D2GetPlayerStat(ptChar, STATS_GOLD, 0);
@@ -73,7 +70,6 @@ void putGold(Unit* ptChar, DWORD amount)
 
 void takeGold(Unit* ptChar, DWORD amount)
 {
-	if (!active_sharedStash) return;
 	log_msg("takeGold : %d\n", amount);
 
 	DWORD maxGold =     D2GetMaxGold(ptChar) - D2GetPlayerStat(ptChar, STATS_GOLD, 0);
@@ -104,7 +100,6 @@ int __stdcall commands(char* ptText)
 
 	if (!strncmp(command, CMD_REPAGE_NAME,strlen(CMD_REPAGE_NAME)))
 	{
-		if (!active_multiPageStash) return 1;
 		char* param = &ptText[strlen(CMD_REPAGE_NAME)];
 		Stash* ptStash = PCPY->currentStash;
 		if (!ptStash) return 0;
@@ -137,28 +132,24 @@ int __stdcall commands(char* ptText)
 
 	if (!strcmp(command, CMD_SET_INDEX))
 	{
-		if (!active_multiPageStash) return 1;
 		updateServer(US_SET_INDEX);
 		return 0;
 	}
 
 	if (!strcmp(command, CMD_SET_MAIN_INDEX))
 	{
-		if (!active_multiPageStash) return 1;
 		updateServer(US_SET_MAIN_INDEX);
 		return 0;
 	}
 
 	if (!strcmp(command, CMD_UNSET_INDEX))
 	{
-		if (!active_multiPageStash) return 1;
 		updateServer(US_UNSET_INDEX);
 		return 0;
 	}
 
 	if (!strcmp(command, CMD_INSERT_PAGE))
 	{
-		if (!active_multiPageStash) return 1;
 		insertStash(ptChar);
 		updateServer(US_INSERT_PAGE);
 		return 0;
@@ -166,7 +157,6 @@ int __stdcall commands(char* ptText)
 
 	if (!strcmp(command, CMD_DELETE_PAGE))
 	{
-		if (!active_multiPageStash) return 1;
 		if (deleteStash(ptChar, true))
 			updateServer(US_DELETE_PAGE);
 		return 0;
@@ -174,7 +164,6 @@ int __stdcall commands(char* ptText)
 
 	if (!strncmp(command, CMD_SELECT_PAGE, strlen(CMD_SELECT_PAGE)))
 	{
-		if (!active_multiPageStash) return 1;
 		int page = atoi(&command[strlen(CMD_SELECT_PAGE)]) - 1;
 		if (page < 0)
 			return 1;
@@ -187,7 +176,6 @@ int __stdcall commands(char* ptText)
 
 	if (!strncmp(command, CMD_SWAP, strlen(CMD_SWAP)))
 	{
-		if (!active_multiPageStash) return 1;
 		int page = atoi(&command[strlen(CMD_SWAP)]) - 1;
 		if (page < 0 && PCPY->currentStash->nextStash)
 			page = PCPY->currentStash->nextStash->id;
@@ -202,15 +190,17 @@ int __stdcall commands(char* ptText)
 
 	if (!strncmp(command, CMD_TOGGLE, strlen(CMD_TOGGLE)))
 	{
-		if (!active_sharedStash) return 1;
-		int page = atoi(&command[strlen(CMD_TOGGLE)]) - 1;
-		if (page < 0)
-			return 1;
-		updateServer(US_SWAP3 + ((page & 0xFF000000) >> 16));
-		updateServer(US_SWAP2 + ((page & 0xFF0000) >> 8));
-		updateServer(US_SWAP1 + (page & 0xFF00));
-		updateServer(US_SWAP0_TOGGLE + ((page & 0xFF) << 8));
-		return 0;
+		if (!inMultiplayerGame())
+		{
+			int page = atoi(&command[strlen(CMD_TOGGLE)]) - 1;
+			if (page < 0)
+				return 1;
+			updateServer(US_SWAP3 + ((page & 0xFF000000) >> 16));
+			updateServer(US_SWAP2 + ((page & 0xFF0000) >> 8));
+			updateServer(US_SWAP1 + (page & 0xFF00));
+			updateServer(US_SWAP0_TOGGLE + ((page & 0xFF) << 8));
+			return 0;
+		}
 	}
 
 	return 1;

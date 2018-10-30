@@ -75,6 +75,7 @@ WCHAR* STR_SHARED_PAGE_NUMBER = L"Shared Page [%u]";
 WCHAR* STR_PERSONAL_PAGE_NUMBER = L"Personal Page [%u]";
 WCHAR* STR_SHARED_GOLD_QUANTITY = L"Shared Gold";
 WCHAR* STR_NO_SELECTED_PAGE = L"No page selected";
+WCHAR* STR_STASH_LAN_DISABLED = L"Disabled in Multiplayer";
 
 DWORD	getXPreviousBtn()		{return RX(posXPreviousBtn<0? D2GetResolution()?0x80:0xAF : posXPreviousBtn);}
 #define	getLPreviousBtn()		32
@@ -119,6 +120,20 @@ DWORD	getYTakeGoldBtn()		{return RY(posYTakeGoldBtn<0 ? 0x1A8 : posYTakeGoldBtn)
 #define isOnButtonPutGold(x,y) isOnRect(x, y, getXPutGoldBtn(), getYPutGoldBtn(), getLPutGoldBtn(), getHPutGoldBtn())
 #define isOnButtonTakeGold(x,y) isOnRect(x, y, getXTakeGoldBtn(), getYTakeGoldBtn(), getLTakeGoldBtn(), getHTakeGoldBtn())
 
+// Checks to see if the user is in a multiplayer game. This is a hacky way to do
+// it but it's pretty reliable and a simple implementation. Our "sharedStashIsOpened"
+// value only gets set to true when a single player game loads. Thus by checking this
+// boolean, we can determine whether or not we should disable sharing features in the stash.
+// Stash sharing features are disabled in order to prevent data loss when two characters
+// on the same machine join a MP game (and thus have access to the same shared stash object
+// loaded in memory). There are implementations that people could do in order to still allow
+// sharing in LAN games, but it would require a bit work and I would rather not have them.
+bool inMultiplayerGame(Unit* character)
+{
+	Unit* ptChar = character ? character : D2GetClientPlayer();
+	return !PCPY->sharedStashIsOpened;
+}
+
 void* __stdcall printBtns()
 {
 	if (!D2isLODGame()) return D2LoadBuySelBtn();
@@ -135,7 +150,7 @@ void* __stdcall printBtns()
 	setFrame(&data, 2 + isDownBtn.next);
 	D2PrintImage(&data, getXNextBtn(), getYNextBtn(), -1, 5, 0);
 
-	if (active_sharedStash)
+	if (!inMultiplayerGame())
 	{
 		setFrame(&data, 4 + isDownBtn.toggleToSharedStash + (PCPY->showSharedStash ? 2 : 0));
 		D2PrintImage(&data, getXSharedBtn(), getYSharedBtn(), -1, 5, 0);
@@ -147,7 +162,7 @@ void* __stdcall printBtns()
 	setFrame(&data, 10 + isDownBtn.nextIndex);
 	D2PrintImage(&data, getXNextIndexBtn(), getYNextIndexBtn(), -1, 5, 0);
 
-	if (active_sharedStash)
+	if (!inMultiplayerGame())
 	{
 		setImage(&data, sharedGoldBtnsImages);
 		setFrame(&data, 0 + isDownBtn.putGold);
@@ -174,9 +189,16 @@ void* __stdcall printBtns()
 		lpText = STR_STASH_NEXT_PAGE;
 		D2PrintPopup(lpText, getXNextBtn() + getLNextBtn() / 2, getYNextBtn() - getHNextBtn(), WHITE, 1);
 	}
-	else if (active_sharedStash && isOnButtonToggleSharedStash(mx, my))
+	else if (isOnButtonToggleSharedStash(mx, my))
 	{
-		lpText = PCPY->showSharedStash ? STR_TOGGLE_TO_PERSONAL : STR_TOGGLE_TO_SHARED;
+		if (!inMultiplayerGame())
+		{
+			lpText = PCPY->showSharedStash ? STR_TOGGLE_TO_PERSONAL : STR_TOGGLE_TO_SHARED;
+		}
+		else
+		{
+			lpText = STR_STASH_LAN_DISABLED;
+		}
 		D2PrintPopup(lpText, getXSharedBtn() + getLSharedBtn() / 2, getYSharedBtn() - getHSharedBtn(), WHITE, 1);
 	}
 	else if (isOnButtonPreviousIndexStash(mx, my))
@@ -189,15 +211,21 @@ void* __stdcall printBtns()
 		_snwprintf(text, sizeof(text), STR_STASH_NEXT_INDEX, nbPagesPerIndex, nbPagesPerIndex2);
 		D2PrintPopup(text, getXNextIndexBtn() + getLNextIndexBtn() / 2, getYNextIndexBtn() - getHNextIndexBtn(), WHITE, 1);
 	}
-	else if (active_sharedStash && isOnButtonPutGold(mx, my))
+	else if (isOnButtonPutGold(mx, my))
 	{
-		lpText = STR_DEPOSIT_GOLD;
-		D2PrintPopup(lpText, getXPutGoldBtn() + getLPutGoldBtn() / 2, getYPutGoldBtn() - getHPutGoldBtn(), WHITE, 1);
+		if (!inMultiplayerGame())
+		{
+			lpText = STR_DEPOSIT_GOLD;
+			D2PrintPopup(lpText, getXPutGoldBtn() + getLPutGoldBtn() / 2, getYPutGoldBtn() - getHPutGoldBtn(), WHITE, 1);
+		}
 	}
-	else if (active_sharedStash && isOnButtonTakeGold(mx, my))
+	else if (isOnButtonTakeGold(mx, my))
 	{
-		lpText = STR_WITHDRAW_GOLD;
-		D2PrintPopup(lpText, getXTakeGoldBtn() + getLTakeGoldBtn() / 2, getYTakeGoldBtn() - getHTakeGoldBtn(), WHITE, 1);
+		if (!inMultiplayerGame())
+		{
+			lpText = STR_WITHDRAW_GOLD;
+			D2PrintPopup(lpText, getXTakeGoldBtn() + getLTakeGoldBtn() / 2, getYTakeGoldBtn() - getHTakeGoldBtn(), WHITE, 1);
+		}
 	}
 
 	return D2LoadBuySelBtn();
@@ -207,23 +235,55 @@ DWORD __stdcall manageBtnDown(sWinMessage* msg)
 {
 	if (!D2isLODGame()) return 0;
 
-	if (isOnButtonPreviousStash(msg->x,msg->y))
+	bool shouldBlockSoundIfOnLan = false;
+
+	if (isOnButtonPreviousStash(msg->x, msg->y))
 		isDownBtn.previous = 1;
-	else if (isOnButtonNextStash(msg->x,msg->y))
+	else if (isOnButtonNextStash(msg->x, msg->y))
 		isDownBtn.next = 1;
-	else if (active_sharedStash && isOnButtonToggleSharedStash(msg->x,msg->y))
-		isDownBtn.toggleToSharedStash = 1;
-	else if (isOnButtonPreviousIndexStash(msg->x,msg->y))
+	else if (isOnButtonToggleSharedStash(msg->x, msg->y))
+	{
+		if (!inMultiplayerGame())
+		{
+			isDownBtn.toggleToSharedStash = 1;
+		}
+		else
+		{
+			shouldBlockSoundIfOnLan = true;
+		}
+	}
+	else if (isOnButtonPreviousIndexStash(msg->x, msg->y))
 		isDownBtn.previousIndex = 1;
-	else if (isOnButtonNextIndexStash(msg->x,msg->y))
+	else if (isOnButtonNextIndexStash(msg->x, msg->y))
 		isDownBtn.nextIndex = 1;
-	else if (active_sharedStash && isOnButtonPutGold(msg->x,msg->y))
-		isDownBtn.putGold = 1;
-	else if (active_sharedStash && isOnButtonTakeGold(msg->x,msg->y))
-		isDownBtn.takeGold = 1;
+	else if (isOnButtonPutGold(msg->x, msg->y))
+	{
+		if (!inMultiplayerGame())
+		{
+			isDownBtn.putGold = 1;
+		}
+		else
+		{
+			shouldBlockSoundIfOnLan = true;
+		}
+	}
+	else if (isOnButtonTakeGold(msg->x, msg->y))
+	{
+		if (!inMultiplayerGame())
+		{
+			isDownBtn.takeGold = 1;
+		}
+		else
+		{
+			shouldBlockSoundIfOnLan = true;
+		}
+	}
 	else return 0;
 
-	D2PlaySound(4,0,0,0,0);
+	if (!shouldBlockSoundIfOnLan)
+	{
+		D2PlaySound(4, 0, 0, 0, 0);
+	}
 	freeMessage(msg);
 	return 1;
 }
@@ -252,18 +312,19 @@ DWORD __stdcall manageBtnUp(sWinMessage* msg)
 			else
 				updateServer(US_SELECT_NEXT);
 	}
-	else if (active_sharedStash && isOnButtonToggleSharedStash(msg->x,msg->y))
+	else if (isOnButtonToggleSharedStash(msg->x,msg->y))
 	{
 		log_msg("push up left button shared\n");
 		if (isDownBtn.toggleToSharedStash)
-			if (PCPY->showSharedStash)
-				updateServer(US_SELECT_SELF);
-			 else
-				updateServer(US_SELECT_SHARED);
-	}
-	else if (!active_sharedStash && isOnButtonToggleSharedStash(msg->x, msg->y))
-	{
-		log_msg("push up left button shared but shared stash is disabled.\n");
+		{
+			if (!inMultiplayerGame())
+			{
+				if (PCPY->showSharedStash)
+					updateServer(US_SELECT_SELF);
+				else
+					updateServer(US_SELECT_SHARED);
+			}
+		}
 	}
 	else if (isOnButtonPreviousIndexStash(msg->x,msg->y))
 	{
@@ -283,17 +344,27 @@ DWORD __stdcall manageBtnUp(sWinMessage* msg)
 			else
 				updateServer(US_SELECT_NEXT_INDEX);
 	}
-	else if (active_sharedStash && isOnButtonPutGold(msg->x,msg->y))
+	else if (isOnButtonPutGold(msg->x,msg->y))
 	{
 		log_msg("push up left put gold\n");
 		if (isDownBtn.putGold)
-			updateServer(US_PUTGOLD);
+		{
+			if (!inMultiplayerGame())
+			{
+				updateServer(US_PUTGOLD);
+			}
+		}
 	}
-	else if (active_sharedStash && isOnButtonTakeGold(msg->x,msg->y))
+	else if (isOnButtonTakeGold(msg->x,msg->y))
 	{
 		log_msg("push up left take gold\n");
 		if (isDownBtn.takeGold)
-			updateServer(US_TAKEGOLD);
+		{
+			if (!inMultiplayerGame())
+			{
+				updateServer(US_TAKEGOLD);
+			}
+		}
 	}
 	else
 	{
@@ -305,7 +376,7 @@ DWORD __stdcall manageBtnUp(sWinMessage* msg)
 
 void __fastcall printPageNumber(LPWSTR maxGoldText, DWORD x, DWORD y, DWORD color, DWORD bfalse)
 {
-	if (!D2isLODGame() )
+	if (!D2isLODGame())
 	{
 		D2PrintString(maxGoldText,x,y,color,bfalse);
 		return;
@@ -362,7 +433,7 @@ void __fastcall printPageNumber(LPWSTR maxGoldText, DWORD x, DWORD y, DWORD colo
 	DWORD my = D2GetMouseY();
 	if ((RX(0x5E) < mx) && (mx < RX(0xF8)) && (RY(0x1C8) < my) && (my < RY(0x1B6)) )
 	{
-		if (active_sharedStash)
+		if (!inMultiplayerGame())
 		{
 			_snwprintf(popupText, sizeof(popupText), L"%s\n%s: %u", maxGoldText, STR_SHARED_GOLD_QUANTITY, PCPY->sharedGold);
 			DWORD x = D2GetPixelLen(maxGoldText);

@@ -19,4 +19,5 @@
 
 #include "common.h"
 
+bool inMultiplayerGame(Unit* character = NULL);
 void Install_InterfaceStash();

@@ -1,28 +1,28 @@
-## Alpaca 1.5.1 [1.09b]
+## Alpaca 1.5.2 [1.09b]
 ##### By Jonathan Vasquez (fearedbliss)
-##### Released on Thursday, October 18, 2018
+##### Released on Monday, October 29, 2018
 
 ## Synopsis
 
 Alpaca is an Infinite Stash Mod for Diablo II: Lord of Destruction
-that is based off Yohann Nicolas' PlugY 11.02. The main goal of Alpaca
-is to be clean and maintainable core with no extra features. The Alpaca
-core has been significantly redesigned by currently providing a completely
-new module offset loader, drastically less code, and has been massively
-refactored. Changes to the Alpaca architecture will continue to improve
-over time as more code is refactored, removed, and re-architected. Another
-major change is that in order to provide an optimal gaming experience and
-improved maintainability, Alpaca only supports a single version of Diablo II.
-If people want to use Alpaca on a different version, they only need to focus
-on the particular version they want to support without having to worry about
-any sort of backwards or forward compatibility.
+that is based off Yohann Nicolas' PlugY 11.02. Alpaca's main goal is to be
+a clean and maintainable core with no extra features. Alpaca has been
+significantly redesigned by providing a completely new module offset loader,
+drastically less code, and has been massively refactored. Another major change
+is that in order to provide an optimal gaming experience and improved maintainability,
+Alpaca only supports a single version of Diablo II. If people want to use Alpaca on a
+different version, they only need to focus on the particular version they want to
+support without having to worry about any sort of backwards or forward compatibility.
+All needed features, cleanups, and stability improvements have been implemented and
+thus Alpaca is now in Maintenance mode. Releases will only happen if there is a bug
+or an incompatibility with 1.09b.
 
-Alpaca IS compatible with my Cactus (Version Switcher). If you want to use
-Alpaca for your 1.09b install but also continue to play other mods or 1.14d,
-etc, you can use my version switcher to easily do this. When using Alpaca with
-Cactus, Simply point your Cactus profile to the "Alpaca.exe" when launching.
-Cactus also automatically isolates your character save files and their stashes
-as well (Including the Alpaca Stashes).
+Finally, Alpaca IS compatible with my [Diablo II Version Switcher: Cactus](https://github.com/fearedbliss/Cactus).
+If you want to use Alpaca for your 1.09b install (but also want to continue to play
+other mods, versions, etc), you can use Cactus. When using Alpaca with Cactus,
+Simply point your Cactus Platform to the "Alpaca.exe" when launching. Cactus also
+automatically isolates your character save files and their stashes as well
+(Including the Alpaca Stashes).
 
 ## Requirements
 
@@ -30,11 +30,9 @@ as well (Including the Alpaca Stashes).
 
 ## License
 
-All code is licensed under the GPLv3+ since that was the license
-that Yohann released PlugY 11.02 under.
+All code is licensed under the GPLv3+ since that was the license that Yohann released PlugY 11.02 under.
 
 ## Features
-
 
 ### Core Features
 
@@ -52,21 +50,13 @@ that Yohann released PlugY 11.02 under.
 - `/page <page #>` : Takes you to the corresponding page.
 - `/swap <page #>` : Swaps the content of the current page with the content of the target page.
 - `/toggle <page #>` : Swaps the content of the current page with the content of
-                   the target page in the opposing shared/personal stash.
+                       the target page in the opposing shared/personal stash.
 
-## Concerns
-
-- This isn't a bug but it is a warning specifically related to if you are playing LAN
-  with two of your own characters, you should avoid the use of the Shared Stash.
-  This is because both of those characters are essentially seeing a copy of the shared
-  stash at the point in time when they joined the LAN game. Since the stashes aren't
-  automatically in-sync with each other, the last character to exit the game will be
-  the stash that gets saved. Only use your personal stashes in LAN games if you don't
-  want to lose any items.
-  
 ## Links
 
 - [Discord](https://discord.gg/B59qDKy)
 - [Cactus](https://github.com/fearedbliss/Cactus)
 - [Succulent](https://github.com/fearedbliss/Succulent)
+- [Alpaca](https://github.com/fearedbliss/Alpaca)
+- [Singling](https://github.com/fearedbliss/Singling)
 - [Bliss Complete Collection](https://xyinn.org/diablo/Bliss_Complete_Collection.7z)

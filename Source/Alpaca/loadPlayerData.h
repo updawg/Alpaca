@@ -20,5 +20,3 @@
 #include "common.h"
 
 void Install_LoadPlayerData();
-
-

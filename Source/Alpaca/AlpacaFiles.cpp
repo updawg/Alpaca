@@ -20,9 +20,6 @@
 #include <stdio.h>
 #include "Utilities/Utility.h"
 
-extern bool active_multiPageStash;
-extern bool active_sharedStash;
-
 void* stashBtnsImages = NULL;
 void* sharedGoldBtnsImages = NULL;
 
@@ -112,15 +109,8 @@ void __stdcall loadCustomImages()
 	const char* stashBtnsFile = "StashBtns";
 	const char* sharedGoldBtnsFile = "SharedGoldBtns";
 
-	if (active_multiPageStash)
-	{
-		loadImagesFile(&stashBtnsImages, stashBtnsFile);
-	}
-
-	if (active_sharedStash)
-	{
-		loadImagesFile(&sharedGoldBtnsImages, sharedGoldBtnsFile);
-	}
+	loadImagesFile(&stashBtnsImages, stashBtnsFile);
+	loadImagesFile(&sharedGoldBtnsImages, sharedGoldBtnsFile);
 }
 
 #define freeImagesFile(I) if(I) {D2FreeImage(I);I=NULL;}
