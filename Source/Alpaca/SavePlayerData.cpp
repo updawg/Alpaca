@@ -309,10 +309,10 @@ RETN
 
 void Install_SavePlayerData()
 {
-	static int isInstalled = false;
+	static bool isInstalled = false;
 	if (isInstalled || !active_PlayerCustomData) return;
 
-	log_msg("[Patch] D2Game & D2Client for save Player's custom data. (SavePlayerData)\n");
+	log_msg("[Patch] Save Player Custom Data\n");
 
 	DWORD SaveSinglePlayerCustomDataOffset = D2Game::GetAddress(0x39835);
 	DWORD SendSaveFilesOffset1 = D2Game::GetAddress(0x397AB);
@@ -321,30 +321,30 @@ void Install_SavePlayerData()
 	DWORD SaveMultiplayerPlayerCustomDataOffset = D2Client::GetAddress(0x829C2);
 
 	//Save single player custom data.
-	mem_seek(SaveSinglePlayerCustomDataOffset);
-	MEMJ_REF4(Fog::D2FogGetSavePath, caller_SaveSPPlayerCustomData_111);
+	Memory::SetCursor(SaveSinglePlayerCustomDataOffset);
+	Memory::ChangeCallB((DWORD)Fog::D2FogGetSavePath, (DWORD)caller_SaveSPPlayerCustomData_111);
 
 	//Send SaveFiles
-	mem_seek(SendSaveFilesOffset1);
-	memt_byte(0x8B, 0x90);
-	memt_byte(0x44, 0xE8);
-	MEMT_REF4(0xC0850424, caller_SendSaveFilesToSave_111);
+	Memory::SetCursor(SendSaveFilesOffset1);
+	Memory::ChangeByte(0x8B, 0x90);
+	Memory::ChangeByte(0x44, 0xE8);
+	Memory::ChangeCallA(0xC0850424, (DWORD)caller_SendSaveFilesToSave_111);
 
-	mem_seek(SendSaveFilesOffset2);
-	memt_byte(0x8B, 0x90);
-	memt_byte(0x8E, 0xE8);
-	MEMT_REF4(0x17C, caller_ManageNextPacketToSend);
+	Memory::SetCursor(SendSaveFilesOffset2);
+	Memory::ChangeByte(0x8B, 0x90);
+	Memory::ChangeByte(0x8E, 0xE8);
+	Memory::ChangeCallA(0x17C, (DWORD)caller_ManageNextPacketToSend);
 	
 	//Received SaveFiles
-	mem_seek(ReceivedSaveFilesOffset);
-	memt_byte(0x0F, 0xE8);
-	MEMT_REF4(0x0C2444B6, caller_ReceivedSaveFilesToSave_111);
+	Memory::SetCursor(ReceivedSaveFilesOffset);
+	Memory::ChangeByte(0x0F, 0xE8);
+	Memory::ChangeCallA(0x0C2444B6, (DWORD)caller_ReceivedSaveFilesToSave_111);
 
 	// Save multiplayer player custom data.
-	mem_seek(SaveMultiplayerPlayerCustomDataOffset);
-	memt_byte(0x81, 0xE8);
-	MEMT_REF4(0x55AA55F9, caller_SaveMPPlayerCustomData_111);
-	memt_byte(0xAA, 0x90);
+	Memory::SetCursor(SaveMultiplayerPlayerCustomDataOffset);
+	Memory::ChangeByte(0x81, 0xE8);
+	Memory::ChangeCallA(0x55AA55F9, (DWORD)caller_SaveMPPlayerCustomData_111);
+	Memory::ChangeByte(0xAA, 0x90);
 
 	customPackID++;
 

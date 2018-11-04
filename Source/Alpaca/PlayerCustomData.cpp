@@ -24,52 +24,54 @@
 bool active_PlayerCustomData = true;
 bool openSharedStashOnLoading = false;
 
-Stash* getStashFromItem(Unit* ptChar, Unit* ptItem)
+Stash* locateStashFromItem(Unit* ptChar, Unit* currentItem, Stash* currentStash, Stash* stashToSearch)
 {
-	Stash* curStash = PCPY->selfStash;
-	Unit* curItem;
-	while (curStash)
+	while (currentStash)
 	{
-		if (curStash == PCPY->currentStash)
-			 curItem = D2InventoryGetFirstItem(PCInventory);
-		else curItem = curStash->ptListItem;
-		while (curItem)
+		Unit* retrievedItem;
+
+		if (currentStash == stashToSearch)
 		{
-			if (D2GetRealItem(curItem) == ptItem) return curStash;
-			curItem = D2UnitGetNextItem(curItem);
+			retrievedItem = D2InventoryGetFirstItem(PCInventory);
 		}
-		curStash = curStash->nextStash;
-	}
-	
-	curStash = PCPY->sharedStash;
-	while (curStash)
-	{
-		if (curStash == PCPY->currentStash)
-			 curItem = D2InventoryGetFirstItem(PCInventory);
-		else curItem = curStash->ptListItem;
-		while (curItem)
+		else
 		{
-			if (D2GetRealItem(curItem) == ptItem) return curStash;
-			curItem = D2UnitGetNextItem(curItem);
+			retrievedItem = currentStash->ptListItem;
 		}
-		curStash = curStash->nextStash;
+
+		while (retrievedItem)
+		{
+			if (currentItem == D2GetRealItem(retrievedItem))
+			{
+				return currentStash;
+			}
+			retrievedItem = D2UnitGetNextItem(retrievedItem);
+		}
+
+		currentStash = currentStash->nextStash;
 	}
+
 	return NULL;
 }
 
-
-Unit* __fastcall updateItem(GameStruct* ptGame, DWORD type, DWORD itemNum, Unit* ptChar)
+Stash* getStashFromItem(Unit* ptChar, Unit* ptItem)
 {
-	Unit* ptItem = D2GameGetObject(ptGame, type, itemNum);
-	if (D2Client::IsExpansion() && (D2ItemGetPage(ptItem) == 4))
-	{
-		Stash* ptStash = getStashFromItem(ptChar, ptItem);
-		if (!ptStash) return NULL;
-		selectStash(ptChar, ptStash, true);
-	}
-	return ptItem;
-}
+	Stash* locatedStash = locateStashFromItem(ptChar, ptItem, PCPY->selfStash, PCPY->currentStash);
 
+	if (locatedStash)
+	{
+		return locatedStash;
+	}
+
+	locatedStash = locateStashFromItem(ptChar, ptItem, PCPY->sharedStash, PCPY->currentStash);
+
+	if (locatedStash)
+	{
+		return locatedStash;
+	}
+
+	return NULL;
+}
 
 void __stdcall updateClientPlayerOnLoading(Unit* ptChar)
 {
@@ -79,7 +81,7 @@ void __stdcall updateClientPlayerOnLoading(Unit* ptChar)
 	// The shared stash option is disabled in multiplayer. Thus override parameter if needed.
 	bool actuallyOpenSharedStashOnLoading = !inMultiplayerGame(ptChar) ? openSharedStashOnLoading : 0;
 	PCPY->showSharedStash = actuallyOpenSharedStashOnLoading;
-	selectStash(ptChar, actuallyOpenSharedStashOnLoading ? PCPY->sharedStash : PCPY->selfStash);
+	selectStash(ptChar, actuallyOpenSharedStashOnLoading ? PCPY->sharedStash : PCPY->selfStash, true);
 	
 	if (!inMultiplayerGame(ptChar))
 	{
@@ -108,7 +110,6 @@ void freeStash(Stash* ptStash)
 	}
 	ptStash->nextStash = NULL;
 }
-
 
 void __fastcall free_PlayerCustomData(DWORD p1, PlayerData* playerData, LPCSTR file, DWORD line, DWORD p5)
 {
@@ -164,7 +165,11 @@ Unit* __stdcall getNextItemToFree(Unit* ptChar, Unit* ptItem)
 
 void __fastcall updateItem_111(Unit* ptItem, Unit* ptChar)
 {
-	if (D2Client::IsExpansion() && (D2ItemGetPage(ptItem) == 4))
+	//const int INVENTORY = 0;
+	const int STASH = 4;
+	//const int BELT_OR_PICKED_UP = 255;
+
+	if (D2Client::IsExpansion() && (D2ItemGetPage(ptItem) == STASH))
 	{
 		Stash* ptStash = getStashFromItem(ptChar, ptItem);
 		if (ptStash)
@@ -220,14 +225,14 @@ FCT_ASM ( caller_updateClientPlayerOnLoading )
 
 void Install_PlayerCustomData()
 {
-	static int isInstalled = false;
+	static bool isInstalled = false;
 	if (isInstalled || !active_PlayerCustomData) return;
 
 	Install_SavePlayerData();
 	Install_LoadPlayerData();
 	Install_UpdateClient();
 
-	log_msg("[Patch] D2Game & D2Client & D2Common for Player's custom data. (PlayerCustomData)\n");
+	log_msg("[Patch] Player Custom Data\n");
 
 	DWORD InitializeCustomDataOffset = D2Common::GetAddress(0x170DE);
 	DWORD UpdateItemOffset1 = D2Game::GetAddress(0x75C81);
@@ -239,40 +244,40 @@ void Install_PlayerCustomData()
 	DWORD TestIfAlreadyRemovedFromInventoryOffset = D2Common::GetAddress(0x3B393);
 
 	// Initialize custom data.
-	mem_seek(InitializeCustomDataOffset);
-	MEMJ_REF4(Fog::D2AllocMem, init_PlayerCustomData);
+	Memory::SetCursor(InitializeCustomDataOffset);
+	Memory::ChangeCallB((DWORD)Fog::D2AllocMem, (DWORD)init_PlayerCustomData);
 
 	// update item
-	mem_seek(UpdateItemOffset1);
-	memt_byte(0x8B, 0xE8);
-	MEMT_REF4(0x52182454, caller_updateItem_111);
+	Memory::SetCursor(UpdateItemOffset1);
+	Memory::ChangeByte(0x8B, 0xE8);
+	Memory::ChangeCallA(0x52182454, (DWORD)caller_updateItem_111);
 
 	// TODO: Not sure if this variable is actually needed since I haven't been able to get a breakpoint to hit this.
 	// Will do more testing at a future date.
-	mem_seek(UpdateItemOffset2);
-	memt_byte(0x8B, 0xE8);
-	MEMT_REF4(0x52182454, caller_updateItemB_111);
+	Memory::SetCursor(UpdateItemOffset2);
+	Memory::ChangeByte(0x8B, 0xE8);
+	Memory::ChangeCallA(0x52182454, (DWORD)caller_updateItemB_111);
 	
 	// Update client on loading
-	mem_seek(UpdateClientOnLoadingOffset);
-	memt_byte(0x5F, 0xE8);
-	MEMT_REF4(0xC0335D5E, caller_updateClientPlayerOnLoading);
+	Memory::SetCursor(UpdateClientOnLoadingOffset);
+	Memory::ChangeByte(0x5F, 0xE8);
+	Memory::ChangeCallA(0xC0335D5E, (DWORD)caller_updateClientPlayerOnLoading);
 
 	// Free custom data.
-	mem_seek(FreeCustomDataOffset);
-	MEMJ_REF4(Fog::D2FreeMem, free_PlayerCustomData);
+	Memory::SetCursor(FreeCustomDataOffset);
+	Memory::ChangeCallB((DWORD)Fog::D2FreeMem, (DWORD)free_PlayerCustomData);
 
 	// Free item in Stash (Server-side)
-	mem_seek(FreeItemInStashServerSideOffset);
-	MEMJ_REF4(D2Common::D2UnitGetNextItem, callerServer_getNextItemToFree_111);
+	Memory::SetCursor(FreeItemInStashServerSideOffset);
+	Memory::ChangeCallB((DWORD)D2Common::D2UnitGetNextItem, (DWORD)callerServer_getNextItemToFree_111);
 
 	// Free item in Stash (Client-side)
-	mem_seek(FreeItemInStashClientSideOffset);
-	MEMJ_REF4(D2Common::D2UnitGetNextItem, callerClient_getNextItemToFree_111);
+	Memory::SetCursor(FreeItemInStashClientSideOffset);
+	Memory::ChangeCallB((DWORD)D2Common::D2UnitGetNextItem, (DWORD)callerClient_getNextItemToFree_111);
 
 	// Test if it's already removed from inventory
-	mem_seek(TestIfAlreadyRemovedFromInventoryOffset);
-	memt_byte(0x0D, 0x07);
+	Memory::SetCursor(TestIfAlreadyRemovedFromInventoryOffset);
+	Memory::ChangeByte(0x0D, 0x07);
 
 	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;

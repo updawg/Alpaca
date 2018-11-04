@@ -237,19 +237,19 @@ MANAGESOUNDCHAOSDEBUG :
 
 void Install_Commands()
 {
-	static int isInstalled = false;
+	static bool isInstalled = false;
 	if (isInstalled) return;
 
 	Install_UpdateServer();
 
-	log_msg("[Patch] D2Client for install commands. (Commands)\n");
+	log_msg("[Patch] Commands Support\n");
 
 	DWORD CustomCommandOffset = D2Client::GetAddress(0xB1FD6);
 
 	// Run custom commmand
-	mem_seek(CustomCommandOffset);
-	memt_byte(0x83, 0xE8); 
-	MEMT_REF4(0xC08508C4, caller_Commands_111);
+	Memory::SetCursor(CustomCommandOffset);
+	Memory::ChangeByte(0x83, 0xE8); 
+	Memory::ChangeCallA(0xC08508C4, (DWORD)caller_Commands_111);
 
 	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;

@@ -65,18 +65,18 @@ JMP DWORD PTR CS : [LeaveCriticalSection]
 
 void Install_AlpacaFiles()
 {
-	static int isInstalled = false;
+	static bool isInstalled = false;
 	if (isInstalled) return;
 
-	log_msg("[Patch] Storm to find custom file. (AlpacaFiles)\n");
+	log_msg("[Patch] Find Custom Files\n");
 
 	DWORD FindCustomFileOffset = Storm::GetAddress(0x2DA79);
 
 	// Try in Diablo II\Alpaca\ if file not found
-	mem_seek(FindCustomFileOffset);
-	memt_byte(0xFF, 0x90);
-	memt_byte(0x15, 0xE8);
-	MEMD_REF4(LeaveCriticalSection, caller_isModFile_111);
+	Memory::SetCursor(FindCustomFileOffset);
+	Memory::ChangeByte(0xFF, 0x90);
+	Memory::ChangeByte(0x15, 0xE8);
+	Memory::ChangeCallD((DWORD)LeaveCriticalSection, (DWORD)caller_isModFile_111);
 
 	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;
@@ -136,25 +136,25 @@ FCT_ASM ( caller_freeCustomImages )
 
 void Install_AlpacaImagesFiles()
 {
-	static int isInstalled = false;
+	static bool isInstalled = false;
 	if (isInstalled) return;
 
 	Install_AlpacaFiles();
 
-	log_msg("[Patch] D2Client to load/free custom images. (AlpacaImagesFiles)\n");
+	log_msg("[Patch] Load & Free Custom Images\n");
 
 	DWORD LoadCustomImageOffset = D2Client::GetAddress(0x6E0BE);
 	DWORD FreeCustomImageOffset = D2Client::GetAddress(0x6D07D);
 
 	// Load custom images
-	mem_seek(LoadCustomImageOffset);
-	memt_byte(0xB9, 0xE8);
-	MEMT_REF4(0xC, caller_loadCustomImages);
+	Memory::SetCursor(LoadCustomImageOffset);
+	Memory::ChangeByte(0xB9, 0xE8);
+	Memory::ChangeCallA(0xC, (DWORD)caller_loadCustomImages);
 
 	// Free custom images
-	mem_seek(FreeCustomImageOffset);
-	memt_byte(0xB9, 0xE8);
-	MEMT_REF4(0xC, caller_freeCustomImages);
+	Memory::SetCursor(FreeCustomImageOffset);
+	Memory::ChangeByte(0xB9, 0xE8);
+	Memory::ChangeCallA(0xC, (DWORD)caller_freeCustomImages);
 
 	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;

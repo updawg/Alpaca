@@ -189,3 +189,39 @@ void memd_ref4(DWORD old, DWORD ref)
 	}
 	patchMemory4(wanted);
 }
+
+// Transition Memory Functions
+void Memory::SetCursor(DWORD position)
+{
+	mem_seek(position);
+}
+
+void Memory::ChangeByte(BYTE oldValue, BYTE newValue)
+{
+	memt_byte(oldValue, newValue);
+}
+
+void Memory::ChangeDword(DWORD oldValue, DWORD newValue)
+{
+	memt_dword(oldValue, newValue);
+}
+
+void Memory::ChangeCallA(DWORD oldValue, DWORD newValue)
+{
+	memt_ref4(oldValue, newValue);
+}
+
+void Memory::ChangeCallB(DWORD oldValue, DWORD newValue)
+{
+	memj_ref4(oldValue, newValue);
+}
+
+void Memory::ChangeCallC(DWORD oldValue, DWORD newValue)
+{
+	memc_ref4(oldValue, newValue);
+}
+
+void Memory::ChangeCallD(DWORD oldValue, DWORD newValue)
+{
+	memd_ref4(oldValue, newValue);
+}

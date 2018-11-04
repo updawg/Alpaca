@@ -86,16 +86,16 @@ RETN
 
 void Install_UpdateClient()
 {
-	static int isInstalled = false;
+	static bool isInstalled = false;
 	if (isInstalled) return;
 	
-	log_msg("[Patch] D2Client for received item packet. (UpdateClient)\n");
+	log_msg("[Patch] Receive Item Packets from Client\n");
 
 	DWORD ExecuteOurPacketsOnlyOffset = D2Client::GetAddress(0x84D96);
 
 	// execute if it's our packet else continue
-	mem_seek(ExecuteOurPacketsOnlyOffset);
-	MEMT_REF4(0xCF, caller_handleClientUpdate_111);
+	Memory::SetCursor(ExecuteOurPacketsOnlyOffset);
+	Memory::ChangeCallA(0xCF, (DWORD)caller_handleClientUpdate_111);
 
 	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;

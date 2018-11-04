@@ -98,18 +98,18 @@ RETN 8
 
 void Install_UpdateServer()
 {
-	static int isInstalled = false;
+	static bool isInstalled = false;
 	if (isInstalled) return;
 
-	log_msg("[Patch] D2Game for received button click message. (UpdateServer)\n");
+	log_msg("[Patch] Receive Button Clicks\n");
 
 	DWORD ManageButtonClickMessageFromClientOffset = D2Game::GetAddress(0x676C3);
 
 	// manage button click message from Client.
-	mem_seek(ManageButtonClickMessageFromClientOffset);
-	memt_byte(0xC1, 0x57);
-	memt_byte(0xEE, 0xE8);
-	MEMT_REF4(0xF88B5708, caller_handleServerUpdate);
+	Memory::SetCursor(ManageButtonClickMessageFromClientOffset);
+	Memory::ChangeByte(0xC1, 0x57);
+	Memory::ChangeByte(0xEE, 0xE8);
+	Memory::ChangeCallA(0xF88B5708, (DWORD)caller_handleServerUpdate);
 	
 	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;

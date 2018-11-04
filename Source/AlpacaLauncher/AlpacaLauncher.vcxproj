@@ -92,7 +92,7 @@
       <AdditionalDependencies>version.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(TargetPath)" "..\..\Alpaca.exe"
+      <Command>copy "$(TargetPath)" "..\..\1. Files\Alpaca.exe"
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>

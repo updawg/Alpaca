@@ -66,26 +66,25 @@ FCT_ASM ( caller_changeTradeStash )
 
 void Install_BigStash()
 {
-	static int isInstalled = false;
+	static bool isInstalled = false;
 	if (isInstalled) return;
 
 	Install_AlpacaFiles();
 
-	log_msg("[Patch] D2Common & D2Client for make 10x10 squares in the stash. (BigStash)\n");
+	log_msg("[Patch] Increased Stash (10x10)\n");
 
 	DWORD StashGridOffset = D2Common::GetAddress(0x6CC25);
 	DWORD StashBackgroundOffset = D2Client::GetAddress(0x943FC);
 
 	// Modification of stash grid
-	mem_seek(StashGridOffset);
-	MEMC_REF4(D2CompileTxtFileDirect, caller_modifStashGrid);
+	Memory::SetCursor(StashGridOffset);
+	Memory::ChangeCallC((DWORD)D2CompileTxtFileDirect, (DWORD)caller_modifStashGrid);
 
 	// Modification of stash background
-	mem_seek(StashBackgroundOffset);
-	memt_byte(0x68, 0xE8);
-	MEMT_REF4(0x00000104, caller_changeTradeStash);
+	Memory::SetCursor(StashBackgroundOffset);
+	Memory::ChangeByte(0x68, 0xE8);
+	Memory::ChangeCallA(0x00000104, (DWORD)caller_changeTradeStash);
 
 	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;
 }
-

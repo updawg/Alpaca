@@ -344,10 +344,10 @@ RETN
 
 void Install_LoadPlayerData()
 {
-	static int isInstalled = false;
+	static bool isInstalled = false;
 	if (isInstalled || !active_PlayerCustomData) return;
 
-	log_msg("[Patch] D2Game & D2Client for load Player's custom data. (LoadPlayerData)\n");
+	log_msg("[Patch] Load Player Custom Data\n");
 
 	DWORD LoadSinglePlayerCustomDataOffset = D2Game::GetAddress(0x3BCCD);
 	DWORD LoadMultiPlayerCustomDataOffset = D2Game::GetAddress(0x3BB57);
@@ -355,26 +355,26 @@ void Install_LoadPlayerData()
 	DWORD ReceiveSaveFilesFromClientOffset = D2Game::GetAddress(0xD53E9);
 
 	// Load SP player custom data.
-	mem_seek(LoadSinglePlayerCustomDataOffset);
-	memt_byte(0x8B, 0xE8);
-	MEMT_REF4(0x75F685F0 , caller_LoadSPPlayerCustomData);
-	memt_byte(0x16, 0x90);
+	Memory::SetCursor(LoadSinglePlayerCustomDataOffset);
+	Memory::ChangeByte(0x8B, 0xE8);
+	Memory::ChangeCallA(0x75F685F0 , (DWORD)caller_LoadSPPlayerCustomData);
+	Memory::ChangeByte(0x16, 0x90);
 
 	// Load MP player custom data.
-	mem_seek(LoadMultiPlayerCustomDataOffset);
-	memt_byte(0x83, 0xE8);
-	MEMT_REF4(0x2174003B, caller_LoadMPPlayerCustomData_111);
+	Memory::SetCursor(LoadMultiPlayerCustomDataOffset);
+	Memory::ChangeByte(0x83, 0xE8);
+	Memory::ChangeCallA(0x2174003B, (DWORD)caller_LoadMPPlayerCustomData_111);
 
 	// Send save files to Server.
-	mem_seek(SendSaveFilesToServerOffset);
-	MEMJ_REF4(Fog::D2FogGetSavePath, caller_SendSaveFiles_111);
+	Memory::SetCursor(SendSaveFilesToServerOffset);
+	Memory::ChangeCallB((DWORD)Fog::D2FogGetSavePath, (DWORD)caller_SendSaveFiles_111);
 
 	// Receive save files from client.
-	mem_seek(ReceiveSaveFilesFromClientOffset);
-	memt_byte(0x8B, 0xE8);
-	MEMT_REF4(0xB60F005D, caller_ReceiveSaveFiles_111);
-	memt_byte(0x45, 0x90);
-	memt_byte(0x04, 0x90);
+	Memory::SetCursor(ReceiveSaveFilesFromClientOffset);
+	Memory::ChangeByte(0x8B, 0xE8);
+	Memory::ChangeCallA(0xB60F005D, (DWORD)caller_ReceiveSaveFiles_111);
+	Memory::ChangeByte(0x45, 0x90);
+	Memory::ChangeByte(0x04, 0x90);
 
 	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;

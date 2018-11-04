@@ -19,6 +19,7 @@
 #include "BigStash.h"
 #include "InfinityStash.h"
 #include "Common.h"
+#include "ExtraPatches.h"
 
 void freeLibrary(DWORD library)
 {
@@ -85,7 +86,7 @@ void InstallAlpacaFunctions()
 {
 	LibraryLoader::HookLibraries();
 
-	log_msg("Install Functions\n");
+	log_msg("Alpaca Patches\n");
 	log_msg("====================================\n");
 
 	Install_Commands();
@@ -93,6 +94,7 @@ void InstallAlpacaFunctions()
 	Install_PrintVersion();
 	Install_BigStash();
 	Install_MultiPageStash();
+	ExtraPatches::DisplayItemLevel();
 
 	log_msg("\n");
 

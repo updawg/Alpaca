@@ -762,7 +762,7 @@ FCT_ASM ( caller_getNextItem )
 
 void Install_MultiPageStash()
 {
-	static int isInstalled = false;
+	static bool isInstalled = false;
 	if (isInstalled) return;
 
 	Install_PlayerCustomData();

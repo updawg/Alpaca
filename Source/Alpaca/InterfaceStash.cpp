@@ -20,6 +20,7 @@
 #include "AlpacaFiles.h"	
 #include "Common.h"
 #include <stdio.h>
+#include "Memory.h"
 
 static struct
 {
@@ -547,13 +548,13 @@ FCT_ASM ( initBtnsStates )
 
 void Install_InterfaceStash()
 {
-	static int isInstalled = false;
+	static bool isInstalled = false;
 	if (isInstalled) return;
 
 	Install_UpdateServer();
 	Install_AlpacaImagesFiles();
 
-	log_msg("[Patch] D2Client for stash interface. (InterfaceStash)\n");
+	log_msg("[Patch] Stash Interface\n");
 
 	DWORD ButtonImagesOffset = D2Client::GetAddress(0x9DE26);
 	DWORD PageNumberOffset = D2Client::GetAddress(0x9DE03);
@@ -564,36 +565,35 @@ void Install_InterfaceStash()
 	DWORD GreenSetItemNextSearchOffset = D2Client::GetAddress(0x91ABB);
 	
 	// Print button images
-	mem_seek(ButtonImagesOffset);
-	MEMC_REF4(D2Client::D2LoadBuySelBtn, printBtns);
+	Memory::SetCursor(ButtonImagesOffset);
+	Memory::ChangeCallC((DWORD)D2Client::D2LoadBuySelBtn, (DWORD)printBtns);
 
 	// print page number
-	mem_seek(PageNumberOffset);
-	MEMJ_REF4(D2Win::D2PrintString, printPageNumber);
+	Memory::SetCursor(PageNumberOffset);
+	Memory::ChangeCallB((DWORD)D2Win::D2PrintString, (DWORD)printPageNumber);
 
 	// Manage mouse down (Play sound)
-	mem_seek(MouseDownSoundOffset);
-	MEMC_REF4((DWORD)D2ClickOnStashButton, caller_manageBtnDown_111);
+	Memory::SetCursor(MouseDownSoundOffset);
+	Memory::ChangeCallC((DWORD)D2ClickOnStashButton, (DWORD)caller_manageBtnDown_111);
 
 	// Manage mouse up
-	mem_seek(MouseUpSoundOffset);
-	MEMC_REF4((DWORD)D2ClickOnStashButton, caller_manageBtnUp_111);
+	Memory::SetCursor(MouseUpSoundOffset);
+	Memory::ChangeCallC((DWORD)D2ClickOnStashButton, (DWORD)caller_manageBtnUp_111);
 
 	// init state of button on open stash page
-	mem_seek(OpenStashPageInitStateOffset);
-	memt_byte(0x81, 0xE9);
-	MEMT_REF4(0x104C4, initBtnsStates);
-	memt_byte(0, 0x90);
+	Memory::SetCursor(OpenStashPageInitStateOffset);
+	Memory::ChangeByte(0x81, 0xE9);
+	Memory::ChangeCallA(0x104C4, (DWORD)initBtnsStates);
+	Memory::ChangeByte(0, 0x90);
 
 	// init the search of print in green the item set name we have in stash
-	mem_seek(GreenSetItemSearchOffset);
-	MEMJ_REF4(D2Common::D2InventoryGetFirstItem, initGetNextItemForSet);
+	Memory::SetCursor(GreenSetItemSearchOffset);
+	Memory::ChangeCallB((DWORD)D2Common::D2InventoryGetFirstItem, (DWORD)initGetNextItemForSet);
 
 	// Get next item for print in green the item set name we have in stash
-	mem_seek(GreenSetItemNextSearchOffset);
-	MEMJ_REF4(D2Common::D2UnitGetNextItem, getNextItemForSet);
+	Memory::SetCursor(GreenSetItemNextSearchOffset);
+	Memory::ChangeCallB((DWORD)D2Common::D2UnitGetNextItem, (DWORD)getNextItemForSet);
 
 	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;
 }
-

@@ -37,6 +37,7 @@ void D2Common::SetFunctions()
 	D2ItemGetPage = (TD2ItemGetPage)GetAddress(0x42080);
 	D2SaveItem = (TD2SaveItem)GetAddress(0x485C0);
 	D2ReadFile = (TD2ReadFile)GetAddress(0xB5E0);
+	D2GetItemLevel = (TD2GetItemLevel)GetAddress(0x420D0);
 
 	D2CompileTxtFile = (TD2CompileTxtFile)compileTxtFile_111;
 	D2AddPlayerStat = (TD2AddPlayerStat)GetAddress(0x5A080);
@@ -130,6 +131,7 @@ D2Common::TD2CompileTxtFile D2Common::D2CompileTxtFileDirect;
 D2Common::TD2ItemGetPage D2Common::D2ItemGetPage;
 D2Common::TD2SaveItem D2Common::D2SaveItem;
 D2Common::TD2ReadFile D2Common::D2ReadFile;
+D2Common::TD2GetItemLevel D2Common::D2GetItemLevel;
 
 D2Common::TD2AddPlayerStat D2Common::D2AddPlayerStatDirect;
 D2Common::TD2GetPlayerStat D2Common::D2GetPlayerStatDirect;

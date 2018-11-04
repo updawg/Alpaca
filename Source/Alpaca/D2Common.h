@@ -39,6 +39,7 @@ public:
 	typedef BYTE(__stdcall *TD2ItemGetPage) (Unit* ptUnit);
 	typedef DWORD(__stdcall *TD2SaveItem) (Unit* ptItem, saveBitField* data, DWORD startSize, DWORD p4, DWORD p5, DWORD p6);
 	typedef void* (__fastcall *TD2ReadFile) (DWORD unused, char* filename, DWORD* size, const char*, DWORD);
+	typedef DWORD(__stdcall *TD2GetItemLevel) (Unit* ptItem);
 
 	static TD2InvAddItem D2InvAddItem;
 	static TD2InvRemoveItem D2InvRemoveItem;
@@ -51,6 +52,7 @@ public:
 	static TD2GetMaxGold D2GetMaxGold;
 	static TD2AddPlayerStat D2AddPlayerStat;
 	static TD2GetPlayerStat D2GetPlayerStat;
+	static TD2GetItemLevel D2GetItemLevel;
 
 	// Some functions use the base function directly
 	static TD2CompileTxtFile D2CompileTxtFileDirect;

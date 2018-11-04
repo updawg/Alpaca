@@ -39,6 +39,8 @@ void D2Client::SetFunctions()
 	D2ClickOnStashButton = (TD2ClickOnStashButton)GetAddress(0x90C10);
 	D2GetMouseX = (TD2GetMouseX)D2GetMouseX_111;
 	D2GetMouseY = (TD2GetMouseY)D2GetMouseY_111;
+	D2SetColorPopup = (TD2SetColorPopup)D2SetColorPopup_111;
+	D2SetColorPopupDirect = (TD2SetColorPopup)GetAddress(0x18820);
 
 	D2LoadImageDirect = (TD2LoadImage)GetAddress(0xA9480);
 	D2PlaySoundDirect = (TD2PlaySound)GetAddress(0x26270);
@@ -51,6 +53,18 @@ void D2Client::SetFunctions()
 	ptptClientChar = (Unit**)GetAddress(0x11D050);
 	ptMouseY = (DWORD*)GetAddress(0x11C94C);
 	ptMouseX = (DWORD*)GetAddress(0x11C950);
+}
+
+__declspec(naked) void D2Client::D2SetColorPopup_111()
+{
+	__asm {
+		PUSH EDI
+			PUSH EDX
+			MOV EDI, ECX
+			CALL D2SetColorPopupDirect
+			POP EDI
+			RETN
+	}
 }
 
 Unit* __stdcall	D2Client::D2GetClientPlayer_111()
@@ -160,6 +174,8 @@ D2Client::TD2LoadBuySelBtn D2Client::D2LoadBuySelBtn;
 D2Client::TD2ClickOnStashButton D2Client::D2ClickOnStashButton;
 D2Client::TD2LoadImage D2Client::D2LoadImageDirect;
 D2Client::TD2PlaySound D2Client::D2PlaySoundDirect;
+D2Client::TD2SetColorPopup D2Client::D2SetColorPopup;
+D2Client::TD2SetColorPopup D2Client::D2SetColorPopupDirect;
 
 DWORD* D2Client::ptResolutionY;
 DWORD* D2Client::ptResolutionX;

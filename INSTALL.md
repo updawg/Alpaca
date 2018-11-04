@@ -1,13 +1,7 @@
 ## Installation
 
-Copy the following files and folders to the root of your Diablo II directory:
-
-- Alpaca/
-- Alpaca.exe
-- Alpaca.dll
-- Alpaca.ini
-
-Double click `Alpaca.exe` and Enjoy!
+1. Copy all the files in the "1. Files" folder to the root of your Diablo II directory.
+2. Double click `Alpaca.exe` and Enjoy!
 
 NOTE: If your Diablo II is installed in a protected directory
 (C:\Program Files (x86)\), you might need to run it in Admin Mode.

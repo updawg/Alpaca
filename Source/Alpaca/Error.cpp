@@ -21,6 +21,7 @@
 #include <stdarg.h>
 #include <string.h>
 #include <direct.h>
+#include <string>
 
 bool active_logFile = true;
 bool active_logFileIniOriginal = false;
@@ -53,7 +54,7 @@ void log_initfile()
 			, PROGRAM_NAME, PROGRAM_VERSION, PROGRAM_AUTHOR_NAME, PROGRAM_AUTHOR_ALIAS, PROGRAM_BUILD_DATE);
 }
 
-void log_box( const char* pFormat, ... )
+void log_box(const char* pFormat, ...)
 {
 	char buffer[300];
 	va_list lArgs;
@@ -66,7 +67,7 @@ void log_box( const char* pFormat, ... )
 }
 
 
-void log_msg( const char* pFormat, ... )
+void log_msg(const char* pFormat, ...)
 {
 	if (!active_logFile) return;
 
@@ -92,6 +93,13 @@ void log_msg( const char* pFormat, ... )
 	}
 }
 
+void log_patch(const char* message)
+{
+	std::string formattedMessage = "[Patch] ";
+	formattedMessage += std::string(message) + std::string("\n");
+	log_msg(formattedMessage.c_str());
+}
+
 void d2_assert( bool pCondition, char* pMessage, char* pLocation, int pLineNbr )
 {
 	if( pCondition )
@@ -106,4 +114,3 @@ void d2_assert( bool pCondition, char* pMessage, char* pLocation, int pLineNbr )
 		exit(1);
 	}
 }
-

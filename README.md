@@ -1,26 +1,17 @@
-## Alpaca 2.0.5 [1.13d]
+## Alpaca 2.1.0 [1.13d]
 ##### By Jonathan Vasquez (fearedbliss)
-##### Released on Tuesday, October 30, 2018
+##### Released on Monday, November 5, 2018
 
 ## Synopsis
 
 Alpaca is an Infinite Stash Mod for Diablo II: Lord of Destruction
-that is based off Yohann Nicolas' PlugY 11.02. Alpaca's main goal is to be
-a clean and maintainable core with no extra features. Alpaca has been
-significantly redesigned by providing a completely new module offset loader,
-drastically less code, and has been massively refactored. Another major change
-is that in order to provide an optimal gaming experience and improved maintainability,
-Alpaca only supports a single version of Diablo II. If people want to use Alpaca on a
-different version, they only need to focus on the particular version they want to
-support without having to worry about any sort of backwards or forward compatibility.
-All needed features, cleanups, and stability improvements have been implemented and
-thus Alpaca is now in Maintenance mode. Releases will only happen if there is a bug
-or an incompatibility with 1.13d.
+that is based off Yohann Nicolas' PlugY 11.02. It is a cleaned up,
+re-architected, and stabilized version of PlugY.
 
-Alpaca will not be upgraded to 1.14d+ due to massive code differences that would
-make the mod prohibitive to port without a massive time investment. However, with this
-said, the mod is an excellent base for someone that does want to port it over to 1.14d+,
-to do so.
+Alpaca is a 1.13d modification and will not be upgraded to 1.14d+ due to the
+massive code differences and required time investment. However, the codebase
+is in a pretty good state and will be an excellent base for someone who does
+want to port it over.
 
 Finally, Alpaca IS compatible with my [Diablo II Version Switcher: Cactus](https://github.com/fearedbliss/Cactus).
 If you want to use Alpaca for your 1.13d install (but also want to continue to play
@@ -39,10 +30,22 @@ All code is licensed under the GPLv3+ since that was the license that Yohann rel
 
 ## Features
 
-### Core Features
+### Alpaca Features
 
-- Infinite Personal and Shared Stashes
-- Increased Stash Size [10x10]
+- Infinite Personal and Shared Stashes (Expansion)
+- Increased Stash Size [10x10] (Expansion)
+- Items will now display their Item Level.
+
+### [Singling](https://github.com/fearedbliss/Singling) Features
+
+- You can now run multiple clients of Diablo II.
+- The Battle.net button has been disabled for safety reasons.
+- Fixed CPU usage bug in the Main Menu, Single Player, and LAN games.
+- You are now able to quickly join LAN games.
+- The introduction cinematics are now automatically skipped.
+- The game will now work with the MPQ files included in the new Blizzard Installer.
+- The ambiguity between the number "5" and "6" has been fixed.
+- Ladder Runewords are now enabled on Single Player.
 
 ### Regular Commands
 
@@ -60,6 +63,26 @@ All code is licensed under the GPLv3+ since that was the license that Yohann rel
 - `/swap <page #>` : Swaps the content of the current page with the content of the target page.
 - `/toggle <page #>` : Swaps the content of the current page with the content of
                        the target page in the opposing shared/personal stash.
+
+## Known Bugs
+
+### Picked up item will be lost during character load (If stash contains an item)
+
+If you have items in your stash, and then you pick up an item (and don't place it anywhere),
+and save and exit, when you load the game it will be lost. This is an existing PlugY bug that
+I wasn't able to fix. I spent a few hours looking around but it will take a way deeper
+dive in order to resolve.
+
+### Forwarding characters from previous versions of Diablo II (1.09b -> 1.13d)
+
+If you get a "Unable to enter game. Bad generic file." when entering a game, it means
+that you were trying to forward either a character from a previous version of the game
+(Such as 1.09b), or a shared stash that was from a previous version, into this current version.
+This is not supported. Even if you forward the character with Vanilla D2 (and are able to
+play the char with Vanilla D2), the char will not open with this mod. Patches are welcomed
+if you really want to support this. An empty character does forward, but I think there is something
+going on with the items that character has since normally the normal code will migrate those items
+forward (especially 1.09 -> 1.10+).
 
 ## Links
 

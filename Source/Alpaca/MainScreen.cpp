@@ -44,15 +44,15 @@ FCT_ASM ( caller_PrintVersion )
 
 void Install_PrintVersion()
 {
-	static int isInstalled = false;
+	static bool isInstalled = false;
 	if (isInstalled) return;
 
-	log_msg("[Patch] D2Launch to print Alpaca version. (PrintVersion)\n");
+	log_msg("[Patch] Print Alpaca Version - Main Menu\n");
 
 	DWORD PrintVersionOffset = D2Launch::GetAddress(0x10A11);
 
-	mem_seek(PrintVersionOffset);
-	MEMJ_REF4(D2Win::D2CreateTextBox, caller_PrintVersion);
+	Memory::SetCursor(PrintVersionOffset);
+	Memory::ChangeCallB((DWORD)D2Win::D2CreateTextBox, (DWORD)caller_PrintVersion);
 
 	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;
@@ -68,18 +68,18 @@ RETN
 
 void Install_VersionChange()
 {
-	static int isInstalled = false;
+	static bool isInstalled = false;
 	if (isInstalled) return;
 
-	log_msg("[Patch] D2Launch to print Mod version. (VersionChange)\n");
+	log_msg("[Patch] Print Diablo Version - Main Screen\n");
 
 	DWORD PrintLodModVersionOffset = D2Launch::GetAddress(0x10AE4);
 
 	// Print LoD/Mod version.
-	mem_seek(PrintLodModVersionOffset);
-	memt_byte(0x8D, 0xE8);
-	MEMT_REF4(0x8B102454, caller_VersionChange_10);
-	memt_byte(0xCF, 0x90);
+	Memory::SetCursor(PrintLodModVersionOffset);
+	Memory::ChangeByte(0x8D, 0xE8);
+	Memory::ChangeCallA(0x8B102454, (DWORD)caller_VersionChange_10);
+	Memory::ChangeByte(0xCF, 0x90);
 	
 	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;

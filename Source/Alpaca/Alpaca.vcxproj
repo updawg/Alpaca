@@ -98,7 +98,7 @@
       <AdditionalDependencies>version.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(TargetPath)" "..\..\Alpaca.dll"</Command>
+      <Command>copy "$(TargetPath)" "..\..\1. Files\Alpaca.dll"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -114,6 +114,7 @@
     <ClCompile Include="D2Launch.cpp" />
     <ClCompile Include="D2Net.cpp" />
     <ClCompile Include="D2Win.cpp" />
+    <ClCompile Include="ExtraPatches.cpp" />
     <ClCompile Include="LibraryLoader.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Error.cpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="D2Win.h" />
     <ClInclude Include="Error.h" />
     <ClInclude Include="ExtendedSaveFile.h" />
+    <ClInclude Include="ExtraPatches.h" />
     <ClInclude Include="Fog.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="InfinityStash.h" />
