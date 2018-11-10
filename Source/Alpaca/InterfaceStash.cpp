@@ -498,46 +498,45 @@ Unit* __stdcall initGetNextItemForSet(Inventory* ptInventory)
 	return getNextItemForSet(item);
 }
 
-FCT_ASM(caller_manageBtnDown_111)
-PUSH EBP
-CALL manageBtnDown
-TEST EAX, EAX
-JE IS_NOT_ON_BUTTON
-POP EDX
-MOV EDX, DWORD PTR DS : [EDX + 0x10]
-MOV DWORD PTR DS : [EDX], 1
-POP EDI
-POP ESI
-POP EBP
-POP EBX
-RETN 4
+FCT_ASM(caller_manageBtnDown)
+	PUSH EDI
+	CALL manageBtnDown
+	TEST EAX, EAX
+	JE IS_NOT_ON_BUTTON
+	POP EDX
+	MOV EDX, DWORD PTR DS : [EDX + 0xF3]
+	MOV DWORD PTR DS : [EDX], 1
+	POP EDI
+	POP ESI
+	POP EBP
+	POP EBX
+	RETN 4
 IS_NOT_ON_BUTTON :
-	JMP D2ClickOnStashButton
+	JMP D2Client::IsExpansion
 }}
 
-FCT_ASM(caller_manageBtnUp_111)
-PUSH EBX
-CALL manageBtnUp
-MOV isDownBtn.all, 0
-TEST EAX, EAX
-JE IS_NOT_ON_BUTTON
-POP EDX
-MOV EDX, DWORD PTR DS : [EDX + 0x1A]
-MOV DWORD PTR DS : [EDX], 0
-SUB EDX, 8
-MOV DWORD PTR DS : [EDX], 0
-ADD EDX, 4
-MOV DWORD PTR DS : [EDX], 0
-ADD EDX, 0x68
-MOV DWORD PTR DS : [EDX], 0
-POP EDI
-POP ESI
-POP EBP
-POP EBX
-POP ECX
-RETN 4
-IS_NOT_ON_BUTTON:
-JMP D2ClickOnStashButton
+FCT_ASM(caller_manageBtnUp)
+	PUSH EBP
+	CALL manageBtnUp
+	MOV isDownBtn.all, 0
+	TEST EAX, EAX
+	JE IS_NOT_ON_BUTTON
+	POP EDX
+	MOV EDX, DWORD PTR DS : [EDX + 0xEA]
+	MOV DWORD PTR DS : [EDX], 0
+	SUB EDX, 8
+	MOV DWORD PTR DS : [EDX], 0
+	ADD EDX, 4
+	MOV DWORD PTR DS : [EDX], 0
+	ADD EDX, 0x68
+	MOV DWORD PTR DS : [EDX], 0
+	POP EDI
+	POP ESI
+	POP EBP
+	POP EBX
+	RETN 4
+IS_NOT_ON_BUTTON :
+	JMP D2Client::IsExpansion
 }}
 
 FCT_ASM ( initBtnsStates )
@@ -556,13 +555,13 @@ void Install_InterfaceStash()
 
 	log_msg("[Patch] Stash Interface\n");
 
-	DWORD ButtonImagesOffset = D2Client::GetAddress(0x9DE26);
-	DWORD PageNumberOffset = D2Client::GetAddress(0x9DE03);
-	DWORD MouseDownSoundOffset = D2Client::GetAddress(0x9FC76);
-	DWORD MouseUpSoundOffset = D2Client::GetAddress(0x9FAA9);
-	DWORD OpenStashPageInitStateOffset = D2Client::GetAddress(0x9441A);
-	DWORD GreenSetItemSearchOffset = D2Client::GetAddress(0x91A24);
-	DWORD GreenSetItemNextSearchOffset = D2Client::GetAddress(0x91ABB);
+	DWORD ButtonImagesOffset = D2Client::GetAddress(0x3F399);
+	DWORD PageNumberOffset = D2Client::GetAddress(0x3F375);
+	DWORD MouseDownSoundOffset = D2Client::GetAddress(0x4BBA1);
+	DWORD MouseUpSoundOffset = D2Client::GetAddress(0x4C0F9);
+	DWORD OpenStashPageInitStateOffset = D2Client::GetAddress(0x4C63A);
+	DWORD GreenSetItemSearchOffset = D2Client::GetAddress(0x45997);
+	DWORD GreenSetItemNextSearchOffset = D2Client::GetAddress(0x45A1C);
 	
 	// Print button images
 	Memory::SetCursor(ButtonImagesOffset);
@@ -574,11 +573,11 @@ void Install_InterfaceStash()
 
 	// Manage mouse down (Play sound)
 	Memory::SetCursor(MouseDownSoundOffset);
-	Memory::ChangeCallC((DWORD)D2ClickOnStashButton, (DWORD)caller_manageBtnDown_111);
+	Memory::ChangeCallC((DWORD)D2Client::IsExpansion, (DWORD)caller_manageBtnDown);
 
 	// Manage mouse up
 	Memory::SetCursor(MouseUpSoundOffset);
-	Memory::ChangeCallC((DWORD)D2ClickOnStashButton, (DWORD)caller_manageBtnUp_111);
+	Memory::ChangeCallC((DWORD)D2Client::IsExpansion, (DWORD)caller_manageBtnUp);
 
 	// init state of button on open stash page
 	Memory::SetCursor(OpenStashPageInitStateOffset);

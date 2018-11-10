@@ -163,51 +163,39 @@ Unit* __stdcall getNextItemToFree(Unit* ptChar, Unit* ptItem)
 	return NULL;
 }
 
-void __fastcall updateItem_111(Unit* ptItem, Unit* ptChar)
+Unit* __fastcall updateItem(GameStruct* ptGame, DWORD type, DWORD itemNum, Unit* ptChar)
 {
 	//const int INVENTORY = 0;
 	const int STASH = 4;
 	//const int BELT_OR_PICKED_UP = 255;
 
-	if (D2Client::IsExpansion() && (D2ItemGetPage(ptItem) == STASH))
+	Unit* ptItem = D2Game::D2GameGetObject(ptGame, type, itemNum);
+	if (D2Client::IsExpansion() && D2ItemGetPage(ptItem) == STASH)
 	{
 		Stash* ptStash = getStashFromItem(ptChar, ptItem);
-		if (ptStash)
-		{
-			selectStash(ptChar, ptStash, true);
-		}
+		if (!ptStash) return NULL;
+		selectStash(ptChar, ptStash, true);
 	}
+	return ptItem;
 }
 
-FCT_ASM(caller_updateItem_111)
-	MOV ECX, ESI
-	MOV EDX, EBP
-	CALL updateItem_111
-	POP EAX
-	MOV EDX, DWORD PTR SS : [ESP + 0x18]
-	PUSH EDX
-	JMP EAX
+FCT_ASM(caller_updateItem)
+	PUSH EBP
+	PUSH DWORD PTR SS : [ESP + 0x8]
+	CALL updateItem
+	RETN 4
 }}
 
-FCT_ASM(caller_updateItemB_111)
-	MOV EDX, EBP
-	CALL updateItem_111
-	POP EAX
-	MOV EDX, DWORD PTR SS : [ESP + 0x18]
-	PUSH EDX
-	JMP EAX
-}}
-
-FCT_ASM(callerServer_getNextItemToFree_111)
+FCT_ASM(callerServer_getNextItemToFree)
 	PUSH DWORD PTR SS : [ESP + 4]
-	PUSH DWORD PTR SS : [ESP + 0x30]
+	PUSH DWORD PTR SS : [ESP + 0x28]
 	CALL getNextItemToFree
 	RETN 4
 }}
 
-FCT_ASM(callerClient_getNextItemToFree_111)
+FCT_ASM(callerClient_getNextItemToFree)
 	PUSH DWORD PTR SS : [ESP + 4]
-	PUSH EBX
+	PUSH DWORD PTR SS : [ESP + 0x24]
 	CALL getNextItemToFree
 	RETN 4
 }}
@@ -234,29 +222,25 @@ void Install_PlayerCustomData()
 
 	log_msg("[Patch] Player Custom Data\n");
 
-	DWORD InitializeCustomDataOffset = D2Common::GetAddress(0x170DE);
-	DWORD UpdateItemOffset1 = D2Game::GetAddress(0x75C81);
-	DWORD UpdateItemOffset2 = D2Game::GetAddress(0x75CE1);
-	DWORD UpdateClientOnLoadingOffset = D2Game::GetAddress(0xE7548);
-	DWORD FreeCustomDataOffset = D2Common::GetAddress(0x1705D);
-	DWORD FreeItemInStashServerSideOffset = D2Game::GetAddress(0x6F7C2);
-	DWORD FreeItemInStashClientSideOffset = D2Client::GetAddress(0x621E4);
-	DWORD TestIfAlreadyRemovedFromInventoryOffset = D2Common::GetAddress(0x3B393);
+	DWORD InitializeCustomDataOffset = (DWORD)D2Common::D2InitPlayerData + 0x62;
+	DWORD UpdateItemOffset1 = D2Game::GetAddress(0x1100D);
+	DWORD UpdateItemOffset2 = D2Game::GetAddress(0x11058);
+	DWORD UpdateClientOnLoadingOffset = D2Game::GetAddress(0x25D4);
+	DWORD FreeCustomDataOffset = D2Common::GetAddress(0x80483);
+	DWORD FreeItemInStashServerSideOffset = D2Game::GetAddress(0x8D5A4);
+	DWORD FreeItemInStashClientSideOffset = D2Client::GetAddress(0x89B32);
+	DWORD TestIfAlreadyRemovedFromInventoryOffset = D2Common::GetAddress(0x4E689);
 
 	// Initialize custom data.
 	Memory::SetCursor(InitializeCustomDataOffset);
 	Memory::ChangeCallB((DWORD)Fog::D2AllocMem, (DWORD)init_PlayerCustomData);
 
-	// update item
+	// Update Item
 	Memory::SetCursor(UpdateItemOffset1);
-	Memory::ChangeByte(0x8B, 0xE8);
-	Memory::ChangeCallA(0x52182454, (DWORD)caller_updateItem_111);
+	Memory::ChangeCallC((DWORD)D2Game::D2GameGetObject, (DWORD)caller_updateItem);
 
-	// TODO: Not sure if this variable is actually needed since I haven't been able to get a breakpoint to hit this.
-	// Will do more testing at a future date.
 	Memory::SetCursor(UpdateItemOffset2);
-	Memory::ChangeByte(0x8B, 0xE8);
-	Memory::ChangeCallA(0x52182454, (DWORD)caller_updateItemB_111);
+	Memory::ChangeCallC((DWORD)D2Game::D2GameGetObject, (DWORD)caller_updateItem);
 	
 	// Update client on loading
 	Memory::SetCursor(UpdateClientOnLoadingOffset);
@@ -269,11 +253,11 @@ void Install_PlayerCustomData()
 
 	// Free item in Stash (Server-side)
 	Memory::SetCursor(FreeItemInStashServerSideOffset);
-	Memory::ChangeCallB((DWORD)D2Common::D2UnitGetNextItem, (DWORD)callerServer_getNextItemToFree_111);
+	Memory::ChangeCallB((DWORD)D2Common::D2UnitGetNextItem, (DWORD)callerServer_getNextItemToFree);
 
 	// Free item in Stash (Client-side)
 	Memory::SetCursor(FreeItemInStashClientSideOffset);
-	Memory::ChangeCallB((DWORD)D2Common::D2UnitGetNextItem, (DWORD)callerClient_getNextItemToFree_111);
+	Memory::ChangeCallB((DWORD)D2Common::D2UnitGetNextItem, (DWORD)callerClient_getNextItemToFree);
 
 	// Test if it's already removed from inventory
 	Memory::SetCursor(TestIfAlreadyRemovedFromInventoryOffset);

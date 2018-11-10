@@ -20,27 +20,90 @@
 #include "InfinityStash.h"
 #include "Common.h"
 #include "ExtraPatches.h"
+#include "CustomLibraries.h"
 
-void freeLibrary(DWORD library)
+void FreeLibrary(DWORD library)
 {
 	if (library && library != Game::Offset)
 		FreeLibrary((HMODULE)library);
 }
 
-void freeD2Libraries()
+void FreeD2Libraries()
 {
 	log_msg("\nFree Libraries\n");
 	log_msg("====================================\n");
 
-	freeLibrary(D2Client::Offset);
-	freeLibrary(D2Common::Offset);
-	freeLibrary(D2Game::Offset);
-	freeLibrary(D2gfx::Offset);
-	freeLibrary(D2Launch::Offset);
-	freeLibrary(D2Net::Offset);
-	freeLibrary(D2Win::Offset);
-	freeLibrary(Fog::Offset);
-	freeLibrary(Storm::Offset);
+	FreeLibrary(D2Client::Offset);
+	FreeLibrary(D2Common::Offset);
+	FreeLibrary(D2Game::Offset);
+	FreeLibrary(D2gfx::Offset);
+	FreeLibrary(D2Launch::Offset);
+	FreeLibrary(D2Net::Offset);
+	FreeLibrary(D2Win::Offset);
+	FreeLibrary(Fog::Offset);
+	FreeLibrary(Storm::Offset);
+}
+
+void LoadCustomLibraries()
+{
+	char* curString = NULL;
+	TCustomDll* nextDll;
+	DWORD offset_currentDll;
+
+	log_msg("Custom Libraries\n");
+	log_msg("====================================\n");
+
+	if (dllFilenames)
+	{
+		curString = strtok(dllFilenames, "|");
+	
+		if (curString)
+		{
+			while (curString)
+			{
+				if (curString[0])
+				{
+					log_msg("Loading Library: %s\n", curString);
+					offset_currentDll = (DWORD)LoadLibrary(curString);
+					if (!offset_currentDll)
+					{
+						log_msg("Failed to load library: %s\n", curString);
+						exit(0);
+					}
+
+					nextDll = customDlls;
+					customDlls = new(TCustomDll);
+					customDlls->nextDll = nextDll;
+					customDlls->initialize(offset_currentDll);
+				}
+				curString = strtok(NULL, "|");
+			}
+		}
+
+		D2FogMemDeAlloc(dllFilenames, __FILE__, __LINE__, 0);
+	}
+		
+	log_msg("\n");
+}
+
+void FreeCustomLibraries()
+{
+	if (!customDlls) return;
+
+	TCustomDll* dll = customDlls;
+	TCustomDll* nextDll;
+
+	log_msg("\nFree Custom Libraries\n");
+	log_msg("====================================\n");
+
+	while (dll)
+	{
+		dll->release();
+		FreeLibrary(dll->offset);
+		nextDll = dll->nextDll;
+		D2FogMemDeAlloc(dll, __FILE__, __LINE__, 0);
+		dll = nextDll;
+	}
 }
 
 //////////////////////////////////// EXPORTS FUNCTIONS ////////////////////////////////////
@@ -50,16 +113,21 @@ void InstallAlpacaFunctions();
 extern "C" __declspec(dllexport) bool __stdcall Release()
 {
 	active_logFile = true;
-
 	log_msg("\nExiting Diablo II\n");
 	log_msg("====================================\n");
 
-	freeD2Libraries();
+	FreeCustomLibraries();
+	FreeD2Libraries();
 	return true;
 }
 
 extern "C" __declspec(dllexport) void* __stdcall Init(LPSTR IniName)
 {
+	if (IniName)
+	{
+		log_msg("Alpaca was called from D2Mod.dll\n\n");
+	}
+
 	// If you want to debug all of the initialization code
 	// you can uncomment the below MessageBox and put a breakpoint after it.
 	// Reason for this is that this code happens quickly and very early before D2
@@ -68,11 +136,11 @@ extern "C" __declspec(dllexport) void* __stdcall Init(LPSTR IniName)
 	// Thanks to Necrolis @ PhrozenKeep for bringing this trick up.
 	//MessageBox(GetActiveWindow(), "The Alpacas have arrived!", "Alpaca", MB_APPLMODAL);
 
-	LoadParameters();
-
 	LibraryLoader::Init();
 	InitializeDiabloFunctions();
+	LoadParameters();
 	InstallAlpacaFunctions();
+	LoadCustomLibraries();
 
 	log_msg("Entering Diablo II\n");
 	log_msg("====================================\n");
@@ -90,8 +158,17 @@ void InstallAlpacaFunctions()
 	log_msg("====================================\n");
 
 	Install_Commands();
-	Install_VersionChange();
-	Install_PrintVersion();
+
+	if (active_DiabloVersionTextChange)
+	{
+		Install_VersionChange();
+	}
+	
+	if (active_PrintAlpacaVersion)
+	{
+		Install_PrintAlpacaVersion();
+	}
+	
 	Install_BigStash();
 	Install_MultiPageStash();
 	ExtraPatches::DisplayItemLevel();

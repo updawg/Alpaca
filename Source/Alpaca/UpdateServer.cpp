@@ -46,7 +46,6 @@ int __stdcall handleServerUpdate(Unit* ptChar, WORD param)
 		case US_SELECT_NEXT_INDEX2 :	selectNextIndex2Stash( ptChar ); return 1;
 		case US_INSERT_PAGE:			insertStash(ptChar); selectNextStash(ptChar); return 1;
 		case US_DELETE_PAGE:			deleteStash(ptChar, false); return 1;
-		case US_SAVE:					savePlayers(ptChar); return 1;
 		case US_SELECT_PAGE3:			PageSelect = arg << 24; return 1;
 		case US_SELECT_PAGE2:			PageSelect |= arg << 16; return 1;
 		case US_SELECT_PAGE1:			PageSelect |= arg << 8; return 1;
@@ -77,23 +76,23 @@ int __stdcall handleServerUpdate(Unit* ptChar, WORD param)
 }
 
 FCT_ASM(caller_handleServerUpdate)
-PUSH ESI
-PUSH EBX
-CALL handleServerUpdate
-TEST EAX, EAX
-JNZ END_RCM
-MOV EAX, ESI
-AND EAX, 0xFF
-SHR ESI, 8
-MOV EDI, EAX
-RETN
-END_RCM :
-ADD ESP, 4
-POP EDI
-POP ESI
-XOR EAX, EAX
-POP EBX
-RETN 8
+	PUSH ESI
+	PUSH EBX
+	CALL handleServerUpdate
+	TEST EAX, EAX
+	JNZ END_RCM
+	MOV EAX, ESI
+	AND EAX, 0xFF
+	SHR ESI, 8
+	MOV EDI, EAX
+	RETN
+END_RCM:
+	ADD ESP, 4
+	POP EDI
+	POP ESI
+	XOR EAX, EAX
+	POP EBX
+	RETN 8
 }}
 
 void Install_UpdateServer()
@@ -103,14 +102,13 @@ void Install_UpdateServer()
 
 	log_msg("[Patch] Receive Button Clicks\n");
 
-	DWORD ManageButtonClickMessageFromClientOffset = D2Game::GetAddress(0x676C3);
+	DWORD ManageButtonClickMessageFromClientOffset = D2Game::GetAddress(0x56EA2);
 
-	// manage button click message from Client.
+	// Manage button click message from Client.
 	Memory::SetCursor(ManageButtonClickMessageFromClientOffset);
-	Memory::ChangeByte(0xC1, 0x57);
-	Memory::ChangeByte(0xEE, 0xE8);
-	Memory::ChangeCallA(0xF88B5708, (DWORD)caller_handleServerUpdate);
-	
+	Memory::ChangeByte(0xC1, 0xE8);
+	Memory::ChangeCallA(0xF88B08EE, (DWORD)caller_handleServerUpdate);
+
 	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;
 }

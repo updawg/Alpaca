@@ -73,8 +73,8 @@ void Install_BigStash()
 
 	log_msg("[Patch] Increased Stash (10x10)\n");
 
-	DWORD StashGridOffset = D2Common::GetAddress(0x6CC25);
-	DWORD StashBackgroundOffset = D2Client::GetAddress(0x943FC);
+	DWORD StashGridOffset = D2Common::GetAddress(0x14ED3);
+	DWORD StashBackgroundOffset = D2Client::GetAddress(0x4C61C);
 
 	// Modification of stash grid
 	Memory::SetCursor(StashGridOffset);

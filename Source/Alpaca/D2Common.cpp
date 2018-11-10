@@ -26,83 +26,85 @@ void D2Common::Init()
 
 void D2Common::SetFunctions()
 {
-	D2InvAddItem = (TD2InvAddItem)GetAddress(0x3B640);
-	D2InvRemoveItem = (TD2InvRemoveItem)GetAddress(0x3B370);
-	D2InventoryGetFirstItem = (TD2InventoryGetFirstItem)GetAddress(0x37A00);
-	D2UnitGetNextItem = (TD2UnitGetNextItem)GetAddress(0x38160);
-	D2GetMaxGoldBank = (TD2GetMaxGoldBank)GetAddress(0x15220);
-	D2InitPlayerData = (TD2InitPlayerData)GetAddress(0x17090);
-	D2GetPlayerData = (TD2GetPlayerData)GetAddress(0x153D0);
-	D2GetMaxGold = (TD2GetMaxGold)GetAddress(0x181E0);
-	D2ItemGetPage = (TD2ItemGetPage)GetAddress(0x42080);
-	D2SaveItem = (TD2SaveItem)GetAddress(0x485C0);
-	D2ReadFile = (TD2ReadFile)GetAddress(0xB5E0);
-	D2GetItemLevel = (TD2GetItemLevel)GetAddress(0x420D0);
-
-	D2CompileTxtFile = (TD2CompileTxtFile)compileTxtFile_111;
-	D2AddPlayerStat = (TD2AddPlayerStat)GetAddress(0x5A080);
-	D2GetPlayerStat = (TD2GetPlayerStat)GetAddress(0x584E0);
-	
-	D2GetRealItem = (TD2GetRealItem)D2GetRealItem_111;
-
-	D2CompileTxtFileDirect = (TD2CompileTxtFile)GetAddress(0xCAE0);
+	D2InvAddItem = (TD2InvAddItem)GetAddress(0x4F930);
+	D2InvRemoveItem = (TD2InvRemoveItem)GetAddress(0x4E660);
+	D2InventoryGetFirstItem = (TD2InventoryGetFirstItem)GetAddress(0x4E7A0);
+	D2UnitGetNextItem = (TD2UnitGetNextItem)GetAddress(0x52080);
+	D2GetMaxGoldBank = (TD2GetMaxGoldBank)GetAddress(0x82630);
+	D2InitPlayerData = (TD2InitPlayerData)GetAddress(0x80320);
+	D2GetPlayerData = (TD2GetPlayerData)GetAddress(0x805B0);
+	D2GetMaxGold = (TD2GetMaxGold)GetAddress(0x81D90);
+	D2ItemSetPage = (TD2ItemSetPage)GetAddress(0x58900);
+	D2ItemGetPage = (TD2ItemGetPage)GetAddress(0x588E0);
+	D2SaveItem = (TD2SaveItem)GetAddress(0x62BA0);
+	D2ReadFile = (TD2ReadFile)GetAddress(0x84268);
+	D2GetItemLevel = (TD2GetItemLevel)GetAddress(0x58870);
+	D2CompileTxtFile = (TD2CompileTxtFile)compileTxtFile_110;
+	D2AddPlayerStat = (TD2AddPlayerStat)GetAddress(0x77B00);
+	D2GetPlayerStat = (TD2GetPlayerStat)GetAddress(0x77C30);
+	D2GetRealItem = (TD2GetRealItem)GetAddress(0x520C0);
+	D2CompileTxtFileDirect = (TD2CompileTxtFile)GetAddress(0xFD70);
+    D2GetItemQuality = (TD2GetItemQuality) GetAddress(0x58550);
+	D2GetUniqueID = (TD2GetUniqueID)GetAddress(0x5DEE0);
+	D2GetItemsBIN = (TD2GetItemsBIN)GetAddress(0x17680);
 
 	// Variables: Structure Management [Offset]
-	ptPYPlayerDataOffset = 0x49;
+	ptPYPlayerDataOffset = 0x5D;
 	ptSpecificDataOffset = 0x14;
 	ptGameOffset = 0x80;
 	ptClientGameOffset = 0x1A8;
 	ptInventoryOffset = 0x60;
 	ptSkillsOffset = 0xA8;
-	ptImageOffset = 0x34;
-	ptFrameOffset = 0x0;
+	ptImageOffset = 0x04;
+	ptFrameOffset = 0x08;
+
+	SgptDataTablesOffset = GetAddress(0x96A20);
+}
+
+DataTables* D2Common::GetDataTables()
+{
+	return *(DataTables**)D2Common::SgptDataTablesOffset;
 }
 
 char* D2Common::CompileTxtFileName = "D2CompileTxtFile";
 char* D2Common::ErrorReadTxtFileName = "pbData";
 
-__declspec(naked) void* __stdcall D2Common::compileTxtFile_111(DWORD unused, const char* filename, BINField* ptFields, DWORD* ptRecordCount, DWORD recordLength)
+__declspec(naked) void* __stdcall D2Common::compileTxtFile_110(DWORD unused, const char* filename, BINField* ptFields, DWORD* ptRecordCount, DWORD recordLength)
 {
 	_asm {
-		SUB ESP, 0x20C
+		SUB ESP, 0x210
 		PUSH EBX
 		PUSH EBP
+		MOV EBP, DWORD PTR SS : [ESP + 0x220]
 		PUSH ESI
 		PUSH EDI
 		MOV DWORD PTR SS : [ESP + 0x10], 0
-		MOV EBX, DWORD PTR SS : [ESP + 0x224]
-
-		PUSH EBX
-		LEA EAX, DWORD PTR SS : [ESP + 0x1C]
+		MOV EBX, wsprintf
+		PUSH EBP
+		LEA EAX, DWORD PTR SS : [ESP + 0x20]
 		PUSH EAX
-		CALL DWORD PTR SS : [wsprintf]
-		MOV EDX, DWORD PTR SS : [ESP + 0x228]
+		CALL EBX
 		ADD ESP, 8
 		LEA EDX, DWORD PTR SS : [ESP + 0x10]
+		PUSH 0
+		PUSH D2Common::CompileTxtFileName
 		PUSH EDX
-		PUSH EAX
-		LEA EAX, DWORD PTR SS : [ESP + 0x20]
-		CALL D2ReadFile
+		MOV ECX, DWORD PTR SS : [ESP + 0x230]
+		LEA EDX, DWORD PTR SS : [ESP + 0x28]
+		CALL D2Common::D2ReadFile
 		TEST EAX, EAX
 		JNZ continue_compileTxtFile
-		PUSH __LINE__
-		CALL Fog::D2GetInstructionPointer
-		PUSH EAX
-		PUSH ErrorReadTxtFileName
+		PUSH 0
+		PUSH D2Common::CompileTxtFileName
+		PUSH D2Common::ErrorReadTxtFileName
 		CALL Fog::D2FogAssert
-		ADD ESP, 0xC
 		PUSH - 1
 		CALL exit
-		continue_compileTxtFile :
-		MOV ECX, D2CompileTxtFileDirect
-			ADD ECX, 0x1EC
-			JMP ECX
+	continue_compileTxtFile:
+		MOV ECX, D2Common::D2CompileTxtFileDirect
+		ADD ECX, 0x2ED
+		JMP ECX
 	}
-}
-
-Unit* __stdcall	D2Common::D2GetRealItem_111(Unit* ptItem)
-{
-	return ptItem;
 }
 
 D2Common::TD2CompileTxtFile D2Common::D2CompileTxtFile;
@@ -118,6 +120,7 @@ DWORD D2Common::ptInventoryOffset;
 DWORD D2Common::ptSkillsOffset;
 DWORD D2Common::ptImageOffset;
 DWORD D2Common::ptFrameOffset;
+DWORD D2Common::SgptDataTablesOffset;
 
 D2Common::TD2InvAddItem D2Common::D2InvAddItem;
 D2Common::TD2InvRemoveItem D2Common::D2InvRemoveItem;
@@ -128,10 +131,11 @@ D2Common::TD2InitPlayerData D2Common::D2InitPlayerData;
 D2Common::TD2GetPlayerData D2Common::D2GetPlayerData;
 D2Common::TD2GetMaxGold D2Common::D2GetMaxGold;
 D2Common::TD2CompileTxtFile D2Common::D2CompileTxtFileDirect;
+D2Common::TD2GetItemQuality D2Common::D2GetItemQuality;
+D2Common::TD2GetUniqueID D2Common::D2GetUniqueID;
+D2Common::TD2GetItemsBIN D2Common::D2GetItemsBIN;
+D2Common::TD2ItemSetPage D2Common::D2ItemSetPage;
 D2Common::TD2ItemGetPage D2Common::D2ItemGetPage;
 D2Common::TD2SaveItem D2Common::D2SaveItem;
 D2Common::TD2ReadFile D2Common::D2ReadFile;
 D2Common::TD2GetItemLevel D2Common::D2GetItemLevel;
-
-D2Common::TD2AddPlayerStat D2Common::D2AddPlayerStatDirect;
-D2Common::TD2GetPlayerStat D2Common::D2GetPlayerStatDirect;

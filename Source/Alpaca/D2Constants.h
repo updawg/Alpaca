@@ -45,23 +45,6 @@ enum D2Color
 //	WIERD_YELLOW=0x14
 };
 
-enum Lang
-{
-	LNG_ENG=0,// English
-	LNG_ESP,// Spanish
-	LNG_DEU,// German
-	LNG_FRA,// French
-	LNG_POR,// Portuguese
-	LNG_ITA,// Italian
-	LNG_JPN,// Japanese
-	LNG_KOR,// Korean 
-	LNG_SIN,// 
-	LNG_CHI,// Chinese
-	LNG_POL,// Polish
-	LNG_RUS,// Russian
-	LNG_DEF,// Default : English
-};
-
 enum D2GameTypeMode
 {
 //	MODE_SINGLE = 0,

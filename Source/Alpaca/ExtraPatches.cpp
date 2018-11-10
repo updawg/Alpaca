@@ -29,30 +29,30 @@ void __stdcall displayItemlevel(LPWSTR popup, Unit* ptItem)
 	wcscat(popup, text);
 }
 
-__declspec(naked) void caller_displayItemlevel_113()
-{
-	__asm {
-		PUSH ECX
-		PUSH EAX
-		PUSH EAX
-		LEA EAX, DWORD PTR SS : [ESP + 0x1E70]
-		PUSH EAX
-		CALL displayItemlevel
-		POP EAX
-		POP ECX
-		POP EDX
-		PUSH 0x100
-		JMP EDX
-	}
-}
-
-__declspec(naked) void caller_displayItemlevelSet_111()
+__declspec(naked) void caller_displayItemlevel()
 {
 	__asm {
 		PUSH ECX
 		PUSH EDX
 		PUSH ECX
-		LEA EAX, DWORD PTR SS : [ESP + 0x1958]
+		LEA EAX, DWORD PTR SS : [ESP + 0x5018]
+		PUSH EAX
+		CALL displayItemlevel
+		POP EDX
+		POP ECX
+		POP EAX
+		PUSH 0x100
+		JMP EAX
+	}
+}
+
+__declspec(naked) void caller_displayItemlevelSet()
+{
+	__asm {
+		PUSH ECX
+		PUSH EDX
+		PUSH ECX
+		LEA EAX, DWORD PTR SS : [ESP + 0x1220]
 		PUSH EAX
 		CALL displayItemlevel
 		POP EDX
@@ -70,17 +70,17 @@ void ExtraPatches::DisplayItemLevel()
 
 	log_patch("Display Item Level");
 
-	// print the text in the final buffer
-	DWORD FinalBufferOffset = D2Client::GetAddress(0x98590);
+	// Print the text in the final buffer
+	DWORD FinalBufferOffset = D2Client::GetAddress(0x438A1);
 	Memory::SetCursor(FinalBufferOffset);
 	Memory::ChangeByte(0x68, 0xE8);
-	Memory::ChangeCallA(0x100, (DWORD)caller_displayItemlevel_113);
+	Memory::ChangeCallA(0x100, (DWORD)caller_displayItemlevel);
 
-	// print the text in the final buffer (for set items)
-	DWORD FinalBufferForSetsOffset = D2Client::GetAddress(0x973B3);
+	// Print the text in the final buffer (for set items)
+	DWORD FinalBufferForSetsOffset = D2Client::GetAddress(0x427BE);
 	Memory::SetCursor(FinalBufferForSetsOffset);
 	Memory::ChangeByte(0x68, 0xE8);
-	Memory::ChangeCallA(0x100, (DWORD)caller_displayItemlevelSet_111);
+	Memory::ChangeCallA(0x100, (DWORD)caller_displayItemlevelSet);
 
 	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;

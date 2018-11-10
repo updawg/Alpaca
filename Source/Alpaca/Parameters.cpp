@@ -37,8 +37,20 @@ bool active_plugin = true;
 // Users should report bugs and/or the users environment/configuration should be inspected.
 bool active_CheckMemory = true;
 
+char* dllFilenames;
+
 const char* S_GENERAL = "GENERAL";
 const char* S_active_logFile = "ActiveLogFile";
+const char* S_active_logFilePatches = "ActiveLogFilePatches";
+const char* S_dllFilenames = "DllToLoad";
+const char* S_dllFilenames2 = "DllToLoad2";
+
+const char* S_MAIN_SCREEN = "MAIN SCREEN";
+const char* S_active_DiabloVersionTextChange = "ActiveDiabloVersionTextChange";
+const char* S_DiabloVersionText = "DiabloVersionText";
+const char* S_active_PrintAlpacaVersion = "ActivePrintAlpacaVersion";
+const char* S_DiabloVersionColor = "ColorOfDiabloVersionText";
+const char* S_AlpacaVersionColor = "ColorOfAlpacaVersionText";
 
 const char* S_STASH = "STASH";
 const char* S_nbPagesPerIndex = "NumberOfPagesPerIndex";
@@ -71,14 +83,72 @@ void LogParameterIntegerValue(const char* parameterName, DWORD parameterValue)
 	log_msg("%s = %d\n", parameterName, parameterValue);
 }
 
+void LogParameterStringValue(const char* parameterName, const char* parameterValue)
+{
+	log_msg("%s = %s\n", parameterName, parameterValue);
+}
+
 void init_General(INIFile* iniFile, char* buffer, DWORD maxSize)
 {
+	// Active Log File
 	GetValueFromIni(iniFile, S_GENERAL, S_active_logFile, "0", buffer, maxSize);
 
 	// Temporarily save the log value into this value since we are still logging data
 	// during initialization. We will turn off logging at the end before we go into D2 if needed.
 	active_logFileIniOriginal = IsEnabled(buffer);
 
+	LogParameterBooleanValue(S_active_logFile, active_logFileIniOriginal);
+
+	// Active Log File [Patches]
+	GetValueFromIni(iniFile, S_GENERAL, S_active_logFilePatches, "0", buffer, maxSize);
+	active_logFileMemory = IsEnabled(buffer);
+	LogParameterBooleanValue(S_active_logFilePatches, active_logFileMemory);
+
+	// Custom DLL Loading [1]
+	GetValueFromIni(iniFile, S_GENERAL, S_dllFilenames, "", buffer, maxSize);
+	strcat(buffer, "|");
+	char* buf = &buffer[strlen(buffer)];
+
+	// Custom DLL Loading [2]
+	GetValueFromIni(iniFile, S_GENERAL, S_dllFilenames2, NULL, buf, maxSize);
+	dllFilenames = (char*)D2FogMemAlloc(strlen(buffer) + 1, __FILE__, __LINE__, 0);
+	strcpy(dllFilenames, buffer);
+
+	LogParameterStringValue(S_dllFilenames, dllFilenames);
+}
+
+void init_MainMenu(INIFile* iniFile, char* buffer, DWORD maxSize)
+{
+	GetValueFromIni(iniFile, S_MAIN_SCREEN, S_active_DiabloVersionTextChange, "0", buffer, maxSize);
+	active_DiabloVersionTextChange = IsEnabled(buffer);
+	LogParameterBooleanValue(S_active_DiabloVersionTextChange, active_DiabloVersionTextChange);
+	if (active_DiabloVersionTextChange)
+	{
+		GetValueFromIni(iniFile, S_MAIN_SCREEN, S_DiabloVersionText, DiabloVersionText, buffer, maxSize);
+		if (!buffer[0])
+		{
+			if (active_DiabloVersionTextChange == 1)
+			{
+				strcpy(buffer, "v ");
+				strcat(buffer, VersionUtility::GetVersionAsString());
+			}
+		}
+		DiabloVersionText = (char*)D2FogMemAlloc(strlen(buffer) + 1, __FILE__, __LINE__, 0);
+		strcpy(DiabloVersionText, buffer);
+		LogParameterStringValue(S_DiabloVersionText, DiabloVersionText);
+		GetValueFromIni(iniFile, S_MAIN_SCREEN, S_DiabloVersionColor, "0", buffer, maxSize);
+		DiabloVersionColor = atoi(buffer);
+		LogParameterIntegerValue(S_DiabloVersionColor, DiabloVersionColor);
+	}
+	GetValueFromIni(iniFile, S_MAIN_SCREEN, S_active_PrintAlpacaVersion, "1", buffer, maxSize);
+	active_PrintAlpacaVersion = IsEnabled(buffer);
+	LogParameterBooleanValue(S_active_PrintAlpacaVersion, active_PrintAlpacaVersion);
+	if (active_PrintAlpacaVersion)
+	{
+		GetValueFromIni(iniFile, S_MAIN_SCREEN, S_AlpacaVersionColor, "4", buffer, maxSize);
+		AlpacaVersionColor = atoi(buffer);
+		LogParameterIntegerValue(S_AlpacaVersionColor, AlpacaVersionColor);
+	}
 	LogParameterBooleanValue(S_active_logFile, active_logFileIniOriginal);
 }
 
@@ -114,6 +184,7 @@ void LoadParameters()
 	if (wasFileSuccessfullyOpened)
 	{
 		init_General(iniFile, buffer, BUFFER_SIZE);
+		init_MainMenu(iniFile, buffer, BUFFER_SIZE);
 		init_Stash(iniFile, buffer, BUFFER_SIZE);
 	}
 	else

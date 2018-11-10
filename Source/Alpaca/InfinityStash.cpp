@@ -139,7 +139,7 @@ Stash* getStash(Unit* ptChar, DWORD isShared, DWORD id)
 	return NULL;
 }
 
-int changeToSelectedStash_10(Unit* ptChar, Stash* newStash, DWORD bOnlyItems, DWORD bIsClient)
+int changeToSelectedStash_110(Unit* ptChar, Stash* newStash, DWORD bOnlyItems, DWORD bIsClient)
 {
 	if (!newStash) return 0;
 
@@ -769,6 +769,29 @@ Unit* __stdcall initGetNextItem(Unit* ptChar, Unit* ptItem)
 	return getNextItem(ptChar,ptItem);
 }
 
+DWORD __stdcall carry1Limit(Unit* ptChar, Unit* ptItemParam, DWORD itemNum, BYTE page)
+{
+	if (!ptChar) return 0;
+	Unit* ptItem = ptItemParam ? ptItemParam : D2GameGetObject(PCGame, UNIT_ITEM, itemNum);
+	if ((page != 4) && (D2Common::D2GetItemQuality(ptItem) == 7) && ptChar)
+	{
+		auto dataTables = D2Common::GetDataTables();
+		int uniqueID = D2Common::D2GetUniqueID(ptItem);
+		if ((uniqueID >= 0) && (uniqueID < (int)dataTables->nbUniqueItems))
+		{
+			UniqueItemsBIN*	uniqueItems = dataTables->uniqueItems + uniqueID;
+			if (uniqueItems && (uniqueItems->carry1 == 1))
+			{
+				ItemsBIN* ptItemsBin = D2Common::D2GetItemsBIN(ptItem->nTxtFileNo);
+				Unit* ptFirstItem = D2InventoryGetFirstItem(PCInventory);
+				if (ptItemsBin && ptFirstItem)
+					return D2Game::D2VerifIfNotCarry1(ptItem, ptItemsBin, ptFirstItem);
+			}
+		}
+	}
+	return 0;
+}
+
 FCT_ASM ( caller_initGetNextItem )
 	PUSH DWORD PTR SS:[ESP+0x20]
 	PUSH DWORD PTR SS:[ESP+0xC]
@@ -786,6 +809,76 @@ FCT_ASM ( caller_getNextItem )
 	RETN 4
 }}
 
+FCT_ASM(caller_carry1Limit)
+	PUSH DWORD PTR SS : [ESP + 0x08]//page
+	PUSH 0//EBP
+	PUSH DWORD PTR SS : [ESP + 0x0C]
+	PUSH DWORD PTR SS : [ESP + 0x28]//ptChar
+	CALL carry1Limit
+	TEST EAX, EAX
+	JNZ	end_carry1Limit
+	JMP D2Common::D2ItemSetPage
+	end_carry1Limit :
+	ADD ESP, 0xC
+	POP EDI
+	POP ESI
+	POP EBP
+	XOR EAX, EAX
+	POP EBX
+	ADD ESP, 0x24
+	RETN 8
+}}
+
+FCT_ASM(caller_carry1LimitWhenDrop)
+	PUSH EAX
+	PUSH 0
+	PUSH 0
+	PUSH ESI//ptItem
+	PUSH EDI//ptChar
+	CALL carry1Limit
+	TEST EAX, EAX
+	POP EAX
+	JNZ END_carry1LimitWhenDrop
+	MOV EDX, 0x806
+	RETN
+	END_carry1LimitWhenDrop :
+	ADD DWORD PTR SS : [ESP], 0x1F
+	RETN
+}}
+
+FCT_ASM(caller_carry1LimitSwap)
+	PUSH EAX
+	PUSH DWORD PTR SS : [ESP + 0x20]
+	PUSH 0
+	PUSH EBP//ptChar
+	CALL carry1Limit
+	TEST EAX, EAX
+	JNZ	end_carry1Limit
+	JMP D2ItemGetPage
+end_carry1Limit:
+	ADD ESP, 8
+	POP EDI
+	POP ESI
+	POP EBP
+	XOR EAX, EAX
+	POP EBX
+	ADD ESP, 0x4C
+	RETN 8
+}}
+
+FCT_ASM(caller_carry1OutOfStash)
+	PUSH ESI
+	CALL D2ItemGetPage
+	CMP AL, 4
+	JNZ continue_carry1OutOfStash
+	ADD DWORD PTR SS : [ESP], 0x1AF
+	RETN
+continue_carry1OutOfStash:
+	MOV EAX, DWORD PTR SS : [ESP + 0x14]
+	TEST EAX, EAX
+	RETN
+}}
+
 void Install_MultiPageStash()
 {
 	static bool isInstalled = false;
@@ -794,9 +887,34 @@ void Install_MultiPageStash()
 	Install_PlayerCustomData();
 	Install_InterfaceStash();
 
-	changeToSelectedStash = changeToSelectedStash_10;
+	log_msg("[Patch] Multi Page Stash\n");
 
+	changeToSelectedStash = changeToSelectedStash_110;
+
+	DWORD PutCarryInventoryOffset = D2Game::GetAddress(0x55050);
+	DWORD PutCarryInventorySwapOffset = D2Game::GetAddress(0x558D9);
+	DWORD DropCarryInventoryDropCubeOffset = D2Game::GetAddress(0x14341);
+	DWORD VerifyStashPagePickupOffset = D2Game::GetAddress(0x1299E);
+
+	// Cannot put 2 items carry1 in inventory
+	Memory::SetCursor(PutCarryInventoryOffset);
+	Memory::ChangeCallB((DWORD)D2Common::D2ItemSetPage, (DWORD)caller_carry1Limit);
+
+	// Cannot put 2 items carry1 in inventory by swapping
+	Memory::SetCursor(PutCarryInventorySwapOffset);
+	Memory::ChangeCallB((DWORD)D2Common::D2ItemGetPage, (DWORD)caller_carry1LimitSwap);
+
+	// Cannot put 2 items carry1 in inventory when drop cube
+	Memory::SetCursor(DropCarryInventoryDropCubeOffset);
+	Memory::ChangeByte(0xBA, 0xE8);
+	Memory::ChangeCallA(0x806, (DWORD)caller_carry1LimitWhenDrop);
+
+	// Verif only carry1 out of stash page when pick up an item
+	Memory::SetCursor(VerifyStashPagePickupOffset);
+	Memory::ChangeByte(0x8B, 0xE8);
+	Memory::ChangeCallA(0x85102444, (DWORD)caller_carry1OutOfStash);
+	Memory::ChangeByte(0xC0, 0x90);
+
+	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;
 }
-
-

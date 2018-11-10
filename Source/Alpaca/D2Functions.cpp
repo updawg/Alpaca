@@ -52,7 +52,6 @@ D2Client::TD2GetMouseX D2GetMouseX;
 D2Client::TD2GetMouseY D2GetMouseY;
 D2Client::TD2GetClientPlayer D2GetClientPlayer;
 D2Client::TD2SendToServer3 D2SendToServer3;
-D2Client::TD2ClickOnStashButton D2ClickOnStashButton;
 
 // D2Client: Variables
 DWORD* ptNegWindowStartY;
@@ -63,7 +62,6 @@ D2Game::TD2SendPacket D2SendPacket;
 D2Game::TD2LoadInventory D2LoadInventory;
 D2Game::TD2GameGetObject D2GameGetObject;
 D2Game::TD2GetClient D2GetClient;
-D2Game::TD2SaveGame D2SaveGame;
 
 // D2Game: Variables
 NetClient** ptClientTable;
@@ -131,7 +129,6 @@ void InitializeDiabloFunctions()
 	D2GetMouseY = D2Client::D2GetMouseY;
 	D2GetClientPlayer = D2Client::D2GetClientPlayer;
 	D2SendToServer3 = D2Client::D2SendToServer3;
-	D2ClickOnStashButton = D2Client::D2ClickOnStashButton;
 
 	// D2Client: Variables
 	ptNegWindowStartY = D2Client::ptNegWindowStartY;
@@ -142,7 +139,6 @@ void InitializeDiabloFunctions()
 	D2LoadInventory = D2Game::D2LoadInventory;
 	D2GameGetObject = D2Game::D2GameGetObject;
 	D2GetClient = D2Game::D2GetClient;
-	D2SaveGame = D2Game::D2SaveGame;
 
 	// D2Game: Variables
 	ptClientTable = D2Game::ptClientTable;

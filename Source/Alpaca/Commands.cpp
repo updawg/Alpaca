@@ -22,9 +22,6 @@
 
 #define MAX_CMD_SIZE 200
 
-// Regular Commands
-const char* CMD_SAVE = "/save";
-
 // Stash Management Commands
 const char* CMD_RENAME_PAGE = "/rename";
 const char* CMD_SET_INDEX = "/set";
@@ -35,11 +32,6 @@ const char* CMD_DELETE_PAGE = "/delete";
 const char* CMD_SELECT_PAGE = "/page";
 const char* CMD_SWAP = "/swap";
 const char* CMD_TOGGLE = "/toggle";
-
-void savePlayers(Unit* ptChar)
-{
-	D2SaveGame(PCGame);
-}
 
 void maxGold(Unit* ptChar)
 {
@@ -97,6 +89,8 @@ void updateSharedGold(DWORD goldAmount)
 
 int __stdcall commands(char* ptText)
 {
+	if (!D2Client::IsExpansion()) return 1;
+
 	log_msg("Command : %s\n", ptText);
 	Unit* ptChar = D2GetClientPlayer();
 
@@ -138,12 +132,6 @@ int __stdcall commands(char* ptText)
 			updateServer(US_PAGENAME);
 		}
 
-		return 0;
-	}
-
-	if (!strcmp(command, CMD_SAVE))
-	{
-		updateServer(US_SAVE);
 		return 0;
 	}
 
@@ -223,15 +211,15 @@ int __stdcall commands(char* ptText)
 	return 1;
 }
 
-FCT_ASM(caller_Commands_111)
-TEST EAX, EAX
-JE MANAGESOUNDCHAOSDEBUG
-PUSH EDI
-CALL commands
-TEST EAX, EAX
-JNZ MANAGESOUNDCHAOSDEBUG
-ADD DWORD PTR SS : [ESP], 7
-MANAGESOUNDCHAOSDEBUG :
+FCT_ASM(caller_Commands)
+	TEST EAX, EAX
+	JE MANAGESOUNDCHAOSDEBUG
+	PUSH DWORD PTR SS : [ESP + 0x1C]
+	CALL commands
+	TEST EAX, EAX
+	JNZ MANAGESOUNDCHAOSDEBUG
+	ADD DWORD PTR SS : [ESP], 7
+MANAGESOUNDCHAOSDEBUG:
 	RETN 8
 }}
 
@@ -244,12 +232,12 @@ void Install_Commands()
 
 	log_msg("[Patch] Commands Support\n");
 
-	DWORD CustomCommandOffset = D2Client::GetAddress(0xB1FD6);
+	DWORD CustomCommandOffset = D2Client::GetAddress(0x32BDD);
 
 	// Run custom commmand
 	Memory::SetCursor(CustomCommandOffset);
 	Memory::ChangeByte(0x83, 0xE8); 
-	Memory::ChangeCallA(0xC08508C4, (DWORD)caller_Commands_111);
+	Memory::ChangeCallA(0xC08508C4, (DWORD)caller_Commands);
 
 	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;

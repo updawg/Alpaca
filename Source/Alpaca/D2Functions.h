@@ -68,7 +68,6 @@ extern D2Client::TD2GetMouseX D2GetMouseX;
 extern D2Client::TD2GetMouseY D2GetMouseY;
 extern D2Client::TD2GetClientPlayer D2GetClientPlayer;
 extern D2Client::TD2SendToServer3 D2SendToServer3;
-extern D2Client::TD2ClickOnStashButton D2ClickOnStashButton;
 
 // D2Client: Variables
 extern DWORD* ptNegWindowStartY;
@@ -79,7 +78,6 @@ extern D2Game::TD2SendPacket D2SendPacket;
 extern D2Game::TD2LoadInventory D2LoadInventory;
 extern D2Game::TD2GameGetObject D2GameGetObject;
 extern D2Game::TD2GetClient D2GetClient;
-extern D2Game::TD2SaveGame D2SaveGame;
 
 // D2Game: Variables
 extern NetClient** ptClientTable;
@@ -116,6 +114,7 @@ extern D2Win::TD2SetFont D2SetFont;
 extern D2Win::TD2PrintPopup D2PrintPopup;
 extern D2Win::TD2CreateTextBox D2CreateTextBox;
 
+extern DataTables* SgptDataTables;
 extern void* (__stdcall *D2CompileTxtFile)(DWORD unused, const char* filename, BINField* ptFields, DWORD* ptRecordCount, DWORD recordLength);
 void setImage(sDrawImageInfo* data, void* image);
 void setFrame(sDrawImageInfo* data, DWORD frame);

@@ -18,9 +18,11 @@
 
 #include "Common.h"
 
+extern bool active_DiabloVersionTextChange;
+extern bool active_PrintAlpacaVersion;
 extern char* DiabloVersionText;
 extern BYTE DiabloVersionColor;
 extern BYTE AlpacaVersionColor;
 
-void Install_PrintVersion();
+void Install_PrintAlpacaVersion();
 void Install_VersionChange();

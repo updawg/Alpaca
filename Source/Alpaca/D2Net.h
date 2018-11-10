@@ -30,4 +30,6 @@ public:
 	static TD2SendToClient D2SendToClient;
 private:
 	static void SetFunctions();
+	static TD2SendToServer D2SendToServerDirect;
+	static void D2SendToServer_1XX();
 };

@@ -25,9 +25,9 @@ void D2gfx::Init()
 
 void D2gfx::SetFunctions()
 {
-	D2GetResolution = (TD2GetResolution)GetAddress(0xA940);
-	D2FillArea = (TD2FillArea)GetAddress(0x8210);
-	D2PrintImage = (TD2PrintImage)GetAddress(0x7E60);
+	D2GetResolution = (TD2GetResolution)GetAddress(0x3AE0);
+	D2FillArea = (TD2FillArea)GetAddress(0x3D60);
+	D2PrintImage = (TD2PrintImage)GetAddress(0x42A0);
 }
 
 D2gfx::TD2GetResolution D2gfx::D2GetResolution;

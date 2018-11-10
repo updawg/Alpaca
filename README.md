@@ -1,20 +1,17 @@
-## Alpaca 2.1.1 | 1.13d
+## Alpaca 3.0.0 | 1.10f
 ##### By Jonathan Vasquez (fearedbliss)
-##### Released on Friday, November 9, 2018
+##### Released on Sunday, November 11, 2018
 
 ## Synopsis
 
 Alpaca is an Infinite Stash Mod for Diablo II: Lord of Destruction
 that is based off Yohann Nicolas' PlugY 11.02. It is a cleaned up,
-re-architected, and stabilized version of PlugY.
-
-Alpaca is a 1.13d modification and will not be upgraded to 1.14d+ due to the
-massive code differences and required time investment. However, the codebase
-is in a pretty good state and will be an excellent base for someone who does
-want to port it over.
+re-architected, and stabilized version of PlugY. Due to the significant
+code differences and required time investment, Alpaca will not be updated
+to 1.14+.
 
 Finally, Alpaca IS compatible with my [Diablo II Version Switcher: Cactus](https://github.com/fearedbliss/Cactus).
-If you want to use Alpaca for your 1.13d install (but also want to continue to play
+If you want to use Alpaca for your 1.10f install (but also want to continue to play
 other mods, versions, etc), you can use Cactus. When using Alpaca with Cactus,
 Simply point your Cactus Platform to the "Alpaca.exe" when launching. Cactus also
 automatically isolates your character save files and their stashes as well
@@ -46,10 +43,10 @@ All code is licensed under the GPLv3+ since that was the license that Yohann rel
 - The game will now work with the MPQ files included in the new Blizzard Installer.
 - The ambiguity between the number "5" and "6" has been fixed.
 - Ladder Runewords are now enabled on Single Player.
-
-### Regular Commands
-
-- `/save` : Saves the character without having to Save and Exit.
+- You no longer need the CD in order to play the game.
+- You can now make Hardcore characters without beating Softcore.
+- The window will no longer minimize when you click out of it.
+- The window will now have minimize and close buttons.
 
 ### Stash Management Commands
 

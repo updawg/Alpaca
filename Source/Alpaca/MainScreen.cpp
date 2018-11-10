@@ -17,9 +17,11 @@
 #include <stdio.h>
 #include "Common.h"
 
-char* DiabloVersionText = "v 1.13d";
+bool active_DiabloVersionTextChange = 0;
+bool active_PrintAlpacaVersion = 1;
 BYTE DiabloVersionColor = 0;
 BYTE AlpacaVersionColor = 4;
+char* DiabloVersionText = "v 1.10f";
 
 DWORD newTextBoxData[]={4, 0x237, 0x243, 0xC8, 0x14, 0, 0, 0, 0, 0, 0, 2};
 
@@ -42,14 +44,14 @@ FCT_ASM ( caller_PrintVersion )
 	JMP ESI
 }}
 
-void Install_PrintVersion()
+void Install_PrintAlpacaVersion()
 {
 	static bool isInstalled = false;
 	if (isInstalled) return;
 
 	log_msg("[Patch] Print Alpaca Version - Main Menu\n");
 
-	DWORD PrintVersionOffset = D2Launch::GetAddress(0x10A11);
+	DWORD PrintVersionOffset = D2Launch::GetAddress(0x9639);
 
 	Memory::SetCursor(PrintVersionOffset);
 	Memory::ChangeCallB((DWORD)D2Win::D2CreateTextBox, (DWORD)caller_PrintVersion);
@@ -58,27 +60,28 @@ void Install_PrintVersion()
 	isInstalled = true;
 }
 
-FCT_ASM(caller_VersionChange_10)
-MOV CL, BYTE PTR DS : [DiabloVersionColor]
-MOV BYTE PTR SS : [ESP + 4], CL
-MOV EDX, DiabloVersionText
-MOV ECX, EDI
-RETN
+FCT_ASM(caller_VersionChange)
+	MOV CL, BYTE PTR DS : [DiabloVersionColor]
+	MOV BYTE PTR SS : [ESP + 4], CL
+	MOV EDX, DiabloVersionText
+	MOV ECX, EDI
+	RETN
 }}
 
 void Install_VersionChange()
 {
+	// [Warning] There may be a bug if D2Mod started before Alpaca?
 	static bool isInstalled = false;
 	if (isInstalled) return;
 
 	log_msg("[Patch] Print Diablo Version - Main Screen\n");
 
-	DWORD PrintLodModVersionOffset = D2Launch::GetAddress(0x10AE4);
+	DWORD PrintLodModVersionOffset = D2Launch::GetAddress(0x9723);
 
 	// Print LoD/Mod version.
 	Memory::SetCursor(PrintLodModVersionOffset);
 	Memory::ChangeByte(0x8D, 0xE8);
-	Memory::ChangeCallA(0x8B102454, (DWORD)caller_VersionChange_10);
+	Memory::ChangeCallA(0x8B102454, (DWORD)caller_VersionChange);
 	Memory::ChangeByte(0xCF, 0x90);
 	
 	if (active_logFileMemory) log_msg("\n");
