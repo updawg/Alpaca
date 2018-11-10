@@ -1,6 +1,6 @@
-## Alpaca 2.1.0 [1.13d]
+## Alpaca 2.1.1 | 1.13d
 ##### By Jonathan Vasquez (fearedbliss)
-##### Released on Monday, November 5, 2018
+##### Released on Friday, November 9, 2018
 
 ## Synopsis
 

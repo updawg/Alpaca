@@ -17,10 +17,10 @@
 #pragma once
 
 #define PROGRAM_NAME "Alpaca"
-#define PROGRAM_VERSION "2.1.0"
+#define PROGRAM_VERSION "2.1.1"
 #define PROGRAM_AUTHOR_NAME "Jonathan Vasquez"
 #define PROGRAM_AUTHOR_ALIAS "fearedbliss"
-#define PROGRAM_BUILD_DATE "November 5, 2018 @ 20:38 ET"
+#define PROGRAM_BUILD_DATE "November 9, 2018 @ 21:25 ET"
 
 extern char* modDataDirectory;
 extern bool active_plugin;

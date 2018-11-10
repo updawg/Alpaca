@@ -29,10 +29,9 @@ struct Stash
 	union { 
 		DWORD flags; 
 		struct { 
-			DWORD isShared:1;	//
-			DWORD isIndex:1;	//
-			DWORD isMainIndex:1;	//
-			DWORD isReserved:1;	// For swap items comand
+			DWORD isShared : 1;
+			DWORD isIndex : 1;
+			DWORD isMainIndex : 1;
 		};
 	};
 	char* name;

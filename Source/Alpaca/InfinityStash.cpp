@@ -440,12 +440,38 @@ void toggleAndSelectStash(Unit* ptChar, Stash* selectedStash, bool showSharedSta
 	}
 }
 
+// Swaps the stash metadata
+void swapStashMetadata(Stash* currentStash, Stash* targetStash)
+{
+	// Name
+	char* tempName = currentStash->name;
+	currentStash->name = targetStash->name;
+	targetStash->name = tempName;
+
+	// Do not switch the "flags" variable since this will cause problems
+	// due to the personal/shared stashes. Just flip the individual indexes,
+	// and let the system automatically compute the proper flag number.
+
+	// Index/Main Index
+	DWORD tempIndex = currentStash->isIndex;
+	DWORD tempMainIndex = currentStash->isMainIndex;
+
+	currentStash->isIndex = targetStash->isIndex;
+	currentStash->isMainIndex = targetStash->isMainIndex;
+
+	targetStash->isIndex = tempIndex;
+	targetStash->isMainIndex = tempMainIndex;
+}
+
 void swapStash(Unit* ptChar, Stash* curStash, Stash* swpStash)
 {
 	if (!ptChar || !curStash || !swpStash || curStash == swpStash)
 		return;
+
+	swapStashMetadata(curStash, swpStash);
 	changeToSelectedStash(ptChar, swpStash, 1, 0);
 	updateClient(ptChar, UC_SELECT_STASH, swpStash->id, swpStash->flags | 8, PCPY->flags);
+	updateSelectedStashClient(ptChar);
 }
 
 void toggleStash(Unit* ptChar, DWORD page)
