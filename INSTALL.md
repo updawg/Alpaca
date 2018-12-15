@@ -1,7 +1,8 @@
 ## Installation
 
 1. Copy all the files in the "1. Files" folder to the root of your Diablo II directory.
-2. Double click `Alpaca.exe` and Enjoy!
+2. Open D2GFEx.ini and add "Alpaca.dll" to one of the "LoadDll" lines.
+3. Start up "Game.exe".
 
 NOTE: If your Diablo II is installed in a protected directory
 (C:\Program Files (x86)\), you might need to run it in Admin Mode.

@@ -132,9 +132,6 @@
     <ClCompile Include="ExtraPatches.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CustomLibraries.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Error.h">
@@ -264,9 +261,6 @@
       <Filter>Header Files\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="ExtraPatches.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CustomLibraries.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

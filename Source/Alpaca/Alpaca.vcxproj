@@ -105,7 +105,6 @@
     <ClCompile Include="BigStash.cpp" />
     <ClCompile Include="Commands.cpp" />
     <ClCompile Include="Common.cpp" />
-    <ClCompile Include="CustomLibraries.cpp" />
     <ClCompile Include="D2Client.cpp" />
     <ClCompile Include="D2CMP.cpp" />
     <ClCompile Include="D2Common.cpp" />
@@ -144,7 +143,6 @@
     <ClInclude Include="Commands.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="CustomData.h" />
-    <ClInclude Include="CustomLibraries.h" />
     <ClInclude Include="D2BinFile.h" />
     <ClInclude Include="D2Client.h" />
     <ClInclude Include="D2CMP.h" />

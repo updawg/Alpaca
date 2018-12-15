@@ -37,13 +37,9 @@ bool active_plugin = true;
 // Users should report bugs and/or the users environment/configuration should be inspected.
 bool active_CheckMemory = true;
 
-char* dllFilenames;
-
 const char* S_GENERAL = "GENERAL";
 const char* S_active_logFile = "ActiveLogFile";
 const char* S_active_logFilePatches = "ActiveLogFilePatches";
-const char* S_dllFilenames = "DllToLoad";
-const char* S_dllFilenames2 = "DllToLoad2";
 
 const char* S_MAIN_SCREEN = "MAIN SCREEN";
 const char* S_active_DiabloVersionTextChange = "ActiveDiabloVersionTextChange";
@@ -103,18 +99,6 @@ void init_General(INIFile* iniFile, char* buffer, DWORD maxSize)
 	GetValueFromIni(iniFile, S_GENERAL, S_active_logFilePatches, "0", buffer, maxSize);
 	active_logFileMemory = IsEnabled(buffer);
 	LogParameterBooleanValue(S_active_logFilePatches, active_logFileMemory);
-
-	// Custom DLL Loading [1]
-	GetValueFromIni(iniFile, S_GENERAL, S_dllFilenames, "", buffer, maxSize);
-	strcat(buffer, "|");
-	char* buf = &buffer[strlen(buffer)];
-
-	// Custom DLL Loading [2]
-	GetValueFromIni(iniFile, S_GENERAL, S_dllFilenames2, NULL, buf, maxSize);
-	dllFilenames = (char*)D2FogMemAlloc(strlen(buffer) + 1, __FILE__, __LINE__, 0);
-	strcpy(dllFilenames, buffer);
-
-	LogParameterStringValue(S_dllFilenames, dllFilenames);
 }
 
 void init_MainMenu(INIFile* iniFile, char* buffer, DWORD maxSize)
@@ -127,11 +111,8 @@ void init_MainMenu(INIFile* iniFile, char* buffer, DWORD maxSize)
 		GetValueFromIni(iniFile, S_MAIN_SCREEN, S_DiabloVersionText, DiabloVersionText, buffer, maxSize);
 		if (!buffer[0])
 		{
-			if (active_DiabloVersionTextChange == 1)
-			{
-				strcpy(buffer, "v ");
-				strcat(buffer, VersionUtility::GetVersionAsString());
-			}
+			strcpy(buffer, "v ");
+			strcat(buffer, VersionUtility::GetVersionAsString());
 		}
 		DiabloVersionText = (char*)D2FogMemAlloc(strlen(buffer) + 1, __FILE__, __LINE__, 0);
 		strcpy(DiabloVersionText, buffer);

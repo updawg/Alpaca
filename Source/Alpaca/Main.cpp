@@ -20,134 +20,39 @@
 #include "InfinityStash.h"
 #include "Common.h"
 #include "ExtraPatches.h"
-#include "CustomLibraries.h"
-
-void FreeLibrary(DWORD library)
-{
-	if (library && library != Game::Offset)
-		FreeLibrary((HMODULE)library);
-}
-
-void FreeD2Libraries()
-{
-	log_msg("\nFree Libraries\n");
-	log_msg("====================================\n");
-
-	FreeLibrary(D2Client::Offset);
-	FreeLibrary(D2Common::Offset);
-	FreeLibrary(D2Game::Offset);
-	FreeLibrary(D2gfx::Offset);
-	FreeLibrary(D2Launch::Offset);
-	FreeLibrary(D2Net::Offset);
-	FreeLibrary(D2Win::Offset);
-	FreeLibrary(Fog::Offset);
-	FreeLibrary(Storm::Offset);
-}
-
-void LoadCustomLibraries()
-{
-	char* curString = NULL;
-	TCustomDll* nextDll;
-	DWORD offset_currentDll;
-
-	log_msg("Custom Libraries\n");
-	log_msg("====================================\n");
-
-	if (dllFilenames)
-	{
-		curString = strtok(dllFilenames, "|");
-	
-		if (curString)
-		{
-			while (curString)
-			{
-				if (curString[0])
-				{
-					log_msg("Loading Library: %s\n", curString);
-					offset_currentDll = (DWORD)LoadLibrary(curString);
-					if (!offset_currentDll)
-					{
-						log_msg("Failed to load library: %s\n", curString);
-						exit(0);
-					}
-
-					nextDll = customDlls;
-					customDlls = new(TCustomDll);
-					customDlls->nextDll = nextDll;
-					customDlls->initialize(offset_currentDll);
-				}
-				curString = strtok(NULL, "|");
-			}
-		}
-
-		D2FogMemDeAlloc(dllFilenames, __FILE__, __LINE__, 0);
-	}
-		
-	log_msg("\n");
-}
-
-void FreeCustomLibraries()
-{
-	if (!customDlls) return;
-
-	TCustomDll* dll = customDlls;
-	TCustomDll* nextDll;
-
-	log_msg("\nFree Custom Libraries\n");
-	log_msg("====================================\n");
-
-	while (dll)
-	{
-		dll->release();
-		FreeLibrary(dll->offset);
-		nextDll = dll->nextDll;
-		D2FogMemDeAlloc(dll, __FILE__, __LINE__, 0);
-		dll = nextDll;
-	}
-}
-
-//////////////////////////////////// EXPORTS FUNCTIONS ////////////////////////////////////
 
 void InstallAlpacaFunctions();
 
-extern "C" __declspec(dllexport) bool __stdcall Release()
+BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReserved)
 {
-	active_logFile = true;
-	log_msg("\nExiting Diablo II\n");
-	log_msg("====================================\n");
-
-	FreeCustomLibraries();
-	FreeD2Libraries();
-	return true;
-}
-
-extern "C" __declspec(dllexport) void* __stdcall Init(LPSTR IniName)
-{
-	if (IniName)
+	switch (ul_reason_for_call)
 	{
-		log_msg("Alpaca was called from D2Mod.dll\n\n");
+	case DLL_PROCESS_ATTACH:
+		// If you want to debug all of the initialization code
+		// you can uncomment the below MessageBox and put a breakpoint after it.
+		// Reason for this is that this code happens quickly and very early before D2
+		// fully starts, thus by the time you can attach your debugger to Game.exe,
+		// all of this code already finished. So we can use the MessageBox trick.
+		// Thanks to Necrolis @ PhrozenKeep for bringing this trick up.
+		//MessageBox(GetActiveWindow(), "The Alpacas have arrived!", "Alpaca", MB_APPLMODAL);
+
+		LibraryLoader::Init();
+		InitializeDiabloFunctions();
+		LoadParameters();
+		InstallAlpacaFunctions();
+
+		log_msg("Entering Diablo II\n");
+		log_msg("====================================\n");
+
+		active_logFile = active_logFileIniOriginal;
+		break;
+	case DLL_PROCESS_DETACH:
+		active_logFile = true;
+		log_msg("\nExiting Diablo II\n");
+		log_msg("====================================\n");
+		break;
 	}
-
-	// If you want to debug all of the initialization code
-	// you can uncomment the below MessageBox and put a breakpoint after it.
-	// Reason for this is that this code happens quickly and very early before D2
-	// fully starts, thus by the time you can attach your debugger to Game.exe,
-	// all of this code already finished. So we can use the MessageBox trick.
-	// Thanks to Necrolis @ PhrozenKeep for bringing this trick up.
-	//MessageBox(GetActiveWindow(), "The Alpacas have arrived!", "Alpaca", MB_APPLMODAL);
-
-	LibraryLoader::Init();
-	InitializeDiabloFunctions();
-	LoadParameters();
-	InstallAlpacaFunctions();
-	LoadCustomLibraries();
-
-	log_msg("Entering Diablo II\n");
-	log_msg("====================================\n");
-
-	active_logFile = active_logFileIniOriginal;
-
-	return NULL;
+	return TRUE;
 }
 
 void InstallAlpacaFunctions()

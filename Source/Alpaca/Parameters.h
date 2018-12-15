@@ -17,14 +17,13 @@
 #pragma once
 
 #define PROGRAM_NAME "Alpaca"
-#define PROGRAM_VERSION "3.0.0"
+#define PROGRAM_VERSION "3.0.1"
 #define PROGRAM_AUTHOR_NAME "Jonathan Vasquez"
 #define PROGRAM_AUTHOR_ALIAS "fearedbliss"
-#define PROGRAM_BUILD_DATE "November 11, 2018 @ 17:58 ET"
+#define PROGRAM_BUILD_DATE "December 15, 2018 @ 12:20 ET"
 
 extern char* modDataDirectory;
 extern bool active_plugin;
 extern bool active_CheckMemory;
-extern char* dllFilenames;
 
 void LoadParameters();

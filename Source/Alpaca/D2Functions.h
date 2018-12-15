@@ -103,7 +103,6 @@ extern Storm::TD2FreeWinMessage D2FreeWinMessage;
 
 // D2gfx
 extern D2gfx::TD2GetResolution D2GetResolution;
-extern D2gfx::TD2FillArea D2FillArea;
 extern D2gfx::TD2PrintImage D2PrintImage;
 
 // D2Win
@@ -118,6 +117,5 @@ extern DataTables* SgptDataTables;
 extern void* (__stdcall *D2CompileTxtFile)(DWORD unused, const char* filename, BINField* ptFields, DWORD* ptRecordCount, DWORD recordLength);
 void setImage(sDrawImageInfo* data, void* image);
 void setFrame(sDrawImageInfo* data, DWORD frame);
-void __inline fillRect(DWORD x, DWORD y, DWORD Width, DWORD Height, DWORD color, DWORD transTbl){D2FillArea(x,y,x+Width,y+Height,color,transTbl);};
 
 void InitializeDiabloFunctions();

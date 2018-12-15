@@ -21,7 +21,7 @@ bool active_DiabloVersionTextChange = 0;
 bool active_PrintAlpacaVersion = 1;
 BYTE DiabloVersionColor = 0;
 BYTE AlpacaVersionColor = 4;
-char* DiabloVersionText = "v 1.10f";
+char* DiabloVersionText = "";
 
 DWORD newTextBoxData[]={4, 0x237, 0x243, 0xC8, 0x14, 0, 0, 0, 0, 0, 0, 2};
 

@@ -87,7 +87,6 @@ Storm::TD2FreeWinMessage D2FreeWinMessage;
 
 // D2gfx
 D2gfx::TD2GetResolution D2GetResolution;
-D2gfx::TD2FillArea D2FillArea;
 D2gfx::TD2PrintImage D2PrintImage;
 
 // D2Win
@@ -164,7 +163,6 @@ void InitializeDiabloFunctions()
 
 	// D2gfx
 	D2GetResolution = D2gfx::D2GetResolution;
-	D2FillArea = D2gfx::D2FillArea;
 	D2PrintImage = D2gfx::D2PrintImage;
 
 	// D2Win

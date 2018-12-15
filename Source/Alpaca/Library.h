@@ -80,6 +80,14 @@ public:
 		//log_msg("Address by Addition: (%08X + %08X @ %08X)\n", Offset, offset, proposedOffset);
 		return proposedOffset;
 	}
+
+	static DWORD GetAddressByOrdinal(const DWORD ordinal)
+	{
+		HMODULE module = (HMODULE)Offset;
+		DWORD locatedAddress = (DWORD)GetProcAddress(module, (LPCSTR)ordinal);
+		//log_msg("Address by Ordinal: (%08X / %08X @ %08X)\n", Offset, ordinal, locatedAddress);
+		return locatedAddress;
+	}
 };
 
 template <class Child>
