@@ -19,7 +19,6 @@
 #include "Common.h"
 
 extern bool active_PlayerCustomData;
-extern bool openSharedStashOnLoading;
 
 struct Unit;
 

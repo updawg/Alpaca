@@ -19,7 +19,6 @@
 #include "Common.h"
 
 extern void* stashBtnsImages;
-extern void* sharedGoldBtnsImages;
 
 #define CREATE_TABLE_DESCRIPTION( N )	\
 BINField  TableDesc[N]; int i=0

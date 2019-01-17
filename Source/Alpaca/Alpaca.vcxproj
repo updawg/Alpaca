@@ -131,7 +131,6 @@
     <ClCompile Include="PlayerCustomData.cpp" />
     <ClCompile Include="AlpacaFiles.cpp" />
     <ClCompile Include="SavePlayerData.cpp" />
-    <ClCompile Include="SharedSaveFile.cpp" />
     <ClCompile Include="Storm.cpp" />
     <ClCompile Include="UpdateClient.cpp" />
     <ClCompile Include="UpdateServer.cpp" />
@@ -175,7 +174,6 @@
     <ClInclude Include="AlpacaFiles.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SavePlayerData.h" />
-    <ClInclude Include="SharedSaveFile.h" />
     <ClInclude Include="Storm.h" />
     <ClInclude Include="UpdateClient.h" />
     <ClInclude Include="UpdateServer.h" />

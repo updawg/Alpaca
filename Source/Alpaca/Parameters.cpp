@@ -51,7 +51,6 @@ const char* S_AlpacaVersionColor = "ColorOfAlpacaVersionText";
 const char* S_STASH = "STASH";
 const char* S_nbPagesPerIndex = "NumberOfPagesPerIndex";
 const char* S_nbPagesPerIndex2 = "NumberOfPagesPerIndexWhenShiftPressed";
-const char* S_openSharedStashOnLoading = "OpenSharedStashOnLoading";
 
 // Convert 4 char code in a DWORD code
 #define BIN(A,B,C,D) ((DWORD)A) + (((DWORD)B) << 8) + (((DWORD)C) << 16) + (((DWORD)D) << 24)
@@ -142,10 +141,6 @@ void init_Stash(INIFile* iniFile, char* buffer, DWORD maxSize)
 	GetValueFromIni(iniFile, S_STASH, S_nbPagesPerIndex2, "100", buffer, maxSize);
 	nbPagesPerIndex2 = atoi(buffer);
 	LogParameterIntegerValue(S_nbPagesPerIndex2, nbPagesPerIndex2);
-
-	GetValueFromIni(iniFile, S_STASH, S_openSharedStashOnLoading, "0", buffer, maxSize);
-	openSharedStashOnLoading = IsEnabled(buffer);
-	LogParameterBooleanValue(S_openSharedStashOnLoading, openSharedStashOnLoading);
 
 	log_msg("\n");
 }

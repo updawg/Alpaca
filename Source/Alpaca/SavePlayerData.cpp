@@ -16,7 +16,6 @@
 
 #include "InfinityStash.h"
 #include "ExtendedSaveFile.h"
-#include "SharedSaveFile.h"
 #include "Common.h"
 
 void __stdcall SaveSPPlayerCustomData(Unit* ptChar)
@@ -34,19 +33,6 @@ void __stdcall SaveSPPlayerCustomData(Unit* ptChar)
 		saveExtendedSaveFile(ptChar, &dataExt, &maxSizeExt, &curSizeExt);
 		writeExtendedSaveFile(PCPlayerData->name, dataExt, curSizeExt);
 		D2FreeMem(PCGame->memoryPool, dataExt,__FILE__,__LINE__,0);
-	}
-
-	if (PCPY->sharedStashIsOpened)
-	{
-		DWORD curSizeShr = 0;
-		DWORD maxSizeShr = 0x4000;
-		BYTE* dataShr = (BYTE *)D2AllocMem(PCGame->memoryPool, maxSizeShr, __FILE__, __LINE__, 0);
-		d2_assert(!dataShr, "Error : Memory allocation Shared SaveFile", __FILE__, __LINE__);
-		saveSharedSaveFile(ptChar, &dataShr, &maxSizeShr, &curSizeShr);
-
-		NetClient* ptClient = D2GetClient(ptChar, __FILE__, __LINE__);
-		writeSharedSaveFile(PCPlayerData->name, dataShr, curSizeShr, ptClient->isHardCoreGame);
-		D2FreeMem(PCGame->memoryPool, dataShr, __FILE__, __LINE__, 0);
 	}
 	
 	log_msg("End saving.\n\n");
@@ -113,14 +99,6 @@ void __stdcall SendSaveFilesToSave( Unit* ptChar )
 		saveExtendedSaveFile(ptChar, &dataExt, &maxSizeExt, &curSizeExt);
 	}
 
-	if (PCPY->sharedStashIsOpened)
-	{
-		DWORD maxSizeShr = 0x4000;
-		dataShr = (BYTE *)D2AllocMem(PCGame->memoryPool, maxSizeShr,__FILE__,__LINE__,0);
-		d2_assert(!dataShr, "Error : Memory allocation Shared SaveFile", __FILE__, __LINE__);
-		saveSharedSaveFile(ptChar, &dataShr, &maxSizeShr, &curSizeShr);
-	}
-
 	NetClient* ptClient = D2GetClient(ptChar,__FILE__,__LINE__);
 	s_dataToSend* dataToSend = ptDataToSend;
 	while (dataToSend && (dataToSend->clientID != ptClient->clientID))
@@ -142,6 +120,8 @@ void __stdcall SendSaveFilesToSave( Unit* ptChar )
 	dataToSend->sizeShared = curSizeShr;
 	dataToSend->curShared = 0;
 	dataToSend->dataShared = dataShr;
+
+	// TODO: COME BACK
 	log_msg("clientID=%d\t init=%d\t sizeExtended=%X\t curExtended=%X\t dataExtended=%X\t sizeShared=%X\t curShared=%X\t dataShared=%08X\n", 
 		dataToSend->clientID, dataToSend->init, dataToSend->sizeExtended, dataToSend->curExtended, dataToSend->dataExtended, dataToSend->sizeShared, dataToSend->curShared, dataToSend->dataShared);
 
@@ -206,7 +186,6 @@ DWORD __stdcall ReceiveSaveFilesToSave(t_rcvMsg* msg)
 
 	DWORD size = msg->packSize - 1;
 	
-	// Only the infinite personal stash is sent in lan games.
 	if (receivedSaveFiles.sizeExtended == 0)
 		receivedSaveFiles.sizeExtended = msg->finalSize;
 

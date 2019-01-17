@@ -22,15 +22,9 @@
 #define STASH_TAG 0x5453			//"ST"
 #define JM_TAG 0x4D4A 				//"JM"
 
-DWORD maxSelfPages = -1;
-DWORD maxSharedPages = -1;
+DWORD maxSelfPages = 9;
 DWORD nbPagesPerIndex = 10;
 DWORD nbPagesPerIndex2 = 100;
-
-char* sharedStashFilename = "SharedStashSave";
-
-// Let's keep hardcore and softcore shared stashes separate.
-bool separateHardSoftStash = true;
 
 typedef int (*TchangeToSelectedStash)(Unit* ptChar, Stash* newStash, DWORD bOnlyItems, DWORD bIsClient);
 TchangeToSelectedStash changeToSelectedStash;
@@ -197,11 +191,11 @@ DWORD loadStash(Unit* ptChar, Stash* ptStash, BYTE data[], DWORD startSize, DWOR
 	if( *(WORD *)&data[curSize] != STASH_TAG )//"ST"
 	{
 		log_msg("loadStash -> Bad tag of stash of character %s : %04X\n",PCPlayerData->name,*(WORD *)&data[curSize]);
-		return 0x7;//Unable to enter game. Bad inventory data
+		return 0x7; //Unable to enter game. Bad inventory data
 	}
 	curSize += 2;
 
-	// Read flags.
+	// Read flags
 	int len = strlen((char*)&data[curSize]);
 	if (*(WORD*)&data[curSize + len + 1] != JM_TAG)
 	{
@@ -210,15 +204,13 @@ DWORD loadStash(Unit* ptChar, Stash* ptStash, BYTE data[], DWORD startSize, DWOR
 	}
 
 	// Read Name
-//	if (strlen((char *)&data[curSize]) > 0xF)
-//		*(char *)&data[curSize+0xF] = NULL;
 	if (strlen((char *)&data[curSize]))
-		ptStash->name = (char*)malloc(strlen((char *)&data[curSize]));//D2AllocMem(PCGame->memoryPool, strlen((char *)&data[curSize]),__FILE__,__LINE__,0);
+		ptStash->name = (char*)malloc(strlen((char *)&data[curSize]));
 	if (ptStash->name)
 		strcpy(ptStash->name, (char *)&data[curSize]);
 	curSize += strlen((char *)&data[curSize]) + 1;
 
-	// Read inventory.
+	// Read inventory
 	DWORD ret = D2LoadInventory(PCGame, ptChar, (saveBitField*)&data[curSize], 0x60, maxSize-curSize, 0, &nbBytesRead);
 	if (ret) log_msg("loadStash -> D2LoadInventory failed\n");
 	log_msg("Stash loaded (%d : %s)\n", ptStash->id ,ptStash->name);
@@ -259,8 +251,6 @@ DWORD loadStashList(Unit* ptChar, BYTE* data, DWORD maxSize, DWORD* curSize, boo
 
 	return 0;
 }
-
-//ADDDATA(DWORD, curSize, 0);
 
 #define DATA (*data + *curSize)
 #define ADDDATA(T)		(T*)DATA;		*curSize += sizeof(T)
@@ -600,8 +590,7 @@ void selectPrevious2Stash(Unit* ptChar)// Select first stash
 void selectNextStash(Unit* ptChar)
 {
 	Stash* selStash = PCPY->currentStash;
-	if (!selStash->isShared && (selStash->id >= maxSelfPages))	return;
-	if (selStash->isShared && (selStash->id >= maxSharedPages)) return;
+	if (selStash->id >= maxSelfPages) return;
 
 	selStash = selStash->nextStash ? selStash->nextStash : addStash(ptChar, PCPY->showSharedStash);
 
@@ -696,8 +685,7 @@ void selectNextIndexStash(Unit* ptChar)
 		selStash = PCPY->currentStash;
 		while ((selStash->id + 1) % nbPagesPerIndex != 0)
 		{
-			if (!selStash->isShared && (selStash->id >= maxSelfPages))	break;
-			if (selStash->isShared && (selStash->id >= maxSharedPages)) break;
+			if (selStash->id >= maxSelfPages) break;
 			selStash = selStash->nextStash ? selStash->nextStash : addStash(ptChar, PCPY->showSharedStash);;
 		}
 	}
@@ -717,8 +705,7 @@ void selectNextIndex2Stash(Unit* ptChar)
 		selStash = PCPY->currentStash;
 		while ((selStash->id+1) % nbPagesPerIndex2 != 0)
 		{
-			if (!selStash->isShared && (selStash->id >= maxSelfPages))	break;
-			if (selStash->isShared && (selStash->id >= maxSharedPages)) break;
+			if (selStash->id >= maxSelfPages) break;
 			selStash = selStash->nextStash ? selStash->nextStash : addStash(ptChar, PCPY->showSharedStash);;
 		}
 	}

@@ -22,7 +22,6 @@
 #include "Common.h"
 
 bool active_PlayerCustomData = true;
-bool openSharedStashOnLoading = false;
 
 Stash* locateStashFromItem(Unit* ptChar, Unit* currentItem, Stash* currentStash, Stash* stashToSearch)
 {
@@ -78,15 +77,8 @@ void __stdcall updateClientPlayerOnLoading(Unit* ptChar)
 	log_msg("--- Start update client on loading ---\n");
 	if (!D2Client::IsExpansion()) return;
 	
-	// The shared stash option is disabled in multiplayer. Thus override parameter if needed.
-	bool actuallyOpenSharedStashOnLoading = !inMultiplayerGame(ptChar) ? openSharedStashOnLoading : 0;
-	PCPY->showSharedStash = actuallyOpenSharedStashOnLoading;
-	selectStash(ptChar, actuallyOpenSharedStashOnLoading ? PCPY->sharedStash : PCPY->selfStash, true);
-	
-	if (!inMultiplayerGame(ptChar))
-	{
-		updateClient(ptChar, UC_SHARED_GOLD, PCPY->sharedGold, 0, 0);
-	}
+	selectStash(ptChar, PCPY->selfStash, true);
+
 	log_msg("--- End update client on loading ---\n\n");
 }
 

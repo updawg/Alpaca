@@ -17,7 +17,6 @@
 #include "LoadPlayerData.h"
 #include "InfinityStash.h"
 #include "ExtendedSaveFile.h"
-#include "SharedSaveFile.h"
 #include "Common.h"
 
 DWORD __stdcall LoadSPCustomData(Unit* ptChar)
@@ -43,12 +42,6 @@ DWORD __stdcall LoadSPCustomData(Unit* ptChar)
 		data = readExtendedSaveFile(PCPlayerData->name, &size);
 		ret = loadExtendedSaveFile(ptChar, data, size);
 		D2FogMemDeAlloc(data,__FILE__,__LINE__,0);
-		if (!ret)
-		{
-			data = readSharedSaveFile(PCPlayerData->name, &size);
-			ret = loadSharedSaveFile(ptChar, data, size);
-			D2FogMemDeAlloc(data,__FILE__,__LINE__,0);
-		}
 	} else {
 		log_msg("is not LOD Game\n");
 	}

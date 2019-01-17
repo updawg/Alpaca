@@ -21,7 +21,6 @@
 #include "Utility.h"
 
 void* stashBtnsImages = NULL;
-void* sharedGoldBtnsImages = NULL;
 
 DWORD __stdcall isModFile (char* filename)
 {
@@ -107,10 +106,8 @@ void loadImagesFile(void** images, const char* name)
 void __stdcall loadCustomImages()
 {
 	const char* stashBtnsFile = "StashBtns";
-	const char* sharedGoldBtnsFile = "SharedGoldBtns";
 
 	loadImagesFile(&stashBtnsImages, stashBtnsFile);
-	loadImagesFile(&sharedGoldBtnsImages, sharedGoldBtnsFile);
 }
 
 #define freeImagesFile(I) if(I) {D2FreeImage(I);I=NULL;}
@@ -118,7 +115,6 @@ void __stdcall loadCustomImages()
 void __stdcall freeCustomImages()
 {
 	freeImagesFile(stashBtnsImages);
-	freeImagesFile(sharedGoldBtnsImages);
 }
 
 FCT_ASM ( caller_loadCustomImages )

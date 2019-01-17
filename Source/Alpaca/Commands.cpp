@@ -31,7 +31,6 @@ const char* CMD_INSERT_PAGE = "/insert";
 const char* CMD_DELETE_PAGE = "/delete";
 const char* CMD_SELECT_PAGE = "/page";
 const char* CMD_SWAP = "/swap";
-const char* CMD_TOGGLE = "/toggle";
 
 void maxGold(Unit* ptChar)
 {
@@ -191,21 +190,6 @@ int __stdcall commands(char* ptText)
 		updateServer(US_SWAP1 + (page & 0xFF00));
 		updateServer(US_SWAP0 + ((page & 0xFF) << 8));
 		return 0;
-	}
-	
-	if (!strncmp(command, CMD_TOGGLE, strlen(CMD_TOGGLE)))
-	{
-		if (!inMultiplayerGame())
-		{
-			int page = atoi(&command[strlen(CMD_TOGGLE)]) - 1;
-			if (page < 0)
-				return 1;
-			updateServer(US_SWAP3 + ((page & 0xFF000000) >> 16));
-			updateServer(US_SWAP2 + ((page & 0xFF0000) >> 8));
-			updateServer(US_SWAP1 + (page & 0xFF00));
-			updateServer(US_SWAP0_TOGGLE + ((page & 0xFF) << 8));
-			return 0;
-		}
 	}
 
 	return 1;
