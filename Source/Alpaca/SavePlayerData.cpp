@@ -40,9 +40,6 @@ void __stdcall SaveSPPlayerCustomData(Unit* ptChar)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-#define TC_SAVE_PERSONAL 0
-#define TC_SAVE_SHARED 1
-
 #pragma pack(1)
 typedef struct {
 	BYTE	packID;
@@ -60,9 +57,6 @@ struct s_MPSaveFile
 	int		sizeExtended;
 	int		curExtended;
 	BYTE*	dataExtended;
-	int		sizeShared;
-	int		curShared;
-	BYTE*	dataShared;
 };
 static s_MPSaveFile receivedSaveFiles;
 static BYTE customPackID = 0xB2;
@@ -74,9 +68,6 @@ struct s_dataToSend
 	int		sizeExtended;
 	int		curExtended;
 	BYTE*	dataExtended;
-	int		sizeShared;
-	int		curShared;
-	BYTE*	dataShared;
 	bool	init;
 };
 s_dataToSend* ptDataToSend=NULL;
@@ -88,8 +79,6 @@ void __stdcall SendSaveFilesToSave( Unit* ptChar )
 
 	DWORD curSizeExt = 0;
 	BYTE* dataExt = NULL;
-	DWORD curSizeShr = 0;
-	BYTE* dataShr = NULL;
 
 	if (PCPY->selfStashIsOpened)
 	{
@@ -117,13 +106,9 @@ void __stdcall SendSaveFilesToSave( Unit* ptChar )
 	dataToSend->sizeExtended = curSizeExt;
 	dataToSend->curExtended = 0;
 	dataToSend->dataExtended = dataExt;
-	dataToSend->sizeShared = curSizeShr;
-	dataToSend->curShared = 0;
-	dataToSend->dataShared = dataShr;
 
-	// TODO: COME BACK
-	log_msg("clientID=%d\t init=%d\t sizeExtended=%X\t curExtended=%X\t dataExtended=%X\t sizeShared=%X\t curShared=%X\t dataShared=%08X\n", 
-		dataToSend->clientID, dataToSend->init, dataToSend->sizeExtended, dataToSend->curExtended, dataToSend->dataExtended, dataToSend->sizeShared, dataToSend->curShared, dataToSend->dataShared);
+	log_msg("clientID=%d\t init=%d\t sizeExtended=%X\t curExtended=%X\t dataExtended=%X\n", 
+		dataToSend->clientID, dataToSend->init, dataToSend->sizeExtended, dataToSend->curExtended, dataToSend->dataExtended);
 
 	log_msg("End SendSaveFilesToSave.\n\n");
 }

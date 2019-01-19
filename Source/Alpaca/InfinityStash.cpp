@@ -354,9 +354,9 @@ void swapStashMetadata(Stash* currentStash, Stash* targetStash)
 	currentStash->name = targetStash->name;
 	targetStash->name = tempName;
 
-	// Do not switch the "flags" variable since this will cause problems
-	// due to the personal/shared stashes. Just flip the individual indexes,
-	// and let the system automatically compute the proper flag number.
+	// We are only flipping the individual properties vs setting the "flags".
+	// Previously we didn't use "flags" because of personal/shared problems.
+	// But it's more specific to flip the individual properties anyways.
 
 	// Index
 	DWORD tempIndex = currentStash->isIndex;

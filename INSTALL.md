@@ -16,8 +16,3 @@ and no Admin Mode is needed.
 If you get this error message, ensure you have the VC++ 2017 Redistributable
 installed. I've provided copies of Microsoft's redistributables for your
 convenience in the "Other" directory.
-
-### Nothing happens when I start the game
-
-This could occur for many reasons as well. You should make sure that
-your video settings are properly configured for D2 (Either Direct 3D or Glide).

@@ -34,7 +34,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
 		// fully starts, thus by the time you can attach your debugger to Game.exe,
 		// all of this code already finished. So we can use the MessageBox trick.
 		// Thanks to Necrolis @ PhrozenKeep for bringing this trick up.
-		MessageBox(GetActiveWindow(), "The Alpacas have arrived!", "Alpaca", MB_APPLMODAL);
+		//MessageBox(GetActiveWindow(), "The Alpacas have arrived!", "Alpaca", MB_APPLMODAL);
 
 		LibraryLoader::Init();
 		InitializeDiabloFunctions();

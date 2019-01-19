@@ -120,9 +120,6 @@ struct s_MPSaveFile
 	int sizeExtended;
 	int curExtended;
 	BYTE* dataExtended;
-	int sizeShared;
-	int curShared;
-	BYTE* dataShared;
 	s_MPSaveFile* prev;
 	s_MPSaveFile* next;
 	bool completed;
@@ -135,7 +132,6 @@ void freeCurrentCF(DWORD memoryPool, s_MPSaveFile** curSF)
 {
 	if (*curSF == NULL) return;
 	D2FreeMem(memoryPool, (*curSF)->dataExtended,__FILE__,__LINE__,0);
-	D2FreeMem(memoryPool, (*curSF)->dataShared, __FILE__, __LINE__, 0);
 
 	if ((*curSF)->next)
 		(*curSF)->next->prev = (*curSF)->prev;
@@ -169,8 +165,6 @@ void sendData(BYTE* data, DWORD size)
 
 static DWORD	sizeExtended;
 static BYTE*	dataExtended;
-static DWORD	sizeShared;
-static BYTE*	dataShared;
 
 void __fastcall SendSaveFiles(char* ptPath, DWORD maxsize, char* name)
 {
@@ -223,8 +217,7 @@ DWORD __stdcall ReceiveSaveFiles (DWORD clientID, t_rcvMsg* msg)
 	log_msg("curSF = %08X\tcurSF->completed = %d\n", curSF, curSF->completed);
 
 	DWORD size = msg->packSize - 1;
-	
-	// Only the personal stash is loaded in LAN games.
+
 	if (curSF->sizeExtended == 0)
 	{
 		curSF->sizeExtended = msg->finalSize;
@@ -256,11 +249,11 @@ DWORD __stdcall LoadMPCustomData(Unit* ptChar)
 	if (!D2Client::IsExpansion()) return 0;
 	if (!ptChar) return NULL;
 	if (!ptChar)
-		{log_msg("LoadMPCustomData : ptChar == NULL\n");return 0x1B;}//Unknow failure
+		{log_msg("LoadMPCustomData : ptChar == NULL\n");return 0x1B;} //Unknown failure
 	if (ptChar->nUnitType != UNIT_PLAYER)
-		{log_msg("LoadMPCustomData : ptChar->nUnitType != UNIT_PLAYER\n");return 0x1B;}//Unknow failure
+		{log_msg("LoadMPCustomData : ptChar->nUnitType != UNIT_PLAYER\n");return 0x1B;} //Unknown failure
 	if (!PCPlayerData)
-		{log_msg("LoadMPCustomData : PCPlayerData == NULL\n");return 0x1B;}//Unknow failure
+		{log_msg("LoadMPCustomData : PCPlayerData == NULL\n");return 0x1B;} //Unknown failure
 
 	NetClient* ptClient = D2GetClient(ptChar,__FILE__,__LINE__);
 

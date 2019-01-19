@@ -147,6 +147,8 @@ void LoadParameters()
 
 		init_General(iniFile, buffer, BUFFER_SIZE);
 		init_MainMenu(iniFile, buffer, BUFFER_SIZE);
+
+		log_msg("\n");
 	}
 
 	if (iniFile)
