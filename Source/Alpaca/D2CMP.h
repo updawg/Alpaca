@@ -22,10 +22,6 @@ class D2CMP : public Library<D2CMP>
 {
 public:
 	static void Init();
-
-	typedef DWORD(__stdcall *TD2CMP10014) (void* image);
-
-	static TD2CMP10014 D2CMP10014;
 private:
 	static void SetFunctions();
 };

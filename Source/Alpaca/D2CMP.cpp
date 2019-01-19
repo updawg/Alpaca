@@ -25,7 +25,5 @@ void D2CMP::Init()
 
 void D2CMP::SetFunctions()
 {
-	D2CMP10014 = (TD2CMP10014)GetAddress(0x2750);
-}
 
-D2CMP::TD2CMP10014 D2CMP::D2CMP10014;
+}
