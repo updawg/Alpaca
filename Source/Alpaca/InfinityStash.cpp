@@ -53,20 +53,6 @@ DWORD endStashList(Unit* ptChar, Stash* ptStash)
 	return 1;
 }
 
-// Gets the first stash for the corresponding stash (Personal or Shared)
-// If you pass true to isFlipped, it will return the alternate first stash.
-Stash* getCorrespondingFirstStash(Unit* ptChar, bool isFlipped)
-{
-	if (!isFlipped)
-	{
-		return PCPY->currentStash->isShared ? PCPY->sharedStash : PCPY->selfStash;
-	}
-	else
-	{
-		return PCPY->currentStash->isShared ? PCPY->selfStash : PCPY->sharedStash;
-	}
-}
-
 Stash* getLastStash(Stash* ptStash)
 {
 	Stash* stash = ptStash;
@@ -407,15 +393,7 @@ void swapStash(Unit* ptChar, Stash* curStash, Stash* swpStash)
 	updateSelectedStashClient(ptChar);
 }
 
-void toggleStash(Unit* ptChar, DWORD page)
-{
-	log_msg("toggle stash page = %u\n", page);
-	Stash* curStash = PCPY->currentStash;
-	Stash* swpStash = curStash->isShared ? PCPY->selfStash : PCPY->sharedStash;
-	swapStash(ptChar, curStash, swpStash);
-}
-
-void swapStash(Unit* ptChar, DWORD targetPageIndex, bool toggle)
+void swapStash(Unit* ptChar, DWORD targetPageIndex)
 {
 	log_msg("swap stash page = %u\n", targetPageIndex);
 
@@ -425,7 +403,7 @@ void swapStash(Unit* ptChar, DWORD targetPageIndex, bool toggle)
 	Stash* curStash = PCPY->currentStash;
 
 	// Get the stash we want to swap to (on the opposite type), the reference starts at id 0 (aka Page 1).
-	Stash* swpStash = getCorrespondingFirstStash(ptChar, toggle);
+	Stash* swpStash = PCPY->selfStash;
 
 	// Loop through each page until we get up to the page we want to toggle our items into
 	// in the opposite stash type, each stash in between needs to be allocated so that our

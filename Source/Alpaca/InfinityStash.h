@@ -33,7 +33,7 @@ void selectNextStash(Unit* ptChar);
 void selectPreviousIndexStash(Unit* ptChar);
 void selectNextIndexStash(Unit* ptChar);
 
-void swapStash(Unit* ptChar, DWORD targetPageIndex, bool toggle);
+void swapStash(Unit* ptChar, DWORD targetPageIndex);
 void renameCurrentStash(Unit* ptChar, char* name);
 
 void rememberLastSelectedStash(Unit* ptChar, Stash* selectedStash, bool isRunningDuringInit);
@@ -44,7 +44,6 @@ Stash* addStash(Unit* ptChar, bool isShared);
 DWORD loadStashList(Unit* ptChar, BYTE* data, DWORD maxSize, DWORD* curSize, bool isShared);
 void saveStashList(Unit* ptChar, Stash* ptStash, BYTE** data, DWORD* maxSize, DWORD* curSize);
 
-Stash* getCorrespondingFirstStash(Unit* ptChar, bool isFlipped = false);
 Stash* createStashesUpToPageIndex(Unit* ptChar, Stash* currentStash, DWORD targetPageIndex);
 
 void Install_MultiPageStash();
