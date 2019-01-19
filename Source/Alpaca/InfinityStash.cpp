@@ -94,8 +94,7 @@ Stash* addStash(Unit* ptChar)
 		PCPY->selfStash = stash;
 	}
 	
-	log_msg("AddStash: stash->id=%d\tstash->isShared=%d\tstash->previous=%08X\tnbSelf=%d\n",
-		stash->id,stash->isShared,stash->previousStash,PCPY->nbSelfPages);
+	log_msg("AddStash: stash->id=%d\tstash->previous=%08X\tnbSelf=%d\n", stash->id, stash->previousStash, PCPY->nbSelfPages);
 	
 	return stash;
 }
@@ -117,7 +116,7 @@ int changeToSelectedStash_110(Unit* ptChar, Stash* newStash, DWORD bOnlyItems, D
 {
 	if (!newStash) return 0;
 
-	log_msg("changeToSelectedStash ID:%d\tshared:%d\tonlyItems:%d\tclient:%d\n", newStash->id, newStash->isShared, bOnlyItems, bIsClient);
+	log_msg("changeToSelectedStash ID:%d\tonlyItems:%d\tclient:%d\n", newStash->id, bOnlyItems, bIsClient);
 
 	Stash* currentStash = PCPY->currentStash;
 	if (currentStash == newStash) return 0;
@@ -256,7 +255,7 @@ void saveStash(Unit* ptChar, Stash* ptStash, BYTE** data, DWORD* maxSize, DWORD*
 
 	//Get first item
 	Unit* ptItem;
-	if ((ptStash->id == PCPY->currentStash->id) && (ptStash->isShared == PCPY->currentStash->isShared))
+	if ((ptStash->id == PCPY->currentStash->id))
 		ptItem = D2InventoryGetFirstItem(PCInventory);
 	else
 		ptItem = ptStash->ptListItem;
@@ -359,15 +358,12 @@ void swapStashMetadata(Stash* currentStash, Stash* targetStash)
 	// due to the personal/shared stashes. Just flip the individual indexes,
 	// and let the system automatically compute the proper flag number.
 
-	// Index/Main Index
+	// Index
 	DWORD tempIndex = currentStash->isIndex;
-	DWORD tempMainIndex = currentStash->isMainIndex;
 
 	currentStash->isIndex = targetStash->isIndex;
-	currentStash->isMainIndex = targetStash->isMainIndex;
 
 	targetStash->isIndex = tempIndex;
-	targetStash->isMainIndex = tempMainIndex;
 }
 
 void swapStash(Unit* ptChar, Stash* curStash, Stash* swpStash)
@@ -390,7 +386,7 @@ void swapStash(Unit* ptChar, DWORD targetPageIndex)
 	// Get the current stash
 	Stash* curStash = PCPY->currentStash;
 
-	// Get the stash we want to swap to (on the opposite type), the reference starts at id 0 (aka Page 1).
+	// Get the stash we want to swap to. The reference starts at id 0 (aka Page 1).
 	Stash* swpStash = PCPY->selfStash;
 
 	// Loop through each page until we get up to the page we want to toggle our items into
@@ -429,7 +425,6 @@ void setCurrentStashIndex(Unit* ptChar, int index)
 	if (!PCPY->currentStash)
 		return;
 	PCPY->currentStash->isIndex = index >= 1;
-	PCPY->currentStash->isMainIndex = index == 2;
 	updateSelectedStashClient(ptChar);
 }
 

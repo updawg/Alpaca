@@ -39,7 +39,7 @@ int __stdcall handleServerUpdate(Unit* ptChar, WORD param)
 		case US_SWAP3 :					PageSwap = arg << 24; return 1;
 		case US_SWAP2 :					PageSwap |= arg << 16; return 1;
 		case US_SWAP1 :					PageSwap |= arg << 8; return 1;
-		case US_SWAP0:					swapStash(ptChar, PageSwap | arg); PageSwap = 0; return 1;
+		case US_SWAP:					swapStash(ptChar, PageSwap | arg); PageSwap = 0; return 1;
 		case US_PAGENAME:
 			if (renameIndex == 0)
 				for (int i = 0; i < 16; i++)

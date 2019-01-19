@@ -19,7 +19,6 @@
 enum UpdateClientConst
 {
 	UC_SELECT_STASH=0x18,
-	UC_SHARED_GOLD,
 	UC_PAGE_NAME
 };
 
@@ -36,6 +35,6 @@ enum UpdateServerConst
 	US_SWAP3,
 	US_SWAP2,
 	US_SWAP1,
-	US_SWAP0
+	US_SWAP
 };
 

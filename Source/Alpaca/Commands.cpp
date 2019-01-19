@@ -98,7 +98,7 @@ int __stdcall commands(char* ptText)
 		updateServer(US_SWAP3 + ((page & 0xFF000000) >> 16));
 		updateServer(US_SWAP2 + ((page & 0xFF0000) >> 8));
 		updateServer(US_SWAP1 + (page & 0xFF00));
-		updateServer(US_SWAP0 + ((page & 0xFF) << 8));
+		updateServer(US_SWAP + ((page & 0xFF) << 8));
 		return 0;
 	}
 
