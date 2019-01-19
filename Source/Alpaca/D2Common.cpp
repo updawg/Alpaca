@@ -30,18 +30,14 @@ void D2Common::SetFunctions()
 	D2InvRemoveItem = (TD2InvRemoveItem)GetAddress(0x4E660);
 	D2InventoryGetFirstItem = (TD2InventoryGetFirstItem)GetAddress(0x4E7A0);
 	D2UnitGetNextItem = (TD2UnitGetNextItem)GetAddress(0x52080);
-	D2GetMaxGoldBank = (TD2GetMaxGoldBank)GetAddress(0x82630);
 	D2InitPlayerData = (TD2InitPlayerData)GetAddress(0x80320);
 	D2GetPlayerData = (TD2GetPlayerData)GetAddress(0x805B0);
-	D2GetMaxGold = (TD2GetMaxGold)GetAddress(0x81D90);
 	D2ItemSetPage = (TD2ItemSetPage)GetAddress(0x58900);
 	D2ItemGetPage = (TD2ItemGetPage)GetAddress(0x588E0);
 	D2SaveItem = (TD2SaveItem)GetAddress(0x62BA0);
 	D2ReadFile = (TD2ReadFile)GetAddress(0x84268);
 	D2GetItemLevel = (TD2GetItemLevel)GetAddress(0x58870);
 	D2CompileTxtFile = (TD2CompileTxtFile)compileTxtFile_110;
-	D2AddPlayerStat = (TD2AddPlayerStat)GetAddress(0x77B00);
-	D2GetPlayerStat = (TD2GetPlayerStat)GetAddress(0x77C30);
 	D2GetRealItem = (TD2GetRealItem)GetAddress(0x520C0);
 	D2CompileTxtFileDirect = (TD2CompileTxtFile)GetAddress(0xFD70);
     D2GetItemQuality = (TD2GetItemQuality) GetAddress(0x58550);
@@ -108,8 +104,6 @@ __declspec(naked) void* __stdcall D2Common::compileTxtFile_110(DWORD unused, con
 }
 
 D2Common::TD2CompileTxtFile D2Common::D2CompileTxtFile;
-D2Common::TD2AddPlayerStat D2Common::D2AddPlayerStat;
-D2Common::TD2GetPlayerStat D2Common::D2GetPlayerStat;
 D2Common::TD2GetRealItem D2Common::D2GetRealItem;
 
 DWORD D2Common::ptPYPlayerDataOffset;
@@ -126,10 +120,8 @@ D2Common::TD2InvAddItem D2Common::D2InvAddItem;
 D2Common::TD2InvRemoveItem D2Common::D2InvRemoveItem;
 D2Common::TD2InventoryGetFirstItem D2Common::D2InventoryGetFirstItem;
 D2Common::TD2UnitGetNextItem D2Common::D2UnitGetNextItem;
-D2Common::TD2GetMaxGoldBank D2Common::D2GetMaxGoldBank;
 D2Common::TD2InitPlayerData D2Common::D2InitPlayerData;
 D2Common::TD2GetPlayerData D2Common::D2GetPlayerData;
-D2Common::TD2GetMaxGold D2Common::D2GetMaxGold;
 D2Common::TD2CompileTxtFile D2Common::D2CompileTxtFileDirect;
 D2Common::TD2GetItemQuality D2Common::D2GetItemQuality;
 D2Common::TD2GetUniqueID D2Common::D2GetUniqueID;
