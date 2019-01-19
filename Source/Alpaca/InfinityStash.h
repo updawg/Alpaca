@@ -18,9 +18,8 @@
 
 #include "Common.h"
 
-extern DWORD maxSelfPages;
-extern DWORD nbPagesPerIndex;
-extern DWORD nbPagesPerIndex2;
+extern const DWORD maxSelfPages;
+extern const DWORD nbPagesPerIndex;
 
 extern bool displaySharedSetItemNameInGreen;
 extern const int posXPreviousBtn;
@@ -42,10 +41,6 @@ void selectPreviousStash(Unit* ptChar);
 void selectNextStash(Unit* ptChar);
 void selectPreviousIndexStash(Unit* ptChar);
 void selectNextIndexStash(Unit* ptChar);
-void selectPrevious2Stash(Unit* ptChar);
-void selectNext2Stash(Unit* ptChar);
-void selectPreviousIndex2Stash(Unit* ptChar);
-void selectNextIndex2Stash(Unit* ptChar);
 
 void swapStash(Unit* ptChar, DWORD targetPageIndex, bool toggle);
 void renameCurrentStash(Unit* ptChar, char* name);

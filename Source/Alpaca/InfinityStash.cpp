@@ -22,9 +22,8 @@
 #define STASH_TAG 0x5453			//"ST"
 #define JM_TAG 0x4D4A 				//"JM"
 
-DWORD maxSelfPages = 9;
-DWORD nbPagesPerIndex = 10;
-DWORD nbPagesPerIndex2 = 100;
+const DWORD maxSelfPages = 9;
+const DWORD nbPagesPerIndex = 5;
 
 typedef int (*TchangeToSelectedStash)(Unit* ptChar, Stash* newStash, DWORD bOnlyItems, DWORD bIsClient);
 TchangeToSelectedStash changeToSelectedStash;
@@ -580,13 +579,6 @@ void selectPreviousStash(Unit* ptChar)
 	}
 }
 
-void selectPrevious2Stash(Unit* ptChar)// Select first stash
-{
-	Stash* selStash = PCPY->showSharedStash ? PCPY->sharedStash : PCPY->selfStash;
-	if (selStash && (selStash != PCPY->currentStash))
-		selectStash(ptChar, selStash);
-}
-
 void selectNextStash(Unit* ptChar)
 {
 	Stash* selStash = PCPY->currentStash;
@@ -621,22 +613,6 @@ void rememberLastSelectedStash(Unit* ptChar, Stash* selectedStash, bool isRunnin
 	}
 }
 
-void selectNext2Stash(Unit* ptChar)//select last stash
-{
-	Stash* selStash = PCPY->showSharedStash ? PCPY->sharedStash : PCPY->selfStash;//PCPY->currentStash;
-	Stash* lastStash = NULL;
-	Unit* currentStashItem = firstClassicStashItem(ptChar);
-	while (selStash)
-	{
-		if (selStash->ptListItem || (selStash == PCPY->currentStash) && currentStashItem) lastStash=selStash;
-		selStash = selStash->nextStash;
-	}
-	if (!lastStash)
-		lastStash = PCPY->showSharedStash ? PCPY->sharedStash : PCPY->selfStash;
-	if (lastStash != PCPY->currentStash)
-		selectStash(ptChar, lastStash);
-}
-
 void selectPreviousIndexStash(Unit* ptChar)
 {
 	selectPreviousStash(ptChar);
@@ -655,24 +631,6 @@ void selectPreviousIndexStash(Unit* ptChar)
 		selectStash(ptChar, selStash);
 }
 
-void selectPreviousIndex2Stash(Unit* ptChar)
-{
-	selectPreviousStash(ptChar);
-	Stash* selStash = PCPY->currentStash;
-	while (selStash && !selStash->isMainIndex)
-		selStash = selStash->previousStash;
-
-	if (selStash == NULL)
-	{
-		selStash = PCPY->currentStash;
-		while (selStash->previousStash && ((selStash->id+1) % nbPagesPerIndex2 != 0))
-			selStash = selStash->previousStash;
-	}
-
-	if (selStash && (selStash != PCPY->currentStash))
-		selectStash(ptChar, selStash);
-}
-
 void selectNextIndexStash(Unit* ptChar)
 {
 	selectNextStash(ptChar);
@@ -684,26 +642,6 @@ void selectNextIndexStash(Unit* ptChar)
 	{
 		selStash = PCPY->currentStash;
 		while ((selStash->id + 1) % nbPagesPerIndex != 0)
-		{
-			if (selStash->id >= maxSelfPages) break;
-			selStash = selStash->nextStash ? selStash->nextStash : addStash(ptChar, PCPY->showSharedStash);;
-		}
-	}
-	if (selStash && (selStash != PCPY->currentStash))
-		selectStash(ptChar, selStash);
-}
-
-void selectNextIndex2Stash(Unit* ptChar)
-{
-	selectNextStash(ptChar);
-	Stash* selStash = PCPY->currentStash;
-	while (selStash && !selStash->isMainIndex)
-		selStash = selStash->nextStash;
-
-	if (selStash == NULL)
-	{
-		selStash = PCPY->currentStash;
-		while ((selStash->id+1) % nbPagesPerIndex2 != 0)
 		{
 			if (selStash->id >= maxSelfPages) break;
 			selStash = selStash->nextStash ? selStash->nextStash : addStash(ptChar, PCPY->showSharedStash);;

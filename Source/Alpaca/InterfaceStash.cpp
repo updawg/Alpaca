@@ -24,40 +24,30 @@
 
 static struct
 {
-	union{
+	union {
 		DWORD all;
-		struct{
+		struct {
 			DWORD previous:1;
 			DWORD next:1;
-			DWORD previousIndex:1;
-			DWORD nextIndex:1;
 		};
 	};
 } isDownBtn;
 
 // Display Set Item Names In Green
-// This is so that if you have a set item in your personal stash
-// or shared stash, the game will be able to see your set items
-// (and show you that you have the set item), anywhere in any of
-// of your stashes.
+// This is so that if you have a set item in any page of your stash
+// the game will be able to see your set items (and show you that you
+// have the set item), anywhere in any of of your stashes.
 bool displaySharedSetItemNameInGreen = true;
 
 const int defaultButtonPositionValue = -1;
-
 const int posXPreviousBtn = defaultButtonPositionValue;
 const int posYPreviousBtn = defaultButtonPositionValue;
 const int posXNextBtn = defaultButtonPositionValue;
 const int posYNextBtn = defaultButtonPositionValue;
-const int posXPreviousIndexBtn = defaultButtonPositionValue;
-const int posYPreviousIndexBtn = defaultButtonPositionValue;
-const int posXNextIndexBtn = defaultButtonPositionValue;
-const int posYNextIndexBtn = defaultButtonPositionValue;
 
 // Localization Strings (English Only)
-WCHAR* STR_STASH_PREVIOUS_PAGE = L"Previous Page (+Shift: First Page)";
-WCHAR* STR_STASH_NEXT_PAGE = L"Next Page (+Shift: Last not empty Page)";
-WCHAR* STR_STASH_PREVIOUS_INDEX = L"Previous Index : By %d Pages (+Shift: %d)";
-WCHAR* STR_STASH_NEXT_INDEX = L"Next Index : By %d Pages (+Shift: %d)";
+WCHAR* STR_STASH_PREVIOUS_PAGE = L"Previous Page (Shift: Previous Index)";
+WCHAR* STR_STASH_NEXT_PAGE = L"Next Page (Shift: Next Index)";
 WCHAR* STR_PERSONAL_PAGE_NUMBER = L"Page - %u";
 WCHAR* STR_NO_SELECTED_PAGE = L"No page selected";
 
@@ -71,20 +61,8 @@ DWORD	getXNextBtn()			{return RX(posXNextBtn<0 ? D2GetResolution()?0xA0:0xCF :po
 DWORD	getYNextBtn()			{return RY(posYNextBtn<0 ? 0x40 : posYNextBtn);}
 #define	getHNextBtn()			32
 
-DWORD	getXPreviousIndexBtn()	{return RX(posXPreviousIndexBtn<0 ?  D2GetResolution()?0x60:0x8F :posXPreviousIndexBtn);}
-#define	getLPreviousIndexBtn()	32
-DWORD	getYPreviousIndexBtn()	{return RY(posYPreviousIndexBtn<0 ? 0x40 : posYPreviousIndexBtn);}
-#define	getHPreviousIndexBtn()	32
-
-DWORD	getXNextIndexBtn()		{return RX(posXNextIndexBtn<0? D2GetResolution()?0xC0:0xEF : posXNextIndexBtn);}
-#define	getLNextIndexBtn()		32
-DWORD	getYNextIndexBtn()		{return RY(posYNextIndexBtn<0 ? 0x40 : posYNextIndexBtn);}
-#define	getHNextIndexBtn()		32
-
 #define isOnButtonNextStash(x,y) isOnRect(x, y, getXNextBtn(), getYNextBtn(), getLNextBtn(), getHNextBtn())
 #define isOnButtonPreviousStash(x,y) isOnRect(x, y, getXPreviousBtn(), getYPreviousBtn(), getLPreviousBtn(), getHPreviousBtn())
-#define isOnButtonNextIndexStash(x,y) isOnRect(x, y, getXNextIndexBtn(), getYNextIndexBtn(), getLNextIndexBtn(), getHNextIndexBtn())
-#define isOnButtonPreviousIndexStash(x,y) isOnRect(x, y, getXPreviousIndexBtn(), getYPreviousIndexBtn(), getLPreviousIndexBtn(), getHPreviousIndexBtn())
 
 void* __stdcall printBtns()
 {
@@ -101,15 +79,8 @@ void* __stdcall printBtns()
 
 	setFrame(&data, 2 + isDownBtn.next);
 	D2PrintImage(&data, getXNextBtn(), getYNextBtn(), -1, 5, 0);
-
-	setFrame(&data, 8 + isDownBtn.previousIndex);
-	D2PrintImage(&data, getXPreviousIndexBtn(), getYPreviousIndexBtn(), -1, 5, 0);
-
-	setFrame(&data, 10 + isDownBtn.nextIndex);
-	D2PrintImage(&data, getXNextIndexBtn(), getYNextIndexBtn(), -1, 5, 0);
 	
 	LPWSTR lpText;
-	WCHAR text[100];
 	DWORD mx = D2GetMouseX();
 	DWORD my = D2GetMouseY();
 
@@ -125,16 +96,6 @@ void* __stdcall printBtns()
 		lpText = STR_STASH_NEXT_PAGE;
 		D2PrintPopup(lpText, getXNextBtn() + getLNextBtn() / 2, getYNextBtn() - getHNextBtn(), WHITE, 1);
 	}
-	else if (isOnButtonPreviousIndexStash(mx, my))
-	{
-		_snwprintf(text, sizeof(text), STR_STASH_PREVIOUS_INDEX, nbPagesPerIndex, nbPagesPerIndex2);
-		D2PrintPopup(text, getXPreviousIndexBtn() + getLPreviousIndexBtn() / 2, getYPreviousIndexBtn() - getHPreviousIndexBtn(), 0, 0);
-	}
-	else if (isOnButtonNextIndexStash(mx, my))
-	{
-		_snwprintf(text, sizeof(text), STR_STASH_NEXT_INDEX, nbPagesPerIndex, nbPagesPerIndex2);
-		D2PrintPopup(text, getXNextIndexBtn() + getLNextIndexBtn() / 2, getYNextIndexBtn() - getHNextIndexBtn(), WHITE, 1);
-	}
 
 	return D2LoadBuySelBtn();
 }
@@ -143,16 +104,18 @@ DWORD __stdcall manageBtnDown(sWinMessage* msg)
 {
 	if (!D2Client::IsExpansion()) return 0;
 
-	if (isOnButtonPreviousStash(msg->x,msg->y))
+	if (isOnButtonPreviousStash(msg->x, msg->y))
+	{
 		isDownBtn.previous = 1;
-	else if (isOnButtonNextStash(msg->x,msg->y))
+	}
+	else if (isOnButtonNextStash(msg->x, msg->y))
+	{
 		isDownBtn.next = 1;
-	else if (isOnButtonPreviousIndexStash(msg->x,msg->y))
-		isDownBtn.previousIndex = 1;
-	else if (isOnButtonNextIndexStash(msg->x,msg->y))
-		isDownBtn.nextIndex = 1;
-	
-	else return 0;
+	}
+	else
+	{
+		return 0;
+	}
 
 	D2PlaySound(4, 0, 0, 0, 0);
 	
@@ -170,39 +133,32 @@ DWORD __stdcall manageBtnUp(sWinMessage* msg)
 	{
 		log_msg("push up left button previous\n");
 		if (isDownBtn.previous)
-			if (GetKeyState(VK_SHIFT)<0)
-				updateServer(US_SELECT_PREVIOUS2);
+		{
+			if (GetKeyState(VK_SHIFT) < 0)
+			{
+				updateServer(US_SELECT_PREVIOUS_INDEX);
+			}
 			else
+			{
 				updateServer(US_SELECT_PREVIOUS);
+			}
+		}
 	}
 	else if (isOnButtonNextStash(msg->x,msg->y))
 	{
 		log_msg("push up left button next\n");
 		if (isDownBtn.next)
-			if (GetKeyState(VK_SHIFT)<0)
-				updateServer(US_SELECT_NEXT2);
-			else
-				updateServer(US_SELECT_NEXT);
-	}
-	else if (isOnButtonPreviousIndexStash(msg->x,msg->y))
-	{
-		log_msg("select left button previous index\n");
-		if (isDownBtn.previousIndex)
-			if (GetKeyState(VK_SHIFT)<0)
-				updateServer(US_SELECT_PREVIOUS_INDEX2);
-			else
-				updateServer(US_SELECT_PREVIOUS_INDEX);
-	}
-	else if (isOnButtonNextIndexStash(msg->x,msg->y))
-	{
-		log_msg("push up left button next index\n");
-		if (isDownBtn.nextIndex)
-			if (GetKeyState(VK_SHIFT)<0)
-				updateServer(US_SELECT_NEXT_INDEX2);
-			else
+		{
+			if (GetKeyState(VK_SHIFT) < 0)
+			{
 				updateServer(US_SELECT_NEXT_INDEX);
+			}
+			else
+			{
+				updateServer(US_SELECT_NEXT);
+			}
+		}
 	}
-	
 	else
 	{
 		return 0;

@@ -40,10 +40,6 @@ int __stdcall handleServerUpdate(Unit* ptChar, WORD param)
 		case US_SELECT_SHARED :			toggleToSharedStash( ptChar ); return 1;
 		case US_SELECT_PREVIOUS_INDEX :	selectPreviousIndexStash( ptChar ); return 1;
 		case US_SELECT_NEXT_INDEX :		selectNextIndexStash( ptChar ); return 1;
-		case US_SELECT_PREVIOUS2 :		selectPrevious2Stash( ptChar ); return 1;
-		case US_SELECT_NEXT2 :			selectNext2Stash( ptChar ); return 1;
-		case US_SELECT_PREVIOUS_INDEX2:	selectPreviousIndex2Stash( ptChar ); return 1;
-		case US_SELECT_NEXT_INDEX2 :	selectNextIndex2Stash( ptChar ); return 1;
 		case US_INSERT_PAGE:			insertStash(ptChar); selectNextStash(ptChar); return 1;
 		case US_DELETE_PAGE:			deleteStash(ptChar, false); return 1;
 		case US_SELECT_PAGE3:			PageSelect = arg << 24; return 1;

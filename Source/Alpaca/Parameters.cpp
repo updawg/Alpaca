@@ -50,7 +50,6 @@ const char* S_AlpacaVersionColor = "ColorOfAlpacaVersionText";
 
 const char* S_STASH = "STASH";
 const char* S_nbPagesPerIndex = "NumberOfPagesPerIndex";
-const char* S_nbPagesPerIndex2 = "NumberOfPagesPerIndexWhenShiftPressed";
 
 // Convert 4 char code in a DWORD code
 #define BIN(A,B,C,D) ((DWORD)A) + (((DWORD)B) << 8) + (((DWORD)C) << 16) + (((DWORD)D) << 24)
@@ -132,19 +131,6 @@ void init_MainMenu(INIFile* iniFile, char* buffer, DWORD maxSize)
 	LogParameterBooleanValue(S_active_logFile, active_logFileIniOriginal);
 }
 
-void init_Stash(INIFile* iniFile, char* buffer, DWORD maxSize)
-{
-	GetValueFromIni(iniFile, S_STASH, S_nbPagesPerIndex, "10", buffer, maxSize);
-	nbPagesPerIndex = atoi(buffer);
-	LogParameterIntegerValue(S_nbPagesPerIndex, nbPagesPerIndex);
-
-	GetValueFromIni(iniFile, S_STASH, S_nbPagesPerIndex2, "100", buffer, maxSize);
-	nbPagesPerIndex2 = atoi(buffer);
-	LogParameterIntegerValue(S_nbPagesPerIndex2, nbPagesPerIndex2);
-
-	log_msg("\n");
-}
-
 void LoadParameters()
 {
 	char buffer[BUFFER_SIZE];
@@ -161,11 +147,6 @@ void LoadParameters()
 	{
 		init_General(iniFile, buffer, BUFFER_SIZE);
 		init_MainMenu(iniFile, buffer, BUFFER_SIZE);
-		init_Stash(iniFile, buffer, BUFFER_SIZE);
-	}
-	else
-	{
-		log_msg("There was an error opening the config file. The game will run with the Alpaca Defaults!\n\n");
 	}
 
 	if (iniFile)
