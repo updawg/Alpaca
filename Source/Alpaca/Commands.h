@@ -18,9 +18,4 @@
 
 #include "Common.h"
 
-void maxGold(Unit* ptChar);
-void putGold(Unit* ptChar, DWORD amount);
-void takeGold(Unit* ptChar, DWORD amount);
-void updateSharedGold(DWORD goldAmount);
-
 void Install_Commands();

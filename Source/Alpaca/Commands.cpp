@@ -26,65 +26,7 @@
 const char* CMD_RENAME_PAGE = "/rename";
 const char* CMD_SET_INDEX = "/set";
 const char* CMD_UNSET_INDEX = "/unset";
-const char* CMD_SET_MAIN_INDEX = "/setmain";
-const char* CMD_INSERT_PAGE = "/insert";
-const char* CMD_DELETE_PAGE = "/delete";
-const char* CMD_SELECT_PAGE = "/page";
 const char* CMD_SWAP = "/swap";
-
-void maxGold(Unit* ptChar)
-{
-	log_msg("maxGold\n");
-
-	DWORD maxGold =     D2GetMaxGold(ptChar);
-	DWORD maxGoldBank = D2GetMaxGoldBank(ptChar);
-	DWORD playerGold = D2GetPlayerStat(ptChar, STATS_GOLD, 0);
-	DWORD playerGoldBank = D2GetPlayerStat(ptChar, STATS_GOLDBANK, 0);
-	if ( (playerGold < maxGold) || (playerGoldBank < maxGoldBank) ) {
-		D2AddPlayerStat( ptChar, STATS_GOLD,	 maxGold-playerGold, 0 );
-		D2AddPlayerStat( ptChar, STATS_GOLDBANK, maxGoldBank-playerGoldBank, 0 );
-	} else {
-		D2AddPlayerStat( ptChar, STATS_GOLD,	 100000, 0 );
-	}
-
-	PCPY->sharedGold = 0xFFFFFFFF;
-	updateClient(ptChar, UC_SHARED_GOLD, PCPY->sharedGold, 0, 0);
-}
-
-void putGold(Unit* ptChar, DWORD amount)
-{
-	log_msg("putGold : %d\n", amount);
-
-	DWORD playerGold = D2GetPlayerStat(ptChar, STATS_GOLD, 0);
-	DWORD toAdd = 0xFFFFFFFF - PCPY->sharedGold;
-	if (playerGold < toAdd)
-		toAdd = playerGold;
-	if (amount && (toAdd > amount))
-		toAdd = amount;
-	D2AddPlayerStat(ptChar, STATS_GOLD, 0 - toAdd, 0);
-	PCPY->sharedGold += toAdd;
-	updateClient(ptChar, UC_SHARED_GOLD, PCPY->sharedGold, 0, 0);
-}
-
-void takeGold(Unit* ptChar, DWORD amount)
-{
-	log_msg("takeGold : %d\n", amount);
-
-	DWORD maxGold = D2GetMaxGold(ptChar) - D2GetPlayerStat(ptChar, STATS_GOLD, 0);
-	DWORD toAdd = maxGold < PCPY->sharedGold ? maxGold : PCPY->sharedGold;
-	if (amount && (toAdd > amount))
-		toAdd = amount;
-	D2AddPlayerStat(ptChar, STATS_GOLD, toAdd, 0);
-	PCPY->sharedGold -= toAdd;
-	updateClient(ptChar, UC_SHARED_GOLD, PCPY->sharedGold, 0, 0);
-}
-
-void updateSharedGold(DWORD goldAmount)
-{
-	Unit* ptChar = D2GetClientPlayer();
-	log_msg("SharedGold = %d\n",goldAmount);
-	PCPY->sharedGold = goldAmount;
-}
 
 int __stdcall commands(char* ptText)
 {
@@ -140,41 +82,9 @@ int __stdcall commands(char* ptText)
 		return 0;
 	}
 
-	if (!strcmp(command, CMD_SET_MAIN_INDEX))
-	{
-		updateServer(US_SET_MAIN_INDEX);
-		return 0;
-	}
-
 	if (!strcmp(command, CMD_UNSET_INDEX))
 	{
 		updateServer(US_UNSET_INDEX);
-		return 0;
-	}
-
-	if (!strcmp(command, CMD_INSERT_PAGE))
-	{
-		insertStash(ptChar);
-		updateServer(US_INSERT_PAGE);
-		return 0;
-	}
-
-	if (!strcmp(command, CMD_DELETE_PAGE))
-	{
-		if (deleteStash(ptChar, true))
-			updateServer(US_DELETE_PAGE);
-		return 0;
-	}
-
-	if (!strncmp(command, CMD_SELECT_PAGE, strlen(CMD_SELECT_PAGE)))
-	{
-		int page = atoi(&command[strlen(CMD_SELECT_PAGE)]) - 1;
-		if (page < 0)
-			return 1;
-		updateServer(US_SELECT_PAGE3 + ((page & 0xFF000000) >> 16));
-		updateServer(US_SELECT_PAGE2 + ((page & 0xFF0000) >> 8));
-		updateServer(US_SELECT_PAGE1 + (page & 0xFF00));
-		updateServer(US_SELECT_PAGE + ((page & 0xFF) << 8));
 		return 0;
 	}
 

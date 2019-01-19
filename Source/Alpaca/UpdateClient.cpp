@@ -68,7 +68,6 @@ DWORD __fastcall handleClientUpdate(DataPacket* packet)
 	switch (packet->mFunc)
 	{
 	case UC_SELECT_STASH:	 setSelectedStashClient(packet->mParam1, packet->mParam2, packet->mParam3, (packet->mParam2 & 8) == 8); return 1;
-	case UC_SHARED_GOLD :	 updateSharedGold(packet->mParam1); return 1;
 	case UC_PAGE_NAME:		 renameCurrentStash(D2GetClientPlayer(), (char*)&packet->mItemID); return 1;
 	default : return 0;
 	}

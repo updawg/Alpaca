@@ -27,15 +27,6 @@ extern const int posYPreviousBtn;
 extern const int posXNextBtn;
 extern const int posYNextBtn;
 
-extern const int posXPreviousIndexBtn;
-extern const int posYPreviousIndexBtn;
-extern const int posXNextIndexBtn;
-extern const int posYNextIndexBtn;
-
-void toggleToSharedStash(Unit* ptChar);
-void toggleToSelfStash(Unit* ptChar);
-void toggleAndSelectStash(Unit* ptChar, Stash* selectedStash, bool showSharedStash);
-
 void setCurrentStashIndex(Unit* ptChar, int index);
 void selectPreviousStash(Unit* ptChar);
 void selectNextStash(Unit* ptChar);
@@ -44,9 +35,7 @@ void selectNextIndexStash(Unit* ptChar);
 
 void swapStash(Unit* ptChar, DWORD targetPageIndex, bool toggle);
 void renameCurrentStash(Unit* ptChar, char* name);
-void insertStash(Unit* ptChar);
-bool deleteStash(Unit* ptChar, bool isClient);
-void jumpToPage(Unit* ptChar, DWORD targetPageIndex);
+
 void rememberLastSelectedStash(Unit* ptChar, Stash* selectedStash, bool isRunningDuringInit);
 void selectStash(Unit* ptChar, Stash* newStash, bool isRunningDuringInit = false);
 void setSelectedStashClient(DWORD stashId, DWORD stashFlags, DWORD flags, bool bOnlyItems);

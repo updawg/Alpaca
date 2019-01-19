@@ -358,20 +358,6 @@ void selectStash(Unit* ptChar, Stash* newStash, bool isRunningDuringInit)
 	rememberLastSelectedStash(ptChar, newStash, isRunningDuringInit);
 }
 
-// Jumps to the target page
-void jumpToPage(Unit* ptChar, DWORD targetPageIndex)
-{
-	bool isShared = PCPY->currentStash->isShared;
-	Stash* targetStash = getStash(ptChar, isShared, targetPageIndex);
-
-	if (targetStash == NULL)
-	{
-		targetStash = createStashesUpToPageIndex(ptChar, getCorrespondingFirstStash(ptChar), targetPageIndex);
-	}
-
-	selectStash(ptChar, targetStash);
-}
-
 // Creates all the pages up to a page index
 Stash* createStashesUpToPageIndex(Unit* ptChar, Stash* currentStash, DWORD targetPageIndex)
 {
@@ -385,48 +371,6 @@ Stash* createStashesUpToPageIndex(Unit* ptChar, Stash* currentStash, DWORD targe
 	}
 
 	return currentStash;
-}
-
-///// public functions
-void toggleToSelfStash(Unit* ptChar)
-{
-	Stash* selStash = NULL;
-	
-	if (PCPY->lastSelectedSelfStash != NULL)
-	{
-		selStash = PCPY->lastSelectedSelfStash;
-	}
-	else
-	{
-		selStash = PCPY->selfStash;
-	}
-
-	toggleAndSelectStash(ptChar, selStash, false);
-}
-
-void toggleToSharedStash(Unit* ptChar)
-{
-	Stash* selStash = NULL;
-
-	if (PCPY->lastSelectedSharedStash != NULL)
-	{
-		selStash = PCPY->lastSelectedSharedStash;
-	}
-	else
-	{
-		selStash = PCPY->sharedStash;
-	}
-
-	toggleAndSelectStash(ptChar, selStash, true);
-}
-
-void toggleAndSelectStash(Unit* ptChar, Stash* selectedStash, bool showSharedStash)
-{
-	if (selectedStash && (selectedStash != PCPY->currentStash))
-	{
-		PCPY->showSharedStash = showSharedStash;
-		selectStash(ptChar, selectedStash);
-	}
 }
 
 // Swaps the stash metadata
@@ -475,6 +419,8 @@ void swapStash(Unit* ptChar, DWORD targetPageIndex, bool toggle)
 {
 	log_msg("swap stash page = %u\n", targetPageIndex);
 
+	if (targetPageIndex > maxSelfPages) return;
+
 	// Get the current stash
 	Stash* curStash = PCPY->currentStash;
 
@@ -489,55 +435,6 @@ void swapStash(Unit* ptChar, DWORD targetPageIndex, bool toggle)
 	// Now that we've arrived at stash page we want to switch our
 	// items to in the opposite stash type, go ahead and do the swap.
 	swapStash(ptChar, curStash, swpStash);
-}
-
-void insertStash(Unit* ptChar)
-{
-	Stash* curStash = PCPY->currentStash;
-	Stash* stash = addStash(ptChar, curStash->isShared);
-	while (stash->previousStash != curStash) 
-	{
-		stash->flags = stash->previousStash->flags;
-		stash->name = stash->previousStash->name;
-		stash->ptListItem = stash->previousStash->ptListItem;
-		stash = stash->previousStash;
-	}
-	stash->isIndex = 0;
-	stash->isMainIndex = 0;
-	stash->name = NULL;
-	stash->ptListItem = NULL;
-}
-
-bool deleteStash(Unit* ptChar, bool isClient)
-{
-	if (firstClassicStashItem(ptChar) != NULL)
-		return false;
-
-	Stash* stash = PCPY->currentStash;
-	if (stash->nextStash == NULL)
-	{
-		stash->isIndex = 0;
-		stash->isMainIndex = 0;
-		stash->name = NULL;
-		return true;
-	}
-	stash->flags = stash->nextStash->flags;
-	stash->name = stash->nextStash->name;
-	if (stash->nextStash->ptListItem != NULL)
-		changeToSelectedStash(ptChar, stash->nextStash, 1, isClient);
-	stash = stash->nextStash;
-	while (stash->nextStash)
-	{
-		stash->flags = stash->nextStash->flags;
-		stash->name = stash->nextStash->name;
-		stash->ptListItem = stash->nextStash->ptListItem;
-		stash = stash->nextStash;
-	}
-	stash->isIndex = 0;
-	stash->isMainIndex = 0;
-	stash->name = NULL;
-	stash->ptListItem = NULL;
-	return true;
 }
 
 void renameCurrentStash(Unit* ptChar, char* name)
