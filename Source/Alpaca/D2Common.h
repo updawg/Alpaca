@@ -30,7 +30,6 @@ public:
 	typedef Unit* (__stdcall *TD2UnitGetNextItem) (Unit* ptItem);
 	typedef Unit* (__stdcall *TD2GetRealItem) (Unit* ptUnit);
 	typedef PlayerData* (__stdcall *TD2InitPlayerData) (Unit* ptChar);
-	typedef PlayerData* (__stdcall *TD2GetPlayerData) (Unit* ptChar);
 	typedef void* (__stdcall *TD2CompileTxtFile) (DWORD unused, const char* filename, BINField* ptFields, DWORD* ptRecordCount, DWORD recordLength);
 	typedef void(__stdcall *TD2ItemSetPage) (Unit* ptItem, BYTE page);
 	typedef BYTE(__stdcall *TD2ItemGetPage) (Unit* ptUnit);
@@ -47,7 +46,6 @@ public:
 	static TD2UnitGetNextItem D2UnitGetNextItem;
 	static TD2GetRealItem D2GetRealItem;
 	static TD2InitPlayerData D2InitPlayerData;
-	static TD2GetPlayerData D2GetPlayerData;
 	static TD2GetItemLevel D2GetItemLevel;
 	static TD2GetItemQuality D2GetItemQuality;
 	static TD2GetUniqueID D2GetUniqueID;

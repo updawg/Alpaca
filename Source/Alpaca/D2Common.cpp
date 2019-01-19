@@ -31,7 +31,6 @@ void D2Common::SetFunctions()
 	D2InventoryGetFirstItem = (TD2InventoryGetFirstItem)GetAddress(0x4E7A0);
 	D2UnitGetNextItem = (TD2UnitGetNextItem)GetAddress(0x52080);
 	D2InitPlayerData = (TD2InitPlayerData)GetAddress(0x80320);
-	D2GetPlayerData = (TD2GetPlayerData)GetAddress(0x805B0);
 	D2ItemSetPage = (TD2ItemSetPage)GetAddress(0x58900);
 	D2ItemGetPage = (TD2ItemGetPage)GetAddress(0x588E0);
 	D2SaveItem = (TD2SaveItem)GetAddress(0x62BA0);
@@ -121,7 +120,6 @@ D2Common::TD2InvRemoveItem D2Common::D2InvRemoveItem;
 D2Common::TD2InventoryGetFirstItem D2Common::D2InventoryGetFirstItem;
 D2Common::TD2UnitGetNextItem D2Common::D2UnitGetNextItem;
 D2Common::TD2InitPlayerData D2Common::D2InitPlayerData;
-D2Common::TD2GetPlayerData D2Common::D2GetPlayerData;
 D2Common::TD2CompileTxtFile D2Common::D2CompileTxtFileDirect;
 D2Common::TD2GetItemQuality D2Common::D2GetItemQuality;
 D2Common::TD2GetUniqueID D2Common::D2GetUniqueID;
