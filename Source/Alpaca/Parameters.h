@@ -20,7 +20,7 @@
 #define PROGRAM_VERSION "3.0.3"
 #define PROGRAM_AUTHOR_NAME "Jonathan Vasquez"
 #define PROGRAM_AUTHOR_ALIAS "fearedbliss"
-#define PROGRAM_BUILD_DATE "January 19, 2019 @ 10:43 ET"
+#define PROGRAM_BUILD_DATE "January 19, 2019 @ 13:58 ET"
 
 extern char* modDataDirectory;
 extern bool active_plugin;

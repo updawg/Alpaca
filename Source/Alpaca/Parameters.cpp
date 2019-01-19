@@ -138,13 +138,13 @@ void LoadParameters()
 
 	srand((UINT)time(NULL));
 
-	log_msg("Parameters\n");
-	log_msg("====================================\n");
-
 	bool wasFileSuccessfullyOpened = iniFile->InitReadWrite(parametersFileName, INIFILE_READ, 0);
 
 	if (wasFileSuccessfullyOpened)
 	{
+		log_msg("Parameters\n");
+		log_msg("====================================\n");
+
 		init_General(iniFile, buffer, BUFFER_SIZE);
 		init_MainMenu(iniFile, buffer, BUFFER_SIZE);
 	}

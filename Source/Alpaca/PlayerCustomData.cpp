@@ -56,20 +56,7 @@ Stash* locateStashFromItem(Unit* ptChar, Unit* currentItem, Stash* currentStash,
 Stash* getStashFromItem(Unit* ptChar, Unit* ptItem)
 {
 	Stash* locatedStash = locateStashFromItem(ptChar, ptItem, PCPY->selfStash, PCPY->currentStash);
-
-	if (locatedStash)
-	{
-		return locatedStash;
-	}
-
-	locatedStash = locateStashFromItem(ptChar, ptItem, PCPY->sharedStash, PCPY->currentStash);
-
-	if (locatedStash)
-	{
-		return locatedStash;
-	}
-
-	return NULL;
+	return locatedStash ? locatedStash : NULL;
 }
 
 void __stdcall updateClientPlayerOnLoading(Unit* ptChar)
@@ -94,10 +81,10 @@ void freeStash(Stash* ptStash)
 {
 	if (!ptStash) return;
 	freeStash(ptStash->nextStash);
-	free(ptStash->nextStash);//	D2FogMemDeAlloc(ptStash->nextStash,__FILE__,__LINE__,0);
+	free(ptStash->nextStash);
 	if(ptStash->name)
 	{
-		free(ptStash->name);//D2FogMemDeAlloc(ptStash->name,__FILE__,__LINE__,0);
+		free(ptStash->name);
 		ptStash->name = NULL;
 	}
 	ptStash->nextStash = NULL;
@@ -109,12 +96,8 @@ void __fastcall free_PlayerCustomData(DWORD p1, PlayerData* playerData, LPCSTR f
 	PYPlayerData* ptPYPlayerData = (PYPlayerData*)((DWORD)playerData + shifting.ptPYPlayerData);
 
 	freeStash(ptPYPlayerData->selfStash);
-	free(ptPYPlayerData->selfStash);//D2FogMemDeAlloc(ptPYPlayerData->selfStash,__FILE__,__LINE__,0);
+	free(ptPYPlayerData->selfStash);
 	ptPYPlayerData->selfStash = NULL;
-
-	freeStash(ptPYPlayerData->sharedStash);
-	free(ptPYPlayerData->sharedStash);//D2FogMemDeAlloc(ptPYPlayerData->sharedStash,__FILE__,__LINE__,0);
-	ptPYPlayerData->sharedStash = NULL;
 
 	D2FreeMem(p1,playerData,file,line,p5);
 }
@@ -136,18 +119,6 @@ Unit* __stdcall getNextItemToFree(Unit* ptChar, Unit* ptItem)
 			item = curStash->ptListItem;
 			curStash->ptListItem = NULL;
 			return item;
-		}
-		curStash = curStash->nextStash;
-	}	
-
-	curStash = PCPY->sharedStash;
-	while ( curStash )
-	{
-		if (curStash->ptListItem)
-		{
-			item = curStash->ptListItem;
-			curStash->ptListItem = NULL;
-			return item->nUnitType == 4 ? item : NULL;
 		}
 		curStash = curStash->nextStash;
 	}

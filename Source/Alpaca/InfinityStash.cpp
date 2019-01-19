@@ -76,38 +76,33 @@ Stash* newStash(DWORD id)
 	return stash;
 }
 
-Stash* addStash(Unit* ptChar, bool isShared)
+Stash* addStash(Unit* ptChar)
 {
 	Stash* previous;
 	Stash* stash;
 
-	if (isShared)
-	{
-		previous = getLastStash(PCPY->sharedStash);
-		stash = newStash(PCPY->nbSharedPages++);
-	} else {
-		previous = getLastStash(PCPY->selfStash);
-		stash = newStash(PCPY->nbSelfPages++);
-	}
+	previous = getLastStash(PCPY->selfStash);
+	stash = newStash(PCPY->nbSelfPages++);
 	
-	stash->isShared = isShared;
 	stash->previousStash = previous;
 	if (previous)
+	{
 		previous->nextStash = stash;
-	else if (isShared)
-		PCPY->sharedStash = stash;
+	}
 	else
+	{
 		PCPY->selfStash = stash;
+	}
 	
-	log_msg("AddStash: stash->id=%d\tstash->isShared=%d\tstash->previous=%08X\tnbSelf=%d\tnbShared=%d\n",
-		stash->id,stash->isShared,stash->previousStash,PCPY->nbSelfPages,PCPY->nbSharedPages);
+	log_msg("AddStash: stash->id=%d\tstash->isShared=%d\tstash->previous=%08X\tnbSelf=%d\n",
+		stash->id,stash->isShared,stash->previousStash,PCPY->nbSelfPages);
 	
 	return stash;
 }
 
-Stash* getStash(Unit* ptChar, DWORD isShared, DWORD id)
+Stash* getStash(Unit* ptChar, DWORD id)
 {
-	Stash* ptStash = isShared ? PCPY->sharedStash : PCPY->selfStash;
+	Stash* ptStash = PCPY->selfStash;
 
 	while (ptStash)
 	{
@@ -204,7 +199,7 @@ DWORD loadStash(Unit* ptChar, Stash* ptStash, BYTE data[], DWORD startSize, DWOR
 	return ret;
 }
 
-DWORD loadStashList(Unit* ptChar, BYTE* data, DWORD maxSize, DWORD* curSize, bool isShared)
+DWORD loadStashList(Unit* ptChar, BYTE* data, DWORD maxSize, DWORD* curSize)
 {
 	DWORD curStash = 0;
 	Stash* newStash;
@@ -214,24 +209,17 @@ DWORD loadStashList(Unit* ptChar, BYTE* data, DWORD maxSize, DWORD* curSize, boo
 
 	while (curStash < nbStash)
 	{
-		newStash = addStash(ptChar, isShared);
+		newStash = addStash(ptChar);
 		changeToSelectedStash(ptChar, newStash, 0, false);
 		DWORD ret = loadStash(ptChar, newStash, data, *curSize, 10000000, curSize);
 		if (ret) return ret;
 		curStash++;
 	}
 
-	if (!isShared && !PCPY->selfStash)
+	if (!PCPY->selfStash)
 	{
-		newStash = addStash(ptChar, isShared);
+		newStash = addStash(ptChar);
 		PCPY->currentStash = newStash;
-	}
-	
-	if (isShared && !PCPY->sharedStash)
-	{
-		newStash = addStash(ptChar, isShared);
-		if (!PCPY->currentStash)
-			PCPY->currentStash = newStash;
 	}
 
 	return 0;
@@ -327,9 +315,9 @@ void setSelectedStashClient(DWORD stashId, DWORD stashFlags, DWORD flags, bool b
 {
 	log_msg("setSelectedStashClient ID:%d, stashFlags:%d, flags:%08X\n", stashId, stashFlags, flags);
 	Unit* ptChar = D2GetClientPlayer();
-	Stash* newStash = getStash(ptChar, (stashFlags & 1) == 1, stashId);
+	Stash* newStash = getStash(ptChar, stashId);
 	if (!newStash) do
-		newStash = addStash(ptChar, (stashFlags & 1) == 1);
+		newStash = addStash(ptChar);
 	while (newStash->id < stashId);
 	newStash->flags = stashFlags;
 	changeToSelectedStash(ptChar, newStash, bOnlyItems, 1);
@@ -351,7 +339,7 @@ Stash* createStashesUpToPageIndex(Unit* ptChar, Stash* currentStash, DWORD targe
 	{
 		if (currentStash->nextStash == NULL)
 		{
-			addStash(ptChar, currentStash->isShared);
+			addStash(ptChar);
 		}
 		currentStash = currentStash->nextStash;
 	}
@@ -459,7 +447,7 @@ void selectNextStash(Unit* ptChar)
 	Stash* selStash = PCPY->currentStash;
 	if (selStash->id >= maxSelfPages) return;
 
-	selStash = selStash->nextStash ? selStash->nextStash : addStash(ptChar, PCPY->showSharedStash);
+	selStash = selStash->nextStash ? selStash->nextStash : addStash(ptChar);
 
 	if (selStash && (selStash != PCPY->currentStash))
 	{
@@ -478,14 +466,7 @@ void rememberLastSelectedStash(Unit* ptChar, Stash* selectedStash, bool isRunnin
 	// game session.
 	if (isRunningDuringInit) return;
 
-	if (selectedStash->isShared)
-	{
-		PCPY->lastSelectedSharedStash = selectedStash;
-	}
-	else
-	{
-		PCPY->lastSelectedSelfStash = selectedStash;
-	}
+	PCPY->lastSelectedSelfStash = selectedStash;
 }
 
 void selectPreviousIndexStash(Unit* ptChar)
@@ -519,7 +500,7 @@ void selectNextIndexStash(Unit* ptChar)
 		while ((selStash->id + 1) % nbPagesPerIndex != 0)
 		{
 			if (selStash->id >= maxSelfPages) break;
-			selStash = selStash->nextStash ? selStash->nextStash : addStash(ptChar, PCPY->showSharedStash);;
+			selStash = selStash->nextStash ? selStash->nextStash : addStash(ptChar);;
 		}
 	}
 	if (selStash && (selStash != PCPY->currentStash))
@@ -542,10 +523,7 @@ Unit* __stdcall getNextItem(Unit* ptChar, Unit* ptItem)
 		case 0: curStash2 = PCPY->selfStash;
 				currentSawStash2 = 1;
 				break;
-		case 1: curStash2 = PCPY->sharedStash;
-				currentSawStash2 = 2;
-				break;
-		default: return NULL;//case 2:
+		default: return NULL;
 		}
 	} else {
 		curStash2 = curStash2->nextStash;

@@ -40,8 +40,8 @@ void rememberLastSelectedStash(Unit* ptChar, Stash* selectedStash, bool isRunnin
 void selectStash(Unit* ptChar, Stash* newStash, bool isRunningDuringInit = false);
 void setSelectedStashClient(DWORD stashId, DWORD stashFlags, DWORD flags, bool bOnlyItems);
 
-Stash* addStash(Unit* ptChar, bool isShared);
-DWORD loadStashList(Unit* ptChar, BYTE* data, DWORD maxSize, DWORD* curSize, bool isShared);
+Stash* addStash(Unit* ptChar);
+DWORD loadStashList(Unit* ptChar, BYTE* data, DWORD maxSize, DWORD* curSize);
 void saveStashList(Unit* ptChar, Stash* ptStash, BYTE** data, DWORD* maxSize, DWORD* curSize);
 
 Stash* createStashesUpToPageIndex(Unit* ptChar, Stash* currentStash, DWORD targetPageIndex);

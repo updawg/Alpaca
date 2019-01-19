@@ -80,7 +80,7 @@ int loadExtendedSaveFile(Unit* ptChar, BYTE data[], DWORD maxSize)
 	curSize += 1;
 	curSize += 3;
 
-	int ret = loadStashList(ptChar, data, maxSize, &curSize, false);
+	int ret = loadStashList(ptChar, data, maxSize, &curSize);
 
 	PCPY->selfStashIsOpened = true;
 	return ret;

@@ -249,10 +249,6 @@ Unit* __stdcall getNextItemForSet(Unit* ptItem)
 			curStash = PCPY->selfStash;
 			currentSawStash = displaySharedSetItemNameInGreen ? 1 : 2;
 			break;
-		case 1:
-			curStash = PCPY->sharedStash;
-			currentSawStash = 2;
-			break;
 		default:
 			return NULL;
 		}
