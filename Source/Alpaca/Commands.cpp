@@ -26,6 +26,7 @@
 const char* CMD_RENAME_PAGE = "/rename";
 const char* CMD_SET_INDEX = "/set";
 const char* CMD_UNSET_INDEX = "/unset";
+const char* CMD_SELECT_PAGE = "/page";
 const char* CMD_SWAP = "/swap";
 
 int __stdcall commands(char* ptText)
@@ -88,17 +89,29 @@ int __stdcall commands(char* ptText)
 		return 0;
 	}
 
+	if (!strncmp(command, CMD_SELECT_PAGE, strlen(CMD_SELECT_PAGE)))
+	{
+		int page = atoi(&command[strlen(CMD_SELECT_PAGE)]) - 1;
+		if (!isStashPageValid(page)) return 1;
+
+		updateServer(US_SELECT_PAGE3 + ((page & 0xFF000000) >> 16));
+		updateServer(US_SELECT_PAGE2 + ((page & 0xFF0000) >> 8));
+		updateServer(US_SELECT_PAGE1 + (page & 0xFF00));
+		updateServer(US_SELECT_PAGE + ((page & 0xFF) << 8));
+
+		return 0;
+	}
+
 	if (!strncmp(command, CMD_SWAP, strlen(CMD_SWAP)))
 	{
 		int page = atoi(&command[strlen(CMD_SWAP)]) - 1;
-		if (page < 0 && PCPY->currentStash->nextStash)
-			page = PCPY->currentStash->nextStash->id;
-		if (page < 0)
-			return 1;
+		if (!isStashPageValid(page)) return 1;
+
 		updateServer(US_SWAP3 + ((page & 0xFF000000) >> 16));
 		updateServer(US_SWAP2 + ((page & 0xFF0000) >> 8));
 		updateServer(US_SWAP1 + (page & 0xFF00));
 		updateServer(US_SWAP + ((page & 0xFF) << 8));
+
 		return 0;
 	}
 

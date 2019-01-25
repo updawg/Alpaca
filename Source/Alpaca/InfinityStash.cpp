@@ -22,8 +22,9 @@
 #define STASH_TAG 0x5453			//"ST"
 #define JM_TAG 0x4D4A 				//"JM"
 
-const DWORD maxSelfPages = 9;
-const DWORD nbPagesPerIndex = 5;
+const DWORD maxSelfPages = 99;
+const DWORD nbPagesPerIndex = 10;
+const DWORD nbPagesJump = 5;
 
 typedef int (*TchangeToSelectedStash)(Unit* ptChar, Stash* newStash, DWORD bOnlyItems, DWORD bIsClient);
 TchangeToSelectedStash changeToSelectedStash;
@@ -53,17 +54,6 @@ DWORD endStashList(Unit* ptChar, Stash* ptStash)
 	return 1;
 }
 
-Stash* getLastStash(Stash* ptStash)
-{
-	Stash* stash = ptStash;
-	
-	if (!stash) return NULL;
-	while (stash->nextStash)
-		stash = stash->nextStash;
-	
-	return stash;
-}
-
 Stash* newStash(DWORD id)
 {
 	d2_assert( id == 0xFFFFFFFF , "Too much stash", __FILE__, __LINE__);
@@ -76,12 +66,25 @@ Stash* newStash(DWORD id)
 	return stash;
 }
 
+Stash* getStash(Unit* ptChar, DWORD id)
+{
+	Stash* ptStash = PCPY->selfStash;
+
+	while (ptStash)
+	{
+		if (ptStash->id == id) return ptStash;
+		ptStash = ptStash->nextStash;
+	}
+
+	return NULL;
+}
+
 Stash* addStash(Unit* ptChar)
 {
 	Stash* previous;
 	Stash* stash;
 
-	previous = getLastStash(PCPY->selfStash);
+	previous = getStash(ptChar, PCPY->nbSelfPages - 1);
 	stash = newStash(PCPY->nbSelfPages++);
 	
 	stash->previousStash = previous;
@@ -99,17 +102,41 @@ Stash* addStash(Unit* ptChar)
 	return stash;
 }
 
-Stash* getStash(Unit* ptChar, DWORD id)
+// Jumps to the page that is 'nbPagesJump' backwards from the current stash.
+void selectPreviousStashJump(Unit* ptChar)
 {
-	Stash* ptStash = PCPY->selfStash;
-
-	while (ptStash)
+	Stash* selStash = PCPY->currentStash;
+	if (selStash)
 	{
-		if (ptStash->id == id) return ptStash;
-		ptStash = ptStash->nextStash;
+		int targetPage = PCPY->currentStash->id - nbPagesJump;
+		if (targetPage < 0)
+		{
+			targetPage = 0;
+		}
+		jumpToPage(ptChar, targetPage);
 	}
+}
 
-	return NULL;
+// Jumps to the page that is 'nbPagesJump' forward from the current stash.
+void selectNextStashJump(Unit* ptChar)
+{
+	Stash* selStash = PCPY->currentStash;
+	if (selStash)
+	{
+		int targetPage = PCPY->currentStash->id + nbPagesJump;
+
+		// Adjust target page if starting at Page 1 (So that it goes beautifully by 5s)
+		if (PCPY->currentStash->id == 0)
+		{
+			targetPage--;
+		}
+
+		if (targetPage > maxSelfPages)
+		{
+			targetPage = maxSelfPages;
+		}
+		jumpToPage(ptChar, targetPage);
+	}
 }
 
 int changeToSelectedStash_110(Unit* ptChar, Stash* newStash, DWORD bOnlyItems, DWORD bIsClient)
@@ -331,6 +358,20 @@ void selectStash(Unit* ptChar, Stash* newStash, bool isRunningDuringInit)
 	rememberLastSelectedStash(ptChar, newStash, isRunningDuringInit);
 }
 
+// Jumps to the target page
+void jumpToPage(Unit* ptChar, DWORD targetPageIndex)
+{
+	Stash* targetStash = getStash(ptChar, targetPageIndex);
+
+	if (targetStash == NULL)
+	{
+		targetStash = createStashesUpToPageIndex(ptChar, PCPY->selfStash, targetPageIndex);
+	}
+
+	selectStash(ptChar, targetStash);
+}
+
+
 // Creates all the pages up to a page index
 Stash* createStashesUpToPageIndex(Unit* ptChar, Stash* currentStash, DWORD targetPageIndex)
 {
@@ -380,8 +421,6 @@ void swapStash(Unit* ptChar, Stash* curStash, Stash* swpStash)
 void swapStash(Unit* ptChar, DWORD targetPageIndex)
 {
 	log_msg("swap stash page = %u\n", targetPageIndex);
-
-	if (targetPageIndex > maxSelfPages) return;
 
 	// Get the current stash
 	Stash* curStash = PCPY->currentStash;
@@ -563,6 +602,11 @@ DWORD __stdcall carry1Limit(Unit* ptChar, Unit* ptItemParam, DWORD itemNum, BYTE
 		}
 	}
 	return 0;
+}
+
+bool isStashPageValid(int pageIndex)
+{
+	return (pageIndex < 0 || pageIndex > maxSelfPages) ? false : true;
 }
 
 FCT_ASM ( caller_initGetNextItem )

@@ -1,6 +1,6 @@
 ## Installation
 
-1. Copy all the files in the "1. Files" folder to the root of your Diablo II directory.
+1. Copy all the files in the "Files" folder to the root of your Diablo II directory.
 2. Open D2GFEx.ini and add "Alpaca.dll" to one of the "LoadDll" lines.
 3. Start up "Game.exe".
 
@@ -13,6 +13,4 @@ and no Admin Mode is needed.
 
 ### MSVCP140.dll is Missing
 
-If you get this error message, ensure you have the VC++ 2017 Redistributable
-installed. I've provided copies of Microsoft's redistributables for your
-convenience in the "Other" directory.
+If you get this error message, ensure you have the VC++ 2017 Redistributable installed.

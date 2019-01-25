@@ -46,8 +46,8 @@ const int posXNextBtn = defaultButtonPositionValue;
 const int posYNextBtn = defaultButtonPositionValue;
 
 // Localization Strings (English Only)
-WCHAR* STR_STASH_PREVIOUS_PAGE = L"Previous Page (Shift: Previous Index)";
-WCHAR* STR_STASH_NEXT_PAGE = L"Next Page (Shift: Next Index)";
+WCHAR* STR_STASH_PREVIOUS_PAGE = L"Previous Page (Shift: Previous Index [%d], Ctrl: Page By [%d])";
+WCHAR* STR_STASH_NEXT_PAGE = L"Next Page (Shift: Next Index [%d], Ctrl: Page By [%d])";
 WCHAR* STR_PERSONAL_PAGE_NUMBER = L"Page - %u";
 WCHAR* STR_NO_SELECTED_PAGE = L"No page selected";
 
@@ -79,8 +79,8 @@ void* __stdcall printBtns()
 
 	setFrame(&data, 2 + isDownBtn.next);
 	D2PrintImage(&data, getXNextBtn(), getYNextBtn(), -1, 5, 0);
-	
-	LPWSTR lpText;
+
+	WCHAR text[100];
 	DWORD mx = D2GetMouseX();
 	DWORD my = D2GetMouseY();
 
@@ -88,13 +88,13 @@ void* __stdcall printBtns()
 
 	if (isOnButtonPreviousStash(mx, my))
 	{
-		lpText = STR_STASH_PREVIOUS_PAGE;
-		D2PrintPopup(lpText, getXPreviousBtn() + getLPreviousBtn() / 2, getYPreviousBtn() - getHPreviousBtn(), WHITE, 1);
+		_snwprintf(text, sizeof(text), STR_STASH_PREVIOUS_PAGE, nbPagesPerIndex, nbPagesJump);
+		D2PrintPopup(text, getXPreviousBtn() + getLPreviousBtn() / 2, getYPreviousBtn() - getHPreviousBtn(), WHITE, 1);
 	}
 	else if (isOnButtonNextStash(mx, my))
 	{
-		lpText = STR_STASH_NEXT_PAGE;
-		D2PrintPopup(lpText, getXNextBtn() + getLNextBtn() / 2, getYNextBtn() - getHNextBtn(), WHITE, 1);
+		_snwprintf(text, sizeof(text), STR_STASH_NEXT_PAGE, nbPagesPerIndex, nbPagesJump);
+		D2PrintPopup(text, getXNextBtn() + getLNextBtn() / 2, getYNextBtn() - getHNextBtn(), WHITE, 1);
 	}
 
 	return D2LoadBuySelBtn();
@@ -138,6 +138,10 @@ DWORD __stdcall manageBtnUp(sWinMessage* msg)
 			{
 				updateServer(US_SELECT_PREVIOUS_INDEX);
 			}
+			else if (GetKeyState(VK_CONTROL) < 0)
+			{
+				updateServer(US_SELECT_PREVIOUS_JUMP);
+			}
 			else
 			{
 				updateServer(US_SELECT_PREVIOUS);
@@ -152,6 +156,10 @@ DWORD __stdcall manageBtnUp(sWinMessage* msg)
 			if (GetKeyState(VK_SHIFT) < 0)
 			{
 				updateServer(US_SELECT_NEXT_INDEX);
+			}
+			else if (GetKeyState(VK_CONTROL) < 0)
+			{
+				updateServer(US_SELECT_NEXT_JUMP);
 			}
 			else
 			{

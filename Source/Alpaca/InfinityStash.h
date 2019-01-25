@@ -20,6 +20,7 @@
 
 extern const DWORD maxSelfPages;
 extern const DWORD nbPagesPerIndex;
+extern const DWORD nbPagesJump;
 
 extern bool displaySharedSetItemNameInGreen;
 extern const int posXPreviousBtn;
@@ -32,9 +33,13 @@ void selectPreviousStash(Unit* ptChar);
 void selectNextStash(Unit* ptChar);
 void selectPreviousIndexStash(Unit* ptChar);
 void selectNextIndexStash(Unit* ptChar);
+void selectPreviousStashJump(Unit* ptChar);
+void selectNextStashJump(Unit* ptChar);
 
 void swapStash(Unit* ptChar, DWORD targetPageIndex);
 void renameCurrentStash(Unit* ptChar, char* name);
+void jumpToPage(Unit* ptChar, DWORD targetPageIndex);
+bool isStashPageValid(int pageIndex);
 
 void rememberLastSelectedStash(Unit* ptChar, Stash* selectedStash, bool isRunningDuringInit);
 void selectStash(Unit* ptChar, Stash* newStash, bool isRunningDuringInit = false);

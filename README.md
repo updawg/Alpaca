@@ -4,12 +4,13 @@
 
 ## Synopsis
 
-Alpaca is an Extended Stash Mod for **`Diablo II: Lord of Destruction - v 1.10`**
+Alpaca is an **`Infinite Stash`** for **`Diablo II: Lord of Destruction - v 1.10`**
 that was based off Yohann Nicolas' **[PlugY](http://plugy.free.fr/en/index.html) 11.02**.
-Alpaca is a massively refactored, stabilized, and minimal version of PlugY's Extended
-Stash functionality. It was exclusively designed to work in conjunction
-with Necrolis' Native OpenGL Diablo II Driver: **[D2GFEx](https://d2mods.info/forum/viewtopic.php?f=5&t=65312)**.
-Alpaca is also compatible with my Diablo II Version Switcher: **[Cactus](https://github.com/fearedbliss/Cactus)**.
+It has been massively refactored, stabilized, and is a minimal version of PlugY's core
+feature, Infinite Stash. All Non-Stash features have been removed since they are outside the
+scope of the project. Alpaca was also exclusively designed to work in conjunction with Necrolis'
+Native OpenGL Diablo II Driver: **[D2GFEx](https://d2mods.info/forum/viewtopic.php?f=5&t=65312)**.
+Lastly, Alpaca is also compatible with my Diablo II Version Switcher: **[Cactus](https://github.com/fearedbliss/Cactus)**.
 
 ## Requirements
 
@@ -23,12 +24,13 @@ PlugY is licensed under the GPLv3, However, Alpaca has a License Exemption and i
 
 #### Core
 
-- Increased Stash Size (10x10)
-- 10 Additional Stash Pages Per Character
+- Increased Stash Size to **`(10x10)`**
+- **`100`** Additional Stash Pages Per Character
 
 #### Stash Management Commands
 
-- `/rename <name>` : Renames the current stash page. (If left blank, deletes the page name).
-- `/set` : Marks the current stash page with an index.
-- `/unset` : Removes the current stash page's index.
-- `/swap <page #>` : Swaps the content of the current page with the content of the target page.
+- **`/rename <name>`** : Renames the current stash page. (If left blank, deletes the page name).
+- **`/set`** : Marks the current stash page with an index.
+- **`/unset`** : Removes the current stash page's index.
+- **`/swap <page #>`** : Swaps the content of the current page with the content of the target page.
+- **`/page <page #>`** : Takes you to the corresponding page.
