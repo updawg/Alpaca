@@ -38,7 +38,6 @@ public:
 	typedef DWORD(__stdcall *TD2GetMouseY) ();
 	typedef Unit* (__stdcall *TD2GetClientPlayer) ();
 	typedef void(__fastcall *TD2SendToServer3) (BYTE type, WORD p);
-	typedef LPWSTR(__fastcall *TD2SetColorPopup) (LPWSTR popupText, DWORD color);
 
 	static TD2LoadImage D2LoadImage;
 	static TD2FreeImage D2FreeImage;
@@ -49,7 +48,6 @@ public:
 	static TD2GetMouseY D2GetMouseY;
 	static TD2GetClientPlayer D2GetClientPlayer;
 	static TD2SendToServer3 D2SendToServer3;
-	static TD2SetColorPopup D2SetColorPopup;
 
 	static DWORD ResolutionX();
 	static DWORD ResolutionY();

@@ -35,7 +35,6 @@ void D2Common::SetFunctions()
 	D2ItemGetPage = (TD2ItemGetPage)GetAddress(0x588E0);
 	D2SaveItem = (TD2SaveItem)GetAddress(0x62BA0);
 	D2ReadFile = (TD2ReadFile)GetAddress(0x84268);
-	D2GetItemLevel = (TD2GetItemLevel)GetAddress(0x58870);
 	D2CompileTxtFile = (TD2CompileTxtFile)compileTxtFile_110;
 	D2GetRealItem = (TD2GetRealItem)GetAddress(0x520C0);
 	D2CompileTxtFileDirect = (TD2CompileTxtFile)GetAddress(0xFD70);
@@ -128,4 +127,3 @@ D2Common::TD2ItemSetPage D2Common::D2ItemSetPage;
 D2Common::TD2ItemGetPage D2Common::D2ItemGetPage;
 D2Common::TD2SaveItem D2Common::D2SaveItem;
 D2Common::TD2ReadFile D2Common::D2ReadFile;
-D2Common::TD2GetItemLevel D2Common::D2GetItemLevel;

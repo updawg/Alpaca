@@ -37,7 +37,6 @@ void D2Client::SetFunctions()
 	D2SendToServer3 = (TD2SendToServer3)GetAddress(0xD990);
 	D2GetMouseX = (TD2GetMouseX)GetAddress(0xB7BC0);
 	D2GetMouseY = (TD2GetMouseY)GetAddress(0xB7BD0);
-	D2SetColorPopup = (TD2SetColorPopup)GetAddress(0x80430);
 
 	// Variables [Offset]
 	ptResolutionY = (DWORD*)GetAddress(0xD40F0);
@@ -65,7 +64,6 @@ D2Client::TD2GetMouseX D2Client::D2GetMouseX;
 D2Client::TD2GetMouseY D2Client::D2GetMouseY;
 D2Client::TD2GetClientPlayer D2Client::D2GetClientPlayer;
 D2Client::TD2LoadBuySelBtn D2Client::D2LoadBuySelBtn;
-D2Client::TD2SetColorPopup D2Client::D2SetColorPopup;
 
 DWORD* D2Client::ptResolutionY;
 DWORD* D2Client::ptResolutionX;

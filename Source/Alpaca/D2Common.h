@@ -35,7 +35,6 @@ public:
 	typedef BYTE(__stdcall *TD2ItemGetPage) (Unit* ptUnit);
 	typedef DWORD(__stdcall *TD2SaveItem) (Unit* ptItem, saveBitField* data, DWORD startSize, DWORD p4, DWORD p5, DWORD p6);
 	typedef void* (__fastcall *TD2ReadFile) (DWORD unused, char* filename, DWORD* size, const char*, DWORD);
-	typedef DWORD(__stdcall *TD2GetItemLevel) (Unit* ptItem);
 	typedef DWORD(__stdcall *TD2GetItemQuality) (Unit* ptItem);
 	typedef int(__stdcall *TD2GetUniqueID) (Unit* ptItem);
 	typedef ItemsBIN*(__stdcall *TD2GetItemsBIN) (DWORD itemID);
@@ -46,7 +45,6 @@ public:
 	static TD2UnitGetNextItem D2UnitGetNextItem;
 	static TD2GetRealItem D2GetRealItem;
 	static TD2InitPlayerData D2InitPlayerData;
-	static TD2GetItemLevel D2GetItemLevel;
 	static TD2GetItemQuality D2GetItemQuality;
 	static TD2GetUniqueID D2GetUniqueID;
 	static TD2GetItemsBIN D2GetItemsBIN;
