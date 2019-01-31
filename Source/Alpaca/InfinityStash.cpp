@@ -363,6 +363,8 @@ void jumpToPage(Unit* ptChar, DWORD targetPageIndex)
 {
 	Stash* targetStash = getStash(ptChar, targetPageIndex);
 
+	if (PCPY->currentStash == targetStash) return;
+
 	if (targetStash == NULL)
 	{
 		targetStash = createStashesUpToPageIndex(ptChar, PCPY->selfStash, targetPageIndex);
