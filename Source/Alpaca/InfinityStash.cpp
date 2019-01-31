@@ -22,9 +22,9 @@
 #define STASH_TAG 0x5453			//"ST"
 #define JM_TAG 0x4D4A 				//"JM"
 
-const DWORD maxSelfPages = 99;
-const DWORD nbPagesPerIndex = 10;
-const DWORD nbPagesJump = 5;
+const DWORD maxSelfPages = 49;
+const DWORD nbPagesPerIndex = 5;
+const DWORD nbPagesJump = 10;
 
 typedef int (*TchangeToSelectedStash)(Unit* ptChar, Stash* newStash, DWORD bOnlyItems, DWORD bIsClient);
 TchangeToSelectedStash changeToSelectedStash;

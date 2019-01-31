@@ -1,6 +1,6 @@
-## Alpaca 3.0.4 ([Discord](https://discord.gg/PNJsaPa), [Cactus](https://github.com/fearedbliss/Cactus))
+## Alpaca 3.0.5 ([Discord](https://discord.gg/PNJsaPa), [Cactus](https://github.com/fearedbliss/Cactus))
 ##### Jonathan Vasquez (fearedbliss)
-##### Released on Thursday, January 24, 2019
+##### Released on Wednesday, January 30, 2019
 
 ## Synopsis
 
@@ -25,7 +25,7 @@ PlugY is licensed under the GPLv3, However, Alpaca has a License Exemption and i
 #### Core
 
 - Increased Stash Size to **`(10x10)`**
-- **`100`** Additional Stash Pages Per Character
+- **`50`** Additional Stash Pages Per Character
 
 #### Stash Management Commands
 

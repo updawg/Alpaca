@@ -46,8 +46,8 @@ const int posXNextBtn = defaultButtonPositionValue;
 const int posYNextBtn = defaultButtonPositionValue;
 
 // Localization Strings (English Only)
-WCHAR* STR_STASH_PREVIOUS_PAGE = L"Previous Page (Shift: Previous Index [%d], Ctrl: Page By [%d])";
-WCHAR* STR_STASH_NEXT_PAGE = L"Next Page (Shift: Next Index [%d], Ctrl: Page By [%d])";
+WCHAR* STR_STASH_PREVIOUS_PAGE = L"Previous (Shift: Index Or %d, Ctrl: Page By %d)";
+WCHAR* STR_STASH_NEXT_PAGE = L"Next (Shift: Index Or %d, Ctrl: Page By %d)";
 WCHAR* STR_PERSONAL_PAGE_NUMBER = L"Page - %u";
 WCHAR* STR_NO_SELECTED_PAGE = L"No page selected";
 
