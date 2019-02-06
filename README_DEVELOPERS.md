@@ -3,10 +3,10 @@
 The goal of Alpaca has been to slowly refactor, re-architect, stabilize,
 clean up, and improve the PlugY code base and bring it back to its core
 and central goal of providing a stash extension for Diablo II (using
-a modern compiler toolchain of course, and slowly selectively using
-simple but useful C++ features rather than only having everything as
-ASM/C). I've completed this goal over the past few years that I've developed
-Alpaca, and the below are some tips that I have for people deciding to carry
+a modern compiler toolchain of course), and selectively using simple but
+useful C++ features (where needed) rather than having everything written in
+ASM/C. I've completed this goal over the past few years that I've developed
+Alpaca, and below are some tips that I have for people deciding to carry
 on development in their own branches.
 
 ## Development
