@@ -4,13 +4,16 @@
 
 ## Synopsis
 
-Alpaca is an **`Infinite Stash`** for **`Diablo II: Lord of Destruction - v 1.10`**
+Alpaca is an Infinite Stash for **`Diablo II: Lord of Destruction - v 1.10`**
 that was based off Yohann Nicolas' **[PlugY](http://plugy.free.fr/en/index.html) 11.02**.
-It has been massively refactored, stabilized, and is a minimal version of PlugY's core
-feature, Infinite Stash. All Non-Stash features have been removed since they are outside the
-scope of the project. Alpaca was also exclusively designed to work in conjunction with Necrolis'
-Native OpenGL Diablo II Driver: **[D2GFEx](https://d2mods.info/forum/viewtopic.php?f=5&t=65312)**.
-Lastly, Alpaca is also compatible with my Diablo II Version Switcher: **[Cactus](https://github.com/fearedbliss/Cactus)**.
+It has been massively refactored, stabilized, and exclusively designed to work
+with Necrolis' Native OpenGL Diablo II Driver: **[D2GFEx](https://d2mods.info/forum/viewtopic.php?f=5&t=65312)**.
+
+## Compatibility
+
+- [Cactus](https://github.com/fearedbliss/Cactus) - Modern Diablo II Version Switcher
+- [D2GFEx](https://d2mods.info/forum/viewtopic.php?f=5&t=65312) - Native OpenGL Driver For Diablo II
+- [Dreamlands](https://d2mods.info/forum/viewtopic.php?t=62020) - Diablo II Platform Enhancer
 
 ## Requirements
 
@@ -18,7 +21,7 @@ Lastly, Alpaca is also compatible with my Diablo II Version Switcher: **[Cactus]
 
 ## License
 
-PlugY is licensed under the GPLv3, However, Alpaca has a License Exemption and is Proprietary.
+Released under the GNU General Public License v3 or Later.
 
 ## Features
 
