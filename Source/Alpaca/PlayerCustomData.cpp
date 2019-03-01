@@ -62,7 +62,6 @@ Stash* getStashFromItem(Unit* ptChar, Unit* ptItem)
 void __stdcall updateClientPlayerOnLoading(Unit* ptChar)
 {
 	log_msg("--- Start update client on loading ---\n");
-	if (!D2Client::IsExpansion()) return;
 	
 	selectStash(ptChar, PCPY->selfStash, true);
 
@@ -133,7 +132,8 @@ Unit* __fastcall updateItem(GameStruct* ptGame, DWORD type, DWORD itemNum, Unit*
 	//const int BELT_OR_PICKED_UP = 255;
 
 	Unit* ptItem = D2Game::D2GameGetObject(ptGame, type, itemNum);
-	if (D2Client::IsExpansion() && D2ItemGetPage(ptItem) == STASH)
+
+	if (D2ItemGetPage(ptItem) == STASH)
 	{
 		Stash* ptStash = getStashFromItem(ptChar, ptItem);
 		if (!ptStash) return NULL;

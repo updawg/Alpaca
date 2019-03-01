@@ -1,6 +1,6 @@
-## Alpaca 3.0.5 ([Discord](https://discord.gg/PNJsaPa), [Cactus](https://github.com/fearedbliss/Cactus))
+## Alpaca 3.1.0 ([Discord](https://discord.gg/PNJsaPa), [Cactus](https://github.com/fearedbliss/Cactus))
 ##### Jonathan Vasquez (fearedbliss)
-##### Released on Wednesday, January 30, 2019
+##### Released on Friday, March 1, 2019
 
 ## Synopsis
 

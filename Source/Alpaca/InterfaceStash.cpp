@@ -66,8 +66,6 @@ DWORD	getYNextBtn()			{return RY(posYNextBtn<0 ? 0x40 : posYNextBtn);}
 
 void* __stdcall printBtns()
 {
-	if (!D2Client::IsExpansion()) return D2LoadBuySelBtn();
-
 	Unit* ptChar = D2GetClientPlayer();
 
 	sDrawImageInfo data;
@@ -102,8 +100,6 @@ void* __stdcall printBtns()
 
 DWORD __stdcall manageBtnDown(sWinMessage* msg)
 {
-	if (!D2Client::IsExpansion()) return 0;
-
 	if (isOnButtonPreviousStash(msg->x, msg->y))
 	{
 		isDownBtn.previous = 1;
@@ -125,8 +121,6 @@ DWORD __stdcall manageBtnDown(sWinMessage* msg)
 
 DWORD __stdcall manageBtnUp(sWinMessage* msg)
 {
-	if (!D2Client::IsExpansion()) return 0;
-
 	Unit* ptChar = D2GetClientPlayer();
 
 	if (isOnButtonPreviousStash(msg->x,msg->y))
@@ -177,12 +171,6 @@ DWORD __stdcall manageBtnUp(sWinMessage* msg)
 
 void __fastcall printPageNumber(LPWSTR maxGoldText, DWORD x, DWORD y, DWORD color, DWORD bfalse)
 {
-	if (!D2Client::IsExpansion())
-	{
-		D2PrintString(maxGoldText,x,y,color,bfalse);
-		return;
-	}
-
 	Unit* ptChar = D2GetClientPlayer();
 	WCHAR popupText[100];
 

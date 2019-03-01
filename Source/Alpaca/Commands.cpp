@@ -31,8 +31,6 @@ const char* CMD_SWAP = "/swap";
 
 int __stdcall commands(char* ptText)
 {
-	if (!D2Client::IsExpansion()) return 1;
-
 	log_msg("Command : %s\n", ptText);
 	Unit* ptChar = D2GetClientPlayer();
 

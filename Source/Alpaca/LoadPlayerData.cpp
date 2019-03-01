@@ -36,15 +36,10 @@ DWORD __stdcall LoadSPCustomData(Unit* ptChar)
 		{log_msg("LoadSPCustomData : PCGame == NULL\n");return 0x1B;}//Unknow failure
 
 	DWORD ret=0;
-	if (D2Client::IsExpansion())
-	{
-		log_msg("is LOD Game\n");
-		data = readExtendedSaveFile(PCPlayerData->name, &size);
-		ret = loadExtendedSaveFile(ptChar, data, size);
-		D2FogMemDeAlloc(data,__FILE__,__LINE__,0);
-	} else {
-		log_msg("is not LOD Game\n");
-	}
+	
+	data = readExtendedSaveFile(PCPlayerData->name, &size);
+	ret = loadExtendedSaveFile(ptChar, data, size);
+	D2FogMemDeAlloc(data,__FILE__,__LINE__,0);
 
 	log_msg("End LoadSPCustomData.\n\n");
 	return ret;
@@ -246,7 +241,7 @@ DWORD __stdcall ReceiveSaveFiles (DWORD clientID, t_rcvMsg* msg)
 DWORD __stdcall LoadMPCustomData(Unit* ptChar)
 {
 	log_msg("Start LoadMPCustomData\n");
-	if (!D2Client::IsExpansion()) return 0;
+
 	if (!ptChar) return NULL;
 	if (!ptChar)
 		{log_msg("LoadMPCustomData : ptChar == NULL\n");return 0x1B;} //Unknown failure
