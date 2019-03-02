@@ -19,39 +19,77 @@
 #include "BigStash.h"
 #include "InfinityStash.h"
 #include "Common.h"
+#include "CustomLibraries.h"
 
 void InstallAlpacaFunctions();
+void LoadCustomLibraries();
 
+// Ensure that even though we have/allow both DllMain and Init Loading Systems,
+// they usually will both be triggered, and thus we need a way to avoid
+// an unnecessary second load.
+bool isAlpacaLoaded = false;
+bool isAlpacaExited = false;
+
+void OnEntry()
+{
+	if (isAlpacaLoaded) return;
+
+	// If you want to debug all of the initialization code
+	// you can uncomment the below MessageBox and put a breakpoint after it.
+	// Reason for this is that this code happens quickly and very early before D2
+	// fully starts, thus by the time you can attach your debugger to Game.exe,
+	// all of this code already finished. So we can use the MessageBox trick.
+	// Thanks to Necrolis @ PhrozenKeep for bringing this trick up.
+	//MessageBox(GetActiveWindow(), "[Alpaca] The Alpacas have arrived!", "Alpaca", MB_APPLMODAL);
+
+	LibraryLoader::Init();
+	InitializeDiabloFunctions();
+	LoadParameters();
+	InstallAlpacaFunctions();
+	LoadCustomLibraries();
+
+	log_msg("Entering Diablo II\n");
+	log_msg("====================================\n");
+	active_logFile = active_logFileIniOriginal;
+	isAlpacaLoaded = true;
+}
+
+void OnExit()
+{
+	if (isAlpacaExited) return;
+
+	active_logFile = true;
+	log_msg("\nExiting Diablo II\n");
+	log_msg("====================================\n");
+	isAlpacaExited = true;
+}
+
+// Modern Loading (D2GFEx, Standard Windows LoadLibrary)
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReserved)
 {
 	switch (ul_reason_for_call)
 	{
 	case DLL_PROCESS_ATTACH:
-		// If you want to debug all of the initialization code
-		// you can uncomment the below MessageBox and put a breakpoint after it.
-		// Reason for this is that this code happens quickly and very early before D2
-		// fully starts, thus by the time you can attach your debugger to Game.exe,
-		// all of this code already finished. So we can use the MessageBox trick.
-		// Thanks to Necrolis @ PhrozenKeep for bringing this trick up.
-		//MessageBox(GetActiveWindow(), "The Alpacas have arrived!", "Alpaca", MB_APPLMODAL);
-
-		LibraryLoader::Init();
-		InitializeDiabloFunctions();
-		LoadParameters();
-		InstallAlpacaFunctions();
-
-		log_msg("Entering Diablo II\n");
-		log_msg("====================================\n");
-
-		active_logFile = active_logFileIniOriginal;
+		OnEntry();
 		break;
 	case DLL_PROCESS_DETACH:
-		active_logFile = true;
-		log_msg("\nExiting Diablo II\n");
-		log_msg("====================================\n");
+		OnExit();
 		break;
 	}
 	return TRUE;
+}
+
+// Old System (Non-D2GFEx)
+extern "C" __declspec(dllexport) void* __stdcall Init(LPSTR IniName)
+{
+	OnEntry();
+	return NULL;
+}
+
+extern "C" __declspec(dllexport) bool __stdcall Release()
+{
+	OnExit();
+	return true;
 }
 
 void InstallAlpacaFunctions()
@@ -79,4 +117,48 @@ void InstallAlpacaFunctions()
 	log_msg("\n");
 
 	LibraryLoader::UnhookLibraries();
+}
+
+void LoadCustomLibraries()
+{
+	char* curString = NULL;
+	TCustomDll* nextDll;
+	DWORD offset_currentDll;
+
+	log_msg("Custom Libraries\n");
+	log_msg("====================================\n");
+
+	if (DllsToLoad)
+	{
+		curString = strtok(DllsToLoad, "|");
+
+		if (curString)
+		{
+			while (curString)
+			{
+				if (curString[0])
+				{
+					log_msg("Loading Library: %s\n", curString);
+					offset_currentDll = (DWORD)LoadLibrary(curString);
+
+					if (offset_currentDll)
+					{
+						nextDll = customDlls;
+						customDlls = new(TCustomDll);
+						customDlls->nextDll = nextDll;
+						customDlls->Initialize(offset_currentDll);
+					}
+					else
+					{
+						log_msg("Failed To Load Library: %s\n", curString);
+					}
+				}
+				curString = strtok(NULL, "|");
+			}
+		}
+
+		D2FogMemDeAlloc(DllsToLoad, __FILE__, __LINE__, 0);
+	}
+
+	log_msg("\n");
 }

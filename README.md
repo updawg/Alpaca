@@ -1,14 +1,14 @@
-## Alpaca 3.1.0 ([Discord](https://discord.gg/PNJsaPa), [Cactus](https://github.com/fearedbliss/Cactus))
+## Alpaca 3.2.0 ([Discord](https://discord.gg/PNJsaPa), [Cactus](https://github.com/fearedbliss/Cactus))
 ##### Jonathan Vasquez (fearedbliss)
-##### Released on Friday, March 1, 2019
+##### Released on Saturday, March 2, 2019
 
 ## Synopsis
 
 Alpaca is an Infinite Stash for **`Diablo II: 1.10`** that was based off Yohann Nicolas'
 **[PlugY](http://plugy.free.fr/en/index.html) 11.02**. It has been massively refactored,
-stabilized, and exclusively designed to work with Necrolis' Native OpenGL Diablo II Driver:
-**[D2GFEx](https://d2mods.info/forum/viewtopic.php?f=5&t=65312)**. Alpaca also includes full
-support for Diablo II Classic.
+stabilized, and various features have been implemented, such as full support for **`Diablo II Classic`**, and
+compatibility with not only **[Dreamlands](https://d2mods.info/forum/viewtopic.php?t=62020)**,
+but also Necrolis' Native OpenGL Diablo II Driver: **[D2GFEx](https://d2mods.info/forum/viewtopic.php?f=5&t=65312)**.
 
 ## Compatibility
 
@@ -30,6 +30,7 @@ Released under the GNU General Public License v3 or Later.
 
 - Increased Stash Size to **`(10x10)`**
 - **`50`** Additional Stash Pages Per Character
+- Custom Library Loading Support **`(Up to 3 Standalone DLLs)`**
 
 #### Stash Management Commands
 

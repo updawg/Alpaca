@@ -14,17 +14,31 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include "CustomLibraries.h"
 
-#define PROGRAM_NAME "Alpaca"
-#define PROGRAM_VERSION "3.2.0"
-#define PROGRAM_AUTHOR_NAME "Jonathan Vasquez"
-#define PROGRAM_AUTHOR_ALIAS "fearedbliss"
-#define PROGRAM_BUILD_DATE "March 2, 2019 @ 17:01 ET"
+TCustomDll* customDlls = NULL;
 
-extern char* modDataDirectory;
-extern bool active_plugin;
-extern bool active_CheckMemory;
-extern char* DllsToLoad;
+void TCustomDll::Init()
+{
+	if (initFct)
+		initFct();
+};
 
-void LoadParameters();
+void TCustomDll::Release()
+{
+	if (releaseFct)
+		releaseFct();
+};
+
+void TCustomDll::Initialize(DWORD offsetDll)
+{
+	offset = offsetDll;
+
+	initFct = GetProcAddress(module, (LPCSTR)"_Init@0");
+	if (!initFct)
+		initFct = GetProcAddress(module, (LPCSTR)10000);
+
+	releaseFct = GetProcAddress(module, (LPCSTR)"_Release@0");
+	if (!releaseFct)
+		releaseFct = GetProcAddress(module, (LPCSTR)10001);
+}

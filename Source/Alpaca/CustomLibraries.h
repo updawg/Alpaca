@@ -16,15 +16,22 @@
 
 #pragma once
 
-#define PROGRAM_NAME "Alpaca"
-#define PROGRAM_VERSION "3.2.0"
-#define PROGRAM_AUTHOR_NAME "Jonathan Vasquez"
-#define PROGRAM_AUTHOR_ALIAS "fearedbliss"
-#define PROGRAM_BUILD_DATE "March 2, 2019 @ 17:01 ET"
+#include "Common.h"
 
-extern char* modDataDirectory;
-extern bool active_plugin;
-extern bool active_CheckMemory;
-extern char* DllsToLoad;
+class TCustomDll
+{
+public:
+	union {
+		HMODULE module;
+		DWORD offset;
+	};
+	TCustomDll* nextDll;
+	void Initialize(DWORD offsetDll);
+	void Init();
+	void Release();
+private:
+	FARPROC initFct;
+	FARPROC releaseFct;
+};
 
-void LoadParameters();
+extern TCustomDll* customDlls;
