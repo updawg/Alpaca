@@ -4,10 +4,11 @@
 
 ## Synopsis
 
-Alpaca is an Infinite Stash for **`Diablo II: Lord of Destruction - v 1.10`**
-that was based off Yohann Nicolas' **[PlugY](http://plugy.free.fr/en/index.html) 11.02**.
-It has been massively refactored, stabilized, and exclusively designed to work
-with Necrolis' Native OpenGL Diablo II Driver: **[D2GFEx](https://d2mods.info/forum/viewtopic.php?f=5&t=65312)**.
+Alpaca is an Infinite Stash for **`Diablo II: 1.10`** that was based off Yohann Nicolas'
+**[PlugY](http://plugy.free.fr/en/index.html) 11.02**. It has been massively refactored,
+stabilized, and exclusively designed to work with Necrolis' Native OpenGL Diablo II Driver:
+**[D2GFEx](https://d2mods.info/forum/viewtopic.php?f=5&t=65312)**. Alpaca also includes full
+support for Diablo II Classic.
 
 ## Compatibility
 
