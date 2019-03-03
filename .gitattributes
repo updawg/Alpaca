@@ -1,4 +1,3 @@
-* text=crlf
-*.ini text
-*.txt text
-*.md text
+*.txt eol=crlf
+*.ini eol=crlf
+*.md eol=crlf
