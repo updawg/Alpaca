@@ -1,20 +1,18 @@
-## Alpaca 3.2.0
-##### Jonathan Vasquez (fearedbliss)
-##### Released on Saturday, March 2, 2019
+## Alpaca
+##### By: Jonathan Vasquez (fearedbliss)
+##### Build: 2019-03-02-1920
 
 ## Synopsis
 
 Alpaca is an Infinite Stash for **`Diablo II: 1.10`** that was based off Yohann Nicolas'
 **[PlugY](http://plugy.free.fr/en/index.html) 11.02**. It has been massively refactored,
 stabilized, and various features have been implemented, such as full support for **`Diablo II Classic`**, and
-compatibility with not only **[Dreamlands](https://d2mods.info/forum/viewtopic.php?t=62020)**,
-but also Necrolis' Native OpenGL Diablo II Driver: **[D2GFEx](https://d2mods.info/forum/viewtopic.php?f=5&t=65312)**.
+compatibility with Necrolis' Native OpenGL Diablo II Driver: **[D2GFEx](https://d2mods.info/forum/viewtopic.php?f=5&t=65312)**.
 
 ## Compatibility
 
 - [Cactus](https://github.com/fearedbliss/Cactus) - Modern Diablo II Version Switcher
 - [D2GFEx](https://d2mods.info/forum/viewtopic.php?f=5&t=65312) - Native OpenGL Driver For Diablo II
-- [Dreamlands](https://d2mods.info/forum/viewtopic.php?t=62020) - Diablo II Platform Enhancer
 
 ## Requirements
 
@@ -22,7 +20,7 @@ but also Necrolis' Native OpenGL Diablo II Driver: **[D2GFEx](https://d2mods.inf
 
 ## License
 
-Released under the GNU General Public License v3 or Later.
+Released under the [GNU General Public License v3](LICENSE.md) or Later.
 
 ## Features
 
