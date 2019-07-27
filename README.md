@@ -29,6 +29,7 @@ Released under the [GNU General Public License v3](LICENSE.md) or Later.
 - Increased Stash Size to **`(10x10)`**
 - **`50`** Additional Stash Pages Per Character
 - Custom Library Loading Support **`(Up to 3 Standalone DLLs)`**
+- Diablo II **`Classic`** and **`Expansion`** Support
 
 #### Stash Management Commands
 
