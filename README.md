@@ -1,6 +1,6 @@
 ## Alpaca
 ##### By: Jonathan Vasquez (fearedbliss)
-##### Build: 2019-03-02-1920
+##### Build: 2019-08-11-1045
 
 ## Synopsis
 
@@ -27,7 +27,7 @@ Released under the [GNU General Public License v3](LICENSE.md) or Later.
 #### Core
 
 - Increased Stash Size to **`(10x10)`**
-- **`50`** Additional Stash Pages Per Character
+- **`100`** Additional Stash Pages Per Character
 - Custom Library Loading Support **`(Up to 3 Standalone DLLs)`**
 - Diablo II **`Classic`** and **`Expansion`** Support
 

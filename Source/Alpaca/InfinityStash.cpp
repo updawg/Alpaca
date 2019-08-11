@@ -22,7 +22,7 @@
 #define STASH_TAG 0x5453			//"ST"
 #define JM_TAG 0x4D4A 				//"JM"
 
-const DWORD maxSelfPages = 49;
+const DWORD maxSelfPages = 99;
 const DWORD nbPagesPerIndex = 5;
 const DWORD nbPagesJump = 10;
 

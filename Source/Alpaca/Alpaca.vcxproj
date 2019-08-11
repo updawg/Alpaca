@@ -14,19 +14,19 @@
     <ProjectGuid>{EB63DF4E-A019-4522-A140-9E8C7350B331}</ProjectGuid>
     <RootNamespace>Alpaca</RootNamespace>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ProjectName>Alpaca</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -107,7 +107,6 @@
     <ClCompile Include="Common.cpp" />
     <ClCompile Include="CustomLibraries.cpp" />
     <ClCompile Include="D2Client.cpp" />
-    <ClCompile Include="D2CMP.cpp" />
     <ClCompile Include="D2Common.cpp" />
     <ClCompile Include="D2Functions.cpp" />
     <ClCompile Include="D2Game.cpp" />
@@ -145,7 +144,6 @@
     <ClInclude Include="CustomLibraries.h" />
     <ClInclude Include="D2BinFile.h" />
     <ClInclude Include="D2Client.h" />
-    <ClInclude Include="D2CMP.h" />
     <ClInclude Include="D2Common.h" />
     <ClInclude Include="D2Constants.h" />
     <ClInclude Include="D2Functions.h" />

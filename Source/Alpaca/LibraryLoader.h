@@ -20,7 +20,6 @@
 
 #include "Game.h"
 #include "D2Client.h"
-#include "D2CMP.h"
 #include "D2Common.h"
 #include "D2Game.h"
 #include "D2gfx.h"

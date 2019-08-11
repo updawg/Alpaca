@@ -12,8 +12,9 @@
 ## Installation (Other)
 
 Follow the same steps as the **`D2GFEx`** installation, but add the **`Alpaca.dll`** to
-whatever DLL loader you are using. Alpaca has only been tested for Standalone/D2GFEx/or Dark Alliance/Dreamlands
-compatibility. It should work with other systems but compatibility is not guaranteed.
+whatever DLL loader you are using. Alpaca has only been tested for compatibility with
+the Alpaca Launcher and D2GFEx. It should work with other systems but compatibility
+is not guaranteed.
 
 ## Adding Custom DLLs
 

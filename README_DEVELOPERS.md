@@ -11,7 +11,7 @@ on development in their own branches.
 
 ## Development
 
-- Compiled with Visual Studio 2017.
+- Compiled with Visual Studio 2019.
 - All development is done with "Release" mode configuration.
 - Don't release "Debug" builds to the public since most people
   don't have the the debugging DLLs installed. Only use the "Release"

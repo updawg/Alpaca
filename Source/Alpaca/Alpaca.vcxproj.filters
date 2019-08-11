@@ -105,9 +105,6 @@
     <ClCompile Include="AlpacaFiles.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="D2CMP.cpp">
-      <Filter>Source Files\Libraries</Filter>
-    </ClCompile>
     <ClCompile Include="IniFile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -172,9 +169,6 @@
     </ClInclude>
     <ClInclude Include="AlpacaFiles.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="D2CMP.h">
-      <Filter>Header Files\Libraries</Filter>
     </ClInclude>
     <ClInclude Include="LoadPlayerData.h">
       <Filter>Header Files</Filter>

@@ -79,7 +79,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
 	return TRUE;
 }
 
-// Old System (Non-D2GFEx)
+// Old System (Non-D2GFEx, Injected w/ Alpaca Launcher)
 extern "C" __declspec(dllexport) void* __stdcall Init(LPSTR IniName)
 {
 	OnEntry();
