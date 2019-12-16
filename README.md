@@ -1,6 +1,6 @@
 ## Alpaca ([Matrix Channel](https://riot.im/app/#/room/#cactus:xyinn.org))
 ##### By: Jonathan Vasquez (fearedbliss)
-##### Build: 2019-08-11-1045
+##### Build: 2019-12-15-2315
 
 ## Synopsis
 
@@ -28,7 +28,6 @@ Released under the [GNU General Public License v3](LICENSE.md) or Later.
 
 - Increased Stash Size to **`(10x10)`**
 - **`100`** Additional Stash Pages Per Character
-- Custom Library Loading Support **`(Up to 3 Standalone DLLs)`**
 - Diablo II **`Classic`** and **`Expansion`** Support
 
 #### Stash Management Commands

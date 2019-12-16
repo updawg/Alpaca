@@ -146,14 +146,14 @@ BOOL INIFile::InitReadWrite(const char *path, int readWrite, DWORD writeCacheSiz
 	if(m_readWrite == INIFILE_MPQREAD)
 	{
 		void* refFile;
-		if ( D2MPQOpenFile(m_path,&refFile) )
+		if (Fog::D2MPQOpenFile(m_path,&refFile) )
 		{
-			DWORD fileSize = D2MPQGetSizeFile(refFile, NULL);
+			DWORD fileSize = Fog::D2MPQGetSizeFile(refFile, NULL);
 			m_cache = new char[fileSize + 1];
 			if(m_cache)
 			{
 				DWORD read;
-				if(D2MPQReadFile(refFile, (BYTE*)m_cache, fileSize, &read, NULL, NULL, NULL) == 0)
+				if(Fog::D2MPQReadFile(refFile, (BYTE*)m_cache, fileSize, &read, NULL, NULL, NULL) == 0)
 				{
 					delete [] m_cache;
 					m_cache = NULL;
@@ -161,7 +161,7 @@ BOOL INIFile::InitReadWrite(const char *path, int readWrite, DWORD writeCacheSiz
 				else
 					m_cache[fileSize] = 0;
 			}
-			D2MPQCloseFile(refFile);
+			Fog::D2MPQCloseFile(refFile);
 			if(m_cache)
 				return TRUE;
 		}
@@ -424,14 +424,14 @@ BOOL INIFileW::InitReadWrite(const char *path, int readWrite, DWORD writeCacheSi
 	if (m_readWrite == INIFILE_MPQREAD)
 	{
 		void* refFile;
-		if (D2MPQOpenFile(m_path, &refFile))
+		if (Fog::D2MPQOpenFile(m_path, &refFile))
 		{
-			DWORD fileSize = D2MPQGetSizeFile(refFile, NULL);
+			DWORD fileSize = Fog::D2MPQGetSizeFile(refFile, NULL);
 			m_cache = new WCHAR[fileSize + 1];
 			if (m_cache)
 			{
 				DWORD read;
-				if (D2MPQReadFile(refFile, (BYTE*)m_cache, fileSize, &read, NULL, NULL, NULL) == 0)
+				if (Fog::D2MPQReadFile(refFile, (BYTE*)m_cache, fileSize, &read, NULL, NULL, NULL) == 0)
 				{
 					delete[] m_cache;
 					m_cache = NULL;
@@ -439,7 +439,7 @@ BOOL INIFileW::InitReadWrite(const char *path, int readWrite, DWORD writeCacheSi
 				else
 					m_cache[fileSize] = 0;
 			}
-			D2MPQCloseFile(refFile);
+			Fog::D2MPQCloseFile(refFile);
 			if (m_cache)
 				return TRUE;
 		}

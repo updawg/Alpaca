@@ -20,7 +20,7 @@
 
 __inline void updateServer(WORD p)
 {
-	D2SendToServer3(0x3A, p);
+	D2Client::D2SendToServer3(0x3A, p);
 };
 
 void Install_UpdateServer();

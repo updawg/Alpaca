@@ -26,11 +26,11 @@ void __stdcall SaveSPPlayerCustomData(Unit* ptChar)
 	{
 		DWORD curSizeExt = 0;
 		DWORD maxSizeExt = 0x4000;
-		BYTE* dataExt = (BYTE *)D2AllocMem(PCGame->memoryPool, maxSizeExt,__FILE__,__LINE__,0);
+		BYTE* dataExt = (BYTE *)Fog::D2AllocMem(PCGame->memoryPool, maxSizeExt,__FILE__,__LINE__,0);
 		d2_assert(!dataExt, "Error : Memory allocation Extended SaveFile", __FILE__, __LINE__);
 		saveExtendedSaveFile(ptChar, &dataExt, &maxSizeExt, &curSizeExt);
 		writeExtendedSaveFile(PCPlayerData->name, dataExt, curSizeExt);
-		D2FreeMem(PCGame->memoryPool, dataExt,__FILE__,__LINE__,0);
+		Fog::D2FreeMem(PCGame->memoryPool, dataExt,__FILE__,__LINE__,0);
 	}
 	
 	log_msg("End saving.\n\n");
@@ -80,18 +80,18 @@ void __stdcall SendSaveFilesToSave(Unit* ptChar)
 	if (PCPY->selfStashIsOpened)
 	{
 		DWORD maxSizeExt = 0x4000;
-		dataExt = (BYTE *)D2AllocMem(PCGame->memoryPool, maxSizeExt,__FILE__,__LINE__,0);
+		dataExt = (BYTE *)Fog::D2AllocMem(PCGame->memoryPool, maxSizeExt,__FILE__,__LINE__,0);
 		d2_assert(!dataExt, "Error : Memory allocation Extended SaveFile", __FILE__, __LINE__);
 		saveExtendedSaveFile(ptChar, &dataExt, &maxSizeExt, &curSizeExt);
 	}
 
-	NetClient* ptClient = D2GetClient(ptChar,__FILE__,__LINE__);
+	NetClient* ptClient = D2Game::D2GetClient(ptChar,__FILE__,__LINE__);
 	s_dataToSend* dataToSend = ptDataToSend;
 	while (dataToSend && (dataToSend->clientID != ptClient->clientID))
 		dataToSend = dataToSend->next;
 	if (!dataToSend)
 	{
-		dataToSend = (s_dataToSend*) D2AllocMem(PCGame->memoryPool, sizeof(s_dataToSend), __FILE__, __LINE__, 0);
+		dataToSend = (s_dataToSend*)Fog::D2AllocMem(PCGame->memoryPool, sizeof(s_dataToSend), __FILE__, __LINE__, 0);
 		ZeroMemory(dataToSend, sizeof(s_dataToSend));
 		dataToSend->next = ptDataToSend;
 		ptDataToSend = dataToSend;
@@ -124,7 +124,7 @@ DWORD __stdcall ManageNextPacketToSend(NetClient* ptClient)
 	if (dataToSend->sizeExtended && dataToSend->dataExtended && (dataToSend->curExtended < dataToSend->sizeExtended))
 	{
 		DWORD remainingData = dataToSend->sizeExtended - dataToSend->curExtended;
-		t_rcvMsg* msg = (t_rcvMsg*)D2AllocMem(PClientGame->memoryPool, sizeof(t_rcvMsg),__FILE__,__LINE__,0);
+		t_rcvMsg* msg = (t_rcvMsg*)Fog::D2AllocMem(PClientGame->memoryPool, sizeof(t_rcvMsg),__FILE__,__LINE__,0);
 		msg->packID = customPackID;
 		msg->init = dataToSend->init;
 		msg->finalSize = dataToSend->sizeExtended;
@@ -132,15 +132,15 @@ DWORD __stdcall ManageNextPacketToSend(NetClient* ptClient)
 		msg->packSize = remainingData > 0xFE ? 0xFF : (BYTE)remainingData + 1;
 		CopyMemory(msg->data, &dataToSend->dataExtended[dataToSend->curExtended], msg->packSize);
 		log_msg("Saving Send Packet: init=%d\t finalSize=%X\t packSize=%02X\t data=%08X\n", msg->init, msg->finalSize, msg->packSize, msg->data);
-		D2SendToClient(0, dataToSend->clientID, msg, msg->packSize+7);
+		D2Net::D2SendToClient(0, dataToSend->clientID, msg, msg->packSize+7);
 		dataToSend->init = false;
 		dataToSend->curExtended += msg->packSize - 1;
-		D2FreeMem(PClientGame->memoryPool, msg,__FILE__,__LINE__,0);
+		Fog::D2FreeMem(PClientGame->memoryPool, msg,__FILE__,__LINE__,0);
 		if (dataToSend->curExtended == dataToSend->sizeExtended)
 		{
 			dataToSend->sizeExtended = 0;
 			dataToSend->curExtended = 0;
-			D2FreeMem(PClientGame->memoryPool, dataToSend->dataExtended,__FILE__,__LINE__,0);
+			Fog::D2FreeMem(PClientGame->memoryPool, dataToSend->dataExtended,__FILE__,__LINE__,0);
 			dataToSend->dataExtended = NULL;
 		}
 		log_msg("End Send Packet\n");
@@ -160,7 +160,7 @@ DWORD __stdcall ReceiveSaveFilesToSave(t_rcvMsg* msg)
 
 	if (msg->init)
 	{
-		D2FogMemDeAlloc(receivedSaveFiles.dataExtended,__FILE__,__LINE__,0);
+		Fog::D2FogMemDeAlloc(receivedSaveFiles.dataExtended,__FILE__,__LINE__,0);
 		ZeroMemory(&receivedSaveFiles, sizeof(receivedSaveFiles));
 	}
 
@@ -172,7 +172,7 @@ DWORD __stdcall ReceiveSaveFilesToSave(t_rcvMsg* msg)
 		receivedSaveFiles.sizeExtended = msg->finalSize;
 
 	if (!receivedSaveFiles.dataExtended)
-		receivedSaveFiles.dataExtended = (BYTE *)D2FogMemAlloc(receivedSaveFiles.sizeExtended,__FILE__,__LINE__,0);
+		receivedSaveFiles.dataExtended = (BYTE *)Fog::D2FogMemAlloc(receivedSaveFiles.sizeExtended,__FILE__,__LINE__,0);
 
 	CopyMemory(&receivedSaveFiles.dataExtended[receivedSaveFiles.curExtended], msg->data, size);
 	receivedSaveFiles.curExtended += size;
@@ -186,7 +186,7 @@ void __stdcall SaveMPPlayerCustomData(BYTE* dataD2Savefile)
 {
 	log_msg("[SaveMPPlayerCustomData] Function Started\n");
 
-	Unit* ptChar = D2GetClientPlayer();
+	Unit* ptChar = D2Client::D2GetClientPlayer();
 	if (ptChar)
 	{
 		if (receivedSaveFiles.sizeExtended && (receivedSaveFiles.sizeExtended == receivedSaveFiles.curExtended))
@@ -194,7 +194,7 @@ void __stdcall SaveMPPlayerCustomData(BYTE* dataD2Savefile)
 			log_msg("[SaveMPPlayerCustomData] Saving Received Save File ...\n");
 
 			writeExtendedSaveFile(PCPlayerData->name, receivedSaveFiles.dataExtended, receivedSaveFiles.sizeExtended);
-			D2FogMemDeAlloc(receivedSaveFiles.dataExtended, __FILE__, __LINE__, 0);
+			Fog::D2FogMemDeAlloc(receivedSaveFiles.dataExtended, __FILE__, __LINE__, 0);
 			ZeroMemory(&receivedSaveFiles, sizeof(receivedSaveFiles));
 
 			log_msg("[SaveMPPlayerCustomData] Received Save File Successfully Saved!\n\n");
@@ -217,7 +217,7 @@ FCT_ASM( caller_SendSaveFilesToSave )
 }}
 
 FCT_ASM(caller_SaveSPPlayerCustomData)
-	CALL D2FogGetSavePath
+	CALL Fog::D2FogGetSavePath
 	PUSH EDI
 	CALL SaveSPPlayerCustomData
 	RETN

@@ -67,7 +67,7 @@ InventoryBIN* __stdcall modifStashGrid(InventoryBIN* ptInventoryBin)
 
 FCT_ASM ( caller_modifStashGrid )
 	POP ESI
-	CALL D2CompileTxtFileDirect
+	CALL D2Common::D2CompileTxtFileDirect
 	PUSH EAX
 	CALL modifStashGrid
 	JMP ESI
@@ -123,7 +123,7 @@ void Install_BigStash()
 
 	// Stash Grid Size Modification (Classic/Expansion)
 	Memory::SetCursor(StashGridOffset);
-	Memory::ChangeCallC((DWORD)D2CompileTxtFileDirect, (DWORD)caller_modifStashGrid);
+	Memory::ChangeCallC((DWORD)D2Common::D2CompileTxtFileDirect, (DWORD)caller_modifStashGrid);
 
 	// Stash Background Modification (Classic)
 	Memory::SetCursor(StashBackgroundClassicOffset);

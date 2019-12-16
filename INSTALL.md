@@ -16,16 +16,6 @@ whatever DLL loader you are using. Alpaca has only been tested for compatibility
 the Alpaca Launcher and D2GFEx. It should work with other systems but compatibility
 is not guaranteed.
 
-## Adding Custom DLLs
-
-1. Open **`Alpaca.ini`**
-2. Add the name of the DLL to one of the **`LoadDll`** lines.
-3. Start up the game and verify it works.
-
-Alpaca will safely load the DLLs, so if the DLL fails to load, Alpaca will just skip it
-and continue attempting to load any remaining DLLs. Check the **`Alpaca.log`** for any
-failure messages.
-
 ## Troubleshooting
 
 ### MSVCP140.dll is Missing or Alpaca seems to not load

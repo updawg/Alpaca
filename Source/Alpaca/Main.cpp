@@ -19,10 +19,8 @@
 #include "BigStash.h"
 #include "InfinityStash.h"
 #include "Common.h"
-#include "CustomLibraries.h"
 
 void InstallAlpacaFunctions();
-void LoadCustomLibraries();
 
 // Ensure that even though we have/allow both DllMain and Init Loading Systems,
 // they usually will both be triggered, and thus we need a way to avoid
@@ -46,7 +44,6 @@ void OnEntry()
 	InitializeDiabloFunctions();
 	LoadParameters();
 	InstallAlpacaFunctions();
-	LoadCustomLibraries();
 
 	log_msg("Entering Diablo II\n");
 	log_msg("====================================\n");
@@ -117,48 +114,4 @@ void InstallAlpacaFunctions()
 	log_msg("\n");
 
 	LibraryLoader::UnhookLibraries();
-}
-
-void LoadCustomLibraries()
-{
-	char* curString = NULL;
-	TCustomDll* nextDll;
-	DWORD offset_currentDll;
-
-	log_msg("Custom Libraries\n");
-	log_msg("====================================\n");
-
-	if (DllsToLoad)
-	{
-		curString = strtok(DllsToLoad, "|");
-
-		if (curString)
-		{
-			while (curString)
-			{
-				if (curString[0])
-				{
-					log_msg("Loading Library: %s\n", curString);
-					offset_currentDll = (DWORD)LoadLibrary(curString);
-
-					if (offset_currentDll)
-					{
-						nextDll = customDlls;
-						customDlls = new(TCustomDll);
-						customDlls->nextDll = nextDll;
-						customDlls->Initialize(offset_currentDll);
-					}
-					else
-					{
-						log_msg("Failed To Load Library: %s\n", curString);
-					}
-				}
-				curString = strtok(NULL, "|");
-			}
-		}
-
-		D2FogMemDeAlloc(DllsToLoad, __FILE__, __LINE__, 0);
-	}
-
-	log_msg("\n");
 }

@@ -23,5 +23,5 @@ void freeMessage(sWinMessage* msg)
 {
 	msg->managed=1;
 	msg->unmanaged=0;
-	D2FreeWinMessage(msg);
+	Storm::D2FreeWinMessage(msg);
 }

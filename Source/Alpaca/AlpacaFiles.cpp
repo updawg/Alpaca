@@ -54,7 +54,7 @@ FCT_ASM(caller_isModFile)
 	MOV BL, BYTE PTR SS : [ESP + 0x144]
 	POP EAX
 	POP EAX
-	MOV EAX, D2StormMPQOpenFile
+	MOV EAX, Storm::D2StormMPQOpenFile
 	ADD EAX, 0x9A
 	JMP EAX
 ISNOTMODDATA:
@@ -94,7 +94,7 @@ void loadImagesFile(void** images, const char* name)
 		strcat(buffer, "\\");
 		strcat(buffer, name);
 
-		*images = D2LoadImage(buffer, 0);
+		*images = D2Client::D2LoadImage(buffer, 0);
 		if (!*images)
 		{
 			sprintf(buffer, "Unable to find image file: %s.dc6", name);
@@ -110,7 +110,7 @@ void __stdcall loadCustomImages()
 	loadImagesFile(&stashBtnsImages, stashBtnsFile);
 }
 
-#define freeImagesFile(I) if(I) {D2FreeImage(I);I=NULL;}
+#define freeImagesFile(I) if(I) {D2Client::D2FreeImage(I);I=NULL;}
 
 void __stdcall freeCustomImages()
 {

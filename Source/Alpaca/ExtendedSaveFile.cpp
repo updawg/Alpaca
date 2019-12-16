@@ -28,7 +28,7 @@ BYTE * readExtendedSaveFile(char* name, DWORD* size)//WORKS
 	char filename[512];
 	BYTE* data;
 	d2_assert(!name, "Bad file name (NULL)", __FILE__, __LINE__);
-	D2FogGetSavePath( filename, 512-5);
+	Fog::D2FogGetSavePath( filename, 512-5);
 	strncat(filename, name, 512 - strlen(filename) - 5);
 	strcat(filename, ".d2x");
 
@@ -40,14 +40,14 @@ BYTE * readExtendedSaveFile(char* name, DWORD* size)//WORKS
 		fseek(file, 0, SEEK_END);
 		*size = ftell(file);
 		fseek(file, 0, SEEK_SET);
-		data = (BYTE*)D2FogMemAlloc(*size,__FILE__,__LINE__,0);
+		data = (BYTE*)Fog::D2FogMemAlloc(*size,__FILE__,__LINE__,0);
 		DWORD nbRead = fread(data, 1, *size, file);
 		fclose(file);
 		d2_assert(nbRead != *size , "nbRead from extented save file != size", __FILE__, __LINE__);
 	} else {
 		log_msg("Can't open extented save file in mode \"rb\" (is not an error if it's a new player)\n");
 		DWORD maxSize = 100;
-		data = (BYTE*)D2FogMemAlloc(maxSize,__FILE__,__LINE__,0);
+		data = (BYTE*)Fog::D2FogMemAlloc(maxSize,__FILE__,__LINE__,0);
 		*size = 14;
 		*((DWORD*)&data[0])  = FILE_EXTENDED; //"CSTM"
 		*((WORD *)&data[4])  = FILE_VERSION;
@@ -92,7 +92,7 @@ void writeExtendedSaveFile(char* name, BYTE* data, DWORD size)
 	char szSaveName[MAX_PATH];
 
 	//Get temporary savefile name.
-	D2FogGetSavePath(szTempName, MAX_PATH);
+	Fog::D2FogGetSavePath(szTempName, MAX_PATH);
 	strcat(szTempName, name);
 	strcat(szTempName, ".d2~");
 	log_msg("Extended temporary file for saving : %s\n",szTempName);
@@ -103,7 +103,7 @@ void writeExtendedSaveFile(char* name, BYTE* data, DWORD size)
 	fclose(customSaveFile);
 
 	//Get real savefile name.
-	D2FogGetSavePath(szSaveName, MAX_PATH);
+	Fog::D2FogGetSavePath(szSaveName, MAX_PATH);
 	strcat(szSaveName, name);
 	strcat(szSaveName, ".d2x");
 	log_msg("Extended file for saving : %s\n",szSaveName);

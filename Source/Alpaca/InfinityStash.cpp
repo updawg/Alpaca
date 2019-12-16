@@ -31,12 +31,12 @@ TchangeToSelectedStash changeToSelectedStash;
 
 Unit* firstClassicStashItem(Unit* ptChar)
 {
-	Unit* ptItem = D2InventoryGetFirstItem(PCInventory);
+	Unit* ptItem = D2Common::D2InventoryGetFirstItem(PCInventory);
 	while (ptItem)
 	{
-		if (D2ItemGetPage(D2GetRealItem(ptItem)) == 4)
+		if (D2Common::D2ItemGetPage(D2Common::D2GetRealItem(ptItem)) == 4)
 			return ptItem;
-		ptItem = D2UnitGetNextItem(ptItem);
+		ptItem = D2Common::D2UnitGetNextItem(ptItem);
 	}
 	return NULL;
 }
@@ -152,14 +152,14 @@ int changeToSelectedStash_110(Unit* ptChar, Stash* newStash, DWORD bOnlyItems, D
 
 	// Remove items from current page
 	Unit* ptNextItem;
-	Unit* ptItem = D2InventoryGetFirstItem(PCInventory);
+	Unit* ptItem = D2Common::D2InventoryGetFirstItem(PCInventory);
 	while (ptItem)
 	{
-		ptNextItem = D2UnitGetNextItem(ptItem);
-		if (D2ItemGetPage(ptItem) == 4)
+		ptNextItem = D2Common::D2UnitGetNextItem(ptItem);
+		if (D2Common::D2ItemGetPage(ptItem) == 4)
 		{
 			BYTE tmp = ptItem->ptItemData->ItemData2;
-			ptItem = D2InvRemoveItem(PCInventory, ptItem);
+			ptItem = D2Common::D2InvRemoveItem(PCInventory, ptItem);
 			ptItem->ptItemData->ItemData2 = tmp;
 			if (currentStash)
 			{
@@ -174,8 +174,8 @@ int changeToSelectedStash_110(Unit* ptChar, Stash* newStash, DWORD bOnlyItems, D
 	ptItem = newStash->ptListItem;
 	while (ptItem)
 	{
-		D2InvAddItem(PCInventory, ptItem, ptItem->path->x, ptItem->path->y, 0xC, bIsClient, 4);
-		ptItem = D2UnitGetNextItem(ptItem);
+		D2Common::D2InvAddItem(PCInventory, ptItem, ptItem->path->x, ptItem->path->y, 0xC, bIsClient, 4);
+		ptItem = D2Common::D2UnitGetNextItem(ptItem);
 	}
 	if (bOnlyItems)
 		newStash->ptListItem = PCPY->currentStash->ptListItem;
@@ -217,8 +217,8 @@ DWORD loadStash(Unit* ptChar, Stash* ptStash, BYTE data[], DWORD startSize, DWOR
 	curSize += strlen((char *)&data[curSize]) + 1;
 
 	// Read inventory
-	DWORD ret = D2LoadInventory(PCGame, ptChar, (saveBitField*)&data[curSize], 0x60, maxSize-curSize, 0, &nbBytesRead);
-	if (ret) log_msg("loadStash -> D2LoadInventory failed\n");
+	DWORD ret = D2Game::D2LoadInventory(PCGame, ptChar, (saveBitField*)&data[curSize], 0x60, maxSize-curSize, 0, &nbBytesRead);
+	if (ret) log_msg("loadStash -> D2Game::D2LoadInventory failed\n");
 	log_msg("Stash loaded (%d : %s)\n", ptStash->id ,ptStash->name);
 
 	*retSize=curSize + nbBytesRead;
@@ -283,21 +283,21 @@ void saveStash(Unit* ptChar, Stash* ptStash, BYTE** data, DWORD* maxSize, DWORD*
 	//Get first item
 	Unit* ptItem;
 	if ((ptStash->id == PCPY->currentStash->id))
-		ptItem = D2InventoryGetFirstItem(PCInventory);
+		ptItem = D2Common::D2InventoryGetFirstItem(PCInventory);
 	else
 		ptItem = ptStash->ptListItem;
 
 	//Write all items
 	while (ptItem)
 	{
-		if (D2ItemGetPage(D2GetRealItem(ptItem)) == 4)
+		if (D2Common::D2ItemGetPage(D2Common::D2GetRealItem(ptItem)) == 4)
 		{
-			int nbBytes = D2SaveItem(D2GetRealItem(ptItem), (saveBitField*)DATA, *maxSize - *curSize, 1, 1, 0);
+			int nbBytes = D2Common::D2SaveItem(D2Common::D2GetRealItem(ptItem), (saveBitField*)DATA, *maxSize - *curSize, 1, 1, 0);
 			d2_assert(!nbBytes, "!\"Character has too many items\"", __FILE__, __LINE__ );
 			*curSize += nbBytes;
 			(*ptNBItem)++;
 		}
-		ptItem = D2UnitGetNextItem(ptItem);
+		ptItem = D2Common::D2UnitGetNextItem(ptItem);
 	}
 }
 
@@ -315,10 +315,10 @@ void saveStashList(Unit* ptChar, Stash* ptStash, BYTE** data, DWORD* maxSize, DW
 		{
 			BYTE* oldData = *data;
 			*maxSize *= 2;
-			*data = (BYTE *)D2AllocMem(PCGame->memoryPool, *maxSize,__FILE__,__LINE__,0);
+			*data = (BYTE *)Fog::D2AllocMem(PCGame->memoryPool, *maxSize,__FILE__,__LINE__,0);
 			d2_assert(!*data, "Error : Memory allocation", __FILE__, __LINE__);
 			CopyMemory(*data, oldData, *curSize);
-			D2FreeMem(PCGame->memoryPool, oldData,__FILE__,__LINE__,0);
+			Fog::D2FreeMem(PCGame->memoryPool, oldData,__FILE__,__LINE__,0);
 		}
 		saveStash(ptChar, ptStash, data, maxSize, curSize);
 		nbStash++;
@@ -340,7 +340,7 @@ void updateSelectedStashClient(Unit* ptChar)
 void setSelectedStashClient(DWORD stashId, DWORD stashFlags, DWORD flags, bool bOnlyItems)
 {
 	log_msg("setSelectedStashClient ID:%d, stashFlags:%d, flags:%08X\n", stashId, stashFlags, flags);
-	Unit* ptChar = D2GetClientPlayer();
+	Unit* ptChar = D2Client::D2GetClientPlayer();
 	Stash* newStash = getStash(ptChar, stashId);
 	if (!newStash) do
 		newStash = addStash(ptChar);
@@ -449,7 +449,7 @@ void renameCurrentStash(Unit* ptChar, char* name)
 		len = strlen(name);
 	log_msg("renameCurrentStash : %d\n", len);
 	if (stash->name)
-		D2FogMemDeAlloc(stash->name, __FILE__, __LINE__, 0);
+		Fog::D2FogMemDeAlloc(stash->name, __FILE__, __LINE__, 0);
 	log_msg("renameCurrentStash 3\n");
 	if (len > 0)
 	{
@@ -549,7 +549,7 @@ DWORD currentSawStash2;
 
 Unit* __stdcall getNextItem(Unit* ptChar, Unit* ptItem)
 {
-	Unit* item = D2UnitGetNextItem(ptItem);
+	Unit* item = D2Common::D2UnitGetNextItem(ptItem);
 	if (item) return item;
 
 	if (!curStash2)
@@ -586,7 +586,7 @@ Unit* __stdcall initGetNextItem(Unit* ptChar, Unit* ptItem)
 DWORD __stdcall carry1Limit(Unit* ptChar, Unit* ptItemParam, DWORD itemNum, BYTE page)
 {
 	if (!ptChar) return 0;
-	Unit* ptItem = ptItemParam ? ptItemParam : D2GameGetObject(PCGame, UNIT_ITEM, itemNum);
+	Unit* ptItem = ptItemParam ? ptItemParam : D2Game::D2GameGetObject(PCGame, UNIT_ITEM, itemNum);
 	if ((page != 4) && (D2Common::D2GetItemQuality(ptItem) == 7) && ptChar)
 	{
 		auto dataTables = D2Common::GetDataTables();
@@ -597,7 +597,7 @@ DWORD __stdcall carry1Limit(Unit* ptChar, Unit* ptItemParam, DWORD itemNum, BYTE
 			if (uniqueItems && (uniqueItems->carry1 == 1))
 			{
 				ItemsBIN* ptItemsBin = D2Common::D2GetItemsBIN(ptItem->nTxtFileNo);
-				Unit* ptFirstItem = D2InventoryGetFirstItem(PCInventory);
+				Unit* ptFirstItem = D2Common::D2InventoryGetFirstItem(PCInventory);
 				if (ptItemsBin && ptFirstItem)
 					return D2Game::D2VerifIfNotCarry1(ptItem, ptItemsBin, ptFirstItem);
 			}
@@ -673,7 +673,7 @@ FCT_ASM(caller_carry1LimitSwap)
 	CALL carry1Limit
 	TEST EAX, EAX
 	JNZ	end_carry1Limit
-	JMP D2ItemGetPage
+	JMP D2Common::D2ItemGetPage
 end_carry1Limit:
 	ADD ESP, 8
 	POP EDI
@@ -687,7 +687,7 @@ end_carry1Limit:
 
 FCT_ASM(caller_carry1OutOfStash)
 	PUSH ESI
-	CALL D2ItemGetPage
+	CALL D2Common::D2ItemGetPage
 	CMP AL, 4
 	JNZ continue_carry1OutOfStash
 	ADD DWORD PTR SS : [ESP], 0x1AF

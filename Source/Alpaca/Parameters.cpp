@@ -37,14 +37,9 @@ bool active_plugin = true;
 // Users should report bugs and/or the users environment/configuration should be inspected.
 bool active_CheckMemory = true;
 
-char* DllsToLoad;
-
 const char* S_GENERAL = "GENERAL";
 const char* S_active_logFile = "ActiveLogFile";
 const char* S_active_logFilePatches = "ActiveLogFilePatches";
-const char* S_loadDll1 = "LoadDll1";
-const char* S_loadDll2 = "LoadDll2";
-const char* S_loadDll3 = "LoadDll3";
 
 const char* S_MAIN_SCREEN = "MAIN SCREEN";
 const char* S_active_DiabloVersionTextChange = "ActiveDiabloVersionTextChange";
@@ -102,27 +97,6 @@ void init_General(INIFile* iniFile, char* buffer, DWORD maxSize)
 	GetValueFromIni(iniFile, S_GENERAL, S_active_logFilePatches, "0", buffer, maxSize);
 	active_logFileMemory = IsEnabled(buffer);
 	LogParameterBooleanValue(S_active_logFilePatches, active_logFileMemory);
-
-	// Custom DLLs
-	char dllsBuffer[BUFFER_SIZE];
-
-	// TODO: [Low Priority] Duplication here can be removed in a loop.
-	GetValueFromIni(iniFile, S_GENERAL, S_loadDll1, "", buffer, maxSize);
-	LogParameterStringValue(S_loadDll1, buffer);
-	strcat(buffer, "|");
-	strcpy(dllsBuffer, buffer);
-	
-	GetValueFromIni(iniFile, S_GENERAL, S_loadDll2, "", buffer, maxSize);
-	LogParameterStringValue(S_loadDll2, buffer);
-	strcat(buffer, "|");
-	strcat(dllsBuffer, buffer);
-
-	GetValueFromIni(iniFile, S_GENERAL, S_loadDll3, NULL, buffer, maxSize);
-	LogParameterStringValue(S_loadDll3, buffer);
-	strcat(dllsBuffer, buffer);
-
-	DllsToLoad = (char*)D2FogMemAlloc(strlen(dllsBuffer) + 1, __FILE__, __LINE__, 0);
-	strcpy(DllsToLoad, dllsBuffer);
 }
 
 void init_MainMenu(INIFile* iniFile, char* buffer, DWORD maxSize)
@@ -138,7 +112,7 @@ void init_MainMenu(INIFile* iniFile, char* buffer, DWORD maxSize)
 			strcpy(buffer, "v ");
 			strcat(buffer, VersionUtility::GetVersionAsString());
 		}
-		DiabloVersionText = (char*)D2FogMemAlloc(strlen(buffer) + 1, __FILE__, __LINE__, 0);
+		DiabloVersionText = (char*)Fog::D2FogMemAlloc(strlen(buffer) + 1, __FILE__, __LINE__, 0);
 		strcpy(DiabloVersionText, buffer);
 		LogParameterStringValue(S_DiabloVersionText, DiabloVersionText);
 		GetValueFromIni(iniFile, S_MAIN_SCREEN, S_DiabloVersionColor, "0", buffer, maxSize);

@@ -51,12 +51,12 @@ WCHAR* STR_STASH_NEXT_PAGE = L"Next (Shift: Index Or %d, Ctrl: Page By %d)";
 WCHAR* STR_PERSONAL_PAGE_NUMBER = L"Page - %u";
 WCHAR* STR_NO_SELECTED_PAGE = L"No page selected";
 
-DWORD	getXPreviousBtn()		{return RX(posXPreviousBtn<0? D2GetResolution()?0x80:0xAF : posXPreviousBtn);}
+DWORD	getXPreviousBtn()		{return RX(posXPreviousBtn<0? D2gfx::D2GetResolution()?0x80:0xAF : posXPreviousBtn);}
 #define	getLPreviousBtn()		32
 DWORD	getYPreviousBtn()		{return RY(posYPreviousBtn<0 ? 0x40 : posYPreviousBtn);}
 #define	getHPreviousBtn()		32
 
-DWORD	getXNextBtn()			{return RX(posXNextBtn<0 ? D2GetResolution()?0xA0:0xCF :posXNextBtn);}
+DWORD	getXNextBtn()			{return RX(posXNextBtn<0 ? D2gfx::D2GetResolution()?0xA0:0xCF :posXNextBtn);}
 #define	getLNextBtn()			32
 DWORD	getYNextBtn()			{return RY(posYNextBtn<0 ? 0x40 : posYNextBtn);}
 #define	getHNextBtn()			32
@@ -66,36 +66,36 @@ DWORD	getYNextBtn()			{return RY(posYNextBtn<0 ? 0x40 : posYNextBtn);}
 
 void* __stdcall printBtns()
 {
-	Unit* ptChar = D2GetClientPlayer();
+	Unit* ptChar = D2Client::D2GetClientPlayer();
 
 	sDrawImageInfo data;
 	ZeroMemory(&data, sizeof(data));
 	setImage(&data, stashBtnsImages);
 
 	setFrame(&data, 0 + isDownBtn.previous);
-	D2PrintImage(&data, getXPreviousBtn(), getYPreviousBtn(), -1, 5, 0);
+	D2gfx::D2PrintImage(&data, getXPreviousBtn(), getYPreviousBtn(), -1, 5, 0);
 
 	setFrame(&data, 2 + isDownBtn.next);
-	D2PrintImage(&data, getXNextBtn(), getYNextBtn(), -1, 5, 0);
+	D2gfx::D2PrintImage(&data, getXNextBtn(), getYNextBtn(), -1, 5, 0);
 
 	WCHAR text[100];
-	DWORD mx = D2GetMouseX();
-	DWORD my = D2GetMouseY();
+	DWORD mx = D2Client::D2GetMouseX();
+	DWORD my = D2Client::D2GetMouseY();
 
-	D2SetFont(1);
+	D2Win::D2SetFont(1);
 
 	if (isOnButtonPreviousStash(mx, my))
 	{
 		_snwprintf(text, sizeof(text), STR_STASH_PREVIOUS_PAGE, nbPagesPerIndex, nbPagesJump);
-		D2PrintPopup(text, getXPreviousBtn() + getLPreviousBtn() / 2, getYPreviousBtn() - getHPreviousBtn(), WHITE, 1);
+		D2Win::D2PrintPopup(text, getXPreviousBtn() + getLPreviousBtn() / 2, getYPreviousBtn() - getHPreviousBtn(), WHITE, 1);
 	}
 	else if (isOnButtonNextStash(mx, my))
 	{
 		_snwprintf(text, sizeof(text), STR_STASH_NEXT_PAGE, nbPagesPerIndex, nbPagesJump);
-		D2PrintPopup(text, getXNextBtn() + getLNextBtn() / 2, getYNextBtn() - getHNextBtn(), WHITE, 1);
+		D2Win::D2PrintPopup(text, getXNextBtn() + getLNextBtn() / 2, getYNextBtn() - getHNextBtn(), WHITE, 1);
 	}
 
-	return D2LoadBuySelBtn();
+	return D2Client::D2LoadBuySelBtn();
 }
 
 DWORD __stdcall manageBtnDown(sWinMessage* msg)
@@ -113,7 +113,7 @@ DWORD __stdcall manageBtnDown(sWinMessage* msg)
 		return 0;
 	}
 
-	D2PlaySound(4, 0, 0, 0, 0);
+	D2Client::D2PlaySound(4, 0, 0, 0, 0);
 	
 	freeMessage(msg);
 	return 1;
@@ -121,7 +121,7 @@ DWORD __stdcall manageBtnDown(sWinMessage* msg)
 
 DWORD __stdcall manageBtnUp(sWinMessage* msg)
 {
-	Unit* ptChar = D2GetClientPlayer();
+	Unit* ptChar = D2Client::D2GetClientPlayer();
 
 	if (isOnButtonPreviousStash(msg->x,msg->y))
 	{
@@ -171,7 +171,7 @@ DWORD __stdcall manageBtnUp(sWinMessage* msg)
 
 void __fastcall printPageNumber(LPWSTR maxGoldText, DWORD x, DWORD y, DWORD color, DWORD bfalse)
 {
-	Unit* ptChar = D2GetClientPlayer();
+	Unit* ptChar = D2Client::D2GetClientPlayer();
 	WCHAR popupText[100];
 
 	if (PCPY->currentStash)
@@ -207,24 +207,24 @@ void __fastcall printPageNumber(LPWSTR maxGoldText, DWORD x, DWORD y, DWORD colo
 		}
 
 		int stashNameColor = isIndex ? GREEN : WHITE;
-		D2PrintString(popupText, x, y, stashNameColor, bfalse);
+		D2Win::D2PrintString(popupText, x, y, stashNameColor, bfalse);
 	}
 	else
 	{
 		_snwprintf(popupText, sizeof(popupText), STR_NO_SELECTED_PAGE);
-		D2PrintString(popupText, x, y, WHITE, bfalse);
+		D2Win::D2PrintString(popupText, x, y, WHITE, bfalse);
 	}
 
 	// printGoldMaxPopup
-	DWORD mx = D2GetMouseX();
-	DWORD my = D2GetMouseY();
+	DWORD mx = D2Client::D2GetMouseX();
+	DWORD my = D2Client::D2GetMouseY();
 	if ((RX(0x5E) < mx) && (mx < RX(0xF8)) && (RY(0x1C8) < my) && (my < RY(0x1B6)) )
 	{
 		_snwprintf(popupText, sizeof(popupText), L"%s", maxGoldText);
 		
-		DWORD x = D2GetPixelLen(maxGoldText);
-		DWORD x2 = D2GetPixelLen(popupText) - x;
-		D2PrintPopup(popupText, RX(0xA8 - max(x, x2) / 2), RY(0x1CA), WHITE, 0);
+		DWORD x = D2Win::D2GetPixelLen(maxGoldText);
+		DWORD x2 = D2Win::D2GetPixelLen(popupText) - x;
+		D2Win::D2PrintPopup(popupText, RX(0xA8 - max(x, x2) / 2), RY(0x1CA), WHITE, 0);
 	}
 }
 
@@ -233,12 +233,12 @@ static DWORD currentSawStash = 0;
 
 Unit* __stdcall getNextItemForSet(Unit* ptItem)
 {
-	Unit* item = ptItem?D2UnitGetNextItem(ptItem):NULL;
+	Unit* item = ptItem ? D2Common::D2UnitGetNextItem(ptItem) : NULL;
 	if (item) return item;
 
 	if (!curStash)
 	{
-		Unit* ptChar = D2GetClientPlayer();
+		Unit* ptChar = D2Client::D2GetClientPlayer();
 		switch (currentSawStash)
 		{
 		case 0:
@@ -263,13 +263,13 @@ Unit* __stdcall getNextItemForSet(Unit* ptItem)
 
 Unit* __stdcall initGetNextItemForSet(Inventory* ptInventory)
 {
-	Unit* ptChar = D2GetClientPlayer();
+	Unit* ptChar = D2Client::D2GetClientPlayer();
 	if (ptChar->nUnitType != UNIT_PLAYER) return NULL;
 	if (!PCPY) return NULL;
 
 	curStash = NULL;
 	currentSawStash = 0;
-	Unit* item = D2InventoryGetFirstItem(ptInventory);
+	Unit* item = D2Common::D2InventoryGetFirstItem(ptInventory);
 	if (item) return item;
 	return getNextItemForSet(item);
 }

@@ -32,7 +32,7 @@ const char* CMD_SWAP = "/swap";
 int __stdcall commands(char* ptText)
 {
 	log_msg("Command : %s\n", ptText);
-	Unit* ptChar = D2GetClientPlayer();
+	Unit* ptChar = D2Client::D2GetClientPlayer();
 
 	char command[MAX_CMD_SIZE];
 	ZeroMemory(command, MAX_CMD_SIZE);

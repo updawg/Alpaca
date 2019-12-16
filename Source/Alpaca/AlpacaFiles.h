@@ -101,7 +101,5 @@ TableDesc[i].lookup = (void*)(L); i++
 //11:Lookup fo DWORD
 //1A: flag
 
-#define BUILD_BIN( T,V,N,F ) V = (T*)D2CompileTxtFile(mempool, F, TableDesc, (DWORD*)&nbStatsInterface, sizeof(T));
-
 void Install_AlpacaFiles();
 void Install_AlpacaImagesFiles();

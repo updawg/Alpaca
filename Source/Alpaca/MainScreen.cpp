@@ -28,11 +28,11 @@ DWORD newTextBoxData[]={4, 0x237, 0x243, 0xC8, 0x14, 0, 0, 0, 0, 0, 0, 2};
 void __stdcall PrintVersion(void** childrens, DWORD* sgnNumChildren)
 {
 	char buf[30];
-	void* textbox = D2CreateTextBox(newTextBoxData);
+	void* textbox = D2Win::D2CreateTextBox(newTextBoxData);
 	childrens[*sgnNumChildren] = textbox;
 	d2_assert((*sgnNumChildren)++ >= 40, "sgnNumChildren < MAX_CHILDREN", __FILE__, __LINE__);
 	sprintf(buf, "%s %s", PROGRAM_NAME, PROGRAM_VERSION);
-	D2PrintLineOnTextBox(textbox, buf, AlpacaVersionColor);
+	D2Win::D2PrintLineOnTextBox(textbox, buf, AlpacaVersionColor);
 }
 
 FCT_ASM ( caller_PrintVersion )
@@ -40,7 +40,7 @@ FCT_ASM ( caller_PrintVersion )
 	PUSH DWORD PTR [ESI+2]
 	PUSH DWORD PTR [ESI+9]
 	CALL PrintVersion
-	CALL D2CreateTextBox
+	CALL D2Win::D2CreateTextBox
 	JMP ESI
 }}
 

@@ -31,7 +31,7 @@ Stash* locateStashFromItem(Unit* ptChar, Unit* currentItem, Stash* currentStash,
 
 		if (currentStash == stashToSearch)
 		{
-			retrievedItem = D2InventoryGetFirstItem(PCInventory);
+			retrievedItem = D2Common::D2InventoryGetFirstItem(PCInventory);
 		}
 		else
 		{
@@ -40,11 +40,11 @@ Stash* locateStashFromItem(Unit* ptChar, Unit* currentItem, Stash* currentStash,
 
 		while (retrievedItem)
 		{
-			if (currentItem == D2GetRealItem(retrievedItem))
+			if (currentItem == D2Common::D2GetRealItem(retrievedItem))
 			{
 				return currentStash;
 			}
-			retrievedItem = D2UnitGetNextItem(retrievedItem);
+			retrievedItem = D2Common::D2UnitGetNextItem(retrievedItem);
 		}
 
 		currentStash = currentStash->nextStash;
@@ -71,7 +71,7 @@ void __stdcall updateClientPlayerOnLoading(Unit* ptChar)
 PlayerData* __fastcall init_PlayerCustomData(DWORD p1, DWORD size, LPCSTR file, DWORD line, DWORD p5)
 {
 	log_msg("init_PlayerCustomData\n");
-	PlayerData* playerData = (PlayerData*)D2AllocMem(p1,size+sizeof(PYPlayerData),file,line,p5);
+	PlayerData* playerData = (PlayerData*)Fog::D2AllocMem(p1,size+sizeof(PYPlayerData),file,line,p5);
 	ZeroMemory((BYTE*)playerData + shifting.ptPYPlayerData, sizeof(PYPlayerData));
 	return playerData;
 }
@@ -98,12 +98,12 @@ void __fastcall free_PlayerCustomData(DWORD p1, PlayerData* playerData, LPCSTR f
 	free(ptPYPlayerData->selfStash);
 	ptPYPlayerData->selfStash = NULL;
 
-	D2FreeMem(p1,playerData,file,line,p5);
+	Fog::D2FreeMem(p1,playerData,file,line,p5);
 }
 
 Unit* __stdcall getNextItemToFree(Unit* ptChar, Unit* ptItem)
 {
-	Unit* item = D2UnitGetNextItem(ptItem);
+	Unit* item = D2Common::D2UnitGetNextItem(ptItem);
 	if (item) return item;
 
 	if (ptChar->nUnitType != UNIT_PLAYER) return NULL;
@@ -133,7 +133,7 @@ Unit* __fastcall updateItem(GameStruct* ptGame, DWORD type, DWORD itemNum, Unit*
 
 	Unit* ptItem = D2Game::D2GameGetObject(ptGame, type, itemNum);
 
-	if (D2ItemGetPage(ptItem) == STASH)
+	if (D2Common::D2ItemGetPage(ptItem) == STASH)
 	{
 		Stash* ptStash = getStashFromItem(ptChar, ptItem);
 		if (!ptStash) return NULL;

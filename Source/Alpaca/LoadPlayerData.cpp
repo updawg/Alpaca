@@ -39,7 +39,7 @@ DWORD __stdcall LoadSPCustomData(Unit* ptChar)
 	
 	data = readExtendedSaveFile(PCPlayerData->name, &size);
 	ret = loadExtendedSaveFile(ptChar, data, size);
-	D2FogMemDeAlloc(data,__FILE__,__LINE__,0);
+	Fog::D2FogMemDeAlloc(data,__FILE__,__LINE__,0);
 
 	log_msg("End LoadSPCustomData.\n\n");
 	return ret;
@@ -126,7 +126,7 @@ static s_MPSaveFile * receivedSaveFiles = NULL;
 void freeCurrentCF(DWORD memoryPool, s_MPSaveFile** curSF)
 {
 	if (*curSF == NULL) return;
-	D2FreeMem(memoryPool, (*curSF)->dataExtended,__FILE__,__LINE__,0);
+	Fog::D2FreeMem(memoryPool, (*curSF)->dataExtended,__FILE__,__LINE__,0);
 
 	if ((*curSF)->next)
 		(*curSF)->next->prev = (*curSF)->prev;
@@ -134,7 +134,7 @@ void freeCurrentCF(DWORD memoryPool, s_MPSaveFile** curSF)
 		(*curSF)->prev->next = (*curSF)->next;
 	else
 		receivedSaveFiles = (*curSF)->next;
-	D2FreeMem(memoryPool, *curSF,__FILE__,__LINE__,0);
+	Fog::D2FreeMem(memoryPool, *curSF,__FILE__,__LINE__,0);
 	*curSF = NULL;
 }
 
@@ -152,7 +152,7 @@ void sendData(BYTE* data, DWORD size)
 		pack.packSize = (BYTE) (size - sended > 0xFE ? 0xFF : size - sended + 1);
 		CopyMemory(pack.data, &data[sended], pack.packSize);
 		log_msg("Loading Send Packet: \t finalSize=%X\t packSize=%02X\t data=%08X\n", pack.finalSize, pack.packSize, pack.data);
-		D2SendToServer(pack.packSize+7, 0, &pack);
+		D2Net::D2SendToServer(pack.packSize+7, 0, &pack);
 		sended += pack.packSize -1;
 	}
 	log_msg("\n");
@@ -163,7 +163,7 @@ static BYTE*	dataExtended;
 
 void __fastcall SendSaveFiles(char* ptPath, DWORD maxsize, char* name)
 {
-	D2FogGetSavePath(ptPath,maxsize);
+	Fog::D2FogGetSavePath(ptPath,maxsize);
 
 	log_msg("\n--- Start SendSaveFiles ---\n");
 
@@ -171,7 +171,7 @@ void __fastcall SendSaveFiles(char* ptPath, DWORD maxsize, char* name)
 	log_msg("Send Extended Save File\n");
 	dataExtended = readExtendedSaveFile(name, &sizeExtended);
 	sendData(dataExtended, sizeExtended);
-	D2FogMemDeAlloc(dataExtended,__FILE__,__LINE__,0);
+	Fog::D2FogMemDeAlloc(dataExtended,__FILE__,__LINE__,0);
 
 	// Ending load
 	log_msg("End SendSaveFiles.\n\n");
@@ -183,7 +183,7 @@ DWORD __stdcall ReceiveSaveFiles (DWORD clientID, t_rcvMsg* msg)
 
 	log_msg("Loading Receive Packet: clientID=%d\t finalSize=%X\t packSize=%02X\t data=%08X\n", clientID, msg->finalSize, msg->packSize, msg->data);
 
-	NetClient* ptClient = ptClientTable[clientID & 0xFF];
+	NetClient* ptClient = D2Game::ptClientTable[clientID & 0xFF];
 
 	// If the client is unable to be retrieved, then abort because we will crash.
 	// This will happen if the player tries to join the same LAN game with the same char.
@@ -201,7 +201,7 @@ DWORD __stdcall ReceiveSaveFiles (DWORD clientID, t_rcvMsg* msg)
 
 	if (!curSF)
 	{
-		curSF = (s_MPSaveFile *)D2AllocMem(0 * PClientGame->memoryPool, sizeof(s_MPSaveFile),__FILE__,__LINE__,0);
+		curSF = (s_MPSaveFile *)Fog::D2AllocMem(0 * PClientGame->memoryPool, sizeof(s_MPSaveFile),__FILE__,__LINE__,0);
 		ZeroMemory(curSF, sizeof(s_MPSaveFile));
 		curSF->clientID = clientID;
 		curSF->next = receivedSaveFiles;
@@ -222,7 +222,7 @@ DWORD __stdcall ReceiveSaveFiles (DWORD clientID, t_rcvMsg* msg)
 
 	if (!curSF->dataExtended)
 	{
-		curSF->dataExtended = (BYTE *)D2AllocMem(0 * PClientGame->memoryPool, curSF->sizeExtended, __FILE__, __LINE__, 0);
+		curSF->dataExtended = (BYTE *)Fog::D2AllocMem(0 * PClientGame->memoryPool, curSF->sizeExtended, __FILE__, __LINE__, 0);
 	}
 
 	CopyMemory(&curSF->dataExtended[curSF->curExtended], msg->data, size);
@@ -250,7 +250,7 @@ DWORD __stdcall LoadMPCustomData(Unit* ptChar)
 	if (!PCPlayerData)
 		{log_msg("LoadMPCustomData : PCPlayerData == NULL\n");return 0x1B;} //Unknown failure
 
-	NetClient* ptClient = D2GetClient(ptChar,__FILE__,__LINE__);
+	NetClient* ptClient = D2Game::D2GetClient(ptChar,__FILE__,__LINE__);
 
 	s_MPSaveFile* curSF = receivedSaveFiles;
 	while (curSF && (ptClient->clientID != curSF->clientID) )

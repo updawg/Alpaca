@@ -34,10 +34,10 @@ void updateClient(Unit* ptChar, DWORD mFunc, DWORD p1, DWORD p2, DWORD p3)
 	packet.mParam2 = p2;
 	packet.mParam3 = p3;
 
-	ptNetClient = D2GetClient( ptChar, __FILE__ , __LINE__);
+	ptNetClient = D2Game::D2GetClient( ptChar, __FILE__ , __LINE__);
 
 	// Send packet to client for remove placed skills
-	D2SendPacket(ptNetClient, &packet, sizeof(DataPacket));
+	D2Game::D2SendPacket(ptNetClient, &packet, sizeof(DataPacket));
 }
 
 void updateClient(Unit* ptChar, DWORD mFunc, char* msg)
@@ -56,10 +56,10 @@ void updateClient(Unit* ptChar, DWORD mFunc, char* msg)
 	if (msg != NULL)
 		strcpy((char*)&packet.mItemID, msg);
 
-	ptNetClient = D2GetClient(ptChar, __FILE__, __LINE__);
+	ptNetClient = D2Game::D2GetClient(ptChar, __FILE__, __LINE__);
 
 	// Send packet to client for remove placed skills
-	D2SendPacket(ptNetClient, &packet, sizeof(DataPacket));
+	D2Game::D2SendPacket(ptNetClient, &packet, sizeof(DataPacket));
 }
 
 DWORD __fastcall handleClientUpdate(DataPacket* packet)
@@ -68,7 +68,7 @@ DWORD __fastcall handleClientUpdate(DataPacket* packet)
 	switch (packet->mFunc)
 	{
 	case UC_SELECT_STASH:	 setSelectedStashClient(packet->mParam1, packet->mParam2, packet->mParam3, (packet->mParam2 & 8) == 8); return 1;
-	case UC_PAGE_NAME:		 renameCurrentStash(D2GetClientPlayer(), (char*)&packet->mItemID); return 1;
+	case UC_PAGE_NAME:		 renameCurrentStash(D2Client::D2GetClientPlayer(), (char*)&packet->mItemID); return 1;
 	default : return 0;
 	}
 }
