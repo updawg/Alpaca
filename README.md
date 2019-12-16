@@ -11,6 +11,7 @@ stabilized, and has full support for **`Diablo II Classic`**.
 ## Compatibility
 
 - [Cactus](https://github.com/fearedbliss/Cactus) - Modern Diablo II Version Switcher
+- [Singling](https://github.com/fearedbliss/Cactus/blob/master/README-SINGLING.md) - A collection of non-gameplay modifications and fixes.
 
 ## Requirements
 
@@ -36,3 +37,15 @@ Released under the [GNU General Public License v3](LICENSE.md) or Later.
 - **`/unset`** : Removes the current stash page's index.
 - **`/swap <page #>`** : Swaps the content of the current page with the content of the target page.
 - **`/page <page #>`** : Takes you to the corresponding page.
+
+## Screenshots
+
+![Main Menu](https://i.imgur.com/JMHvYZg.jpg)
+
+![Classic](https://i.imgur.com/v8vPURk.jpg)
+
+![Expansion](https://i.imgur.com/xGNrTai.jpg)
+
+![Page Names / Indexed Pages](https://i.imgur.com/3GF3mJ5.jpg)
+
+![Item Level](https://i.imgur.com/jMrFhK3.jpg)
