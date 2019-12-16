@@ -44,20 +44,21 @@ DWORD __stdcall isModFile (char* filename)
 }
 
 FCT_ASM(caller_isModFile)
-	TEST ESI, ESI
+	TEST EDI, EDI
 	JNZ ISNOTMODDATA
-	MOV EBP, DWORD PTR SS : [ESP + 0x140]
-	PUSH EBP
+	MOV ESI, DWORD PTR SS : [ESP + 0x130]
+	PUSH ESI
 	CALL isModFile
 	TEST EAX, EAX
 	JE ISNOTMODDATA
-	MOV BL, BYTE PTR SS : [ESP + 0x144]
+	MOV BL, BYTE PTR SS : [ESP + 0x134]
 	POP EAX
 	POP EAX
 	MOV EAX, Storm::D2StormMPQOpenFile
-	ADD EAX, 0x9A
+	ADD EAX, 0xBD
+	MOV EBP, GetFileAttributesA
 	JMP EAX
-ISNOTMODDATA:
+ISNOTMODDATA :
 	JMP DWORD PTR CS : [LeaveCriticalSection]
 }}
 
@@ -68,7 +69,7 @@ void Install_AlpacaFiles()
 
 	log_msg("[Patch] Find Custom Files\n");
 
-	DWORD FindCustomFileOffset = Storm::GetAddress(0x18677);
+	DWORD FindCustomFileOffset = Storm::GetAddress(0x2DA79);
 
 	// Try in Diablo II\Alpaca\ if file not found
 	Memory::SetCursor(FindCustomFileOffset);
@@ -138,8 +139,8 @@ void Install_AlpacaImagesFiles()
 
 	log_msg("[Patch] Load & Free Custom Images\n");
 
-	DWORD LoadCustomImageOffset = D2Client::GetAddress(0x5E4B1);
-	DWORD FreeCustomImageOffset = D2Client::GetAddress(0x5E639);
+	DWORD LoadCustomImageOffset = D2Client::GetAddress(0x6E0BE);
+	DWORD FreeCustomImageOffset = D2Client::GetAddress(0x6D07D);
 
 	// Load custom images
 	Memory::SetCursor(LoadCustomImageOffset);

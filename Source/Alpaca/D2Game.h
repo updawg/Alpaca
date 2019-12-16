@@ -23,11 +23,11 @@ class D2Game : public Library<D2Game>
 public:
 	static void Init();
 
-	typedef DWORD(__fastcall *TD2SendPacket) (void* ptNetClient, LPVOID pData, DWORD size);
-	typedef DWORD(__fastcall *TD2LoadInventory) (GameStruct* ptGame, Unit* pChar, saveBitField* pdata, DWORD p2, DWORD maxSize, DWORD p4, DWORD *ptNbBytesRead);
-	typedef Unit* (__fastcall *TD2GameGetObject) (GameStruct* ptGame, DWORD type, DWORD itemNum);
-	typedef NetClient* (__fastcall *TD2GetClient) (Unit* ptUnit, char* lpszErrFile, DWORD ErrLine);
-	typedef DWORD(__fastcall *TD2VerifIfNotCarry1) (Unit* ptItem, ItemsBIN* itemsData, Unit* ptFirstItem);
+	typedef DWORD(__fastcall* TD2SendPacket) (void* ptNetClient, LPVOID pData, DWORD size);
+	typedef DWORD(__fastcall* TD2LoadInventory) (GameStruct* ptGame, Unit* pChar, saveBitField* pdata, DWORD p2, DWORD maxSize, DWORD p4, DWORD* ptNbBytesRead);
+	typedef Unit* (__fastcall* TD2GameGetObject) (GameStruct* ptGame, DWORD type, DWORD itemNum);
+	typedef NetClient* (__fastcall* TD2GetClient) (Unit* ptUnit, char* lpszErrFile, DWORD ErrLine);
+	typedef DWORD(__fastcall* TD2VerifIfNotCarry1) (Unit* ptItem, ItemsBIN* itemsData, Unit* ptFirstItem);
 
 	static TD2SendPacket D2SendPacket;
 	static TD2LoadInventory D2LoadInventory;
@@ -37,7 +37,11 @@ public:
 	static TD2VerifIfNotCarry1 D2VerifIfNotCarry1;
 private:
 	static void SetFunctions();
+	static void D2Game::D2GetClient_111();
 	static TD2SendPacket D2SendPacketDirect;
+	static void D2SendPacket_111();
 	static TD2LoadInventory D2LoadInventoryDirect;
+	static void D2LoadInventory_111();
 	static TD2GameGetObject D2GameGetObjectDirect;
+	static void D2GameGetObject_111();
 };

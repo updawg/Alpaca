@@ -109,11 +109,11 @@ bool isMemoryAlreadyCorrect(DWORD currentByte1, DWORD currentByte2, DWORD curren
 	const DWORD expectedByte5 = 0x6F;
 
 	bool isAlreadyCorrect = currentByte1 == expectedByte1 &&
-							currentByte2 == expectedByte2 &&
-							currentByte3 == expectedByte3 &&
-							currentByte4 == expectedByte4 &&
-							currentByte5 == expectedByte5 &&
-							currentLibraryAddress == expectedLibraryAddress;
+		currentByte2 == expectedByte2 &&
+		currentByte3 == expectedByte3 &&
+		currentByte4 == expectedByte4 &&
+		currentByte5 == expectedByte5 &&
+		currentLibraryAddress == expectedLibraryAddress;
 
 	return isAlreadyCorrect;
 }
@@ -126,12 +126,12 @@ bool InstallAlpaca(HANDLE h, LPBYTE addr, char* libraryName)
 	LPBYTE freeLibraryAddr = addr;
 	LPBYTE getProcAddressAddr = addr;
 
-	// [1.10f]
-	loadCallerAddr += 0x3870;
-	freeCallerAddr += 0x3A6D;
-	loadLibraryAddr += 0xC040;
-	freeLibraryAddr += 0xC048;
-	getProcAddressAddr += 0xC03C;
+	// [1.13d]
+	loadCallerAddr += 0xAA03;
+	freeCallerAddr += 0xA9AA;
+	loadLibraryAddr += 0xD11C;
+	freeLibraryAddr += 0xD124;
+	getProcAddressAddr += 0xD120;
 
 	BYTE buf[200];
 	DWORD pos = 0;
@@ -166,7 +166,7 @@ bool InstallAlpaca(HANDLE h, LPBYTE addr, char* libraryName)
 			}
 		}
 	}
-	
+
 	// Reset stuff for safety
 	isAlreadyCorrect = false;
 	currentLibraryAddress = NULL;
@@ -201,7 +201,7 @@ bool InstallAlpaca(HANDLE h, LPBYTE addr, char* libraryName)
 	if (alreadyInstalled) return true;
 
 	// Alloc custom memory data.
-	LPBYTE memory =  (LPBYTE)VirtualAllocEx(h, NULL, 200, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+	LPBYTE memory = (LPBYTE)VirtualAllocEx(h, NULL, 200, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
 	DWORD oldProtect = -1;
 	if (!memory)
 	{
@@ -312,8 +312,8 @@ bool isD2gfxLoaded(HANDLE hProcess, LPVOID addr)
 	DWORD SizeOfImage = *(DWORD*)(buf + offsetPESignature + 0x50);
 	DWORD CheckSum = *(DWORD*)(buf + offsetPESignature + 0x58);
 
-	// [1.09 - 1.10f]
-	if (ImageBase == 0x6FA70000 && SizeOfImage == 0x00021000 && CheckSum == 0x00000000) return true;
+	// [1.13d]
+	if (ImageBase == 0x6FA80000 && SizeOfImage == 0x00021000 && CheckSum == 0x00018542) return true;
 	return false;
 }
 
@@ -369,12 +369,12 @@ bool launchGame(LPSTR commandLine, LPSTR currentDirectory, LPSTR libraryName)
 	return false;
 }
 
-int APIENTRY WinMain (
-    __in HINSTANCE hInstance,
-    __in_opt HINSTANCE hPrevInstance,
-    __in_opt LPSTR lpCmdLine,
-    __in int nShowCmd
-    )
+int APIENTRY WinMain(
+	__in HINSTANCE hInstance,
+	__in_opt HINSTANCE hPrevInstance,
+	__in_opt LPSTR lpCmdLine,
+	__in int nShowCmd
+)
 {
 	//MessageBox(GetActiveWindow(), "[AlpacaLauncher] The Alpacas have arrived!", "Alpaca", MB_APPLMODAL);
 

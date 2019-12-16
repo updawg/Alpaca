@@ -45,23 +45,6 @@ DWORD __stdcall LoadSPCustomData(Unit* ptChar)
 	return ret;
 }
 
-
-FCT_ASM (caller_LoadSPPlayerCustomData )
-	MOV ESI,EAX
-	TEST ESI,ESI
-	JNZ JMP_LoadSPPlayerCustomData
-	PUSH DWORD PTR SS:[ESP+0x14]
-	CALL LoadSPCustomData
-	MOV ESI,EAX
-	TEST ESI,ESI
-	JNZ JMP_LoadSPPlayerCustomData
-	RETN
-JMP_LoadSPPlayerCustomData:
-	ADD DWORD PTR SS:[ESP],0x17
-	RETN
-}}
-
-
 /*
 return value :
 0:ok
@@ -288,24 +271,39 @@ DWORD __stdcall LoadMPCustomData(Unit* ptChar)
 	return ret;
 }
 
+FCT_ASM(caller_LoadSPPlayerCustomData)
+	MOV ESI, EAX
+	TEST ESI, ESI
+	JNZ JMP_LoadSPPlayerCustomData
+	PUSH DWORD PTR SS : [ESP + 0x14]
+	CALL LoadSPCustomData
+	MOV ESI, EAX
+	TEST ESI, ESI
+	JNZ JMP_LoadSPPlayerCustomData
+	RETN
+	JMP_LoadSPPlayerCustomData :
+	ADD DWORD PTR SS : [ESP] , 0x17
+	RETN
+}}
+
 FCT_ASM(caller_LoadMPPlayerCustomData)
-PUSH DWORD PTR SS : [EDI]
-CALL LoadMPCustomData
-TEST EAX, EAX
-JNZ JMP_LoadMPlayerCustomData
-CMP DWORD PTR DS : [EDI], 0
-JNZ Continue_LoadMP
-ADD DWORD PTR SS : [ESP], 0x46
+	PUSH DWORD PTR SS : [EBX]
+	CALL LoadMPCustomData
+	TEST EAX, EAX
+	JNZ JMP_LoadMPlayerCustomData
+	CMP DWORD PTR DS : [EBX] , 0
+	JNZ Continue_LoadMP
+	ADD DWORD PTR SS : [ESP] , 0x21
 Continue_LoadMP :
 	RETN
-	JMP_LoadMPlayerCustomData :
-SUB DWORD PTR SS : [ESP], 0xD
-RETN
+JMP_LoadMPlayerCustomData :
+	SUB DWORD PTR SS : [ESP] , 0x12
+	RETN
 }}
 
 FCT_ASM(caller_SendSaveFiles)
 	POP EAX
-	PUSH DWORD PTR CS : [EAX + 0x0F] //"name"
+	PUSH DWORD PTR CS : [EAX + 0x01] //"name"
 	PUSH EAX
 	JMP SendSaveFiles
 }}
@@ -313,10 +311,10 @@ FCT_ASM(caller_SendSaveFiles)
 FCT_ASM(caller_ReceiveSaveFiles)
 	PUSH ECX
 	PUSH EDX
-	LEA EDI, DWORD PTR DS : [ESI + 4]
-	PUSH EDI		//Message
-	MOV EDI, DWORD PTR DS : [ESI]
-	PUSH EDI		//ID client
+	LEA EBX, DWORD PTR DS : [EBP + 4]
+	PUSH EBX		//Message
+	MOV EBX, DWORD PTR SS : [EBP]
+	PUSH EBX		//ID client
 	CALL ReceiveSaveFiles
 	POP EDX
 	POP ECX
@@ -330,10 +328,10 @@ void Install_LoadPlayerData()
 
 	log_msg("[Patch] Load Player Custom Data\n");
 
-	DWORD LoadSinglePlayerCustomDataOffset = D2Game::GetAddress(0x5CB0F);
-	DWORD LoadMultiPlayerCustomDataOffset = D2Game::GetAddress(0x5CC66);
-	DWORD SendSaveFilesToServerOffset = D2Client::GetAddress(0xD5A2);
-	DWORD ReceiveSaveFilesFromClientOffset = D2Game::GetAddress(0x191A);
+	DWORD LoadSinglePlayerCustomDataOffset = D2Game::GetAddress(0x3BCCD);
+	DWORD LoadMultiPlayerCustomDataOffset = D2Game::GetAddress(0x3BB57);
+	DWORD SendSaveFilesToServerOffset = D2Client::GetAddress(0xB638C);
+	DWORD ReceiveSaveFilesFromClientOffset = D2Game::GetAddress(0xD53E9);
 
 	// Load SP player custom data.
 	Memory::SetCursor(LoadSinglePlayerCustomDataOffset);
@@ -344,7 +342,7 @@ void Install_LoadPlayerData()
 	// Load MP player custom data.
 	Memory::SetCursor(LoadMultiPlayerCustomDataOffset);
 	Memory::ChangeByte(0x83, 0xE8);
-	Memory::ChangeCallA(0x4674003F, (DWORD)caller_LoadMPPlayerCustomData);
+	Memory::ChangeCallA(0x2174003B, (DWORD)caller_LoadMPPlayerCustomData);
 
 	// Send save files to Server.
 	Memory::SetCursor(SendSaveFilesToServerOffset);
@@ -353,9 +351,9 @@ void Install_LoadPlayerData()
 	// Receive save files from client.
 	Memory::SetCursor(ReceiveSaveFilesFromClientOffset);
 	Memory::ChangeByte(0x8B, 0xE8);
-	Memory::ChangeCallA(0x04468A3E, (DWORD)caller_ReceiveSaveFiles);
-
-	customPackID--;
+	Memory::ChangeCallA(0xB60F005D, (DWORD)caller_ReceiveSaveFiles);
+	Memory::ChangeByte(0x45, 0x90);
+	Memory::ChangeByte(0x04, 0x90);
 
 	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;

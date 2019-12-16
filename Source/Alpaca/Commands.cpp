@@ -119,12 +119,12 @@ int __stdcall commands(char* ptText)
 FCT_ASM(caller_Commands)
 	TEST EAX, EAX
 	JE MANAGESOUNDCHAOSDEBUG
-	PUSH DWORD PTR SS : [ESP + 0x1C]
+	PUSH EDI
 	CALL commands
 	TEST EAX, EAX
 	JNZ MANAGESOUNDCHAOSDEBUG
-	ADD DWORD PTR SS : [ESP], 7
-MANAGESOUNDCHAOSDEBUG:
+	ADD DWORD PTR SS : [ESP] , 7
+MANAGESOUNDCHAOSDEBUG :
 	RETN 8
 }}
 
@@ -137,7 +137,7 @@ void Install_Commands()
 
 	log_msg("[Patch] Commands Support\n");
 
-	DWORD CustomCommandOffset = D2Client::GetAddress(0x32BDD);
+	DWORD CustomCommandOffset = D2Client::GetAddress(0xB1FD6);
 
 	// Run custom commmand
 	Memory::SetCursor(CustomCommandOffset);

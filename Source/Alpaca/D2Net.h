@@ -23,13 +23,11 @@ class D2Net : public Library<D2Net>
 public:
 	static void Init();
 
-	typedef DWORD(__stdcall *TD2SendToServer) (DWORD size, DWORD one, void* data);
-	typedef DWORD(__stdcall *TD2SendToClient) (DWORD zero, DWORD clientID, void* data, DWORD size);
+	typedef DWORD(__stdcall* TD2SendToServer) (DWORD size, DWORD one, void* data);
+	typedef DWORD(__stdcall* TD2SendToClient) (DWORD zero, DWORD clientID, void* data, DWORD size);
 
 	static TD2SendToServer D2SendToServer;
 	static TD2SendToClient D2SendToClient;
 private:
 	static void SetFunctions();
-	static TD2SendToServer D2SendToServerDirect;
-	static void D2SendToServer_1XX();
 };

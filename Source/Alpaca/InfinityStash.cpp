@@ -630,71 +630,67 @@ FCT_ASM ( caller_getNextItem )
 
 FCT_ASM(caller_carry1Limit)
 	PUSH DWORD PTR SS : [ESP + 0x08]//page
-	PUSH 0//EBP
+	PUSH 0//EDI
 	PUSH DWORD PTR SS : [ESP + 0x0C]
-	PUSH DWORD PTR SS : [ESP + 0x28]//ptChar
+	PUSH ESI//ptChar
 	CALL carry1Limit
 	TEST EAX, EAX
 	JNZ	end_carry1Limit
 	JMP D2Common::D2ItemSetPage
 	end_carry1Limit :
 	ADD ESP, 0xC
+	XOR EAX, EAX
 	POP EDI
+	POP EBX
 	POP ESI
 	POP EBP
-	XOR EAX, EAX
-	POP EBX
-	ADD ESP, 0x24
 	RETN 8
 }}
 
 FCT_ASM(caller_carry1LimitWhenDrop)
-	PUSH EAX
 	PUSH 0
 	PUSH 0
-	PUSH ESI//ptItem
-	PUSH EDI//ptChar
+	PUSH DWORD PTR SS : [ESP + 0x10]
+	PUSH ESI
 	CALL carry1Limit
 	TEST EAX, EAX
-	POP EAX
-	JNZ END_carry1LimitWhenDrop
-	MOV EDX, 0x806
-	RETN
-	END_carry1LimitWhenDrop :
-	ADD DWORD PTR SS : [ESP], 0x1F
-	RETN
+	JNZ	end_carry1Limit
+	JMP D2Common::D2CanPutItemInInv
+end_carry1Limit :
+	XOR EAX, EAX
+	RETN 0x1C
 }}
 
 FCT_ASM(caller_carry1LimitSwap)
 	PUSH EAX
-	PUSH DWORD PTR SS : [ESP + 0x20]
+	PUSH DWORD PTR SS : [ESP + 0x1C]
 	PUSH 0
-	PUSH EBP//ptChar
+	PUSH ESI//ptChar
 	CALL carry1Limit
 	TEST EAX, EAX
 	JNZ	end_carry1Limit
 	JMP D2Common::D2ItemGetPage
-end_carry1Limit:
+end_carry1Limit :
 	ADD ESP, 8
-	POP EDI
-	POP ESI
-	POP EBP
 	XOR EAX, EAX
+	POP EDI
+	POP EBP
+	POP ESI
 	POP EBX
-	ADD ESP, 0x4C
+	POP ECX
 	RETN 8
 }}
 
 FCT_ASM(caller_carry1OutOfStash)
-	PUSH ESI
+	PUSH EDI
 	CALL D2Common::D2ItemGetPage
 	CMP AL, 4
 	JNZ continue_carry1OutOfStash
-	ADD DWORD PTR SS : [ESP], 0x1AF
+	ADD DWORD PTR SS : [ESP] , 0x17C
 	RETN
-continue_carry1OutOfStash:
-	MOV EAX, DWORD PTR SS : [ESP + 0x14]
-	TEST EAX, EAX
+continue_carry1OutOfStash :
+	MOV ESI, DWORD PTR SS : [ESP + 0x10]
+	TEST ESI, ESI
 	RETN
 }}
 
@@ -710,10 +706,10 @@ void Install_MultiPageStash()
 
 	changeToSelectedStash = changeToSelectedStash_110;
 
-	DWORD PutCarryInventoryOffset = D2Game::GetAddress(0x55050);
-	DWORD PutCarryInventorySwapOffset = D2Game::GetAddress(0x558D9);
-	DWORD DropCarryInventoryDropCubeOffset = D2Game::GetAddress(0x14341);
-	DWORD VerifyStashPagePickupOffset = D2Game::GetAddress(0x1299E);
+	DWORD PutCarryInventoryOffset = D2Game::GetAddress(0x6B013);
+	DWORD PutCarryInventorySwapOffset = D2Game::GetAddress(0x6BC78);
+	DWORD DropCarryInventoryDropCubeOffset = D2Game::GetAddress(0xB7B15);
+	DWORD VerifyStashPagePickupOffset = D2Game::GetAddress(0xB301B);
 
 	// Cannot put 2 items carry1 in inventory
 	Memory::SetCursor(PutCarryInventoryOffset);
@@ -725,14 +721,13 @@ void Install_MultiPageStash()
 
 	// Cannot put 2 items carry1 in inventory when drop cube
 	Memory::SetCursor(DropCarryInventoryDropCubeOffset);
-	Memory::ChangeByte(0xBA, 0xE8);
-	Memory::ChangeCallA(0x806, (DWORD)caller_carry1LimitWhenDrop);
+	Memory::ChangeCallB((DWORD)D2Common::D2CanPutItemInInv, (DWORD)caller_carry1LimitWhenDrop);
 
-	// Verif only carry1 out of stash page when pick up an item
+	// Verify only carry1 out of stash page when pick up an item
 	Memory::SetCursor(VerifyStashPagePickupOffset);
 	Memory::ChangeByte(0x8B, 0xE8);
-	Memory::ChangeCallA(0x85102444, (DWORD)caller_carry1OutOfStash);
-	Memory::ChangeByte(0xC0, 0x90);
+	Memory::ChangeCallA(0x850C2474, (DWORD)caller_carry1OutOfStash);
+	Memory::ChangeByte(0xF6, 0x90);
 
 	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;

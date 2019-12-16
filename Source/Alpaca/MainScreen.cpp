@@ -51,7 +51,7 @@ void Install_PrintAlpacaVersion()
 
 	log_msg("[Patch] Print Alpaca Version - Main Menu\n");
 
-	DWORD PrintVersionOffset = D2Launch::GetAddress(0x9639);
+	DWORD PrintVersionOffset = D2Launch::GetAddress(0x10A11);
 
 	Memory::SetCursor(PrintVersionOffset);
 	Memory::ChangeCallB((DWORD)D2Win::D2CreateTextBox, (DWORD)caller_PrintVersion);
@@ -70,13 +70,12 @@ FCT_ASM(caller_VersionChange)
 
 void Install_VersionChange()
 {
-	// [Warning] There may be a bug if D2Mod started before Alpaca?
 	static bool isInstalled = false;
 	if (isInstalled) return;
 
 	log_msg("[Patch] Print Diablo Version - Main Screen\n");
 
-	DWORD PrintLodModVersionOffset = D2Launch::GetAddress(0x9723);
+	DWORD PrintLodModVersionOffset = D2Launch::GetAddress(0x10AE4);
 
 	// Print LoD/Mod version.
 	Memory::SetCursor(PrintLodModVersionOffset);

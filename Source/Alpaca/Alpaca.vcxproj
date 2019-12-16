@@ -106,6 +106,7 @@
     <ClCompile Include="Commands.cpp" />
     <ClCompile Include="Common.cpp" />
     <ClCompile Include="D2Client.cpp" />
+    <ClCompile Include="D2CMP.cpp" />
     <ClCompile Include="D2Common.cpp" />
     <ClCompile Include="D2Functions.cpp" />
     <ClCompile Include="D2Game.cpp" />
@@ -113,6 +114,7 @@
     <ClCompile Include="D2Launch.cpp" />
     <ClCompile Include="D2Net.cpp" />
     <ClCompile Include="D2Win.cpp" />
+    <ClCompile Include="ExtraPatches.cpp" />
     <ClCompile Include="LibraryLoader.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Error.cpp" />
@@ -142,6 +144,7 @@
     <ClInclude Include="CustomData.h" />
     <ClInclude Include="D2BinFile.h" />
     <ClInclude Include="D2Client.h" />
+    <ClInclude Include="D2CMP.h" />
     <ClInclude Include="D2Common.h" />
     <ClInclude Include="D2Constants.h" />
     <ClInclude Include="D2Functions.h" />
@@ -155,6 +158,7 @@
     <ClInclude Include="D2Win.h" />
     <ClInclude Include="Error.h" />
     <ClInclude Include="ExtendedSaveFile.h" />
+    <ClInclude Include="ExtraPatches.h" />
     <ClInclude Include="Fog.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="InfinityStash.h" />

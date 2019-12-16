@@ -29,25 +29,29 @@ class D2Client : public Library<D2Client>
 public:
 	static void Init();
 
-    typedef void* (__fastcall *TD2LoadImage) (const char* filename, DWORD filetype);
-	typedef void(__fastcall *TD2FreeImage) (void* image);
-	typedef DWORD(__fastcall *TD2PlaySound) (DWORD id, DWORD, DWORD, DWORD, DWORD);
-	typedef void* (__stdcall *TD2LoadBuySelBtn) ();
-	typedef DWORD(__fastcall *TD2IsExpansion) ();
-	typedef DWORD(__stdcall *TD2GetMouseX) ();
-	typedef DWORD(__stdcall *TD2GetMouseY) ();
-	typedef Unit* (__stdcall *TD2GetClientPlayer) ();
-	typedef void(__fastcall *TD2SendToServer3) (BYTE type, WORD p);
+	typedef void* (__fastcall* TD2LoadImage) (const char* filename, DWORD filetype);
+	typedef void(__fastcall* TD2FreeImage) (void* image);
+	typedef DWORD(__fastcall* TD2PlaySound) (DWORD id, DWORD, DWORD, DWORD, DWORD);
+	typedef void(__fastcall* TD2SendToServerXX) (DWORD size, BYTE* data);
+	typedef void* (__stdcall* TD2LoadBuySelBtn) ();
+	typedef void(__fastcall* TD2ClickOnStashButton) (DWORD x, DWORD y);
+	typedef DWORD(__stdcall* TD2GetMouseX) ();
+	typedef DWORD(__stdcall* TD2GetMouseY) ();
+	typedef Unit* (__stdcall* TD2GetClientPlayer) ();
+	typedef void(__fastcall* TD2SendToServer3) (BYTE type, WORD p);
+	typedef LPWSTR(__fastcall* TD2SetColorPopup) (LPWSTR popupText, DWORD color);
 
 	static TD2LoadImage D2LoadImage;
 	static TD2FreeImage D2FreeImage;
 	static TD2PlaySound D2PlaySound;
+	static TD2SendToServerXX D2SendToServerXX;
 	static TD2LoadBuySelBtn D2LoadBuySelBtn;
-	static TD2IsExpansion IsExpansion;
 	static TD2GetMouseX D2GetMouseX;
 	static TD2GetMouseY D2GetMouseY;
 	static TD2GetClientPlayer D2GetClientPlayer;
 	static TD2SendToServer3 D2SendToServer3;
+	static TD2ClickOnStashButton D2ClickOnStashButton;
+	static TD2SetColorPopup D2SetColorPopup;
 
 	static DWORD ResolutionX();
 	static DWORD ResolutionY();
@@ -62,4 +66,16 @@ public:
 	static Unit** ptptClientChar;
 private:
 	static void SetFunctions();
+	static Unit* __stdcall	D2GetClientPlayer_111();
+	static const char* D2Client::D2FreeImage_FILE;
+	static void D2FreeImage_111();
+	static void D2SendToServer3_111();
+	static DWORD __stdcall D2GetMouseX_111();
+	static DWORD __stdcall D2GetMouseY_111();
+	static TD2LoadImage D2LoadImageDirect;
+	static void D2LoadImage_111();
+	static TD2PlaySound D2PlaySoundDirect;
+	static void D2PlaySound_111();
+	static TD2SetColorPopup D2SetColorPopupDirect;
+	static void D2SetColorPopup_111();
 };

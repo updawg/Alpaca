@@ -19,6 +19,7 @@
 #include "BigStash.h"
 #include "InfinityStash.h"
 #include "Common.h"
+#include "ExtraPatches.h"
 
 void InstallAlpacaFunctions();
 
@@ -110,6 +111,8 @@ void InstallAlpacaFunctions()
 	
 	Install_BigStash();
 	Install_MultiPageStash();
+
+	ExtraPatches::DisplayItemLevel();
 
 	log_msg("\n");
 

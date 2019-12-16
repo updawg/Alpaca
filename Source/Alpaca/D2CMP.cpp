@@ -14,16 +14,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#include "D2Launch.h"
+#include "D2CMP.h"
 
-void D2Launch::Init()
+void D2CMP::Init()
 {
-	Name = "D2Launch.dll";
+	Name = "D2CMP.dll";
 	Offset = LoadDiabloLibrary();
 	SetFunctions();
 }
 
-void D2Launch::SetFunctions()
+void D2CMP::SetFunctions()
 {
-
+	D2CMP10014 = (TD2CMP10014)GetAddress(0x135B0);
 }
+
+D2CMP::TD2CMP10014 D2CMP::D2CMP10014;

@@ -23,19 +23,16 @@ class Fog : public Library<Fog>
 public:
 	static void Init();
 
-	typedef void(__fastcall *TD2FogAssert) (const char* ptMessage, DWORD eip, DWORD line);
-	typedef void* (__fastcall *TD2FogMemAlloc) (DWORD dwMemSize, LPCSTR lpszErrFile, DWORD ErrLine, DWORD Zero);
-	typedef void* (__fastcall *TD2FogMemDeAlloc) (void* ptMemLoc, LPCSTR lpszErrFile, DWORD ErrLine, DWORD Zero);
-	typedef void* (__fastcall *TD2AllocMem) (DWORD, DWORD dwMemSize, LPCSTR lpszErrFile, DWORD ErrLine, DWORD Zero);
-	typedef void* (__fastcall *TD2FreeMem) (DWORD, void* ptMemLoc, LPCSTR lpszErrFile, DWORD ErrLine, DWORD Zero);
-	typedef DWORD(__fastcall *TD2MPQOpenFile) (char* ptPath, void** buf);
-	typedef DWORD(__fastcall *TD2MPQCloseFile) (void* mpqfile);
-	typedef DWORD(__fastcall *TD2MPQReadFile) (void* mpqfile, BYTE* buffer, DWORD nbToRead, DWORD* nbRead, DWORD, DWORD, DWORD);
-	typedef DWORD(__fastcall *TD2MPQGetSizeFile) (void* mpqfile, DWORD* toReset);
-	typedef void(__fastcall *TD2FogGetSavePath) (char* ptPath, DWORD maxsize);
-	typedef int(__stdcall *TD2GetInstructionPointer) ();
+	typedef void* (__fastcall* TD2FogMemAlloc) (DWORD dwMemSize, LPCSTR lpszErrFile, DWORD ErrLine, DWORD Zero);
+	typedef void* (__fastcall* TD2FogMemDeAlloc) (void* ptMemLoc, LPCSTR lpszErrFile, DWORD ErrLine, DWORD Zero);
+	typedef void* (__fastcall* TD2AllocMem) (DWORD, DWORD dwMemSize, LPCSTR lpszErrFile, DWORD ErrLine, DWORD Zero);
+	typedef void* (__fastcall* TD2FreeMem) (DWORD, void* ptMemLoc, LPCSTR lpszErrFile, DWORD ErrLine, DWORD Zero);
+	typedef DWORD(__fastcall* TD2MPQOpenFile) (char* ptPath, void** buf);
+	typedef DWORD(__fastcall* TD2MPQCloseFile) (void* mpqfile);
+	typedef DWORD(__fastcall* TD2MPQReadFile) (void* mpqfile, BYTE* buffer, DWORD nbToRead, DWORD* nbRead, DWORD, DWORD, DWORD);
+	typedef DWORD(__fastcall* TD2MPQGetSizeFile) (void* mpqfile, DWORD* toReset);
+	typedef void(__fastcall* TD2FogGetSavePath) (char* ptPath, DWORD maxsize);
 
-	static TD2FogAssert D2FogAssert;
 	static TD2FogMemAlloc D2FogMemAlloc;
 	static TD2FogMemDeAlloc D2FogMemDeAlloc;
 	static TD2AllocMem D2AllocMem;
@@ -45,7 +42,6 @@ public:
 	static TD2MPQReadFile D2MPQReadFile;
 	static TD2MPQGetSizeFile D2MPQGetSizeFile;
 	static TD2FogGetSavePath D2FogGetSavePath;
-	static TD2GetInstructionPointer D2GetInstructionPointer;
 private:
 	static void SetFunctions();
 };

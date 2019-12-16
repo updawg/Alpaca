@@ -125,40 +125,42 @@ Unit* __stdcall getNextItemToFree(Unit* ptChar, Unit* ptItem)
 	return NULL;
 }
 
-Unit* __fastcall updateItem(GameStruct* ptGame, DWORD type, DWORD itemNum, Unit* ptChar)
+void __fastcall updateItem(Unit* ptItem, Unit* ptChar)
 {
 	//const int INVENTORY = 0;
 	const int STASH = 4;
 	//const int BELT_OR_PICKED_UP = 255;
 
-	Unit* ptItem = D2Game::D2GameGetObject(ptGame, type, itemNum);
-
 	if (D2Common::D2ItemGetPage(ptItem) == STASH)
 	{
 		Stash* ptStash = getStashFromItem(ptChar, ptItem);
-		if (!ptStash) return NULL;
-		selectStash(ptChar, ptStash, true);
+		if (ptStash)
+		{
+			selectStash(ptChar, ptStash, true);
+		}
 	}
-	return ptItem;
 }
 
 FCT_ASM(caller_updateItem)
-	PUSH EBP
-	PUSH DWORD PTR SS : [ESP + 0x8]
+	MOV ECX, ESI
+	MOV EDX, EBP
 	CALL updateItem
-	RETN 4
+	POP EAX
+	MOV EDX, DWORD PTR SS : [ESP + 0x18]
+	PUSH EDX
+	JMP EAX
 }}
 
 FCT_ASM(callerServer_getNextItemToFree)
 	PUSH DWORD PTR SS : [ESP + 4]
-	PUSH DWORD PTR SS : [ESP + 0x28]
+	PUSH DWORD PTR SS : [ESP + 0x30]
 	CALL getNextItemToFree
 	RETN 4
 }}
 
 FCT_ASM(callerClient_getNextItemToFree)
 	PUSH DWORD PTR SS : [ESP + 4]
-	PUSH DWORD PTR SS : [ESP + 0x24]
+	PUSH EBX
 	CALL getNextItemToFree
 	RETN 4
 }}
@@ -185,32 +187,34 @@ void Install_PlayerCustomData()
 
 	log_msg("[Patch] Player Custom Data\n");
 
-	DWORD InitializeCustomDataOffset = (DWORD)D2Common::D2InitPlayerData + 0x62;
-	DWORD UpdateItemOffset1 = D2Game::GetAddress(0x1100D);
-	DWORD UpdateItemOffset2 = D2Game::GetAddress(0x11058);
-	DWORD UpdateClientOnLoadingOffset = D2Game::GetAddress(0x25D4);
-	DWORD FreeCustomDataOffset = D2Common::GetAddress(0x80483);
-	DWORD FreeItemInStashServerSideOffset = D2Game::GetAddress(0x8D5A4);
-	DWORD FreeItemInStashClientSideOffset = D2Client::GetAddress(0x89B32);
-	DWORD TestIfAlreadyRemovedFromInventoryOffset = D2Common::GetAddress(0x4E689);
+	DWORD InitializeCustomDataOffset = D2Common::GetAddress(0x170DE);
+	DWORD UpdateItemOffset1 = D2Game::GetAddress(0x75C81);
+	DWORD UpdateItemOffset2 = D2Game::GetAddress(0x75CE1);
+	DWORD UpdateClientOnLoadingOffset = D2Game::GetAddress(0xE7548);
+	DWORD FreeCustomDataOffset = D2Common::GetAddress(0x1705D);
+	DWORD FreeItemInStashServerSideOffset = D2Game::GetAddress(0x6F7C2);
+	DWORD FreeItemInStashClientSideOffset = D2Client::GetAddress(0x621E4);
+	DWORD TestIfAlreadyRemovedFromInventoryOffset = D2Common::GetAddress(0x3B393);
 
-	// Initialize custom data.
+	// Initialize custom data
 	Memory::SetCursor(InitializeCustomDataOffset);
 	Memory::ChangeCallB((DWORD)Fog::D2AllocMem, (DWORD)init_PlayerCustomData);
 
 	// Update Item
 	Memory::SetCursor(UpdateItemOffset1);
-	Memory::ChangeCallC((DWORD)D2Game::D2GameGetObject, (DWORD)caller_updateItem);
+	Memory::ChangeByte(0x8B, 0xE8);
+	Memory::ChangeCallA(0x52182454, (DWORD)caller_updateItem);
 
 	Memory::SetCursor(UpdateItemOffset2);
-	Memory::ChangeCallC((DWORD)D2Game::D2GameGetObject, (DWORD)caller_updateItem);
+	Memory::ChangeByte(0x8B, 0xE8);
+	Memory::ChangeCallA(0x52182454, (DWORD)caller_updateItem);
 	
 	// Update client on loading
 	Memory::SetCursor(UpdateClientOnLoadingOffset);
 	Memory::ChangeByte(0x5F, 0xE8);
 	Memory::ChangeCallA(0xC0335D5E, (DWORD)caller_updateClientPlayerOnLoading);
 
-	// Free custom data.
+	// Free custom data
 	Memory::SetCursor(FreeCustomDataOffset);
 	Memory::ChangeCallB((DWORD)Fog::D2FreeMem, (DWORD)free_PlayerCustomData);
 

@@ -25,12 +25,12 @@ void D2Win::Init()
 
 void D2Win::SetFunctions()
 {
-	D2PrintLineOnTextBox = (TD2PrintLineOnTextBox)GetAddress(0xFFB0);
-	D2PrintString = (TD2PrintString)GetAddress(0xAD40);
-	D2GetPixelLen = (TD2GetPixelLen)GetAddress(0xA2A0);
-	D2SetFont = (TD2SetFont)GetAddress(0x9FF0);
-	D2PrintPopup = (TD2PrintPopup)GetAddress(0xAC60);
-	D2CreateTextBox = (TD2CreateTextBox)GetAddress(0xD260);
+	D2PrintLineOnTextBox = (TD2PrintLineOnTextBox)GetAddress(0x17320);
+	D2PrintString = (TD2PrintString)GetAddress(0x13B30);
+	D2GetPixelLen = (TD2GetPixelLen)GetAddress(0x136B0);
+	D2SetFont = (TD2SetFont)GetAddress(0x13B70);
+	D2PrintPopup = (TD2PrintPopup)GetAddress(0x12480);
+	D2CreateTextBox = (TD2CreateTextBox)GetAddress(0xE8B0);
 }
 
 D2Win::TD2PrintLineOnTextBox D2Win::D2PrintLineOnTextBox;

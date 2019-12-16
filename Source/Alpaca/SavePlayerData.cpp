@@ -209,16 +209,16 @@ void __stdcall SaveMPPlayerCustomData(BYTE* dataD2Savefile)
 }
 
 FCT_ASM( caller_SendSaveFilesToSave )
-	PUSH EDI
+	PUSH DWORD PTR SS : [ESP + 0x2014]
 	CALL SendSaveFilesToSave
-	MOV EDI,DWORD PTR SS:[ESP+0x14]
-	TEST EDI,EDI
+	MOV EAX, DWORD PTR SS : [ESP + 0x8]
+	TEST EAX, EAX
 	RETN
 }}
 
 FCT_ASM(caller_SaveSPPlayerCustomData)
 	CALL Fog::D2FogGetSavePath
-	PUSH EDI
+	PUSH DWORD PTR SS : [ESP + 0x2608]
 	CALL SaveSPPlayerCustomData
 	RETN
 }}
@@ -236,32 +236,26 @@ RETN
 }}
 
 FCT_ASM(caller_ReceivedSaveFilesToSave)
-	CMP EDX, -1
-	JE continue_rcvFct
-	PUSH ECX
-	PUSH EDX
-	PUSH ECX
+	LEA EAX, DWORD PTR SS : [ESP + 0x10]
+	PUSH EAX
 	CALL ReceiveSaveFilesToSave
-	POP EDX
-	POP ECX
 	TEST EAX, EAX
 	JE continue_rcvFct
-	XOR EAX, EAX
-	ADD ESP, 4
+	ADD DWORD PTR SS : [ESP] , 0x3D
 	RETN
-continue_rcvFct:
-	POP EAX
-	SUB ESP, 0x5F4
-	JMP EAX
+continue_rcvFct :
+	MOVZX EAX, BYTE PTR SS : [ESP + 0x10]
+	RETN
 }}
 
 FCT_ASM(caller_SaveMPPlayerCustomData)
+	PUSH EAX
 	PUSH ECX
-	PUSH ECX
+	PUSH EAX
 	CALL SaveMPPlayerCustomData
 	POP ECX
-	MOV EAX, DWORD PTR DS : [ECX]
-	MOV EDX, DWORD PTR DS : [ECX + 4]
+	POP EAX
+	CMP ECX, 0xAA55AA55
 	RETN
 }}
 
@@ -272,11 +266,11 @@ void Install_SavePlayerData()
 
 	log_msg("[Patch] Save Player Custom Data\n");
 
-	DWORD SaveSinglePlayerCustomDataOffset = D2Game::GetAddress(0x5A624);
-	DWORD SendSaveFilesOffset1 = D2Game::GetAddress(0x5A720);
-	DWORD SendSaveFilesOffset2 = D2Game::GetAddress(0x7BBB);
-	DWORD ReceivedSaveFilesOffset = D2Client::GetAddress(0x11CB0);
-	DWORD SaveMultiplayerPlayerCustomDataOffset = D2Client::GetAddress(0x11DBC);
+	DWORD SaveSinglePlayerCustomDataOffset = D2Game::GetAddress(0x39835);
+	DWORD SendSaveFilesOffset1 = D2Game::GetAddress(0x397AB);
+	DWORD SendSaveFilesOffset2 = D2Game::GetAddress(0xBEDD3);
+	DWORD ReceivedSaveFilesOffset = D2Client::GetAddress(0x448E6);
+	DWORD SaveMultiplayerPlayerCustomDataOffset = D2Client::GetAddress(0x829C2);
 
 	// Save single player custom data.
 	Memory::SetCursor(SaveSinglePlayerCustomDataOffset);
@@ -285,8 +279,8 @@ void Install_SavePlayerData()
 	// Send SaveFiles
 	Memory::SetCursor(SendSaveFilesOffset1);
 	Memory::ChangeByte(0x8B, 0x90);
-	Memory::ChangeByte(0x7C, 0xE8);
-	Memory::ChangeCallA(0xFF851024, (DWORD)caller_SendSaveFilesToSave);
+	Memory::ChangeByte(0x44, 0xE8);
+	Memory::ChangeCallA(0xC0850424, (DWORD)caller_SendSaveFilesToSave);
 
 	Memory::SetCursor(SendSaveFilesOffset2);
 	Memory::ChangeByte(0x8B, 0x90);
@@ -295,14 +289,16 @@ void Install_SavePlayerData()
 	
 	// Received SaveFiles
 	Memory::SetCursor(ReceivedSaveFilesOffset);
-	Memory::ChangeByte(0x81, 0x90);
-	Memory::ChangeByte(0xEC, 0xE8);
-	Memory::ChangeCallA(0x5F4, (DWORD)caller_ReceivedSaveFilesToSave);
+	Memory::ChangeByte(0x0F, 0xE8);
+	Memory::ChangeCallA(0x0C2444B6, (DWORD)caller_ReceivedSaveFilesToSave);
 
 	// Save multiplayer player custom data.
 	Memory::SetCursor(SaveMultiplayerPlayerCustomDataOffset);
-	Memory::ChangeByte(0x8B, 0xE8);
-	Memory::ChangeCallA(0x04518B01, (DWORD)caller_SaveMPPlayerCustomData);
+	Memory::ChangeByte(0x81, 0xE8);
+	Memory::ChangeCallA(0x55AA55F9, (DWORD)caller_SaveMPPlayerCustomData);
+	Memory::ChangeByte(0xAA, 0x90);
+
+	customPackID++;
 
 	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;

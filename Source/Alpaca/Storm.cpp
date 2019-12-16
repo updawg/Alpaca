@@ -25,8 +25,8 @@ void Storm::Init()
 
 void Storm::SetFunctions()
 {
-	D2StormMPQOpenFile = (TD2StormMPQOpenFile)GetAddress(0x17EF0);
-	D2FreeWinMessage = (TD2FreeWinMessage)GetAddress(0x1D110);
+	D2StormMPQOpenFile = (TD2StormMPQOpenFile)GetAddress(0x2D650);
+	D2FreeWinMessage = (TD2FreeWinMessage)GetAddress(0x25D70);
 }
 
 Storm::TD2StormMPQOpenFile Storm::D2StormMPQOpenFile;

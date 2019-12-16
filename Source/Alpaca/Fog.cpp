@@ -25,19 +25,17 @@ void Fog::Init()
 
 void Fog::SetFunctions()
 {
-	D2FogAssert = (TD2FogAssert)GetAddress(0xED30);
-	D2FogMemAlloc = (TD2FogMemAlloc)GetAddress(0x8F50);
-	D2FogMemDeAlloc = (TD2FogMemDeAlloc)GetAddress(0x8F90);
-	D2AllocMem = (TD2AllocMem)GetAddress(0x8FF0);
-	D2FreeMem = (TD2FreeMem)GetAddress(0x9030);
-	D2MPQOpenFile = (TD2MPQOpenFile)GetAddress(0x11600);
-	D2MPQCloseFile = (TD2MPQCloseFile)GetAddress(0x11610);
-	D2MPQReadFile = (TD2MPQReadFile)GetAddress(0x11620);
-	D2MPQGetSizeFile = (TD2MPQGetSizeFile)GetAddress(0x11650);
-	D2FogGetSavePath = (TD2FogGetSavePath)GetAddress(0x11900);
+	D2FogMemAlloc = (TD2FogMemAlloc)GetAddress(0x1B370);
+	D2FogMemDeAlloc = (TD2FogMemDeAlloc)GetAddress(0x1B350);
+	D2AllocMem = (TD2AllocMem)GetAddress(0x1B3B0);
+	D2FreeMem = (TD2FreeMem)GetAddress(0x1B320);
+	D2MPQOpenFile = (TD2MPQOpenFile)GetAddress(0x1E000);
+	D2MPQCloseFile = (TD2MPQCloseFile)GetAddress(0x1DFF0);
+	D2MPQReadFile = (TD2MPQReadFile)GetAddress(0x1DFC0);
+	D2MPQGetSizeFile = (TD2MPQGetSizeFile)GetAddress(0x1DFB0);
+	D2FogGetSavePath = (TD2FogGetSavePath)GetAddress(0x1E120);
 }
 
-Fog::TD2FogAssert Fog::D2FogAssert;
 Fog::TD2FogMemAlloc Fog::D2FogMemAlloc;
 Fog::TD2FogMemDeAlloc Fog::D2FogMemDeAlloc;
 Fog::TD2AllocMem Fog::D2AllocMem;

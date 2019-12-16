@@ -67,7 +67,7 @@ InventoryBIN* __stdcall modifStashGrid(InventoryBIN* ptInventoryBin)
 
 FCT_ASM ( caller_modifStashGrid )
 	POP ESI
-	CALL D2Common::D2CompileTxtFileDirect
+	CALL D2Common::D2CompileTxtFile
 	PUSH EAX
 	CALL modifStashGrid
 	JMP ESI
@@ -110,61 +110,50 @@ void Install_BigStash()
 
 	log_msg("[Patch] Increased Stash (10x10)\n");
 
-	DWORD StashGridOffset = D2Common::GetAddress(0x14ED3);
-	DWORD StashBackgroundClassicOffset = D2Client::GetAddress(0x4C5E7);
-	DWORD StashBackgroundExpansionOffset = D2Client::GetAddress(0x4C61C);
+	DWORD StashGridOffset = D2Common::GetAddress(0x6CC25);
+	DWORD StashBackgroundClassicOffset = D2Client::GetAddress(0x943C7);
+	DWORD StashBackgroundExpansionOffset = D2Client::GetAddress(0x943FC);
 
 	// Classic Expanded Stash UI Variables (NOP ALL)
-	DWORD ClassicStash_GoldAmountWithdrawButtonOffset = D2Client::GetAddress(0x49909);
-	DWORD ClassicStash_WithdrawTextOnHoverOffset = D2Client::GetAddress(0x49956);
-	DWORD ClassicStash_WithdrawButtonEventOnClickOffset = D2Client::GetAddress(0x4C28C);
-	DWORD ClassicStash_ButtonDownWithdrawEventAnimationOffset = D2Client::GetAddress(0x4BB73);
-	DWORD ClassicStash_GoldMaxAmountDisplayOffset = D2Client::GetAddress(0x3F331);
+	DWORD ClassicStash_GoldAmountWithdrawButtonOffset = D2Client::GetAddress(0x911B0);
+	DWORD ClassicStash_WithdrawTextOnHoverOffset = D2Client::GetAddress(0x91204);
+	DWORD ClassicStash_WithdrawButtonEventOnClickOffset = D2Client::GetAddress(0x8FA45);
+	DWORD ClassicStash_GoldMaxAmountDisplayOffset = D2Client::GetAddress(0x9DDE8);
 
 	// Stash Grid Size Modification (Classic/Expansion)
 	Memory::SetCursor(StashGridOffset);
-	Memory::ChangeCallC((DWORD)D2Common::D2CompileTxtFileDirect, (DWORD)caller_modifStashGrid);
+	Memory::ChangeCallC((DWORD)D2Common::D2CompileTxtFile, (DWORD)caller_modifStashGrid);
 
 	// Stash Background Modification (Classic)
 	Memory::SetCursor(StashBackgroundClassicOffset);
 	Memory::ChangeByte(0x68, 0xE8);
-	Memory::ChangeCallA(0x00000104, (DWORD)caller_changeClassicStash);
+	Memory::ChangeCallA(0x104, (DWORD)caller_changeClassicStash);
 
 	// Modification of stash background (Expansion)
 	Memory::SetCursor(StashBackgroundExpansionOffset);
 	Memory::ChangeByte(0x68, 0xE8);
-	Memory::ChangeCallA(0x00000104, (DWORD)caller_changeExpansionStash);
+	Memory::ChangeCallA(0x104, (DWORD)caller_changeExpansionStash);
 
 	// Classic Expanded Stash UI Controls
 
-	// Gold Amount/Withdraw Button: 49909 [NOP]
+	// Gold Amount/Withdraw Button: 911B0 [NOP]
 	Memory::SetCursor(ClassicStash_GoldAmountWithdrawButtonOffset);
+	Memory::ChangeByte(0x74, 0x90);
+	Memory::ChangeByte(0x1B, 0x90);
+
+	// Withdraw Text on Hover: 91204 [NOP]
+	Memory::SetCursor(ClassicStash_WithdrawTextOnHoverOffset);
+	Memory::ChangeByte(0x74, 0x90);
+	Memory::ChangeByte(0x47, 0x90);
+
+	// Withdraw Button Event on Click: 8FA45 [NOP]
+	Memory::SetCursor(ClassicStash_WithdrawButtonEventOnClickOffset);
 	Memory::ChangeByte(0x74, 0x90);
 	Memory::ChangeByte(0x14, 0x90);
 
-	// Withdraw Text on Hover: 49956 [NOP]
-	Memory::SetCursor(ClassicStash_WithdrawTextOnHoverOffset);
-	Memory::ChangeByte(0x0F, 0x90);
-	Memory::ChangeByte(0x84, 0x90);
-	Memory::ChangeByte(0x41, 0x90);
-	Memory::ChangeByte(0x01, 0x90);
-	Memory::ChangeByte(0x00, 0x90);
-	Memory::ChangeByte(0x00, 0x90);
-
-	// Withdraw Button Event on Click: 4C28C [NOP]
-	Memory::SetCursor(ClassicStash_WithdrawButtonEventOnClickOffset);
-	Memory::ChangeByte(0x74, 0x90);
-	Memory::ChangeByte(0x2D, 0x90);
-
-	// Button Down Press Animation for Withdraw: 4BB73 [NOP]
-	Memory::SetCursor(ClassicStash_ButtonDownWithdrawEventAnimationOffset);
-	Memory::ChangeByte(0x74, 0x90);
-	Memory::ChangeByte(0x42, 0x90);
-
-	// Gold Max/Amount Display: 3F331 [NOP]
+	// Gold Max/Amount Display: 9DDE8 [JMP]
 	Memory::SetCursor(ClassicStash_GoldMaxAmountDisplayOffset);
-	Memory::ChangeByte(0x74, 0x90);
-	Memory::ChangeByte(0x1D, 0x90);
+	Memory::ChangeByte(0x75, 0xEB);
 
 	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;

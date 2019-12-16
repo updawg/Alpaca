@@ -23,8 +23,8 @@ class D2gfx : public Library<D2gfx>
 public:
 	static void Init();
 
-	typedef DWORD(__stdcall *TD2GetResolution) ();
-	typedef void(__stdcall *TD2PrintImage) (sDrawImageInfo* data, DWORD x, DWORD y, DWORD p4, DWORD p5, DWORD p6);
+	typedef DWORD(__stdcall* TD2GetResolution) ();
+	typedef void(__stdcall* TD2PrintImage) (sDrawImageInfo* data, DWORD x, DWORD y, DWORD p4, DWORD p5, DWORD p6);
 
 	static TD2GetResolution D2GetResolution;
 	static TD2PrintImage D2PrintImage;

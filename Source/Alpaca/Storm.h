@@ -23,8 +23,8 @@ class Storm : public Library<Storm>
 public:
 	static void Init();
 
-	typedef DWORD(__stdcall *TD2StormMPQOpenFile) (DWORD zero, LPCSTR fileName, DWORD dwSearchScope, void** buffer);
-	typedef void(__stdcall *TD2FreeWinMessage) (sWinMessage* msg);
+	typedef DWORD(__stdcall* TD2StormMPQOpenFile) (DWORD zero, LPCSTR fileName, DWORD dwSearchScope, void** buffer);
+	typedef void(__stdcall* TD2FreeWinMessage) (sWinMessage* msg);
 
 	static TD2StormMPQOpenFile D2StormMPQOpenFile;
 	static TD2FreeWinMessage D2FreeWinMessage;

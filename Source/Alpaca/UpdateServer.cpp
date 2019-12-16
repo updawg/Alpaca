@@ -91,12 +91,13 @@ void Install_UpdateServer()
 
 	log_msg("[Patch] Receive Button Clicks\n");
 
-	DWORD ManageButtonClickMessageFromClientOffset = D2Game::GetAddress(0x56EA2);
+	DWORD ManageButtonClickMessageFromClientOffset = D2Game::GetAddress(0x676C3);
 
 	// Manage button click message from Client.
 	Memory::SetCursor(ManageButtonClickMessageFromClientOffset);
-	Memory::ChangeByte(0xC1, 0xE8);
-	Memory::ChangeCallA(0xF88B08EE, (DWORD)caller_handleServerUpdate);
+	Memory::ChangeByte(0xC1, 0x57);
+	Memory::ChangeByte(0xEE, 0xE8);
+	Memory::ChangeCallA(0xF88B5708, (DWORD)caller_handleServerUpdate);
 
 	if (active_logFileMemory) log_msg("\n");
 	isInstalled = true;

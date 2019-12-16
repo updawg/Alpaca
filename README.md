@@ -1,22 +1,20 @@
 ## Alpaca ([Matrix Channel](https://riot.im/app/#/room/#cactus:xyinn.org))
 ##### By: Jonathan Vasquez (fearedbliss)
-##### Build: 2019-12-15-2315
+##### Build: 2019-12-16-1702
 
 ## Synopsis
 
-Alpaca is an Infinite Stash for **`Diablo II: 1.10`** that was based off Yohann Nicolas'
+Alpaca is an Infinite Stash for **`Diablo II: 1.13d`** that was based off Yohann Nicolas'
 **[PlugY](http://plugy.free.fr/en/index.html) 11.02**. It has been massively refactored,
-stabilized, and various features have been implemented, such as full support for **`Diablo II Classic`**, and
-compatibility with Necrolis' Native OpenGL Diablo II Driver: **[D2GFEx](https://d2mods.info/forum/viewtopic.php?f=5&t=65312)**.
+stabilized, and has full support for **`Diablo II Classic`**.
 
 ## Compatibility
 
 - [Cactus](https://github.com/fearedbliss/Cactus) - Modern Diablo II Version Switcher
-- [D2GFEx](https://d2mods.info/forum/viewtopic.php?f=5&t=65312) - Native OpenGL Driver For Diablo II
 
 ## Requirements
 
-- [Microsoft Visual C++ 2017 Redistributable (x86)](https://aka.ms/vs/15/release/VC_redist.x86.exe)
+- [Microsoft Visual C++ 2019 Redistributable (x86)](https://aka.ms/vs/16/release/VC_redist.x86.exe)
 
 ## License
 
@@ -29,6 +27,7 @@ Released under the [GNU General Public License v3](LICENSE.md) or Later.
 - Increased Stash Size to **`(10x10)`**
 - **`100`** Additional Stash Pages Per Character
 - Diablo II **`Classic`** and **`Expansion`** Support
+- Display Item Level Support
 
 #### Stash Management Commands
 

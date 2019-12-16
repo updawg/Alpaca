@@ -23,12 +23,12 @@ class D2Win : public Library<D2Win>
 public:
 	static void Init();
 
-	typedef void(__fastcall *TD2PrintLineOnTextBox) (void* screen, char* s, DWORD color);
-	typedef void(__fastcall *TD2PrintString) (LPWSTR s, DWORD x, DWORD y, DWORD color, DWORD bfalse);
-	typedef DWORD(__fastcall *TD2GetPixelLen) (LPWSTR s);
-	typedef DWORD(__fastcall *TD2SetFont) (DWORD fontID);
-	typedef void(__fastcall *TD2PrintPopup) (LPWSTR s, DWORD x, DWORD y, DWORD color, DWORD center);
-	typedef void* (__stdcall *TD2CreateTextBox) (DWORD* data);
+	typedef void(__fastcall* TD2PrintLineOnTextBox) (void* screen, char* s, DWORD color);
+	typedef void(__fastcall* TD2PrintString) (LPWSTR s, DWORD x, DWORD y, DWORD color, DWORD bfalse);
+	typedef DWORD(__fastcall* TD2GetPixelLen) (LPWSTR s);
+	typedef DWORD(__fastcall* TD2SetFont) (DWORD fontID);
+	typedef void(__fastcall* TD2PrintPopup) (LPWSTR s, DWORD x, DWORD y, DWORD color, DWORD center);
+	typedef void* (__stdcall* TD2CreateTextBox) (DWORD* data);
 
 	static TD2PrintLineOnTextBox D2PrintLineOnTextBox;
 	static TD2PrintString D2PrintString;
