@@ -1,4 +1,4 @@
-## Alpaca ([Matrix Channel](https://riot.im/app/#/room/#cactus:xyinn.org))
+## Alpaca
 ##### By: Jonathan Vasquez (fearedbliss)
 ##### Build: 2019-12-16-1702
 
