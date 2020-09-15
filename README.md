@@ -97,12 +97,11 @@ not going to go online). This allows you to make a LAN game (**`127.0.0.1`** or
 **`localhost`**) where all of your characters that want to transfer items can
 join. The nice thing about this is that it is safe and no data loss will occur.
 Singling only contains non-gameplay modifications (i.e: CPU Fix, Enabling
-Hardcore Character Creation, Ladder Runewords, Glide Scrolling Letters Fix,
-Multiple Instances of Diablo II, Etc). You can get the Singling files for 1.13d
-in the Cactus repo. For the full list of Singling features, please visit the
-link for Singling listed in the **`Compatibility`** section above. If you are
-playing my Succulent mod, Alpaca and Singling are already included and working
-out of the box.
+Hardcore Character Creation, Ladder Runewords, Multiple Instances of Diablo II,
+etc). You can get the Singling files for 1.13d in the Cactus repo. For the full
+list of Singling features, please visit the link for Singling listed in the
+**`Compatibility`** section above. If you are playing my Succulent mod, Alpaca
+and Singling are already included and working out of the box.
 
 ## Screenshots
 
