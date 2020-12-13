@@ -11,15 +11,10 @@ stabilized, and has full support for **`Diablo II Classic`**.
 ## Compatibility
 
 - [Cactus](https://github.com/fearedbliss/Cactus) -
-  A Modern Diablo II Version Switcher (Contains: Singling/Succulent/Alpaca)
+  A Modern Diablo II Version Switcher (Contains: Singling/Alpaca)
 - [Singling](https://github.com/fearedbliss/Cactus/blob/master/README-SINGLING.md) -
   A collection of non-gameplay modifications and fixes in
   order to improve the Vanilla Diablo II Single Player Experience.
-- [Succulent](https://github.com/fearedbliss/Cactus/blob/master/README-SUCCULENT.md) -
-  A **`Diablo II: 1.13d`** Single Player Modification that tailors the game to the
-  Single Player Experience. Succulent contains strong influence from a variety of
-  games such as **`Diablo I`**, **`Diablo II (1.00 - 1.09b)`**, **`Diablo III`**,
-  and **[`It Lurks Below`](http://www.itlurksbelow.com/)**.
 
 ## Requirements
 
