@@ -4,9 +4,11 @@
 
 ## Description
 
-Alpaca is an Infinite Stash for **`Diablo II: 1.13d`** that was based off Yohann Nicolas'
-**[PlugY](http://plugy.free.fr/en/index.html) 11.02**. It has been massively refactored,
-stabilized, and has full support for **`Diablo II Classic`**.
+Alpaca is an Infinite Stash for **`Diablo II: 1.13d`** that was based off
+Yohann Nicolas' **[PlugY](http://plugy.free.fr/en/index.html) 11.02**.
+It has been massively refactored, stabilized, and has full support for
+**`Diablo II Classic`**. All previous **`PlugY`** bugs that were related to
+**`Multiplayer / LAN`** have also been fixed.
 
 ## Compatibility
 
@@ -28,13 +30,14 @@ Released under the [GNU General Public License v3](LICENSE.md) or Later.
 
 #### Core
 
-- Increased Stash Size to **`(10x10)`**
+- Increased Stash Size to **`(10x10)`**.
 - **`100`** Additional Stash Pages Per Character. No Shared Stash.
     - To transfer items between characters, use Singling's multiple instance
       support to open multiple copies of the game, make a LAN game, and join it
       with any characters that want to trade. Singling is part of
       [Cactus](https://github.com/fearedbliss/Cactus).
-- Diablo II **`Classic`** and **`Expansion`** Support
+- Diablo II **`Classic`** and **`Expansion`** Support.
+- Full **`Multiplayer / LAN`** Support.
 - Display Item Level Support
 
 #### Stash Management Commands
